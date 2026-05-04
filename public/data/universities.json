@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ub",
+    "name": "University of Botswana",
+    "location": "Gaborone",
+    "description": "The national university offering a wide range of undergraduate programmes in sciences, humanities, business, education, and health sciences.",
+    "website": "https://www.ub.bw/",
+    "phone": "+267 355 0000",
+    "applicationOpen": "2026-04-01",
+    "applicationClose": "2026-05-31",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.ub.bw/admissions"
+  },
+  {
+    "id": "biust",
+    "name": "BIUST",
+    "location": "Palapye",
+    "description": "Botswana International University of Science and Technology - focused on science, engineering, and technology programmes with strong lab and industry links.",
+    "website": "https://www.biust.ac.bw/",
+    "phone": "+267 493 0000",
+    "applicationOpen": "2026-03-15",
+    "applicationClose": "2026-06-15",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.biust.ac.bw/admissions"
+  },
+  {
+    "id": "bac",
+    "name": "Botswana School of Business Sciences",
+    "location": "Gaborone and Francistown",
+    "description": "Formerly Botswana Accountancy College (BAC): a multi-disciplinary institution offering business, finance, computing, hospitality, logistics, and insurance, with campuses in Gaborone and Francistown. Undergraduate qualifications are NCQF-aligned and BQA-accredited; from 2026/27 newly admitted undergraduates are awarded by BSBS, while continuing students complete under existing partnership arrangements. Postgraduate awards remain on existing collaborative routes.",
+    "website": "https://www.bac.ac.bw/",
+    "phone": "+267 395 3062",
+    "applicationOpen": "2026-01-10",
+    "applicationClose": "2026-07-31",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/"
+  },
+  {
+    "id": "botho",
+    "name": "Botho University",
+    "location": "Gaborone (and campuses)",
+    "description": "Large private university with broad undergraduate and postgraduate offerings in business, health, computing, education, and the social sciences.",
+    "website": "https://www.bothouniversity.ac.bw/",
+    "phone": "+267 390 2161",
+    "applicationOpen": "2026-02-01",
+    "applicationClose": "2026-08-20",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.bothouniversity.ac.bw/admissions"
+  },
+  {
+    "id": "ba-isago",
+    "name": "BA ISAGO University",
+    "location": "Gaborone",
+    "description": "Private university focused on business, law, computing, and management programmes with strong links to industry and professional practice.",
+    "website": "https://www.baisago.ac.bw/",
+    "phone": "+267 391 3344",
+    "applicationOpen": "2026-02-15",
+    "applicationClose": "2026-07-15",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.baisago.ac.bw/admissions"
+  },
+  {
+    "id": "abm",
+    "name": "ABM University College",
+    "location": "Gaborone",
+    "description": "University college known for health sciences, education, and business-related programmes, combining academic study with workplace preparation.",
+    "website": "https://www.abm.ac.bw/",
+    "phone": "+267 395 9966",
+    "applicationOpen": "2026-03-01",
+    "applicationClose": "2026-06-30",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.abm.ac.bw/"
+  },
+  {
+    "id": "limkokwing",
+    "name": "Limkokwing University of Creative Technology",
+    "location": "Gaborone",
+    "description": "Creative and technology-led institution offering design, multimedia, ICT, and entrepreneurship-oriented programmes in a project-based environment.",
+    "website": "https://www.limkokwing.net/botswana/",
+    "phone": "+267 318 0777",
+    "applicationOpen": "2026-01-20",
+    "applicationClose": "2026-08-10",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions"
+  },
+  {
+    "id": "francistown-coe",
+    "name": "Francistown College of Education",
+    "location": "Francistown",
+    "description": "Public teacher-education college preparing secondary and primary educators with emphasis on classroom practice and national curriculum alignment.",
+    "website": "https://www.moe.gov.bw/",
+    "phone": "+267 241 7366",
+    "applicationOpen": "2026-04-01",
+    "applicationClose": "2026-05-15",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.moe.gov.bw/"
+  },
+  {
+    "id": "gtc",
+    "name": "Gaborone Technical College",
+    "location": "Gaborone",
+    "description": "Technical and vocational college offering certificates and diplomas in engineering trades, applied technology, and occupational programmes.",
+    "website": "https://www.gtc.ac.bw/",
+    "phone": "+267 395 6111",
+    "applicationOpen": "2026-03-01",
+    "applicationClose": "2026-06-01",
+    "academicYearStart": "2026-07",
+    "applyUrl": "https://www.gtc.ac.bw/"
+  }
+]

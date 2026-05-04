@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --thuto-surface: #f3f1ec;
+    --thuto-surface-elevated: #faf9f6;
+    --thuto-ink: #0f172a;
+    --thuto-muted: #57534e;
+    --thuto-accent: #0f766e;
+    --thuto-accent-soft: rgba(15, 118, 110, 0.12);
+    --thuto-ring: rgba(15, 118, 110, 0.35);
+  }
+
+  html {
+    @apply antialiased text-slate-900;
+    background-color: var(--thuto-surface);
+    color: var(--thuto-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .thuto-page-bg {
+    background-color: var(--thuto-surface);
+    background-image: radial-gradient(ellipse 120% 80% at 50% -20%, rgba(20, 184, 166, 0.08), transparent 55%),
+      radial-gradient(ellipse 80% 50% at 100% 50%, rgba(15, 118, 110, 0.04), transparent 45%);
+  }
+
+  .focus-ring {
+    @apply outline-none ring-offset-2 ring-offset-[var(--thuto-surface)] transition-shadow;
+  }
+
+  .focus-ring:focus-visible {
+    box-shadow: 0 0 0 2px var(--thuto-surface), 0 0 0 4px var(--thuto-ring);
+  }
+
+  .focus-ring-on-dark {
+    @apply outline-none transition-shadow;
+  }
+
+  .focus-ring-on-dark:focus-visible {
+    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.95), 0 0 0 4px rgba(94, 234, 212, 0.55);
+  }
+}

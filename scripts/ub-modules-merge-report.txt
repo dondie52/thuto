@@ -1,0 +1,127 @@
+Updated 107 UB programmes with modules
+---
+EMPTY_PARSE	ub-bachelor-arts-degree-chinese-studies	Bachelor of Arts Degree in Chinese Studies	@22216
+EMPTY_PARSE	ub-bachelor-arts-humanities	Bachelor of Arts in Humanities	@29263
+EMPTY_PARSE	ub-bachelor-arts-pastoral-studies	Bachelor of Arts in Pastoral Studies	@29263
+EMPTY_PARSE	ub-bachelor-digital-media-bdm	Bachelor of Digital Media (BDM)	@28006
+EMPTY_PARSE	ub-bachelor-education-family-and-consumer-sciences	Bachelor of Education in Family and Consumer Sciences	@33755
+EMPTY_PARSE	ub-bachelor-educational-leadership-and-management-education-blme	Bachelor of Educational Leadership and Management Education (BLME)	@12387
+EMPTY_PARSE	ub-bachelor-engineering-construction-engineering-and-management	Bachelor of Engineering (Construction Engineering and Management)	@3141
+EMPTY_PARSE	ub-bachelor-engineering-mineral-engineering	Bachelor of Engineering (Mineral Engineering)	@13315
+EMPTY_PARSE	ub-bachelor-fine-arts-theatre-studies	Bachelor of Fine Arts (Theatre Studies)	@31180
+EMPTY_PARSE	ub-bachelor-media-studies-bms	Bachelor of Media Studies (BMS)	@27555
+EMPTY_PARSE	ub-bachelor-primary-education-bpe	Bachelor of Primary Education (BPE)	@12381
+EMPTY_PARSE	ub-bachelor-science-degree-mathematics	Bachelor of Science Degree in Mathematics	@37702
+EMPTY_PARSE	ub-bachelor-sport-science-recreation-sport-management	Bachelor of Sport Science (Recreation & Sport Management)	@11323
+EMPTY_PARSE	ub-bachelor-sport-science-sport-exercise-psychology	Bachelor of Sport Science (Sport & Exercise Psychology)	@11694
+NO_MATCH	ub-bachelor-medicine-bachelor-surgery-mbbs	Bachelor of Medicine Bachelor of Surgery (MBBS)
+NO_MATCH	ub-bachelor-science-cytotechnology-and-histotechnology-sciences-bsc-chs	Bachelor of Science Cytotechnology and Histotechnology Sciences (BSc CHS)
+NO_MATCH	ub-bachelor-science-medical-laboratory-sciences-bsc-mls	Bachelor of Science Medical Laboratory Sciences (BSc MLS)
+NO_MATCH	ub-bachelor-science-radiation-and-health-physics	Bachelor of Science in Radiation and Health Physics
+OK	ub-ba-econ	BA Economics	@39220	semesters=18
+OK	ub-bachelor-accountancy	Bachelor of Accountancy	@3648	semesters=6
+OK	ub-bachelor-architecture	Bachelor of Architecture	@13505	semesters=3
+OK	ub-bachelor-arts-criminal-justice-studies-ba-cjs	Bachelor of Arts in Criminal Justice Studies (BA CJS)	@42216	semesters=7
+OK	ub-bachelor-arts-degree-african-languages-and-literature	Bachelor of Arts Degree in African Languages and Literature	@21541	semesters=7
+OK	ub-bachelor-arts-degree-archaeology	Bachelor of Arts Degree in Archaeology	@21541	semesters=7
+OK	ub-bachelor-arts-degree-economics-and-accounting-revised	Bachelor of Arts Degree in Economics and Accounting (Revised)	@21541	semesters=7
+OK	ub-bachelor-arts-degree-english	Bachelor of Arts Degree in English	@21541	semesters=7
+OK	ub-bachelor-arts-degree-french	Bachelor of Arts Degree in French	@21541	semesters=7
+OK	ub-bachelor-arts-degree-history	Bachelor of Arts Degree in History	@21541	semesters=7
+OK	ub-bachelor-arts-economics	Bachelor of Arts in Economics	@39220	semesters=18
+OK	ub-bachelor-arts-information-and-knowledge-management-combined-major-and-majorminor-degree-ba-ikm	Bachelor of Arts (Information and Knowledge Management) Combined Major and Major/Minor Degree (BA IKM)	@26511	semesters=7
+OK	ub-bachelor-arts-media-studies	Bachelor of Arts (Media Studies)	@30173	semesters=4
+OK	ub-bachelor-arts-political-science	Bachelor of Arts (Political Science)	@40920	semesters=15
+OK	ub-bachelor-arts-population-studies	Bachelor of Arts in Population Studies	@30173	semesters=4
+OK	ub-bachelor-arts-public-administration	Bachelor of Arts (Public Administration)	@39911	semesters=8
+OK	ub-bachelor-arts-social-sciences-psychology-combined-major	Bachelor of Arts in Social Sciences with Psychology as Combined Major	@41241	semesters=8
+OK	ub-bachelor-arts-sociology	Bachelor of Arts (Sociology)	@41848	semesters=9
+OK	ub-bachelor-business-administration-entrepreneurship-and-enterprise-development	Bachelor of Business Administration (Entrepreneurship And Enterprise Development)	@3657	semesters=6
+OK	ub-bachelor-business-administration-international-business	Bachelor of Business Administration in International Business	@3660	semesters=6
+OK	ub-bachelor-business-administration-logistics-and-supply-chain-management	Bachelor of Business Administration (Logistics And Supply Chain Management)	@3660	semesters=6
+OK	ub-bachelor-business-administration-management	Bachelor of Business Administration (Management)	@3648	semesters=6
+OK	ub-bachelor-business-administration-marketing	Bachelor of Business Administration in Marketing	@3648	semesters=6
+OK	ub-bachelor-business-administration-tourism-hospitality-management	Bachelor of Business Administration (Tourism & Hospitality Management	@3653	semesters=6
+OK	ub-bachelor-design	Bachelor of Design	@18522	semesters=13
+OK	ub-bachelor-design-design-and-technology-education	Bachelor of Design (Design and Technology Education)	@18522	semesters=13
+OK	ub-bachelor-design-industrial-design	Bachelor of Design (Industrial Design)	@18281	semesters=14
+OK	ub-bachelor-education-art-and-design-bead-programme	Bachelor of Education - Art and Design (BEAD) Programme	@18473	semesters=13
+OK	ub-bachelor-education-counselling	Bachelor of Education in Counselling	@8768	semesters=7
+OK	ub-bachelor-education-degree-science	Bachelor of Education Degree in Science	@13369	semesters=5
+OK	ub-bachelor-education-early-childhood-development-and-education-becde	Bachelor of Education Early Childhood Development and Education (BECDE)	@12567	semesters=6
+OK	ub-bachelor-education-educational-management	Bachelor of Education (Educational Management)	@9926	semesters=5
+OK	ub-bachelor-education-lifelong-learning-and-community-development	Bachelor of Education (Lifelong Learning and Community Development)	@5668	semesters=5
+OK	ub-bachelor-education-secondary	Bachelor of Education (Secondary)	@38494	semesters=3
+OK	ub-bachelor-education-secondary-education-biology-chemistry-mathematics-physics	Bachelor of Education in Secondary Education (Biology, Chemistry, Mathematics, Physics)	@10695	semesters=2
+OK	ub-bachelor-education-secondary-humanities	Bachelor of Education (Secondary) Humanities	@9298	semesters=2
+OK	ub-bachelor-education-special-education	Bachelor of Education in Special Education	@39516	semesters=12
+OK	ub-bachelor-electrical-and-electronic-engineering	Bachelor of Electrical and Electronic Engineering	@13496	semesters=2
+OK	ub-bachelor-engineering-civil	Bachelor of Engineering (Civil)	@13496	semesters=2
+OK	ub-bachelor-engineering-industrial-engineering	Bachelor of Engineering (Industrial Engineering)	@19674	semesters=6
+OK	ub-bachelor-engineering-mechanical-engineering	Bachelor of Engineering (Mechanical Engineering)	@19262	semesters=12
+OK	ub-bachelor-engineering-mining-engineering	Bachelor of Engineering (Mining Engineering)	@15923	semesters=6
+OK	ub-bachelor-finance	Bachelor of Finance	@3980	semesters=8
+OK	ub-bachelor-geomatics	Bachelor of Geomatics	@15769	semesters=5
+OK	ub-bachelor-information-knowledge-management-archives-and-records-management-e2-80-93-bikm-arm	Bachelor of Information & Knowledge Management (Archives and Records Management) –BIKM (ARM)	@26514	semesters=7
+OK	ub-bachelor-information-knowledge-management-knowledge-management-bikm-km	Bachelor of Information & Knowledge Management (Knowledge Management) - BIKM (KM)	@26511	semesters=7
+OK	ub-bachelor-information-knowledge-management-library-and-information-studies-bikm-lis	Bachelor of Information & Knowledge Management (Library and Information Studies) - BIKM (LIS)	@26515	semesters=7
+OK	ub-bachelor-information-systems-business-information-systems	Bachelor of Information Systems (Business Information Systems)	@3653	semesters=6
+OK	ub-bachelor-information-systems-computer-information-systems	Bachelor of Information Systems (Computer Information Systems)	@34703	semesters=9
+OK	ub-bachelor-information-systems-information-management-bis	Bachelor of Information Systems (Information Management) (BIS)	@25808	semesters=5
+OK	ub-bachelor-land-management	Bachelor of Land Management	@15304	semesters=8
+OK	ub-bachelor-laws-llb	Bachelor of Laws (LLB)	@39486	semesters=10
+OK	ub-bachelor-music-education-bme-programme	Bachelor of Music Education (BME) Programme	@13083	semesters=6
+OK	ub-bachelor-nursing-science	Bachelor of Nursing Science	@20786	semesters=2
+OK	ub-bachelor-pharmacy-b-pharm	Bachelor of Pharmacy (B. Pharm)	@20482	semesters=14
+OK	ub-bachelor-portuguese-language-and-lusophone-studies	Bachelor of Portuguese Language and Lusophone Studies	@28923	semesters=7
+OK	ub-bachelor-psychology-bpsych	Bachelor of Psychology (B.Psych.)	@41367	semesters=7
+OK	ub-bachelor-public-relations-and-integrated-communication-bpc	Bachelor of Public Relations and Integrated Communication (BPC)	@28466	semesters=3
+OK	ub-bachelor-science-biological-sciences	Bachelor of Science (Biological Sciences)	@33344	semesters=14
+OK	ub-bachelor-science-computer-science	Bachelor of Science (Computer Science)	@34703	semesters=9
+OK	ub-bachelor-science-computing-finance	Bachelor of Science (Computing with Finance)	@34703	semesters=9
+OK	ub-bachelor-science-degree-chemistry	Bachelor of Science Degree in Chemistry	@33809	semesters=8
+OK	ub-bachelor-science-degree-geology	Bachelor of Science Degree in Geology	@36991	semesters=19
+OK	ub-bachelor-science-degree-real-estate	Bachelor of Science Degree in Real Estate	@13787	semesters=9
+OK	ub-bachelor-science-degree-urban-and-regional-planning	Bachelor of Science Degree in Urban and Regional Planning	@14624	semesters=10
+OK	ub-bachelor-science-environmental-health-bsc-eh	Bachelor of Science - Environmental Health (BSc-EH)	@21066	semesters=9
+OK	ub-bachelor-science-information-technology	Bachelor of Science (Information Technology)	@34704	semesters=10
+OK	ub-bachelor-science-mathematics-finance	Bachelor of Science Mathematics of Finance	@3671	semesters=6
+OK	ub-bachelor-science-physics	Bachelor of Science (Physics)	@20203	semesters=15
+OK	ub-bachelor-science-physics-meteorology	Bachelor of Science in Physics with Meteorology	@20203	semesters=15
+OK	ub-bachelor-science-statistics	Bachelor of Science in Statistics	@42612	semesters=22
+OK	ub-bachelor-social-science-degree-programme-major-political-science-and-major-another-subject	Bachelor of Social Science Degree Programme Major in Political Science and Major in Another Subject.	@40921	semesters=15
+OK	ub-bachelor-social-science-degree-programme-major-political-science-and-minor-other-subject	Bachelor of Social Science Degree Programme: Major in Political Science and Minor in Other Subject	@40922	semesters=15
+OK	ub-bachelor-social-science-degree-programme-major-public-administration-major-political	Bachelor of Social Science Degree Programme Major in Public Administration + Major in Political	@40921	semesters=15
+OK	ub-bachelor-social-science-degree-programme-major-public-administration-minor	Bachelor of Social Science Degree Programme Major in Public Administration + Minor	@40921	semesters=15
+OK	ub-bachelor-social-science-degree-programme-major-public-administration-other-major	Bachelor of Social Science Degree Programme Major Public Administration + Other MAJOR	@40922	semesters=15
+OK	ub-bachelor-social-science-degree-programme-minor-political-science-major-other-subject	Bachelor of Social Science Degree Programme: Minor Political Science + Major in Other Subject	@40922	semesters=15
+OK	ub-bachelor-social-science-degree-programme-minor-public-administration-major-other-subject	Bachelor of Social Science Degree Programme: Minor in Public Administration + Major in Other Subject	@40922	semesters=15
+OK	ub-bachelor-social-science-degree-programme-political-science-single-major	Bachelor of Social Science Degree Programme in Political Science (Single Major)	@40102	semesters=15
+OK	ub-bachelor-social-science-degree-public-administration-single-major	Bachelor of Social Science Degree in Public Administration (Single Major)	@40921	semesters=15
+OK	ub-bachelor-social-work	Bachelor of Social Work	@41696	semesters=10
+OK	ub-bachelor-sport-science-exercise-science-wellness	Bachelor of Sport Science (Exercise Science & Wellness)	@5365	semesters=5
+OK	ub-bachelor-sport-science-physical-education-sport-coaching	Bachelor of Sport Science (Physical Education & Sport Coaching)	@13078	semesters=6
+OK	ub-bsc-biology	BSc Biology	@33344	semesters=14
+OK	ub-bsc-cs	BSc Computer Science	@34703	semesters=9
+OK	ub-certificate-archives-and-records-management-carm	Certificate in Archives and Records Management (CARM)	@25765	semesters=6
+OK	ub-certificate-library-and-information-studiesclis	Certificate in Library and Information Studies(CLIS)	@25616	semesters=7
+OK	ub-combined-bachelor-arts-majormajor	Combined Bachelor of Arts (Major/Major)	@41238	semesters=8
+OK	ub-combined-bachelor-arts-statistics	Combined Bachelor of Arts in Statistics	@42416	semesters=3
+OK	ub-combined-bachelor-engineering-b-eng-major	Combined Bachelor of Engineering (B-Eng Major)	@19520	semesters=11
+OK	ub-combined-bachelor-engineering-b-eng-minor	Combined Bachelor of Engineering (B-Eng Minor)	@19524	semesters=12
+OK	ub-combined-bachelor-engineering-degree-major-mechanical-engineering	Combined Bachelor of Engineering Degree (Major in Mechanical Engineering)	@19380	semesters=14
+OK	ub-combined-bachelor-science-majormajor	Combined Bachelor of Science (Major/Major)	@41238	semesters=8
+OK	ub-combined-degree-minor-mechanical-engineering	Combined Degree (Minor in Mechanical Engineering)	@19248	semesters=12
+OK	ub-combined-major-bachelor-science-statistics	Combined Major Bachelor of Science in Statistics	@42612	semesters=22
+OK	ub-diploma-archives-and-records-management-darm	Diploma in Archives and Records Management (DARM)	@25796	semesters=5
+OK	ub-diploma-business-and-accounting-studies-dabs	Diploma in Business and Accounting Studies (DABS)	@3699	semesters=6
+OK	ub-diploma-defence-and-strategic-studies-ddss	Diploma in Defence and Strategic Studies (DDSS)	@39783	semesters=3
+OK	ub-diploma-library-and-information-studies	Diploma in Library and Information Studies	@25698	semesters=6
+OK	ub-diploma-lifelong-learning-and-community-development	Diploma in Lifelong Learning and Community Development	@5417	semesters=5
+OK	ub-diploma-ngo-management	Diploma in NGO Management	@5662	semesters=5
+OK	ub-diploma-population-studies	Diploma in Population Studies	@40956	semesters=6
+OK	ub-diploma-social-work-dsw	Diploma in Social Work (DSW)	@41613	semesters=5
+OK	ub-diploma-statistics	Diploma in Statistics	@42455	semesters=2
+OK	ub-post-graduate-diploma-education	Post Graduate Diploma in Education	@8806	semesters=5
+OK	ub-revised-bachelor-business-administration-tourism-and-hospitality-management	Revised Bachelor of Business Administration In Tourism And Hospitality Management	@3653	semesters=6
+OK	ub-revised-bachelor-information-systems-business-information-systems	Revised Bachelor of Information Systems (Business Information Systems)	@3653	semesters=6

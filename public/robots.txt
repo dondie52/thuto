@@ -1,0 +1,3 @@
+# Production host: https://thuto.bw — update if you deploy elsewhere.
+User-agent: *
+Allow: /

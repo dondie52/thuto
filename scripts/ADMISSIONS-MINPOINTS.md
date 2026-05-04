@@ -1,0 +1,29 @@
+# `minPoints` semantics for editors
+
+## What Thuto stores
+
+- **`minPoints`**: A single number on the **Thuto BGCSE best-six scale** (A=6, B=5, C=4, D=3, E=2, U=0), matching [`src/lib/admissions.js`](../src/lib/admissions.js) and the predictor UI.
+- **`subjectRequirements`**: Optional minimum letter grades for keys in `SUBJECT_FIELDS` (`math`, `english`, `science`, etc.). The predictor requires **both** sufficient best-six total **and** these grades when present.
+
+## Tiers of meaning
+
+1. **`prospectus` / published cut-off (UB)** — Overall “Application Cut-Off Points (Best 6 Subjects)” from the official UB undergraduate admissions guide (e.g. 2025). These are **guides**, not final admission cut-offs; UB states admission remains competitive.
+2. **`institution_minimum`** — Stated **minimum** for the whole class of programmes on the same scale. Example: UB 2025 general rule — **34** best-six points for **degree** programmes and **30** for **diploma/certificate** programmes (NCQF Level 4 pathway), where a programme-specific guide line is not present in our extract.
+3. **`converted_official`** — Some institutions publish totals on a **different** grade-to-points table. Values must be **converted** to the Thuto scale before storing (see BIUST in the merge script comments).
+
+## Unknown / postgraduate
+
+- If entry is **not** normal school-leaving (e.g. postgraduate diploma requiring a prior degree), leave **`minPoints` null** and avoid implying a BGCSE points rule.
+
+## Optional provenance fields
+
+`programmes.json` objects may include (ignored by the app, useful for audits):
+
+- `minPointsSource` — short citation, e.g. `"UB 2025 prospective applicants guide §general f"`.
+- `minPointsTier` — one of `guide_overall`, `institution_minimum`, `converted_official`, `manual`.
+
+## Editing workflow
+
+1. Prefer **official PDFs** for the intake year you care about.
+2. For UB, run `node scripts/merge-ub-admissions-2025.mjs` after refreshing `scripts/data/ub-prospective-applicants-2025-admissions.txt`.
+3. For other universities, add rows to [`scripts/data/admission-overrides.json`](data/admission-overrides.json) and run `node scripts/merge-admission-overrides.mjs`.
