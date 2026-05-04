@@ -45,3 +45,30 @@ Botswana universities do not expose a single public API for deadlines. Thuto can
 4. Rebuild (`npm run build`) so Vite embeds the URL. The client fetches with `cache: 'no-store'` and merges remote rows into the bundled list by `id`.
 
 Without this variable, the app uses only the bundled file (offline-friendly, but dates are static until you redeploy or use the remote feed).
+
+## Deploy to GitHub Pages
+
+The repo ships with a workflow at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) that builds and publishes to GitHub Pages on every push to `main`.
+
+One-time setup on GitHub:
+
+1. **Settings -> Pages -> Build and deployment -> Source:** select **GitHub Actions**.
+2. (Optional) **Settings -> Secrets and variables -> Actions** -> add any of these so the build can read them at deploy time:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_UNIVERSITIES_REMOTE_URL`
+3. Push to `main` (or run the workflow manually from the **Actions** tab). The site goes live at <https://dondie52.github.io/thuto/>.
+
+How it is wired:
+
+- `vite.config.js` sets `base: '/thuto/'` (override with `VITE_BASE_PATH=/` if you later move to a custom domain).
+- `<BrowserRouter basename={import.meta.env.BASE_URL}>` keeps client-side routes correct under the subpath.
+- All `fetch('/data/...')` calls use `import.meta.env.BASE_URL` so they resolve to `/thuto/data/...` in production.
+- A `postbuild` step copies `dist/index.html` to `dist/404.html` so deep-link refreshes (e.g. `/thuto/programmes`) still load the SPA shell.
+- `public/.nojekyll` ensures GitHub Pages serves files starting with `_` untouched.
+
+### Switching to a custom domain (e.g. `thuto.bw`)
+
+1. Add a `public/CNAME` file containing `thuto.bw` (it gets copied to `dist/CNAME` automatically).
+2. Set `VITE_BASE_PATH=/` in the workflow's build step (or as a repo secret/variable) so assets resolve from the domain root.
+3. Configure DNS as per [GitHub's docs](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site) and enable **Enforce HTTPS** under Settings -> Pages.

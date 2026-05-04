@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node scripts/copy-spa-404.mjs",
     "preview": "vite preview",
     "merge-ub-admissions": "node scripts/merge-ub-admissions-2025.mjs",
     "merge-admission-overrides": "node scripts/merge-admission-overrides.mjs"

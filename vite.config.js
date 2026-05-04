@@ -2,7 +2,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
+// Deployed to GitHub Pages at https://dondie52.github.io/thuto/.
+// Override with VITE_BASE_PATH=/ when serving from a custom domain (e.g. thuto.bw).
+const base = process.env.VITE_BASE_PATH ?? "/thuto/";
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -15,17 +20,17 @@ export default defineConfig({
         theme_color: "#0f766e",
         background_color: "#f0fdfa",
         display: "standalone",
-        start_url: "/",
-        scope: "/",
+        start_url: ".",
+        scope: ".",
         icons: [
           {
-            src: "/icons/icon-192.png",
+            src: "icons/icon-192.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any maskable",
           },
           {
-            src: "/icons/icon-512.png",
+            src: "icons/icon-512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
@@ -36,7 +41,7 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.startsWith("/data/"),
+            urlPattern: ({ url }) => url.pathname.includes("/data/"),
             handler: "StaleWhileRevalidate",
             options: {
               cacheName: "thuto-data",
@@ -44,8 +49,8 @@ export default defineConfig({
             },
           },
         ],
-        navigateFallback: "/index.html",
-        navigateFallbackDenylist: [/^\/data\//],
+        navigateFallback: "index.html",
+        navigateFallbackDenylist: [/\/data\//],
       },
     }),
   ],

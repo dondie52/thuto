@@ -7,9 +7,11 @@ import App from "./App.jsx";
 
 registerSW({ immediate: true });
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={routerBasename}>
       <App />
     </BrowserRouter>
   </StrictMode>,

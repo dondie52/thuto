@@ -76,7 +76,7 @@ export default function CompareProgrammes() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/data/programmes.json")
+    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
       .then((r) => {
         if (!r.ok) throw new Error("Could not load programmes");
         return r.json();

@@ -9,7 +9,7 @@
  * Official sites rarely offer CORS-friendly JSON; this is the practical pattern.
  */
 
-const BUNDLED_PATH = "/data/universities.json";
+const BUNDLED_PATH = `${import.meta.env.BASE_URL}data/universities.json`;
 
 /** @type {string} */
 const REMOTE_URL = (import.meta.env.VITE_UNIVERSITIES_REMOTE_URL || "").trim();
