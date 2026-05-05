@@ -33,7 +33,7 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 - Enter **multiple BGCSE subjects** (canonical list in `src/lib/bgcseSubjects.js`).
 - **Best-six** total: highest six subject point scores count; breakdown of counted vs dropped subjects (`computeBestSixBreakdown` in `src/lib/admissions.js`).
-- **Grade → points**: A=6 … U=0 (`GRADE_POINTS` in `admissions.js`).
+- **Grade → points** (official Botswana BGCSE scale): A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0 (`GRADE_POINTS` in `admissions.js`). Best-six maximum total = **48**.
 - **Programme matching**: compares totals and **subject requirement keys** (`math`, `english`, `science`, etc.) against each programme in `public/data/programmes.json` via `evaluateProgramme` and related helpers.
 
 ### Programme catalogue (`/programmes`, `/programmes/:id`)

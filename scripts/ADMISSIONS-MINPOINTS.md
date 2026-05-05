@@ -2,14 +2,15 @@
 
 ## What Thuto stores
 
-- **`minPoints`**: A single number on the **Thuto BGCSE best-six scale** (A=6, B=5, C=4, D=3, E=2, U=0), matching [`src/lib/admissions.js`](../src/lib/admissions.js) and the predictor UI.
+- **`minPoints`**: A single number on the **official Botswana BGCSE best-six scale** (A\*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0; max total = **48**), matching [`src/lib/admissions.js`](../src/lib/admissions.js) and the predictor UI.
 - **`subjectRequirements`**: Optional minimum letter grades for keys in `SUBJECT_FIELDS` (`math`, `english`, `science`, etc.). The predictor requires **both** sufficient best-six total **and** these grades when present.
+- **`minPointsScaleVersion`**: Stamped by [`scripts/migrate-grade-scale.mjs`](migrate-grade-scale.mjs); version `2` = official BGCSE A=8 scale.
 
 ## Tiers of meaning
 
 1. **`prospectus` / published cut-off (UB)** — Overall “Application Cut-Off Points (Best 6 Subjects)” from the official UB undergraduate admissions guide (e.g. 2025). These are **guides**, not final admission cut-offs; UB states admission remains competitive.
-2. **`institution_minimum`** — Stated **minimum** for the whole class of programmes on the same scale. Example: UB 2025 general rule — **34** best-six points for **degree** programmes and **30** for **diploma/certificate** programmes (NCQF Level 4 pathway), where a programme-specific guide line is not present in our extract.
-3. **`converted_official`** — Some institutions publish totals on a **different** grade-to-points table. Values must be **converted** to the Thuto scale before storing (see BIUST in the merge script comments).
+2. **`institution_minimum`** — Stated **minimum** for the whole class of programmes on the same scale. Example: UB 2025 general rule — **46** best-six points for **degree** programmes and **42** for **diploma/certificate** programmes (NCQF Level 4 pathway), where a programme-specific guide line is not present in our extract.
+3. **`converted_official`** — Historical label retained from when Thuto used its own internal scale. Now that Thuto stores values on the **official** BGCSE A=8 scale, no conversion is needed; tier kept for provenance (see BIUST defaults in [`merge-admission-overrides.mjs`](merge-admission-overrides.mjs), where the institutional floor is **39**).
 
 ## Unknown / postgraduate
 

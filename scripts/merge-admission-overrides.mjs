@@ -15,36 +15,36 @@ const root = path.join(__dirname, "..");
 const progPath = path.join(root, "public/data/programmes.json");
 const overridePath = path.join(__dirname, "data/admission-overrides.json");
 
-/** BIUST official min is >38 on their scale (A=8…); Thuto uses A=6… with biustSum ≈ thutoSum + 12 for six subjects → thuto floor 27. */
-const BIUST_CONVERTED_FLOOR = 27;
+/** BIUST official institutional minimum is >=39 on the official BGCSE scale (A*=A=8…). Thuto now uses the same scale, so no conversion is needed. */
+const BIUST_OFFICIAL_FLOOR = 39;
 
 const BIUST_FIELD_DEFAULTS = {
   Engineering: {
-    minPoints: 32,
+    minPoints: 44,
     subjectRequirements: { math: "A", science: "B", english: "C" },
     minPointsSource:
       "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
     minPointsTier: "converted_official",
   },
   "Natural Sciences": {
-    minPoints: BIUST_CONVERTED_FLOOR,
+    minPoints: BIUST_OFFICIAL_FLOOR,
     subjectRequirements: { english: "D", math: "C", science: "C" },
     minPointsSource:
-      "BIUST entry-requirements page; Thuto-scale floor (combined six-subject score >38 on BIUST table → best-six ≥27 on Thuto scale).",
+      "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
     minPointsTier: "converted_official",
   },
   Technology: {
-    minPoints: 31,
+    minPoints: 43,
     subjectRequirements: { math: "B", science: "C", english: "C" },
     minPointsSource:
       "BIUST entry-requirements; level aligned with existing curated BSc Data Science row until programme-specific values are added.",
     minPointsTier: "converted_official",
   },
   Business: {
-    minPoints: BIUST_CONVERTED_FLOOR,
+    minPoints: BIUST_OFFICIAL_FLOOR,
     subjectRequirements: { english: "D", math: "C", science: "C" },
     minPointsSource:
-      "BIUST entry-requirements page; Thuto-scale institutional floor (see ADMISSIONS-MINPOINTS.md).",
+      "BIUST entry-requirements page; institutional floor on the official BGCSE A=8 scale (see ADMISSIONS-MINPOINTS.md).",
     minPointsTier: "converted_official",
   },
 };

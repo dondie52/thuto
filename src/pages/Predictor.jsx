@@ -117,9 +117,9 @@ export default function Predictor() {
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Admission predictor</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Points: A=6, B=5, C=4, D=3, E=2, U=0. Your total is the sum of your <strong>best six</strong> subjects (you
-          can enter up to nine). Eligibility still checks subject requirements (e.g. Maths, English Language,
-          Science) using your best grade in each category.
+          Points: A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Best-six maximum = 48 pts. Your total is the sum of
+          your <strong>best six</strong> subjects (you can enter up to nine). Eligibility still checks subject
+          requirements (e.g. Maths, English Language, Science) using your best grade in each category.
         </p>
       </div>
 

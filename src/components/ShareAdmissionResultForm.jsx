@@ -68,8 +68,8 @@ export default function ShareAdmissionResultForm({ programmes, initialProgrammeI
       return;
     }
     const pts = Number(points);
-    if (!Number.isFinite(pts) || pts < 0 || pts > 54) {
-      setFormError("Enter your best-six points total between 0 and 54.");
+    if (!Number.isFinite(pts) || pts < 0 || pts > 48) {
+      setFormError("Enter your best-six points total between 0 and 48.");
       return;
     }
     if (year < MIN_YEAR || year > maxSelectableYear) {
@@ -173,12 +173,12 @@ export default function ShareAdmissionResultForm({ programmes, initialProgrammeI
           type="number"
           inputMode="numeric"
           min={0}
-          max={54}
+          max={48}
           value={points}
           onChange={(e) => setPoints(e.target.value)}
           className="mt-2 w-full max-w-xs rounded-lg border border-brand-200 px-3 py-2 text-sm text-brand-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
         />
-        <p className="mt-1 text-xs text-slate-500">0–54 (same scale as the predictor).</p>
+        <p className="mt-1 text-xs text-slate-500">0–48 (same scale as the predictor).</p>
       </div>
 
       <fieldset>

@@ -1,15 +1,19 @@
 import { BGCSE_SUBJECT_BY_ID } from "./bgcseSubjects.js";
 
 /**
- * BGCSE-style grade points for admission scoring.
- * Best 6: we take up to six highest subject point totals from entered grades (MVP).
+ * Official Botswana BGCSE grade points for admission scoring.
+ * Best-six maximum total = 48 (six A grades at 8 points each).
+ * A* counts the same as A under UB/BIUST admissions guides.
  */
 export const GRADE_POINTS = {
-  A: 6,
-  B: 5,
-  C: 4,
-  D: 3,
-  E: 2,
+  "A*": 8,
+  A: 8,
+  B: 7,
+  C: 6,
+  D: 5,
+  E: 4,
+  F: 3,
+  G: 2,
   U: 0,
 };
 
@@ -70,7 +74,7 @@ export function computeBestSixBreakdown(rows) {
         total: 0,
         counted: [],
         dropped: [],
-        invalid: `Invalid grade for ${meta?.label ?? row.subjectId}. Use A–E or U.`,
+        invalid: `Invalid grade for ${meta?.label ?? row.subjectId}. Use A*, A–G, or U.`,
       };
     }
     const meta = BGCSE_SUBJECT_BY_ID[row.subjectId];

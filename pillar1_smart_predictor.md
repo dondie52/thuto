@@ -5,17 +5,20 @@ Replace the current fixed 6-subject form with a dynamic predictor that accepts a
 
 ---
 
-## Grading Scale
+## Grading Scale (official Botswana BGCSE)
 | Grade | Points |
 |-------|--------|
-| A | 6 |
-| B | 5 |
-| C | 4 |
-| D | 3 |
-| E | 2 |
+| A\* | 8 |
+| A | 8 |
+| B | 7 |
+| C | 6 |
+| D | 5 |
+| E | 4 |
+| F | 3 |
+| G | 2 |
 | U | 0 |
 
-Total = sum of best 6 subjects (highest points first).
+Total = sum of best 6 subjects (highest points first). Best-six maximum = **48**.
 
 ---
 
@@ -63,12 +66,12 @@ const [results, setResults] = useState(null)
 1. **Header section**
    - Title: "Admission predictor"
    - Subtitle: "Enter your BGCSE subjects and grades. We'll calculate your best 6 points total."
-   - Points key: A=6, B=5, C=4, D=3, E=2
+   - Points key: A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0 (max 48)
 
 2. **Subject rows** (dynamic)
    - Each row: `[Subject dropdown] [Grade dropdown] [Remove button]`
    - Subject dropdown: list from BGCSE_SUBJECTS, filtered to exclude already-selected subjects
-   - Grade dropdown: A, B, C, D, E, U
+   - Grade dropdown: A*, A, B, C, D, E, F, G, U
    - "Add subject" button below rows (disabled when 9 subjects reached)
    - Minimum 1 row, maximum 9 rows
 
@@ -87,8 +90,8 @@ const [results, setResults] = useState(null)
 ### Best-6 Calculation Logic
 ```js
 function calculateBestSix(subjects) {
-  const gradePoints = { A: 6, B: 5, C: 4, D: 3, E: 2, U: 0 }
-  
+  const gradePoints = { "A*": 8, A: 8, B: 7, C: 6, D: 5, E: 4, F: 3, G: 2, U: 0 }
+
   const scored = subjects
     .filter(s => s.subject && s.grade)
     .map(s => ({ ...s, points: gradePoints[s.grade] }))
@@ -153,7 +156,7 @@ Add `subjectRequirements` to all existing programmes.
 After calculating best 6, also check specific subject requirements:
 ```js
 function checkSubjectRequirements(subjects, programme) {
-  const gradePoints = { A: 6, B: 5, C: 4, D: 3, E: 2, U: 0 }
+  const gradePoints = { "A*": 8, A: 8, B: 7, C: 6, D: 5, E: 4, F: 3, G: 2, U: 0 }
   return programme.subjectRequirements.every(req => {
     const studentSubject = subjects.find(s => s.subject === req.subject)
     if (!studentSubject) return false
@@ -171,7 +174,7 @@ If subject requirements not met, show warning on the result card:
 - Results appear below the form (no page navigation)
 - Smooth scroll to results after submission
 - "Share results" button copies a summary text for WhatsApp:
-  "I scored 34 pts on Thuto - I qualify for BSc Computer Science, BA Economics and 3 more. Check yours at thuto.bw"
+  "I scored 44 pts on Thuto - I qualify for BSc Computer Science, BA Economics and 3 more. Check yours at thuto.bw"
 - "Try different grades" button scrolls back up to form
 
 ---

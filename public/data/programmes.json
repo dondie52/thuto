@@ -4,7 +4,7 @@
     "name": "BSc Computer Science",
     "field": "Technology",
     "university": "University of Botswana",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "math": "B",
       "english": "C",
@@ -104,14 +104,15 @@
     "faculty": "Faculty of Science & Technology",
     "applicationDeadline": "2026-05-31",
     "applyUrl": "https://www.ub.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-ba-econ",
     "name": "BA Economics",
     "field": "Humanities",
     "university": "University of Botswana",
-    "minPoints": 28,
+    "minPoints": 40,
     "subjectRequirements": {
       "math": "C",
       "english": "B",
@@ -273,14 +274,15 @@
     "faculty": "Faculty of Humanities & Social Sciences",
     "applicationDeadline": "2026-05-31",
     "applyUrl": "https://www.ub.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bsc-biology",
     "name": "BSc Biology",
     "field": "Natural Sciences",
     "university": "University of Botswana",
-    "minPoints": 29,
+    "minPoints": 41,
     "subjectRequirements": {
       "science": "B",
       "english": "C",
@@ -402,14 +404,15 @@
     "faculty": "Faculty of Science & Technology",
     "applicationDeadline": "2026-05-31",
     "applyUrl": "https://www.ub.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-beng-mechanical",
     "name": "BEng Mechanical Engineering",
     "field": "Engineering",
     "university": "BIUST",
-    "minPoints": 32,
+    "minPoints": 44,
     "subjectRequirements": {
       "math": "A",
       "science": "B",
@@ -451,14 +454,15 @@
     "faculty": "Faculty of Engineering & Technology",
     "applicationDeadline": "2026-06-15",
     "applyUrl": "https://www.biust.ac.bw/",
-    "durationYears": 5
+    "durationYears": 5,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-data",
     "name": "BSc Data Science",
     "field": "Technology",
     "university": "BIUST",
-    "minPoints": 31,
+    "minPoints": 43,
     "subjectRequirements": {
       "math": "B",
       "science": "C",
@@ -500,14 +504,15 @@
     "faculty": "Faculty of Science & Technology",
     "applicationDeadline": "2026-06-15",
     "applyUrl": "https://www.biust.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-env",
     "name": "BSc Environmental Science",
     "field": "Natural Sciences",
     "university": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "science": "C",
       "english": "C",
@@ -549,14 +554,15 @@
     "faculty": "Faculty of Science & Technology",
     "applicationDeadline": "2026-06-15",
     "applyUrl": "https://www.biust.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-bcom-accounting",
     "name": "BCom Accounting",
     "field": "Business",
     "university": "Botswana School of Business Sciences",
-    "minPoints": 26,
+    "minPoints": 38,
     "subjectRequirements": {
       "math": "C",
       "english": "C",
@@ -598,14 +604,15 @@
     "faculty": "School of Business",
     "applicationDeadline": "2026-07-31",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-diploma-marketing",
     "name": "Diploma in Marketing",
     "field": "Business",
     "university": "Botswana School of Business Sciences",
-    "minPoints": 22,
+    "minPoints": 34,
     "subjectRequirements": {
       "english": "C",
       "math": "D",
@@ -647,14 +654,15 @@
     "faculty": "School of Business",
     "applicationDeadline": "2026-07-31",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
-    "durationYears": 2
+    "durationYears": 2,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bba-business",
     "name": "BBA Business Management",
     "field": "Business",
     "university": "Botho University",
-    "minPoints": 26,
+    "minPoints": 38,
     "subjectRequirements": {
       "english": "C",
       "math": "C",
@@ -696,14 +704,15 @@
     "faculty": "School of Business",
     "applicationDeadline": "2026-08-20",
     "applyUrl": "https://www.bothouniversity.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-it",
     "name": "BSc Information Technology",
     "field": "Technology",
     "university": "Botho University",
-    "minPoints": 28,
+    "minPoints": 40,
     "subjectRequirements": {
       "math": "C",
       "english": "C",
@@ -745,14 +754,15 @@
     "faculty": "Faculty of Science & Technology",
     "applicationDeadline": "2026-08-20",
     "applyUrl": "https://www.bothouniversity.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-llb-law",
     "name": "LLB Law",
     "field": "Humanities",
     "university": "Botho University",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "B",
       "socialStudies": "B",
@@ -794,14 +804,15 @@
     "faculty": "Faculty of Humanities & Social Sciences",
     "applicationDeadline": "2026-08-20",
     "applyUrl": "https://www.bothouniversity.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-finance",
     "name": "BCom Finance",
     "field": "Business",
     "university": "Botho University",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "math": "B",
       "english": "C",
@@ -843,14 +854,15 @@
     "faculty": "School of Business",
     "applicationDeadline": "2026-08-20",
     "applyUrl": "https://www.bothouniversity.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bnursing",
     "name": "Bachelor of Nursing Science",
     "field": "Health",
     "university": "Botho University",
-    "minPoints": 29,
+    "minPoints": 41,
     "subjectRequirements": {
       "english": "B",
       "science": "B",
@@ -892,14 +904,15 @@
     "faculty": "School of Health Sciences",
     "applicationDeadline": "2026-08-20",
     "applyUrl": "https://www.bothouniversity.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-bcom-hrm",
     "name": "BCom Human Resource Management",
     "field": "Business",
     "university": "BA ISAGO University",
-    "minPoints": 25,
+    "minPoints": 37,
     "subjectRequirements": {
       "english": "C",
       "math": "D",
@@ -941,14 +954,15 @@
     "faculty": "School of Business",
     "applicationDeadline": "2026-07-15",
     "applyUrl": "https://www.baisago.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-bsc-it",
     "name": "BSc Information Technology",
     "field": "Technology",
     "university": "BA ISAGO University",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "math": "C",
       "english": "C",
@@ -990,14 +1004,15 @@
     "faculty": "Faculty of Science & Technology",
     "applicationDeadline": "2026-07-15",
     "applyUrl": "https://www.baisago.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-bba-marketing",
     "name": "BBA Marketing",
     "field": "Business",
     "university": "BA ISAGO University",
-    "minPoints": 24,
+    "minPoints": 36,
     "subjectRequirements": {
       "english": "C",
       "math": "D",
@@ -1039,14 +1054,15 @@
     "faculty": "School of Business",
     "applicationDeadline": "2026-07-15",
     "applyUrl": "https://www.baisago.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-diploma-logistics",
     "name": "Diploma in Logistics & Supply Chain",
     "field": "Business",
     "university": "BA ISAGO University",
-    "minPoints": 22,
+    "minPoints": 34,
     "subjectRequirements": {
       "english": "C",
       "math": "D",
@@ -1088,14 +1104,15 @@
     "faculty": "School of Business",
     "applicationDeadline": "2026-07-15",
     "applyUrl": "https://www.baisago.ac.bw/",
-    "durationYears": 2
+    "durationYears": 2,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-bsc-nursing",
     "name": "BSc Nursing",
     "field": "Health",
     "university": "ABM University College",
-    "minPoints": 28,
+    "minPoints": 40,
     "subjectRequirements": {
       "science": "B",
       "english": "B",
@@ -1137,14 +1154,15 @@
     "faculty": "School of Health Sciences",
     "applicationDeadline": "2026-06-30",
     "applyUrl": "https://www.abm.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-bed-primary",
     "name": "BEd Primary Education",
     "field": "Humanities",
     "university": "ABM University College",
-    "minPoints": 24,
+    "minPoints": 36,
     "subjectRequirements": {
       "english": "C",
       "math": "C",
@@ -1186,14 +1204,15 @@
     "faculty": "Faculty of Humanities & Social Sciences",
     "applicationDeadline": "2026-06-30",
     "applyUrl": "https://www.abm.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-bsc-public-health",
     "name": "BSc Public Health",
     "field": "Health",
     "university": "ABM University College",
-    "minPoints": 26,
+    "minPoints": 38,
     "subjectRequirements": {
       "science": "C",
       "english": "C",
@@ -1235,14 +1254,15 @@
     "faculty": "School of Health Sciences",
     "applicationDeadline": "2026-06-30",
     "applyUrl": "https://www.abm.ac.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-ba-graphic",
     "name": "BA Graphic Design",
     "field": "Humanities",
     "university": "Limkokwing University of Creative Technology",
-    "minPoints": 22,
+    "minPoints": 34,
     "subjectRequirements": {
       "english": "C",
       "math": "E"
@@ -1283,14 +1303,15 @@
     "faculty": "Faculty of Humanities & Social Sciences",
     "applicationDeadline": "2026-08-10",
     "applyUrl": "https://www.limkokwing.net/botswana/",
-    "durationYears": 3
+    "durationYears": 3,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-bsc-software",
     "name": "BSc Software Engineering with Multimedia",
     "field": "Technology",
     "university": "Limkokwing University of Creative Technology",
-    "minPoints": 26,
+    "minPoints": 38,
     "subjectRequirements": {
       "math": "C",
       "english": "C",
@@ -1332,14 +1353,15 @@
     "faculty": "Faculty of Science & Technology",
     "applicationDeadline": "2026-08-10",
     "applyUrl": "https://www.limkokwing.net/botswana/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-diploma-animation",
     "name": "Diploma in Animation",
     "field": "Humanities",
     "university": "Limkokwing University of Creative Technology",
-    "minPoints": 20,
+    "minPoints": 32,
     "subjectRequirements": {
       "english": "D",
       "math": "E"
@@ -1380,14 +1402,15 @@
     "faculty": "Faculty of Humanities & Social Sciences",
     "applicationDeadline": "2026-08-10",
     "applyUrl": "https://www.limkokwing.net/botswana/",
-    "durationYears": 2
+    "durationYears": 2,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "fce-bed-secondary-maths",
     "name": "BEd Secondary Education (Mathematics)",
     "field": "Humanities",
     "university": "Francistown College of Education",
-    "minPoints": 26,
+    "minPoints": 38,
     "subjectRequirements": {
       "math": "B",
       "english": "C",
@@ -1429,14 +1452,15 @@
     "faculty": "Faculty of Humanities & Social Sciences",
     "applicationDeadline": "2026-05-15",
     "applyUrl": "https://www.moe.gov.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "fce-bed-primary",
     "name": "BEd Primary Education",
     "field": "Humanities",
     "university": "Francistown College of Education",
-    "minPoints": 24,
+    "minPoints": 36,
     "subjectRequirements": {
       "english": "C",
       "math": "C",
@@ -1478,14 +1502,15 @@
     "faculty": "Faculty of Humanities & Social Sciences",
     "applicationDeadline": "2026-05-15",
     "applyUrl": "https://www.moe.gov.bw/",
-    "durationYears": 4
+    "durationYears": 4,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-diploma-electrical",
     "name": "Diploma in Electrical Engineering",
     "field": "Engineering",
     "university": "Gaborone Technical College",
-    "minPoints": 22,
+    "minPoints": 34,
     "subjectRequirements": {
       "math": "C",
       "english": "D",
@@ -1527,14 +1552,15 @@
     "faculty": "Faculty of Engineering & Technology",
     "applicationDeadline": "2026-06-01",
     "applyUrl": "https://www.gtc.ac.bw/",
-    "durationYears": 3
+    "durationYears": 3,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-diploma-auto",
     "name": "Diploma in Automotive Engineering",
     "field": "Engineering",
     "university": "Gaborone Technical College",
-    "minPoints": 21,
+    "minPoints": 33,
     "subjectRequirements": {
       "math": "D",
       "english": "D",
@@ -1576,14 +1602,15 @@
     "faculty": "Faculty of Engineering & Technology",
     "applicationDeadline": "2026-06-01",
     "applyUrl": "https://www.gtc.ac.bw/",
-    "durationYears": 3
+    "durationYears": 3,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-certificate-plumbing",
     "name": "Certificate in Plumbing & Pipefitting",
     "field": "Engineering",
     "university": "Gaborone Technical College",
-    "minPoints": 18,
+    "minPoints": 30,
     "subjectRequirements": {
       "math": "E",
       "english": "E",
@@ -1625,7 +1652,8 @@
     "faculty": "Faculty of Engineering & Technology",
     "applicationDeadline": "2026-06-01",
     "applyUrl": "https://www.gtc.ac.bw/",
-    "durationYears": 1
+    "durationYears": 1,
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-accountancy",
@@ -1633,7 +1661,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 37,
+    "minPoints": 48,
     "subjectRequirements": {
       "english": "C",
       "math": "C"
@@ -1709,7 +1737,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-degree-economics-and-accounting-revised",
@@ -1717,7 +1746,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -1782,7 +1811,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-business-administration-entrepreneurship-and-enterprise-development",
@@ -1790,7 +1820,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C",
       "math": "C"
@@ -1866,7 +1896,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-business-administration-logistics-and-supply-chain-management",
@@ -1874,7 +1905,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 40,
+    "minPoints": 48,
     "subjectRequirements": {
       "english": "C",
       "math": "C"
@@ -1950,7 +1981,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-business-administration-management",
@@ -1958,7 +1990,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C",
       "math": "C"
@@ -2034,7 +2066,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-business-administration-tourism-hospitality-management",
@@ -2042,7 +2075,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C",
       "math": "C"
@@ -2118,7 +2151,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-business-administration-international-business",
@@ -2126,7 +2160,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 38,
+    "minPoints": 48,
     "subjectRequirements": {
       "english": "C",
       "math": "C"
@@ -2202,7 +2236,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-business-administration-marketing",
@@ -2210,7 +2245,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2285,7 +2320,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-finance",
@@ -2293,7 +2329,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2389,7 +2425,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-information-systems-business-information-systems",
@@ -2397,7 +2434,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2472,7 +2509,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-business-and-accounting-studies-dabs",
@@ -2480,7 +2518,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2555,7 +2593,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-revised-bachelor-business-administration-tourism-and-hospitality-management",
@@ -2563,7 +2602,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2638,7 +2677,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-revised-bachelor-information-systems-business-information-systems",
@@ -2646,7 +2686,7 @@
     "field": "Business",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2721,7 +2761,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-art-and-design-bead-programme",
@@ -2729,7 +2770,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2865,7 +2906,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-educational-management",
@@ -2873,7 +2915,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -2983,7 +3025,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-lifelong-learning-and-community-development",
@@ -2991,7 +3034,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3053,7 +3096,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-secondary",
@@ -3061,7 +3105,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3102,7 +3146,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-secondary-humanities",
@@ -3110,7 +3155,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3216,7 +3261,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-degree-science",
@@ -3224,7 +3270,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3292,7 +3338,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-early-childhood-development-and-education-becde",
@@ -3300,7 +3347,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3367,7 +3414,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-counselling",
@@ -3375,7 +3423,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3479,7 +3527,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-family-and-consumer-sciences",
@@ -3487,7 +3536,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C",
       "science": "C"
@@ -3603,7 +3652,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide (application cut-off overall, best 6)",
-    "minPointsTier": "guide_overall"
+    "minPointsTier": "guide_overall",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-secondary-education-biology-chemistry-mathematics-physics",
@@ -3611,7 +3661,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3652,7 +3702,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-education-special-education",
@@ -3660,7 +3711,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3805,7 +3856,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-educational-leadership-and-management-education-blme",
@@ -3813,7 +3865,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -3924,7 +3976,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-music-education-bme-programme",
@@ -3932,7 +3985,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4037,7 +4090,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-primary-education-bpe",
@@ -4045,7 +4099,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4148,7 +4202,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-sport-science-exercise-science-wellness",
@@ -4156,7 +4211,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4215,7 +4270,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-sport-science-physical-education-sport-coaching",
@@ -4223,7 +4279,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4328,7 +4384,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-sport-science-recreation-sport-management",
@@ -4336,7 +4393,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4394,7 +4451,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-sport-science-sport-exercise-psychology",
@@ -4402,7 +4460,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4502,7 +4560,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-lifelong-learning-and-community-development",
@@ -4510,7 +4569,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4569,7 +4628,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-ngo-management",
@@ -4577,7 +4637,7 @@
     "field": "Education",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -4639,7 +4699,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-post-graduate-diploma-education",
@@ -4730,7 +4791,8 @@
         ]
       }
     ],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-design-design-and-technology-education",
@@ -4738,7 +4800,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -4880,7 +4942,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-design-industrial-design",
@@ -4888,7 +4951,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5030,7 +5093,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-engineering-industrial-engineering",
@@ -5038,7 +5102,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5117,7 +5181,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-engineering-mineral-engineering",
@@ -5125,7 +5190,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5234,7 +5299,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-engineering-mining-engineering",
@@ -5242,7 +5308,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5311,7 +5377,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-geomatics",
@@ -5319,7 +5386,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5384,7 +5451,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-land-management",
@@ -5392,7 +5460,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5508,7 +5576,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-degree-real-estate",
@@ -5516,7 +5585,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5613,7 +5682,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-architecture",
@@ -5621,7 +5691,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5670,7 +5740,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-design",
@@ -5678,7 +5749,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5820,7 +5891,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-electrical-and-electronic-engineering",
@@ -5828,7 +5900,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5866,7 +5938,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-engineering-civil",
@@ -5874,7 +5947,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -5912,7 +5985,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-engineering-construction-engineering-and-management",
@@ -5920,7 +5994,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -6095,7 +6169,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-engineering-mechanical-engineering",
@@ -6103,7 +6178,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -6252,7 +6327,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-degree-urban-and-regional-planning",
@@ -6260,7 +6336,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -6379,7 +6455,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-bachelor-engineering-b-eng-major",
@@ -6387,7 +6464,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -6515,7 +6592,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-bachelor-engineering-b-eng-minor",
@@ -6523,7 +6601,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -6657,7 +6735,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-bachelor-engineering-degree-major-mechanical-engineering",
@@ -6665,7 +6744,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -6825,7 +6904,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-degree-minor-mechanical-engineering",
@@ -6833,7 +6913,7 @@
     "field": "Engineering",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -6985,7 +7065,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-nursing-science",
@@ -6993,7 +7074,7 @@
     "field": "Health",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -7050,7 +7131,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-pharmacy-b-pharm",
@@ -7058,7 +7140,7 @@
     "field": "Health",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -7213,7 +7295,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-environmental-health-bsc-eh",
@@ -7221,7 +7304,7 @@
     "field": "Health",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -7324,7 +7407,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-cytotechnology-and-histotechnology-sciences-bsc-chs",
@@ -7332,7 +7416,7 @@
     "field": "Health",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -7475,7 +7559,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-medical-laboratory-sciences-bsc-mls",
@@ -7483,7 +7568,7 @@
     "field": "Health",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -7626,7 +7711,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-degree-english",
@@ -7634,7 +7720,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -7699,7 +7785,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-information-and-knowledge-management-combined-major-and-majorminor-degree-ba-ikm",
@@ -7707,7 +7794,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -7777,7 +7864,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-media-studies",
@@ -7785,7 +7873,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -7842,7 +7930,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-degree-african-languages-and-literature",
@@ -7850,7 +7939,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -7915,7 +8004,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-degree-archaeology",
@@ -7923,7 +8013,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -7988,7 +8078,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-degree-chinese-studies",
@@ -7996,7 +8087,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8125,7 +8216,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-degree-french",
@@ -8133,7 +8225,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8198,7 +8290,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-degree-history",
@@ -8206,7 +8299,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8271,7 +8364,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-humanities",
@@ -8279,7 +8373,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8353,7 +8447,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-pastoral-studies",
@@ -8361,7 +8456,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8435,7 +8530,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-digital-media-bdm",
@@ -8443,7 +8539,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8456,7 +8552,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-fine-arts-theatre-studies",
@@ -8464,7 +8561,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8477,7 +8574,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-information-knowledge-management-archives-and-records-management-e2-80-93-bikm-arm",
@@ -8485,7 +8583,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8555,7 +8653,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-information-knowledge-management-knowledge-management-bikm-km",
@@ -8563,7 +8662,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8633,7 +8732,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-information-knowledge-management-library-and-information-studies-bikm-lis",
@@ -8641,7 +8741,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8711,7 +8811,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-information-systems-information-management-bis",
@@ -8719,7 +8820,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8771,7 +8872,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-media-studies-bms",
@@ -8779,7 +8881,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8792,7 +8894,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-portuguese-language-and-lusophone-studies",
@@ -8800,7 +8903,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8933,7 +9036,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-public-relations-and-integrated-communication-bpc",
@@ -8941,7 +9045,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -8984,7 +9088,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-certificate-archives-and-records-management-carm",
@@ -8992,7 +9097,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -9057,7 +9162,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-certificate-library-and-information-studiesclis",
@@ -9065,7 +9171,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -9138,7 +9244,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-archives-and-records-management-darm",
@@ -9146,7 +9253,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -9198,7 +9305,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-library-and-information-studies",
@@ -9206,7 +9314,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -9271,7 +9379,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-medicine-bachelor-surgery-mbbs",
@@ -9279,7 +9388,7 @@
     "field": "Health",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -9294,7 +9403,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-biological-sciences",
@@ -9302,7 +9412,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -9414,7 +9524,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-computer-science",
@@ -9422,7 +9533,7 @@
     "field": "Technology",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -9512,7 +9623,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-information-systems-computer-information-systems",
@@ -9520,7 +9632,7 @@
     "field": "Technology",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -9610,7 +9722,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-computing-finance",
@@ -9618,7 +9731,7 @@
     "field": "Technology",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -9708,7 +9821,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-information-technology",
@@ -9716,7 +9830,7 @@
     "field": "Technology",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -9812,7 +9926,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-physics",
@@ -9820,7 +9935,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -9989,7 +10104,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-degree-chemistry",
@@ -9997,7 +10113,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -10100,7 +10216,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-degree-geology",
@@ -10108,7 +10225,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -10301,7 +10418,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-degree-mathematics",
@@ -10309,7 +10427,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -10324,7 +10442,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-physics-meteorology",
@@ -10332,7 +10451,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -10501,7 +10620,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-radiation-and-health-physics",
@@ -10509,7 +10629,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -10612,7 +10732,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-mathematics-finance",
@@ -10620,7 +10741,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -10697,7 +10818,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-bachelor-science-majormajor",
@@ -10705,7 +10827,7 @@
     "field": "Natural Sciences",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -10776,7 +10898,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-political-science",
@@ -10784,7 +10907,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -10897,7 +11020,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-laws-llb",
@@ -10905,7 +11029,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11036,7 +11160,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-public-administration",
@@ -11044,7 +11169,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11144,7 +11269,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-sociology",
@@ -11152,7 +11278,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11227,7 +11353,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-criminal-justice-studies-ba-cjs",
@@ -11235,7 +11362,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11301,7 +11428,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-economics",
@@ -11309,7 +11437,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11459,7 +11587,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-population-studies",
@@ -11467,7 +11596,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11524,7 +11653,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-arts-social-sciences-psychology-combined-major",
@@ -11532,7 +11662,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11601,7 +11731,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-psychology-bpsych",
@@ -11609,7 +11740,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11671,7 +11802,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-science-statistics",
@@ -11679,7 +11811,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11866,7 +11998,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-public-administration-single-major",
@@ -11874,7 +12007,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -11987,7 +12120,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-political-science-single-major",
@@ -11995,7 +12129,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -12185,7 +12319,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-major-political-science-and-major-another-subject",
@@ -12193,7 +12328,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -12306,7 +12441,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-major-public-administration-major-political",
@@ -12314,7 +12450,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -12427,7 +12563,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-major-public-administration-minor",
@@ -12435,7 +12572,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -12548,7 +12685,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-major-public-administration-other-major",
@@ -12556,7 +12694,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -12669,7 +12807,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-major-political-science-and-minor-other-subject",
@@ -12677,7 +12816,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -12790,7 +12929,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-minor-public-administration-major-other-subject",
@@ -12798,7 +12938,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -12911,7 +13051,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-science-degree-programme-minor-political-science-major-other-subject",
@@ -12919,7 +13060,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13032,7 +13173,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-bachelor-social-work",
@@ -13040,7 +13182,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13159,7 +13301,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-bachelor-arts-majormajor",
@@ -13167,7 +13310,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13236,7 +13379,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-bachelor-arts-statistics",
@@ -13244,7 +13388,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13280,7 +13424,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-combined-major-bachelor-science-statistics",
@@ -13288,7 +13433,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 34,
+    "minPoints": 46,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13475,7 +13620,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-defence-and-strategic-studies-ddss",
@@ -13483,7 +13629,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13531,7 +13677,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-population-studies",
@@ -13539,7 +13686,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13589,7 +13736,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-social-work-dsw",
@@ -13597,7 +13745,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13662,7 +13810,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "ub-diploma-statistics",
@@ -13670,7 +13819,7 @@
     "field": "Humanities",
     "university": "University of Botswana",
     "universityShort": "UB",
-    "minPoints": 30,
+    "minPoints": 42,
     "subjectRequirements": {
       "english": "C"
     },
@@ -13696,7 +13845,8 @@
     ],
     "careers": [],
     "minPointsSource": "UB 2025 prospective applicants guide — general minimum (§General Entry f): 34 degree / 30 diploma-certificate, best 6; programme-specific guide line not matched in local extract",
-    "minPointsTier": "institution_minimum"
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-supply-chain",
@@ -13712,7 +13862,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-hospitality",
@@ -13728,7 +13879,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-investment-banking",
@@ -13744,7 +13896,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-general-accounting",
@@ -13760,7 +13913,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bba-business-mgmt",
@@ -13776,7 +13930,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-beng-electronics-comm",
@@ -13792,7 +13947,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-btech-software-eng",
@@ -13808,7 +13964,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-beng-electrical",
@@ -13824,7 +13981,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-network-security-forensics",
@@ -13840,7 +13998,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-cyber-security-risk",
@@ -13856,7 +14015,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-analytics",
@@ -13872,7 +14032,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-health-info-mgmt",
@@ -13888,7 +14049,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-she",
@@ -13904,7 +14066,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-health-informatics",
@@ -13920,7 +14083,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-hospital-admin",
@@ -13936,7 +14100,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bsc-public-health",
@@ -13952,7 +14117,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bed-secondary",
@@ -13968,7 +14134,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bed-primary",
@@ -13984,7 +14151,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-marketing",
@@ -14000,7 +14168,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-hrm",
@@ -14016,7 +14185,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "botho-bcom-entrepreneurship",
@@ -14032,7 +14202,8 @@
     "officialUrl": "https://www.bothouniversity.ac.bw/",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-mathematics",
@@ -14040,7 +14211,7 @@
     "field": "Natural Sciences",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14053,8 +14224,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale floor (combined six-subject score >38 on BIUST table → best-six ≥27 on Thuto scale).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-biological-sciences",
@@ -14062,7 +14234,7 @@
     "field": "Natural Sciences",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14075,8 +14247,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale floor (combined six-subject score >38 on BIUST table → best-six ≥27 on Thuto scale).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-chemistry",
@@ -14084,7 +14257,7 @@
     "field": "Natural Sciences",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14097,8 +14270,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale floor (combined six-subject score >38 on BIUST table → best-six ≥27 on Thuto scale).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-physics-general",
@@ -14106,7 +14280,7 @@
     "field": "Natural Sciences",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14119,8 +14293,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale floor (combined six-subject score >38 on BIUST table → best-six ≥27 on Thuto scale).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-geology",
@@ -14128,7 +14303,7 @@
     "field": "Natural Sciences",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14141,8 +14316,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale floor (combined six-subject score >38 on BIUST table → best-six ≥27 on Thuto scale).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-beng-civil",
@@ -14150,7 +14326,7 @@
     "field": "Engineering",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 32,
+    "minPoints": 44,
     "subjectRequirements": {
       "math": "A",
       "science": "B",
@@ -14164,7 +14340,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
-    "minPointsTier": "converted_official"
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-beng-mining",
@@ -14172,7 +14349,7 @@
     "field": "Engineering",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 32,
+    "minPoints": 44,
     "subjectRequirements": {
       "math": "A",
       "science": "B",
@@ -14186,7 +14363,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
-    "minPointsTier": "converted_official"
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-beng-industrial",
@@ -14194,7 +14372,7 @@
     "field": "Engineering",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 32,
+    "minPoints": 44,
     "subjectRequirements": {
       "math": "A",
       "science": "B",
@@ -14208,7 +14386,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
-    "minPointsTier": "converted_official"
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-information-systems",
@@ -14216,7 +14395,7 @@
     "field": "Technology",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 31,
+    "minPoints": 43,
     "subjectRequirements": {
       "math": "B",
       "science": "C",
@@ -14230,7 +14409,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "BIUST entry-requirements; level aligned with existing curated BSc Data Science row until programme-specific values are added.",
-    "minPointsTier": "converted_official"
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-software-eng",
@@ -14238,7 +14418,7 @@
     "field": "Technology",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 31,
+    "minPoints": 43,
     "subjectRequirements": {
       "math": "B",
       "science": "C",
@@ -14252,7 +14432,8 @@
     "modules": [],
     "careers": [],
     "minPointsSource": "BIUST entry-requirements; level aligned with existing curated BSc Data Science row until programme-specific values are added.",
-    "minPointsTier": "converted_official"
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-finance",
@@ -14260,7 +14441,7 @@
     "field": "Business",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14273,8 +14454,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale institutional floor (see ADMISSIONS-MINPOINTS.md).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor on the official BGCSE A=8 scale (see ADMISSIONS-MINPOINTS.md).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-economics",
@@ -14282,7 +14464,7 @@
     "field": "Business",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14295,8 +14477,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale institutional floor (see ADMISSIONS-MINPOINTS.md).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor on the official BGCSE A=8 scale (see ADMISSIONS-MINPOINTS.md).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "biust-bsc-business-admin",
@@ -14304,7 +14487,7 @@
     "field": "Business",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "minPoints": 27,
+    "minPoints": 39,
     "subjectRequirements": {
       "english": "D",
       "math": "C",
@@ -14317,8 +14500,9 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "modules": [],
     "careers": [],
-    "minPointsSource": "BIUST entry-requirements page; Thuto-scale institutional floor (see ADMISSIONS-MINPOINTS.md).",
-    "minPointsTier": "converted_official"
+    "minPointsSource": "BIUST entry-requirements page; institutional floor on the official BGCSE A=8 scale (see ADMISSIONS-MINPOINTS.md).",
+    "minPointsTier": "converted_official",
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-bcom-finance",
@@ -14334,7 +14518,8 @@
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-bcom-marketing",
@@ -14350,7 +14535,8 @@
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-bcom-hrm",
@@ -14366,7 +14552,8 @@
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-bcom-economics",
@@ -14382,7 +14569,8 @@
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-diploma-accounting",
@@ -14398,7 +14586,8 @@
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-diploma-business",
@@ -14414,7 +14603,8 @@
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "bac-bsc-it",
@@ -14430,7 +14620,8 @@
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-bcom-accounting",
@@ -14446,7 +14637,8 @@
     "officialUrl": "https://www.baisago.ac.bw/",
     "applyUrl": "https://www.baisago.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-bcom-finance",
@@ -14462,7 +14654,8 @@
     "officialUrl": "https://www.baisago.ac.bw/",
     "applyUrl": "https://www.baisago.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-bba-general",
@@ -14478,7 +14671,8 @@
     "officialUrl": "https://www.baisago.ac.bw/",
     "applyUrl": "https://www.baisago.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-bcom-marketing",
@@ -14494,7 +14688,8 @@
     "officialUrl": "https://www.baisago.ac.bw/",
     "applyUrl": "https://www.baisago.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "baisago-diploma-hrm",
@@ -14510,7 +14705,8 @@
     "officialUrl": "https://www.baisago.ac.bw/",
     "applyUrl": "https://www.baisago.ac.bw/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-bed-secondary",
@@ -14526,7 +14722,8 @@
     "officialUrl": "https://www.abm.ac.bw/",
     "applyUrl": "https://www.abm.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-bba",
@@ -14542,7 +14739,8 @@
     "officialUrl": "https://www.abm.ac.bw/",
     "applyUrl": "https://www.abm.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-bcom-accounting",
@@ -14558,7 +14756,8 @@
     "officialUrl": "https://www.abm.ac.bw/",
     "applyUrl": "https://www.abm.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-diploma-nursing",
@@ -14574,7 +14773,8 @@
     "officialUrl": "https://www.abm.ac.bw/",
     "applyUrl": "https://www.abm.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-bsc-midwifery",
@@ -14590,7 +14790,8 @@
     "officialUrl": "https://www.abm.ac.bw/",
     "applyUrl": "https://www.abm.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "abm-diploma-pharmacy-tech",
@@ -14606,7 +14807,8 @@
     "officialUrl": "https://www.abm.ac.bw/",
     "applyUrl": "https://www.abm.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-ba-multimedia",
@@ -14622,7 +14824,8 @@
     "officialUrl": "https://www.limkokwing.net/botswana/",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-ba-fashion",
@@ -14638,7 +14841,8 @@
     "officialUrl": "https://www.limkokwing.net/botswana/",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-ba-animation",
@@ -14654,7 +14858,8 @@
     "officialUrl": "https://www.limkokwing.net/botswana/",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-bba-entrepreneurship",
@@ -14670,7 +14875,8 @@
     "officialUrl": "https://www.limkokwing.net/botswana/",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-bsc-architecture",
@@ -14686,7 +14892,8 @@
     "officialUrl": "https://www.limkokwing.net/botswana/",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "limkokwing-diploma-graphic",
@@ -14702,7 +14909,8 @@
     "officialUrl": "https://www.limkokwing.net/botswana/",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "fcoe-bed-secondary-science",
@@ -14718,7 +14926,8 @@
     "officialUrl": "https://www.moe.gov.bw/",
     "applyUrl": "https://www.moe.gov.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "fcoe-bed-secondary-humanities",
@@ -14734,7 +14943,8 @@
     "officialUrl": "https://www.moe.gov.bw/",
     "applyUrl": "https://www.moe.gov.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "fcoe-bed-primary",
@@ -14750,7 +14960,8 @@
     "officialUrl": "https://www.moe.gov.bw/",
     "applyUrl": "https://www.moe.gov.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "fcoe-diploma-education",
@@ -14766,7 +14977,8 @@
     "officialUrl": "https://www.moe.gov.bw/",
     "applyUrl": "https://www.moe.gov.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-diploma-civil",
@@ -14782,7 +14994,8 @@
     "officialUrl": "https://www.gtc.ac.bw/",
     "applyUrl": "https://www.gtc.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-diploma-mechanical",
@@ -14798,7 +15011,8 @@
     "officialUrl": "https://www.gtc.ac.bw/",
     "applyUrl": "https://www.gtc.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-diploma-automotive",
@@ -14814,7 +15028,8 @@
     "officialUrl": "https://www.gtc.ac.bw/",
     "applyUrl": "https://www.gtc.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-diploma-construction",
@@ -14830,7 +15045,8 @@
     "officialUrl": "https://www.gtc.ac.bw/",
     "applyUrl": "https://www.gtc.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-cert-electrical",
@@ -14846,7 +15062,8 @@
     "officialUrl": "https://www.gtc.ac.bw/",
     "applyUrl": "https://www.gtc.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-diploma-welding",
@@ -14862,7 +15079,8 @@
     "officialUrl": "https://www.gtc.ac.bw/",
     "applyUrl": "https://www.gtc.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
   },
   {
     "id": "gtc-cert-carpentry",
@@ -14878,6 +15096,1296 @@
     "officialUrl": "https://www.gtc.ac.bw/",
     "applyUrl": "https://www.gtc.ac.bw/",
     "modules": [],
-    "careers": []
+    "careers": [],
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bcom-chartered-accountancy",
+    "name": "Bachelor of Commerce in Chartered Accountancy",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Finance & Professional Studies",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "math": "B",
+      "english": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Accelerated articulation route toward the Botswana Chartered Accountancy (CA) qualification. Develops technical skills and ethical grounding in corporate reporting, taxation, audit and assurance, and strategy, with a year of practical work experience with an Authorised Training Employer.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Accounting 1",
+          "Business Communication and Academic Skills",
+          "Business Management",
+          "Information & Communication Technology",
+          "Accounting 2",
+          "Introduction to Audit & Assurance",
+          "Cost Accounting"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Principles of Taxation",
+          "Computerised Accounting",
+          "Management Accounting",
+          "Tax Compliance",
+          "Financial Accounting"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Financial Reporting",
+          "Business Law",
+          "Audit & Assurance",
+          "Financial Management"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Strategic Management",
+          "Research Methods",
+          "Practical Work Experience",
+          "Research Project"
+        ]
+      }
+    ],
+    "careers": [
+      "Chartered Accountant",
+      "Auditor",
+      "Tax Practitioner",
+      "Financial Advisor",
+      "Commercial Manager"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-ba-insurance",
+    "name": "Bachelor of Arts in Insurance",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Finance & Professional Studies",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "D"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Technical and professional skills for short-term, long-term and retirement-fund insurance, specialising in short-term insurance from year two. Aligns with industry and regulatory practice including claims, underwriting, risk management and reinsurance; includes six months compulsory industrial attachment.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Short-term Insurance",
+          "Introduction to Long-term Insurance",
+          "Introduction to Retirement Funds",
+          "Practice of Long-term Insurance (Intermediate)",
+          "Practice of Short-term Insurance (Intermediate)",
+          "Business Communication (Intermediate)"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Practice of R/Funds (Intermediate)",
+          "Business Organisations (Intermediate)",
+          "Business Calculation (Intermediate)",
+          "Insurance",
+          "Insurance Law",
+          "Personal Insurance Practice",
+          "Risk Management"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Commercial Insurance Practice",
+          "Legal Framework",
+          "Liability Insurance",
+          "Electives (e.g. Transportation Insurance, Motor Insurance, Specialist Insurance)"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Claims Management",
+          "Electives",
+          "Industrial Attachment"
+        ]
+      }
+    ],
+    "careers": [
+      "Insurance Broker",
+      "Claims Manager",
+      "Underwriter",
+      "Loss Adjuster",
+      "Risk Manager",
+      "Financial Advisor"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-ba-accounting-finance",
+    "name": "BA Accounting and Finance",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Business & Leisure",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Blends core accounting with financial management and reporting, digital tools, and data analytics. Prepares graduates for professional pathways (e.g. ACCA, CIMA, BICA, CFA) and roles across auditing, tax, corporate finance and consulting.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Learning and Academic Skills",
+          "Introduction to Venture Creation",
+          "Use of ICT and Learning Resources",
+          "Business Mathematics",
+          "Business Communication",
+          "Financial Accounting 1"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Financial Analysis for Business",
+          "Business Economics",
+          "Management Accounting",
+          "Business and Corporate Law",
+          "The Professional Accountant",
+          "Financial Accounting 2"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Management Accounting Applications",
+          "Understanding and Managing Financial Roles",
+          "Financial Accounting and Reporting",
+          "Financial Risk Management",
+          "Financial Management",
+          "Enterprise Operations"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Strategic Management Accounting",
+          "Business and Personal Tax",
+          "Corporate Reporting",
+          "Audit and Assurance",
+          "Corporate Finance",
+          "Financial Decision Making"
+        ]
+      }
+    ],
+    "careers": [
+      "Financial Accountant",
+      "Management Accountant",
+      "Financial Analyst",
+      "Auditor",
+      "Tax Consultant",
+      "Investment Analyst"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-ba-international-finance-banking",
+    "name": "BA International Finance and Banking",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Business & Leisure",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Banking and finance with emphasis on risk, responsible banking and investment. Links with industry and professional bodies; covers credit analysis, portfolio management, investment banking, regulation, derivatives and international markets.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Use of ICT and Learning Resources",
+          "Introduction to Venture Creation",
+          "Learning and Academic Skills",
+          "Business Mathematics",
+          "Business Communication",
+          "Elements of Banking and Finance"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Financial Analysis for Business",
+          "Business Economics",
+          "Financial and Management Information",
+          "Understanding Financial Services",
+          "Foundations of International Business",
+          "Financial Services and Regulation"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Credit Analysis",
+          "Global Investment Banking",
+          "Progressing Professional Development",
+          "Portfolio Management",
+          "Principles of Investment",
+          "Financial Management"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Risk Management and Investment",
+          "Strategic Issues in Banking",
+          "Financial Decision Making",
+          "International Derivatives and Risk",
+          "Corporate Treasury Management",
+          "International Financial Markets"
+        ]
+      }
+    ],
+    "careers": [
+      "Credit Manager",
+      "Portfolio Manager",
+      "Investment Advisor",
+      "Risk Manager",
+      "Financial Analyst",
+      "Treasury Analyst",
+      "Branch Manager"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-ba-business-management",
+    "name": "BA Business Management",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Business & Leisure",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Management, leadership, marketing, operations and strategy with a focus on innovation and growing ventures. Develops research, project management and consultancy skills for corporate and entrepreneurial careers.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Learning and Academic Skills",
+          "Introduction to Venture Creation",
+          "Use of ICT and Learning Resources",
+          "Introduction to Financial and Cost Accounting",
+          "Business Skills",
+          "Business Communication"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Managing Operational Performance",
+          "Marketing and Customer Relations",
+          "Personal Development and Learning Skills",
+          "Venture Creation and Simulation",
+          "Data Analysis for Decision Makers",
+          "Managing People in Organisations"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Business and Corporate Law",
+          "Management and Leadership Development",
+          "Professional Excellence",
+          "Managerial Finance",
+          "International Business and Consultancy",
+          "Managing Business Processes and Technology"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Implementing Strategy and Change (Year Long)",
+          "International Business Consultancy Project (Year Long)",
+          "Brand and Reputation Management",
+          "Sustainable and Responsible Business in the 21st Century",
+          "Managing for Success",
+          "Global Governance in International Business"
+        ]
+      }
+    ],
+    "careers": [
+      "Operations Manager",
+      "Procurement Manager",
+      "Business Consultant",
+      "Management Consultant"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-ba-entrepreneurship-business-leadership",
+    "name": "BA Entrepreneurship and Business Leadership",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Business & Leisure",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "D"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Entrepreneurial leadership, innovation, marketing, business law and strategy with work-based learning and industry mentors. Builds problem-solving, negotiation and project management for new ventures and growth.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Learning and Academic Skills",
+          "Introduction to Venture Creation",
+          "Use of ICT and Learning Resources",
+          "Introduction to Financial and Cost Accounting",
+          "Business Mathematics",
+          "Business Communication"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Entrepreneurial, Leadership & People",
+          "Innovation and Creativity",
+          "Personal Development and Academic Skills",
+          "Entrepreneurial Marketing",
+          "Venture Creation and Business Simulation",
+          "Data Analysis for Decision Makers"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Entrepreneurial Networking and Technology",
+          "Entrepreneurship And Business Development",
+          "Business And Corporate Law",
+          "Leading Operations and Strategy",
+          "Financial Management and Investment for Entrepreneurs",
+          "Entrepreneurship In-practice"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Implementing Strategy and Change",
+          "Leading Innovation and Change",
+          "Enterprise in Action 3: Making A Difference",
+          "Leadership In Contemporary Organisations",
+          "Creative Problem Solving",
+          "Venture Creation, Growth and Sustainability"
+        ]
+      }
+    ],
+    "careers": [
+      "Venture Creator",
+      "Entrepreneur",
+      "Business Development Consultant"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-ba-international-tourism-management",
+    "name": "BA International Tourism Management",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Business & Leisure",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Sustainable tourism, digital marketing, e-tourism and destination management. Covers smart tourism, analytics, tour operations, planning and entrepreneurship for the global tourism economy.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Venture Creation",
+          "Learning and Academic Skills",
+          "Use of ICT and Learning Resources",
+          "Tourism and Hospitality Concepts",
+          "Business Communication",
+          "Introduction to Financial and Cost Accounting"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Academic Study Skills",
+          "Travel Agency Practice",
+          "Global Tourism Geography",
+          "Business Finance",
+          "Fares and Ticketing Systems",
+          "Human Capital Development"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Enterprise Development and Business Leadership",
+          "Tour Operations Management",
+          "Tourism Marketing",
+          "Business Research Methods",
+          "Niche Tourism",
+          "Tourism Planning and Development"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Sustainable Tourism Planning",
+          "Independent Project",
+          "Business Applications in E-Tourism",
+          "Consumer Behaviour",
+          "Strategic Management and Business Improvement"
+        ]
+      }
+    ],
+    "careers": [
+      "Tourism Officer",
+      "Destination Manager",
+      "Tour Operator",
+      "Travel Consultant",
+      "Tourism Entrepreneur"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-ba-international-hospitality-management",
+    "name": "BA International Hospitality Management",
+    "field": "Business",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Business & Leisure",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "D"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Global hospitality and tourism with commercial work-based learning, food and beverage, rooms division, events and strategic management. Technology-enhanced learning for hotels, lodges and service operations.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Use of ICT and Learning Resources",
+          "Introduction to Venture Creation",
+          "Learning and Academic Skills",
+          "Tourism and Hospitality Concepts",
+          "Introduction to Financial and Cost Accounting",
+          "Business Communication"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Pastry and Baking Sciences",
+          "Food Production and Services",
+          "Academic Study Skills",
+          "Hospitality Operations",
+          "Business Finance",
+          "Human Capital Development"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Rooms Division Operations",
+          "Events Management",
+          "Enterprise Development and Business Leadership",
+          "Business Research Methods",
+          "Hospitality Marketing",
+          "Food and Beverage Control"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Independent Project",
+          "Innovation and Concept Development in Hospitality",
+          "Consumer Behaviour",
+          "Strategic Management and Business Improvement",
+          "Luxury Hotels and Resorts"
+        ]
+      }
+    ],
+    "careers": [
+      "Hotel Supervisor",
+      "Front Office Manager",
+      "Food and Beverage Manager",
+      "Events Coordinator",
+      "Hospitality Operations Manager"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bsc-fintech",
+    "name": "Bachelor of Science in Financial Technology",
+    "field": "Technology",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Computing & Information Systems",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Interdisciplinary FinTech combining finance, programming, data analytics, blockchain and machine learning for digital banking, RegTech and quantitative finance, with industry attachment and electives.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Communication and Study Skills",
+          "Introduction to Financial Technology",
+          "Financial Mathematics",
+          "Fundamentals of Business Finance",
+          "Introduction to Programming (Python)",
+          "Business Process Analysis",
+          "Probability and Statistics",
+          "Economics"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Business Management",
+          "Financial Accounting in a Computerized Environment",
+          "Database Design and Development",
+          "Cyber Security in Financial Services",
+          "Financial Management",
+          "International Financial Institutions and Markets",
+          "Machine Learning for Finance",
+          "Blockchain Development"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Big Data Analytics",
+          "Ethics and Professional Conduct",
+          "Project Management",
+          "Research and Innovation",
+          "Industry Attachment"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Derivatives and Risk Management",
+          "Financial Modelling and Algorithmic Trading",
+          "Stochastic Processes for Finance",
+          "Deploying ML Models",
+          "Artificial Intelligence for Financial Risk Management",
+          "Electives (e.g. RegTech, Investment Analysis, Mobile Payments)"
+        ]
+      }
+    ],
+    "careers": [
+      "FinTech Analyst",
+      "Data Analyst",
+      "Blockchain Developer",
+      "Digital Banking Officer",
+      "Quantitative Analyst"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bsc-computer-systems-engineering",
+    "name": "Bachelor of Science in Computer Systems Engineering",
+    "field": "Technology",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Computing & Information Systems",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Computer systems, networking, cybersecurity, cloud, embedded systems and IoT with engineering mathematics and industry attachment. Prepares for software engineering, systems administration and network roles.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Communication and Study Skills",
+          "Systems Development",
+          "Web and Multimedia Development",
+          "Fundamentals of Engineering Mathematics",
+          "Fundamentals of Digital Systems",
+          "Engineering Mathematics",
+          "Introduction to Circuit Analysis",
+          "Introduction to Programming (Java)"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Object oriented Analysis and Design",
+          "Database design and Development",
+          "Digital Design and Computer Architecture",
+          "Electronic Circuit Design",
+          "Embedded Systems and IoT",
+          "Data Communications and Networking",
+          "Engineering Mathematics II",
+          "Entrepreneurship Development"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Intelligent Systems",
+          "Computer Engineering Design Project",
+          "Advanced Web Development",
+          "Network Engineering",
+          "Industry Attachment"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Digital Signal Processing",
+          "Applied Research and Development",
+          "Robotics & Artificial Intelligence",
+          "Mobile Application Development",
+          "Digital Communications (Option)",
+          "Digital System Design (Option)",
+          "Advanced Data Technologies",
+          "Advanced Cyber Security",
+          "Product Development",
+          "Cloud Computing and Virtualisation"
+        ]
+      }
+    ],
+    "careers": [
+      "Software Engineer",
+      "Systems Analyst",
+      "Network Engineer",
+      "Embedded Systems Designer",
+      "Systems Administrator"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bsc-applied-business-computing",
+    "name": "Bachelor of Science in Applied Business Computing",
+    "field": "Technology",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Computing & Information Systems",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Dual business and IT: systems analysis, databases, programming, cloud, security, SAP and business intelligence. Work-integrated learning including industry attachment.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Communications and Study Skills",
+          "Systems Development",
+          "Computer Technology",
+          "Statistical Foundation for Data Analysis",
+          "Business Process Analysis",
+          "Web & Multimedia Development",
+          "Introduction to Programming using C#",
+          "User Experience Design"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Database Design & Development",
+          "Object Oriented Analysis & Design with C#",
+          "Introduction to Data Analytics",
+          "Data Protection and Privacy",
+          "Entrepreneurial Development",
+          "Data Communications",
+          "Fundamentals of Cloud Computing",
+          "Information Security"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Web Information Systems for Business",
+          "Business Information Systems (SAP)",
+          "R&I",
+          "Network Systems Administration",
+          "Industry Attachment"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Research Project",
+          "Business Intelligence and Strategy",
+          "Software Enterprise",
+          "Product Development",
+          "IT Service Management",
+          "AI and Automation",
+          "Optional modules (e.g. Advanced Data Technologies, Digital Transformation)"
+        ]
+      }
+    ],
+    "careers": [
+      "Business Analyst",
+      "Systems Analyst",
+      "App Developer",
+      "Data Analyst",
+      "ICT Manager",
+      "Database Administrator"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bsc-mobile-web-technologies",
+    "name": "Bachelor of Science in Mobile and Web Technologies",
+    "field": "Technology",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Computing & Information Systems",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Undergraduate computing degree listed in the 2026–27 Botswana School of Business Sciences prospectus under Computing, alongside other SCIS programmes. Full module outline: confirm in the latest official prospectus or with admissions.",
+    "modules": [],
+    "careers": [
+      "Mobile Developer",
+      "Web Developer",
+      "Full-stack Developer",
+      "UI Developer"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bsc-bi-data-analytics",
+    "name": "Bachelor of Science in Business Intelligence and Data Analytics",
+    "field": "Technology",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Computing & Information Systems",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Data science, machine learning, business intelligence and strategic management for predictive models, big data and evidence-based decisions, with industry attachment and capstone in AI/BI/ESG analytics.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Communication and Study Skills",
+          "Computer Technology",
+          "Fundamentals of Business Finance",
+          "Statistical Foundations for Data Analysis",
+          "Web and Multimedia Development",
+          "Systems Development",
+          "Introduction to Data Analytics",
+          "Fundamentals of Business Intelligence"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Data Protection & Privacy (Data Ethics, Governance & Security)",
+          "Database design and Development",
+          "Introduction to Programming Fundamentals (Python)",
+          "Fundamentals of Cloud Computing",
+          "Advanced Data Analytics",
+          "Data Warehousing",
+          "Web Information Systems for Business",
+          "Entrepreneurship Development"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Intelligent Systems",
+          "Business Process Analysis",
+          "Research and Innovation",
+          "Big Data Analytics",
+          "Industry Attachment"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Applied Research and Development (Capstone)",
+          "Business Intelligence & Strategy",
+          "Artificial Intelligence for Business",
+          "Product Development",
+          "Applied Machine Learning",
+          "Advanced Data Technologies",
+          "Electives (e.g. Financial Modelling, Responsible AI)"
+        ]
+      }
+    ],
+    "careers": [
+      "Business Intelligence Consultant",
+      "Data Scientist",
+      "Data Analyst",
+      "Data Engineer",
+      "Big Data Software Developer"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bsc-network-systems-engineering",
+    "name": "Bachelor of Science in Network Systems Engineering",
+    "field": "Technology",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Computing & Information Systems",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Network architecture, routing and switching, data centre networking, security, cloud and telecommunications with industry attachment. Aligns with national ICT and HRDC priority skills.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Engineering Mathematics I",
+          "Introduction to Programming (Python)",
+          "Systems Development",
+          "Data Communications and Networking",
+          "Electronic Circuits",
+          "Digital Systems",
+          "Communication and Study Skills",
+          "Foundation Mathematics"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Routing and Switching Fundamentals",
+          "Database Design and Development",
+          "Digital Design and Computer Architecture",
+          "Embedded Systems and IoT",
+          "Data Centre Networking",
+          "Engineering Mathematics II",
+          "Entrepreneurship",
+          "Analog Electronics"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Network Architecture Design",
+          "Network Systems Administration",
+          "Network Security",
+          "Research and Innovation",
+          "Industry Attachment"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Ethical Hacking",
+          "Advanced Cyber Security",
+          "Cloud Computing and Virtualization",
+          "Wireless and Mobile Communications",
+          "Telecommunications",
+          "Advanced Routing",
+          "Research Project",
+          "Product Development"
+        ]
+      }
+    ],
+    "careers": [
+      "Network Engineer",
+      "Network Administrator",
+      "Cybersecurity Analyst",
+      "Cloud Infrastructure Engineer",
+      "Telecommunications Engineer"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "bsbs-bsc-ict",
+    "name": "Bachelor of Science in Information and Communication Technology",
+    "field": "Technology",
+    "university": "Botswana School of Business Sciences",
+    "universityShort": "BSBS",
+    "faculty": "School of Computing & Information Systems",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "ICT technical and strategic skills for digital transformation: data analytics, cybersecurity, AI, cloud, systems development and IT governance, with extended industry attachment.",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Communications and Study Skills",
+          "Systems Development",
+          "Computer Technology",
+          "Mathematics and Statistics",
+          "Business Process Analysis",
+          "Web & Multimedia Development",
+          "Introduction to Programming using C#",
+          "Ethics and Professional Issues"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Database Design & Development",
+          "Object-Oriented Analysis & Design",
+          "Introduction to Data Analytics",
+          "Emerging Technologies in the Digital Age",
+          "Data Structures and AI Algorithms",
+          "Fundamentals of Cloud Computing",
+          "Data Communications",
+          "Entrepreneurship Development"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "IT Systems Audit and Forensics",
+          "Information Systems Strategy",
+          "CEDP (Research & Innovation)",
+          "Network Systems Administration",
+          "Industry Attachment (60 credits)"
+        ]
+      },
+      {
+        "semester": 4,
+        "modules": [
+          "Applied Research",
+          "Business Intelligence and Strategy",
+          "Artificial Intelligence",
+          "Optional: Advanced Data Technologies, Digital transformation, Business Modeling"
+        ]
+      }
+    ],
+    "careers": [
+      "Database Administrator",
+      "Systems Analyst",
+      "IT Consultant",
+      "Systems Administrator",
+      "Cybersecurity and IT Forensics"
+    ],
+    "officialUrl": "https://www.bac.ac.bw/",
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-commerce-finance",
+    "name": "Bachelor of Commerce in Finance",
+    "field": "Business",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Business",
+    "minPoints": 42,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-commerce-entrepreneurship-business-strategy",
+    "name": "Bachelor of Commerce in Entrepreneurship and Business Strategy",
+    "field": "Business",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Business",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-commerce-business-management",
+    "name": "Bachelor of Commerce in Business Management",
+    "field": "Business",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Business",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-education-biology",
+    "name": "Bachelor of Education (Biology)",
+    "field": "Education",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Education",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-education-chemistry",
+    "name": "Bachelor of Education (Chemistry)",
+    "field": "Education",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Education",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-education-computer-science",
+    "name": "Bachelor of Education (Computer Science)",
+    "field": "Education",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Education",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-education-mathematics",
+    "name": "Bachelor of Education (Mathematics)",
+    "field": "Education",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Education",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-education-physics",
+    "name": "Bachelor of Education (Physics)",
+    "field": "Education",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Education",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-education-business-education",
+    "name": "Bachelor of Education in Business Education",
+    "field": "Education",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Education",
+    "minPoints": 34,
+    "subjectRequirements": {
+      "english": "C",
+      "math": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "ub-bachelor-science-applied-geophysics",
+    "name": "Bachelor of Science (Applied Geophysics)",
+    "field": "Natural Sciences",
+    "university": "University of Botswana",
+    "universityShort": "UB",
+    "faculty": "Science",
+    "minPoints": 34,
+    "minPointsTier": "institution_minimum",
+    "minPointsSource": "UB 2026 applicants guide: no direct BGCSE entry; transfer at Level 200 after Science foundation (Mathematics, Physics, Chemistry). Overall application cut-off not listed — using general degree minimum (34 pts, best 6).",
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "officialUrl": "https://www.ub.bw/",
+    "applyUrl": "https://www.ub.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
+  },
+  {
+    "id": "botho-bsc-data-science",
+    "name": "Bachelor of Science in Data Science",
+    "field": "Technology",
+    "university": "Botho University",
+    "universityShort": "Botho",
+    "faculty": "Faculty of Engineering and Technology",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Integrates statistics, machine learning, computer science and data analytics. Covers data processing, visualisation, machine learning, data mining and big data technologies, with hands-on AI, cloud computing, capstone project and industrial attachment.",
+    "modules": [],
+    "careers": [
+      "Data Analyst",
+      "Data Scientist",
+      "Data Mining Engineer",
+      "Data Architect",
+      "Business Intelligence Analyst",
+      "Machine Learning Scientist"
+    ],
+    "officialUrl": "https://www.bothouniversity.ac.bw/",
+    "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
+    "applicationDeadline": null,
+    "minPointsScaleVersion": 2
   }
 ]

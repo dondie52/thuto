@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-/** Example programmes (min points ≤ 36) - matches public/data/programmes.json ids */
+/** Example programmes (min points ≤ 44 on the official BGCSE A=8 scale) - matches public/data/programmes.json ids */
 const samples = [
-  { id: "ub-bsc-cs", name: "BSc Computer Science", university: "University of Botswana", minPoints: 30 },
-  { id: "biust-bsc-data", name: "BSc Data Science", university: "BIUST", minPoints: 31 },
-  { id: "bac-bcom-accounting", name: "BCom Accounting", university: "Botswana School of Business Sciences", minPoints: 26 },
+  { id: "ub-bsc-cs", name: "BSc Computer Science", university: "University of Botswana", minPoints: 42 },
+  { id: "biust-bsc-data", name: "BSc Data Science", university: "BIUST", minPoints: 43 },
+  { id: "bac-bcom-accounting", name: "BCom Accounting", university: "Botswana School of Business Sciences", minPoints: 38 },
 ];
 
 export default function UseCaseShowcase() {
@@ -15,7 +15,7 @@ export default function UseCaseShowcase() {
           See what you can study today
         </h2>
         <p className="mt-3 max-w-2xl text-base text-slate-600">
-          With <strong className="font-semibold text-slate-800">36 points</strong>, you may qualify for programmes like these
+          With <strong className="font-semibold text-slate-800">44 points</strong>, you may qualify for programmes like these
           in the Thuto sample directory - subject rules still apply, so open each page for the full picture.
         </p>
         <ul className="mt-10 grid gap-5 sm:grid-cols-3">

@@ -122,17 +122,17 @@ import { computeBestSixBreakdown } from './admissions'
 
 test('picks best 6 from 8 subjects', () => {
   const input = [
-    { subject: 'Maths', grade: 'A' },      // 6
-    { subject: 'English', grade: 'B' },    // 5
-    { subject: 'Science', grade: 'A' },    // 6
-    { subject: 'Setswana', grade: 'C' },   // 4
-    { subject: 'History', grade: 'D' },    // 3
-    { subject: 'Business', grade: 'B' },   // 5
-    { subject: 'Art', grade: 'E' },        // 2  ← dropped
-    { subject: 'PE', grade: 'D' },         // 3  ← dropped
+    { subject: 'Maths', grade: 'A' },      // 8
+    { subject: 'English', grade: 'B' },    // 7
+    { subject: 'Science', grade: 'A' },    // 8
+    { subject: 'Setswana', grade: 'C' },   // 6
+    { subject: 'History', grade: 'D' },    // 5
+    { subject: 'Business', grade: 'B' },   // 7
+    { subject: 'Art', grade: 'E' },        // 4  ← dropped
+    { subject: 'PE', grade: 'D' },         // 5  ← dropped
   ]
   const result = computeBestSixBreakdown(input)
-  expect(result.total).toBe(29) // 6+6+5+5+4+3
+  expect(result.total).toBe(41) // 8+8+7+7+6+5
   expect(result.bestSix).toHaveLength(6)
   expect(result.dropped).toHaveLength(2)
 })

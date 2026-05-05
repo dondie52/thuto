@@ -71,7 +71,7 @@ A modal or inline form shown after a student uses the predictor OR on a standalo
 ```
 1. Programme applied for     → searchable dropdown (from programmes.json)
 2. University                → auto-filled from programme selection
-3. Your points total         → number input (0–54)
+3. Your points total         → number input (0–48)
 4. Outcome                   → button group: Accepted / Waitlisted / Rejected
 5. Year of application       → dropdown: 2018–current year
 ```

@@ -9,7 +9,7 @@ create table if not exists submissions (
   programme_id text not null,
   programme_name text not null,
   university text not null,
-  points integer not null check (points >= 0 and points <= 54),
+  points integer not null check (points >= 0 and points <= 48),
   outcome text not null check (outcome in ('accepted', 'rejected', 'waitlisted')),
   year integer not null check (year >= 2018 and year <= 2030),
   verified boolean not null default false,
