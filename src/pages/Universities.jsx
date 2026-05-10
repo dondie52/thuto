@@ -65,6 +65,11 @@ export default function Universities() {
                   {u.name}
                 </Link>
               </h2>
+              {u.featured ? (
+                <span className="mt-2 inline-flex w-fit rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900">
+                  Featured institution
+                </span>
+              ) : null}
               <p className="mt-1 text-xs font-medium text-brand-600">{u.location}</p>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{u.description}</p>
               <div className="mt-4">

@@ -13,6 +13,7 @@ import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import ProgrammeCommunityStats from "../components/ProgrammeCommunityStats.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
+import { fetchProgrammes } from "../lib/programmesData.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -35,16 +36,11 @@ export default function ProgrammeDetail() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Could not load programmes");
-        return r.json();
-      })
+    fetchProgrammes()
       .then((data) => {
         if (cancelled) return;
-        const list = Array.isArray(data) ? data : [];
-        setAllProgrammes(list);
-        const found = list.find((p) => p.id === id);
+        setAllProgrammes(data);
+        const found = data.find((p) => p.id === id);
         if (!found) setError("Programme not found.");
         else setProgramme(found);
       })
@@ -118,6 +114,7 @@ export default function ProgrammeDetail() {
     programme.officialUrl;
 
   const admissionListed = programmeHasAdmissionPoints(programme);
+  const profileCompleteness = programme.profileCompleteness ?? (programme.modules?.length && programme.careers?.length ? "full" : "partial");
 
   return (
     <article className="space-y-6 pb-24 sm:pb-6">
@@ -197,6 +194,10 @@ export default function ProgrammeDetail() {
               {admissionListed ? `${programme.minPoints} (best six)` : "Not listed - confirm with the institution"}
             </dd>
           </div>
+          <div>
+            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Profile quality</dt>
+            <dd className="font-medium text-brand-900">{profileCompleteness === "full" ? "Full profile" : "Partial profile"}</dd>
+          </div>
         </dl>
       </header>
 
@@ -207,7 +208,12 @@ export default function ProgrammeDetail() {
           <h2 className="font-display text-lg font-semibold text-brand-900">About this programme</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-700">{programme.description}</p>
         </section>
-      ) : null}
+      ) : (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">About this programme</h2>
+          <p className="mt-3 text-sm text-slate-500">Profile overview is coming soon for this programme.</p>
+        </section>
+      )}
 
       {hasApplicationBlock ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
@@ -294,11 +300,13 @@ export default function ProgrammeDetail() {
             </li>
           ))}
         </ul>
-        {!(programme.modules || []).length && <p className="text-sm text-slate-500">No module outline yet.</p>}
+        {!(programme.modules || []).length && (
+          <p className="text-sm text-slate-500">Module sample is coming soon. Check the official page in the meantime.</p>
+        )}
       </section>
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Career ideas</h2>
+        <h2 className="font-display text-lg font-semibold text-brand-900">Career prospects</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {(programme.careers || []).map((c) => (
             <li key={c} className="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-900">
@@ -306,7 +314,9 @@ export default function ProgrammeDetail() {
             </li>
           ))}
         </ul>
-        {!(programme.careers || []).length && <p className="text-sm text-slate-500">No careers listed.</p>}
+        {!(programme.careers || []).length && (
+          <p className="text-sm text-slate-500">Career prospects are being prepared for this programme.</p>
+        )}
       </section>
 
       {similarProgrammes.length > 0 ? (

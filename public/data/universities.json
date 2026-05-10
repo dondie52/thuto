@@ -9,7 +9,9 @@
     "applicationOpen": "2026-04-01",
     "applicationClose": "2026-05-31",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.ub.bw/admissions"
+    "applyUrl": "https://www.ub.bw/admissions",
+    "featured": true,
+    "sponsorshipTier": "core"
   },
   {
     "id": "biust",
@@ -21,7 +23,9 @@
     "applicationOpen": "2026-03-15",
     "applicationClose": "2026-06-15",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.biust.ac.bw/admissions"
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "featured": true,
+    "sponsorshipTier": "core"
   },
   {
     "id": "bac",
@@ -33,7 +37,9 @@
     "applicationOpen": "2026-01-10",
     "applicationClose": "2026-07-31",
     "academicYearStart": "2026-09",
-    "applyUrl": "https://thitoacademics.bac.ac.bw/"
+    "applyUrl": "https://thitoacademics.bac.ac.bw/",
+    "featured": true,
+    "sponsorshipTier": "core"
   },
   {
     "id": "botho",
@@ -45,7 +51,9 @@
     "applicationOpen": "2026-02-01",
     "applicationClose": "2026-08-20",
     "academicYearStart": "2026-09",
-    "applyUrl": "https://www.bothouniversity.ac.bw/admissions"
+    "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
+    "featured": true,
+    "sponsorshipTier": "core"
   },
   {
     "id": "ba-isago",
@@ -57,7 +65,9 @@
     "applicationOpen": "2026-02-15",
     "applicationClose": "2026-07-15",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.baisago.ac.bw/admissions"
+    "applyUrl": "https://www.baisago.ac.bw/admissions",
+    "featured": false,
+    "sponsorshipTier": "standard"
   },
   {
     "id": "abm",
@@ -69,7 +79,9 @@
     "applicationOpen": "2026-03-01",
     "applicationClose": "2026-06-30",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.abm.ac.bw/"
+    "applyUrl": "https://www.abm.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
   },
   {
     "id": "limkokwing",
@@ -81,7 +93,9 @@
     "applicationOpen": "2026-01-20",
     "applicationClose": "2026-08-10",
     "academicYearStart": "2026-09",
-    "applyUrl": "https://www.limkokwing.net/botswana/admissions"
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "featured": false,
+    "sponsorshipTier": "standard"
   },
   {
     "id": "francistown-coe",
@@ -93,7 +107,9 @@
     "applicationOpen": "2026-04-01",
     "applicationClose": "2026-05-15",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.moe.gov.bw/"
+    "applyUrl": "https://www.moe.gov.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
   },
   {
     "id": "gtc",
@@ -105,6 +121,176 @@
     "applicationOpen": "2026-03-01",
     "applicationClose": "2026-06-01",
     "academicYearStart": "2026-07",
-    "applyUrl": "https://www.gtc.ac.bw/"
+    "applyUrl": "https://www.gtc.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "bou",
+    "name": "Botswana Open University",
+    "location": "Gaborone (nationwide study centres)",
+    "description": "Public open and distance learning university offering flexible undergraduate programmes for working learners.",
+    "website": "https://www.bou.ac.bw/",
+    "phone": "+267 318 1470",
+    "applicationOpen": "2026-02-01",
+    "applicationClose": "2026-08-31",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.bou.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "boitekanelo",
+    "name": "Boitekanelo College",
+    "location": "Gaborone",
+    "description": "Health-focused institution offering nursing, public health and allied health pathways.",
+    "website": "https://boitekanelo.ac.bw/",
+    "phone": "+267 391 3288",
+    "applicationOpen": "2026-03-01",
+    "applicationClose": "2026-07-31",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://boitekanelo.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "new-era",
+    "name": "New Era College",
+    "location": "Gaborone",
+    "description": "Private tertiary provider with business, ICT and education-related diploma and degree pathways.",
+    "website": "https://www.neweracollege.ac.bw/",
+    "phone": "+267 395 0400",
+    "applicationOpen": "2026-02-10",
+    "applicationClose": "2026-08-15",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.neweracollege.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "gips",
+    "name": "Gaborone Institute of Professional Studies",
+    "location": "Gaborone",
+    "description": "Private institution offering professional and undergraduate programmes in business and information systems.",
+    "website": "https://www.gips.ac.bw/",
+    "phone": "+267 318 5600",
+    "applicationOpen": "2026-01-15",
+    "applicationClose": "2026-08-20",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.gips.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "bac-health",
+    "name": "Institute of Health Sciences Gaborone",
+    "location": "Gaborone",
+    "description": "Public health sciences institution offering nursing and allied health training.",
+    "website": "https://www.moh.gov.bw/",
+    "phone": "+267 365 2200",
+    "applicationOpen": "2026-03-01",
+    "applicationClose": "2026-05-31",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.moh.gov.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "bocodol",
+    "name": "Botswana College of Distance and Open Learning",
+    "location": "Gaborone",
+    "description": "Distance and open learning provider serving school leavers and adult learners through blended and online delivery.",
+    "website": "https://www.bocodol.ac.bw/",
+    "phone": "+267 365 7300",
+    "applicationOpen": "2026-01-20",
+    "applicationClose": "2026-08-31",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.bocodol.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "bca",
+    "name": "Botswana College of Agriculture",
+    "location": "Gaborone",
+    "description": "Agriculture and natural resources focused tertiary institution with practical and applied science training.",
+    "website": "https://www.bca.ac.bw/",
+    "phone": "+267 365 0100",
+    "applicationOpen": "2026-03-01",
+    "applicationClose": "2026-06-30",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.bca.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "botswana-accountancy-training",
+    "name": "Botswana Institute of Chartered Accountants Training Centre",
+    "location": "Gaborone",
+    "description": "Professional and academic accounting training centre for finance and governance careers.",
+    "website": "https://www.bica.org.bw/",
+    "phone": "+267 318 7000",
+    "applicationOpen": "2026-02-01",
+    "applicationClose": "2026-07-31",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.bica.org.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "chobe-brigade",
+    "name": "Chobe Vocational Training Centre",
+    "location": "Kasane",
+    "description": "Vocational and technical institution focusing on tourism, hospitality, and trade programmes.",
+    "website": "https://www.gov.bw/",
+    "phone": "+267 625 0325",
+    "applicationOpen": "2026-03-01",
+    "applicationClose": "2026-06-15",
+    "academicYearStart": "2026-07",
+    "applyUrl": "https://www.gov.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "kgale",
+    "name": "Kgale College",
+    "location": "Gaborone",
+    "description": "Private tertiary college with programmes in business, computing and social development.",
+    "website": "https://www.kgalecollege.ac.bw/",
+    "phone": "+267 392 4700",
+    "applicationOpen": "2026-02-01",
+    "applicationClose": "2026-08-10",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.kgalecollege.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "bohss",
+    "name": "Botswana Harvard Health Sciences",
+    "location": "Gaborone",
+    "description": "Health and biomedical sciences focused institution with research-led training opportunities.",
+    "website": "https://www.bhhrl.org/",
+    "phone": "+267 390 2671",
+    "applicationOpen": "2026-03-15",
+    "applicationClose": "2026-07-30",
+    "academicYearStart": "2026-09",
+    "applyUrl": "https://www.bhhrl.org/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "isbs",
+    "name": "Imperial School of Business and Science",
+    "location": "Gaborone",
+    "description": "Private tertiary provider offering business and science programmes, including professional accounting pathways and vocational certificates.",
+    "website": "https://www.isbs.ac.bw/",
+    "phone": "+267 319 0810",
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://www.isbs.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard"
   }
 ]

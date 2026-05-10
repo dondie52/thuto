@@ -12,6 +12,7 @@ import {
   rankProgrammesForFit,
   parseFitAnswers,
 } from "../lib/fitFinder.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
 
 const STEPS = /** @type {const} */ (["grades", "quiz", "results"]);
 
@@ -38,19 +39,17 @@ export default function FitFinder() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Could not load programmes");
-        return r.json();
-      })
+    const ac = new AbortController();
+    fetchProgrammes({ signal: ac.signal })
       .then((data) => {
-        if (!cancelled) setProgrammes(Array.isArray(data) ? data : []);
+        if (!cancelled) setProgrammes(data);
       })
       .catch((e) => {
         if (!cancelled) setLoadError(e.message ?? "Load failed");
       });
     return () => {
       cancelled = true;
+      ac.abort();
     };
   }, []);
 
