@@ -11,6 +11,7 @@ import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
 
 const SORT_OPTIONS = [
   { value: "name_asc", label: "Name (A–Z)" },
@@ -60,6 +61,7 @@ export default function Programmes() {
 
   const q = (searchParams.get("q") ?? "").trim().toLowerCase();
   const uni = searchParams.get("uni") ?? "All";
+  const uniId = searchParams.get("uniId") ?? "";
   const field = searchParams.get("field") ?? "All";
   const minPtsRaw = searchParams.get("minPts") ?? "";
   const maxPtsRaw = searchParams.get("maxPts") ?? "";
@@ -80,13 +82,9 @@ export default function Programmes() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Could not load programmes");
-        return r.json();
-      })
+    fetchProgrammes()
       .then((data) => {
-        if (!cancelled) setProgrammes(Array.isArray(data) ? data : []);
+        if (!cancelled) setProgrammes(data);
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
@@ -100,6 +98,14 @@ export default function Programmes() {
     const set = new Set(programmes.map((p) => p.university).filter(Boolean));
     return ["All", ...[...set].sort((a, b) => a.localeCompare(b))];
   }, [programmes]);
+
+  useEffect(() => {
+    if (!programmes.length || !uniId || uni !== "All") return;
+    const match = programmes.find((p) => String(p.universityShort || "").toLowerCase() === uniId.toLowerCase());
+    if (match?.university) {
+      setPatch({ uni: match.university, uniId: "" });
+    }
+  }, [programmes, uniId, uni, setPatch]);
 
   const fields = useMemo(() => {
     const set = new Set(programmes.map((p) => p.field).filter(Boolean));

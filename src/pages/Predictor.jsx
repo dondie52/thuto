@@ -7,6 +7,7 @@ import { usePredictorGradeInput } from "../hooks/usePredictorGradeInput.js";
 import PredictorGradeSection from "../components/PredictorGradeSection.jsx";
 import ProgrammePredictorResults from "../components/ProgrammePredictorResults.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
 
 function buildShareText(breakdownTotal, results) {
   const qualified = results.filter((r) => r.status === "Qualified");
@@ -48,19 +49,17 @@ export default function Predictor() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Could not load programmes");
-        return r.json();
-      })
+    const ac = new AbortController();
+    fetchProgrammes({ signal: ac.signal })
       .then((data) => {
-        if (!cancelled) setProgrammes(Array.isArray(data) ? data : []);
+        if (!cancelled) setProgrammes(data);
       })
       .catch((e) => {
         if (!cancelled) setLoadError(e.message ?? "Load failed");
       });
     return () => {
       cancelled = true;
+      ac.abort();
     };
   }, []);
 

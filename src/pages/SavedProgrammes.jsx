@@ -6,6 +6,7 @@ import { compareSelectionHref } from "../lib/compareSelection.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
 
 function compareHrefFirstSaved(ids) {
   const slice = ids.slice(0, 3);
@@ -22,19 +23,17 @@ export default function SavedProgrammes() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Could not load programmes");
-        return r.json();
-      })
+    const ac = new AbortController();
+    fetchProgrammes({ signal: ac.signal })
       .then((data) => {
-        if (!cancelled) setProgrammes(Array.isArray(data) ? data : []);
+        if (!cancelled) setProgrammes(data);
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
       });
     return () => {
       cancelled = true;
+      ac.abort();
     };
   }, []);
 

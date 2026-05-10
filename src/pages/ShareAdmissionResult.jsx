@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import ShareAdmissionResultForm from "../components/ShareAdmissionResultForm.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
 
 export default function ShareAdmissionResult() {
   useDocumentTitle("Share your result | Thuto");
@@ -13,14 +14,10 @@ export default function ShareAdmissionResult() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Could not load programmes");
-        return r.json();
-      })
-      .then((data) => {
+    const ac = new AbortController();
+    fetchProgrammes({ signal: ac.signal })
+      .then((list) => {
         if (cancelled) return;
-        const list = Array.isArray(data) ? data : [];
         setProgrammes(
           list.map((p) => ({
             id: p.id,
@@ -34,6 +31,7 @@ export default function ShareAdmissionResult() {
       });
     return () => {
       cancelled = true;
+      ac.abort();
     };
   }, []);
 

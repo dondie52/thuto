@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
 import { fetchUniversities } from "../lib/universitiesData.js";
+import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 
 export default function UniversityDetail() {
   const { id } = useParams();
   const [university, setUniversity] = useState(null);
+  const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
+  const [fieldFilter, setFieldFilter] = useState("All");
 
   useEffect(() => {
     let cancelled = false;
@@ -27,6 +30,20 @@ export default function UniversityDetail() {
       ac.abort();
     };
   }, [id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchProgrammes()
+      .then((list) => {
+        if (!cancelled) setProgrammes(list);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(e.message ?? "Load failed");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const documentTitle = error
     ? "University not found - Thuto"
@@ -49,6 +66,10 @@ export default function UniversityDetail() {
   if (!university) {
     return <p className="text-sm text-slate-500">Loading…</p>;
   }
+
+  const forUniversity = programmes.filter((p) => programmeBelongsToUniversity(p, university));
+  const fields = ["All", ...new Set(forUniversity.map((p) => p.field).filter(Boolean))];
+  const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
 
   return (
     <article className="space-y-6">
@@ -94,6 +115,51 @@ export default function UniversityDetail() {
         <div className="mt-3">
           <UniversityApplicationBlock university={university} compact={false} profileLink={false} />
         </div>
+      </section>
+
+      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Programmes offered</h2>
+          <p className="text-xs text-slate-500">{forUniversity.length} listed</p>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Programme field filters">
+          {fields.map((field) => (
+            <button
+              key={field}
+              type="button"
+              onClick={() => setFieldFilter(field)}
+              className={[
+                "rounded-full px-3 py-1 text-xs font-semibold transition-colors",
+                fieldFilter === field ? "bg-brand-700 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100",
+              ].join(" ")}
+            >
+              {field}
+            </button>
+          ))}
+        </div>
+        {filteredProgrammes.length ? (
+          <ul className="mt-4 divide-y divide-brand-100 rounded-xl border border-brand-100">
+            {filteredProgrammes.map((programme) => (
+              <li key={programme.id}>
+                <Link
+                  to={`/programmes/${programme.id}`}
+                  className="flex items-center justify-between gap-3 px-3 py-3 text-sm transition hover:bg-brand-50"
+                >
+                  <span className="min-w-0">
+                    <span className="block truncate font-medium text-brand-900">{programme.name}</span>
+                    <span className="text-xs text-slate-500">
+                      {programme.field || "General"}
+                      {programme.duration ? ` · ${programme.duration}` : ""}
+                    </span>
+                  </span>
+                  <span className="text-xs font-semibold text-brand-700">View →</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
+        )}
       </section>
     </article>
   );

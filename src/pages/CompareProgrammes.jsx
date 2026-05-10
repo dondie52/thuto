@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { evaluateProgramme, readPredictorSession, SUBJECT_FIELDS } from "../lib/admissions.js";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -76,19 +77,17 @@ export default function CompareProgrammes() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/programmes.json`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Could not load programmes");
-        return r.json();
-      })
+    const ac = new AbortController();
+    fetchProgrammes({ signal: ac.signal })
       .then((data) => {
-        if (!cancelled) setAllProgrammes(Array.isArray(data) ? data : []);
+        if (!cancelled) setAllProgrammes(data);
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
       });
     return () => {
       cancelled = true;
+      ac.abort();
     };
   }, []);
 
