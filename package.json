@@ -11,6 +11,8 @@
     "build": "vite build",
     "postbuild": "node scripts/copy-spa-404.mjs",
     "preview": "vite preview",
+    "merge-institutions-55": "node scripts/merge-institutions-55.mjs",
+    "validate-data": "node scripts/validate-institutions-55.mjs",
     "merge-ub-admissions": "node scripts/merge-ub-admissions-2026.mjs",
     "merge-bac": "node scripts/merge-bac-prospectus-2026.mjs",
     "merge-bou": "node scripts/merge-bou-prospectus-2025-26.mjs",
@@ -22,6 +24,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.1",
+    "node-html-parser": "^7.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0"

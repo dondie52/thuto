@@ -1,0 +1,261 @@
+[
+  {
+    "id": "ub",
+    "nameCanonical": "University of Botswana",
+    "nameShort": "UB",
+    "aliases": ["University of Botswana", "UB"],
+    "location": "Gaborone",
+    "website": "https://www.ub.bw/",
+    "phone": "+267 355 0000",
+    "sources": [
+      {
+        "type": "existing",
+        "note": "UB programmes + modules are curated/merged via existing scripts in this repo (ub admissions + UB calendar modules)."
+      }
+    ]
+  },
+  {
+    "mergeIntoExistingUniversityId": "biust",
+    "sourceName": "Botswana international university of science and technology",
+    "id": "biust",
+    "nameCanonical": "BIUST",
+    "nameShort": "BIUST",
+    "aliases": [
+      "Botswana international university of science and technology",
+      "Botswana International University of Science and Technology",
+      "BIUST"
+    ],
+    "location": "Palapye",
+    "website": "https://www.biust.ac.bw/",
+    "sources": [
+      {
+        "type": "existing",
+        "note": "BIUST programme stubs + admissions defaults already exist in programmes.json; expand later using prospectus/department pages."
+      }
+    ]
+  },
+  {
+    "id": "buan",
+    "sourceName": "Botswana university of agriculture and natural resources",
+    "nameCanonical": "Botswana University of Agriculture and Natural Resources",
+    "nameShort": "BUAN",
+    "aliases": [
+      "Botswana university of agriculture and natural resources",
+      "Botswana University of Agriculture and Natural Resources",
+      "BUAN"
+    ],
+    "location": "Sebele",
+    "website": "https://www.buan.ac.bw/",
+    "sources": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "mergeIntoExistingUniversityId": "limkokwing",
+    "sourceName": "limkonkwing university of creative technology",
+    "id": "limkokwing",
+    "nameCanonical": "Limkokwing University of Creative Technology",
+    "nameShort": "Limkokwing",
+    "aliases": [
+      "limkonkwing university of creative technology",
+      "Limkokwing University of Creative Technology",
+      "Limkokwing"
+    ],
+    "location": "Gaborone",
+    "website": "https://www.limkokwing.net/botswana/",
+    "sources": [{ "type": "existing", "note": "Limkokwing stubs exist in programmes.json; expand later from official prospectus." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "botho",
+    "sourceName": "Botho university",
+    "id": "botho",
+    "nameCanonical": "Botho University",
+    "nameShort": "Botho",
+    "aliases": ["Botho university", "Botho University", "Botho"],
+    "location": "Gaborone",
+    "website": "https://www.bothouniversity.ac.bw/",
+    "sources": [
+      {
+        "type": "pdf",
+        "localPath": "docs/Botho-University-2026-Botswana-Campus-Prospectus_copy.pdf",
+        "parse": { "mode": "none" },
+        "note": "Botho has a committed prospectus PDF. This merge script currently does not parse it; stubs already exist."
+      }
+    ],
+    "allowNoProgrammes": false
+  },
+  {
+    "mergeIntoExistingUniversityId": "ba-isago",
+    "sourceName": "Ba Isago University",
+    "id": "ba-isago",
+    "nameCanonical": "BA ISAGO University",
+    "nameShort": "BA ISAGO",
+    "aliases": ["Ba Isago University", "BA ISAGO University", "BA ISAGO"],
+    "location": "Gaborone",
+    "website": "https://www.baisago.ac.bw/",
+    "sources": [{ "type": "existing", "note": "BA ISAGO stubs exist in programmes.json; expand later from official prospectus." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "new-era",
+    "sourceName": "New Era College",
+    "id": "new-era",
+    "nameCanonical": "New Era College",
+    "nameShort": "New Era",
+    "aliases": ["New Era College"],
+    "location": "Gaborone",
+    "website": "https://www.neweracollege.ac.bw/",
+    "sources": [
+      { "type": "existing", "note": "New Era programmes are merged via scripts/merge-new-era-prospectus-2025.mjs." }
+    ]
+  },
+  {
+    "mergeIntoExistingUniversityId": "bou",
+    "sourceName": "Botswana Open University",
+    "id": "bou",
+    "nameCanonical": "Botswana Open University",
+    "nameShort": "BOU",
+    "aliases": ["Botswana Open University", "BOU"],
+    "location": "Gaborone",
+    "website": "https://www.bou.ac.bw/",
+    "sources": [{ "type": "existing", "note": "BOU programmes are merged via scripts/merge-bou-prospectus-2025-26.mjs." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "boitekanelo",
+    "sourceName": "Boitekanelo College",
+    "id": "boitekanelo",
+    "nameCanonical": "Boitekanelo College",
+    "nameShort": "Boitekanelo",
+    "aliases": ["Boitekanelo College"],
+    "location": "Gaborone",
+    "website": "https://www.boitekanelo.ac.bw/",
+    "sources": [{ "type": "existing", "note": "Boitekanelo programmes are merged via scripts/merge-boitekanelo-brochure-2026.mjs." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "abm",
+    "sourceName": "ABM University College",
+    "id": "abm",
+    "nameCanonical": "ABM University College",
+    "nameShort": "ABM",
+    "aliases": ["ABM University College", "ABM"],
+    "location": "Gaborone",
+    "website": "https://www.abm.ac.bw/",
+    "sources": [{ "type": "existing", "note": "ABM stubs exist in programmes.json; expand later from official pages." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "idm",
+    "sourceName": "Institute of Development Management",
+    "id": "idm",
+    "nameCanonical": "Institute of Development Management (IDM) Botswana",
+    "nameShort": "IDM",
+    "aliases": ["Institute of Development Management", "Institute of Development Management (IDM) Botswana", "IDM"],
+    "location": "Gaborone",
+    "website": "https://www.idmbls.ac.bw/",
+    "sources": [{ "type": "existing", "note": "IDM stubs exist in programmes.json; expand later from official prospectus." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "bac",
+    "sourceName": "Botswana school of business sciences",
+    "id": "bac",
+    "nameCanonical": "Botswana School of Business Sciences",
+    "nameShort": "BSBS",
+    "aliases": ["Botswana school of business sciences", "Botswana School of Business Sciences", "BAC", "BSBS"],
+    "location": "Gaborone",
+    "website": "https://www.bac.ac.bw/",
+    "sources": [{ "type": "existing", "note": "BSBS/BAC programmes are merged via scripts/merge-bac-prospectus-2026.mjs." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "ihs",
+    "sourceName": "Institute of Health Sciences",
+    "id": "ihs",
+    "nameCanonical": "Institute of Health Sciences (IHS)",
+    "nameShort": "IHS",
+    "aliases": ["Institute of Health Sciences", "Institute of Health Sciences (IHS)", "IHS"],
+    "location": "Gaborone",
+    "website": "",
+    "sources": [{ "type": "existing", "note": "IHS stubs exist in programmes.json." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "bcet",
+    "sourceName": "Botswana college of engineering and technology",
+    "id": "bcet",
+    "nameCanonical": "Botswana College of Engineering and Technology (BCET)",
+    "nameShort": "BCET",
+    "aliases": [
+      "Botswana college of engineering and technology",
+      "Botswana College of Engineering and Technology",
+      "Botswana College of Engineering and Technology (BCET)",
+      "BCET"
+    ],
+    "location": "Gaborone",
+    "website": "",
+    "sources": [{ "type": "existing", "note": "BCET stubs exist in programmes.json." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "guc",
+    "sourceName": "Gaborone university college of law and professional studies",
+    "id": "guc",
+    "nameCanonical": "Gaborone University College of Law and Professional Studies (GUC)",
+    "nameShort": "GUC",
+    "aliases": [
+      "Gaborone university college of law and professional studies",
+      "Gaborone University College of Law and Professional Studies",
+      "GUC"
+    ],
+    "location": "Gaborone",
+    "website": "https://www.guc.co.bw/",
+    "sources": [{ "type": "existing", "note": "GUC programmes are merged via scripts/merge-guc-programmes-2025.mjs." }]
+  },
+  {
+    "mergeIntoExistingUniversityId": "isbs",
+    "sourceName": "Imperial School of Business and Science",
+    "id": "isbs",
+    "nameCanonical": "Imperial School of Business and Science",
+    "nameShort": "ISBS",
+    "aliases": ["Imperial School of Business and Science", "Imperial School of Business and Science (ISBS)", "ISBS"],
+    "location": "Gaborone",
+    "website": "https://www.isbs.ac.bw/",
+    "sources": [{ "type": "existing", "note": "ISBS programmes are merged via scripts/merge-isbs-prospectus-2025.mjs." }]
+  },
+
+  { "id": "logan-business-college", "sourceName": "Logan Business College", "nameCanonical": "Logan Business College", "nameShort": "LBC", "aliases": ["Logan Business College"], "location": "Gaborone", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "mergeIntoExistingUniversityId": "lcibs", "sourceName": "London college of international Business", "id": "lcibs", "nameCanonical": "London College of International Business Studies (LCIBS) Botswana", "nameShort": "LCIBS", "aliases": ["London college of international Business", "London College of International Business", "London College of International Business Studies", "LCIBS"], "location": "Gaborone", "website": "https://www.lcibs.co.bw/", "sources": [{ "type": "existing", "note": "LCIBS stubs exist in programmes.json." }] },
+  { "id": "mega-size-college", "sourceName": "Mega size college", "nameCanonical": "Mega Size College", "nameShort": "Mega Size", "aliases": ["Mega size college", "Mega Size College"], "location": "Gaborone", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "mergeIntoExistingUniversityId": "gtc", "sourceName": "Gaborone Technical College", "id": "gtc", "nameCanonical": "Gaborone Technical College", "nameShort": "GTC", "aliases": ["Gaborone Technical College", "GTC"], "location": "Gaborone", "website": "", "sources": [{ "type": "existing", "note": "GTC exists in universities.json; add programmes later from prospectus/BQA." }], "allowNoProgrammes": true },
+
+  { "id": "kanye-sda-nursing", "sourceName": "Kanye Seventh Day Adventist college of nursing", "nameCanonical": "Kanye Seventh Day Adventist College of Nursing", "nameShort": "Kanye SDA Nursing", "aliases": ["Kanye Seventh Day Adventist college of nursing", "Kanye Seventh Day Adventist College of Nursing"], "location": "Kanye", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "bosa-bosele", "sourceName": "Bosa Bosele Training Institute", "nameCanonical": "Bosa Bosele Training Institute", "nameShort": "Bosa Bosele", "aliases": ["Bosa Bosele Training Institute"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "mergeIntoExistingUniversityId": "oodi", "sourceName": "Oodi College of Applied Arts and Technology", "id": "oodi", "nameCanonical": "Oodi College of Applied Arts and Technology", "nameShort": "OCAAT", "aliases": ["Oodi College of Applied Arts and Technology", "Oodi College of Applied Arts & Technology", "OCAAT"], "location": "Oodi", "website": "", "sources": [{ "type": "existing", "note": "Oodi exists in universities.json; programmes partially present." }] },
+  { "mergeIntoExistingUniversityId": "pillar-of-success", "sourceName": "Pillar of Success Training Institute", "id": "pillar-of-success", "nameCanonical": "Pillar of Success Training Institute", "nameShort": "Pillar of Success", "aliases": ["Pillar of Success Training Institute"], "location": "Gaborone", "website": "", "sources": [{ "type": "existing", "note": "Pillar programmes are merged via scripts/merge-pillar-of-success-2026.mjs." }] },
+  { "mergeIntoExistingUniversityId": "fctve", "sourceName": "Francistown College of Technical and Vocational Education", "id": "fctve", "nameCanonical": "Francistown College of Technical and Vocational Education", "nameShort": "FCTVE", "aliases": ["Francistown College of Technical and Vocational Education", "Francistown College of Technical & Vocational Education", "FCTVE"], "location": "Francistown", "website": "", "sources": [{ "type": "existing", "note": "FCTVE exists in universities.json; stubs exist in programmes.json." }] },
+  { "mergeIntoExistingUniversityId": "gips", "sourceName": "GIPS", "id": "gips", "nameCanonical": "Gaborone Institute of Professional Studies", "nameShort": "GIPS", "aliases": ["GIPS", "Gaborone Institute of Professional Studies", "Gaborone Institute of Professional Studies (GIPS)"], "location": "Gaborone", "website": "", "sources": [{ "type": "existing", "note": "GIPS exists in universities.json; minimal programmes exist." }] },
+  { "mergeIntoExistingUniversityId": "fire-college", "sourceName": "College of fire and Safety", "id": "fire-college", "nameCanonical": "College of Fire & Safety (Fire College)", "nameShort": "Fire College", "aliases": ["College of fire and Safety", "College of Fire and Safety", "College of Fire & Safety", "Fire College", "COFS"], "location": "Gaborone", "website": "", "sources": [{ "type": "existing", "note": "Fire College exists in universities.json; programmes to expand later." }], "allowNoProgrammes": true },
+  { "mergeIntoExistingUniversityId": "botswana-accountancy-training", "sourceName": "Botswana Institute of Chartered Accountants Training Centre", "id": "botswana-accountancy-training", "nameCanonical": "Botswana Institute of Chartered Accountants Training Centre", "nameShort": "BICA Training", "aliases": ["Botswana Institute of Chartered Accountants Training Centre"], "location": "Gaborone", "website": "", "sources": [{ "type": "existing", "note": "BICA Training exists in universities.json; add programmes later from official pages." }], "allowNoProgrammes": true },
+
+  { "id": "tlokweng-coe", "sourceName": "Tlokweng College of Education", "nameCanonical": "Tlokweng College of Education", "nameShort": "Tlokweng CoE", "aliases": ["Tlokweng College of Education"], "location": "Tlokweng", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "serowe-coe", "sourceName": "Serowe College of Education", "nameCanonical": "Serowe College of Education", "nameShort": "Serowe CoE", "aliases": ["Serowe College of Education"], "location": "Serowe", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "molepolole-coe", "sourceName": "Molepolole College of Education", "nameCanonical": "Molepolole College of Education", "nameShort": "Molepolole CoE", "aliases": ["Molepolole College of Education"], "location": "Molepolole", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "roads-training-centre", "sourceName": "Roads Training Centre", "nameCanonical": "Roads Training Centre", "nameShort": "RTC", "aliases": ["Roads Training Centre"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "dawn-training", "sourceName": "Dawn Training Institute", "nameCanonical": "Dawn Training Institute", "nameShort": "Dawn", "aliases": ["Dawn Training Institute"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "cep-training", "sourceName": "CEP Training Institute", "nameCanonical": "CEP Training Institute", "nameShort": "CEP", "aliases": ["CEP Training Institute"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "learneasy", "sourceName": "LEARNeasy Training Institute", "nameCanonical": "LEARNeasy Training Institute", "nameShort": "LEARNeasy", "aliases": ["LEARNeasy Training Institute"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "stargems", "sourceName": "Stargems Diamond Training Institute", "nameCanonical": "Stargems Diamond Training Institute", "nameShort": "Stargems", "aliases": ["Stargems Diamond Training Institute"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "homeland-college", "sourceName": "Homeland College", "nameCanonical": "Homeland College", "nameShort": "Homeland", "aliases": ["Homeland College"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "gcca", "sourceName": "Gaborone College of Culinary Arts", "nameCanonical": "Gaborone College of Culinary Arts", "nameShort": "GCCA", "aliases": ["Gaborone College of Culinary Arts"], "location": "Gaborone", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "gaborone-commercial-college", "sourceName": "Gaborone Commercial College of Higher Studies", "nameCanonical": "Gaborone Commercial College of Higher Studies", "nameShort": "GCC", "aliases": ["Gaborone Commercial College of Higher Studies"], "location": "Gaborone", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "tebelopele", "sourceName": "Tebelopele College", "nameCanonical": "Tebelopele College", "nameShort": "Tebelopele", "aliases": ["Tebelopele College"], "location": "Gaborone", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "byte-size-college", "sourceName": "Byte Size College", "nameCanonical": "Byte Size College", "nameShort": "Byte Size", "aliases": ["Byte Size College"], "location": "Gaborone", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "insurance-training-institute", "sourceName": "Insurance Training Institute", "nameCanonical": "Insurance Training Institute", "nameShort": "ITI", "aliases": ["Insurance Training Institute"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "realic", "sourceName": "Realic Professional and Technical College", "nameCanonical": "Realic Professional and Technical College", "nameShort": "Realic", "aliases": ["Realic Professional and Technical College"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "crackit", "sourceName": "CrackiT College", "nameCanonical": "CrackiT College", "nameShort": "CrackiT", "aliases": ["CrackiT College"], "location": "Gaborone", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "palapye-technical-college", "sourceName": "Palapye Technical College", "nameCanonical": "Palapye Technical College", "nameShort": "Palapye TC", "aliases": ["Palapye Technical College"], "location": "Palapye", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "assembly-bible-college", "sourceName": "Assembly Bible College", "nameCanonical": "Assembly Bible College", "nameShort": "Assembly Bible", "aliases": ["Assembly Bible College"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "bibf", "sourceName": "Botswana institute of banking and finance", "nameCanonical": "Botswana Institute of Banking and Finance", "nameShort": "BIBF", "aliases": ["Botswana institute of banking and finance", "Botswana Institute of Banking and Finance", "BIBF"], "location": "Gaborone", "website": "https://www.bibf.ac.bw/", "sources": [], "allowNoProgrammes": true },
+  { "id": "tonota-coe", "sourceName": "Tonota College of Education", "nameCanonical": "Tonota College of Education", "nameShort": "Tonota CoE", "aliases": ["Tonota College of Education"], "location": "Tonota", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "bamalete-nursing", "sourceName": "Bamalete Lutheran School of Nursing", "nameCanonical": "Bamalete Lutheran School of Nursing", "nameShort": "Bamalete Nursing", "aliases": ["Bamalete Lutheran School of Nursing"], "location": "Ramotswa", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "aafm", "sourceName": "Aviation Academy Flying Mission(AAFM)", "nameCanonical": "Aviation Academy Flying Mission (AAFM)", "nameShort": "AAFM", "aliases": ["Aviation Academy Flying Mission(AAFM)", "Aviation Academy Flying Mission (AAFM)", "AAFM"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "jwaneng-technical-college", "sourceName": "Jwaneng Technical College", "nameCanonical": "Jwaneng Technical College", "nameShort": "JTC", "aliases": ["Jwaneng Technical College"], "location": "Jwaneng", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "botswana-brigades", "sourceName": "Botswana Brigades", "nameCanonical": "Botswana Brigades", "nameShort": "Brigades", "aliases": ["Botswana Brigades"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "africa-insurance-training-institute", "sourceName": "Africa Insurance Training Institute", "nameCanonical": "Africa Insurance Training Institute", "nameShort": "AITI", "aliases": ["Africa Insurance Training Institute"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "awil-college", "sourceName": "Awil College", "nameCanonical": "Awil College", "nameShort": "Awil", "aliases": ["Awil College"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true },
+  { "id": "delta-training-academy", "sourceName": "Delta Training Academy", "nameCanonical": "Delta Training Academy", "nameShort": "Delta", "aliases": ["Delta Training Academy"], "location": "Botswana", "website": "", "sources": [], "allowNoProgrammes": true }
+]
+
