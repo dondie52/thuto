@@ -30,7 +30,6 @@ const UNIVERSITY_ALIASES = {
   boitekanelo: ["Boitekanelo College"],
   "new-era": ["New Era College"],
   gips: ["Gaborone Institute of Professional Studies", "GIPS"],
-  "bac-health": ["Institute of Health Sciences Gaborone"],
   bocodol: ["Botswana College of Distance and Open Learning", "BOCODOL"],
   bca: ["Botswana College of Agriculture"],
   "botswana-accountancy-training": ["Botswana Institute of Chartered Accountants Training Centre"],
@@ -50,6 +49,18 @@ const UNIVERSITY_ALIASES = {
     "Francistown College of Technical & Vocational Education",
   ],
   ihs: ["Institute of Health Sciences (IHS)", "Institute of Health Sciences", "IHS"],
+  guc: ["Gaborone University College (GUC)", "Gaborone University College", "GUC"],
+  "pillar-of-success": [
+    "Pillar of Success Training Institute",
+    "Pillar of Success",
+    "Pillar of Success Training Institute Botswana",
+  ],
+  oodi: [
+    "Oodi College of Applied Arts and Technology",
+    "Oodi College of Applied Arts & Technology",
+    "Oodi College of Applied Arts and Technology (OCAAT)",
+    "OCAAT",
+  ],
 };
 
 export function programmeBelongsToUniversity(programme, university) {
