@@ -13,7 +13,6 @@ Use these when verifying or updating `minPoints`, `subjectRequirements`, and rel
 | BA ISAGO University | 9 | https://www.baisago.ac.bw/ | Confirm per programme |
 | ABM University College | 9 | https://www.abm.ac.bw/ | Confirm per programme |
 | Limkokwing University (Botswana) | 9 | https://www.limkokwing.net/botswana/ | Confirm per programme |
-| Francistown College of Education | 6 | https://www.moe.gov.bw/ | College admissions via MoE / college comms |
 | Gaborone Technical College | 10 | https://www.gtc.ac.bw/ | TVET entry rules differ by programme |
 
 ## Repo automation

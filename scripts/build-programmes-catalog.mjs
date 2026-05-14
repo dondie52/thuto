@@ -269,28 +269,6 @@ function otherInstitutionStubs() {
     careers: [],
   }));
 
-  const fcoe = [
-    ["fcoe-bed-secondary-science", "BEd Secondary Education (Science)", "Education"],
-    ["fcoe-bed-secondary-humanities", "BEd Secondary Education (Humanities)", "Education"],
-    ["fcoe-bed-primary", "BEd Primary Education", "Education"],
-    ["fcoe-diploma-education", "Diploma in Education", "Education"],
-  ].map(([id, name, field]) => ({
-    id,
-    name,
-    field,
-    university: "Francistown College of Education",
-    universityShort: "FCoE",
-    minPoints: null,
-    subjectRequirements: {},
-    duration: name.includes("Diploma") ? "3 years" : "4 years",
-    durationYears: name.includes("Diploma") ? 3 : 4,
-    description: "Teacher education programme. Confirm entry requirements with the college or Ministry of Education.",
-    officialUrl: "https://www.moe.gov.bw/",
-    applyUrl: "https://www.moe.gov.bw/",
-    modules: [],
-    careers: [],
-  }));
-
   const gtc = [
     ["gtc-diploma-civil", "National Diploma in Civil Engineering", "Engineering"],
     ["gtc-diploma-mechanical", "National Diploma in Mechanical Engineering", "Engineering"],
@@ -316,7 +294,7 @@ function otherInstitutionStubs() {
     careers: [],
   }));
 
-  return [...botho, ...biust, ...bac, ...baisago, ...abm, ...limkokwing, ...fcoe, ...gtc];
+  return [...botho, ...biust, ...bac, ...baisago, ...abm, ...limkokwing, ...gtc];
 }
 
 function main() {

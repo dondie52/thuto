@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 const links = [
   {
     to: "/app",
-    label: "App",
+    label: "Home",
     end: true,
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
@@ -12,18 +12,8 @@ const links = [
     ),
   },
   {
-    to: "/assistant",
-    label: "Ask",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5A3.5 3.5 0 017.5 2h9A3.5 3.5 0 0120 5.5v6A3.5 3.5 0 0116.5 15H10l-4.5 4v-4A3.5 3.5 0 014 11.5v-6z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 7h6M9 10.5h4" />
-      </svg>
-    ),
-  },
-  {
     to: "/predictor",
-    label: "Predictor",
+    label: "Predict",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18M7 16l4-4 4 4 6-6" />
@@ -32,7 +22,7 @@ const links = [
   },
   {
     to: "/programmes",
-    label: "Programmes",
+    label: "Programs",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
@@ -58,8 +48,18 @@ const links = [
     ),
   },
   {
+    to: "/assistant",
+    label: "Ask",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5A3.5 3.5 0 017.5 2h9A3.5 3.5 0 0120 5.5v6A3.5 3.5 0 0116.5 15H10l-4.5 4v-4A3.5 3.5 0 014 11.5v-6z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 7h6M9 10.5h4" />
+      </svg>
+    ),
+  },
+  {
     to: "/universities",
-    label: "Univ.",
+    label: "Univ",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9v0M9 12v0M9 15v0M9 18v0" />
@@ -70,7 +70,7 @@ const links = [
 
 function linkClass({ isActive }) {
   return [
-    "focus-ring flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-xl px-1.5 py-2 text-[10px] font-semibold uppercase tracking-wide transition-all duration-200",
+    "focus-ring flex min-w-0 flex-col items-center gap-1 rounded-xl px-0.5 py-2 text-[9px] font-semibold leading-none transition-all duration-200",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-stone-500 hover:bg-stone-100 hover:text-brand-800",
   ].join(" ");
 }
@@ -82,11 +82,11 @@ export default function BottomNav() {
       aria-label="Primary"
     >
       <div className="mx-auto max-w-lg rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md">
-        <div className="flex justify-around gap-0.5 px-1 py-1.5">
+        <div className="grid grid-cols-7 gap-0.5 px-1 py-1.5">
           {links.map(({ to, label, end, icon }) => (
             <NavLink key={to} to={to} end={end} className={linkClass}>
               {icon}
-              <span className="truncate">{label}</span>
+              <span className="max-w-full truncate whitespace-nowrap">{label}</span>
             </NavLink>
           ))}
         </div>

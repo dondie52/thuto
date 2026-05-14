@@ -1362,40 +1362,6 @@
     ]
   },
   {
-    "id": "bca-bsc-agricultural-economics",
-    "name": "Bachelor of Science in Agricultural Economics",
-    "field": "Natural Sciences",
-    "university": "Botswana College of Agriculture",
-    "universityShort": "BCA",
-    "faculty": "Agriculture",
-    "minPoints": 28,
-    "subjectRequirements": {
-      "english": "C",
-      "math": "D",
-      "science": "D"
-    },
-    "duration": "4 years",
-    "durationYears": 4,
-    "officialUrl": "https://www.bca.ac.bw/",
-    "applyUrl": "https://www.bca.ac.bw/",
-    "applicationDeadline": null,
-    "minPointsScaleVersion": 2,
-    "profileCompleteness": "partial",
-    "sponsorshipTier": "standard",
-    "relatedSubjects": [
-      "English Language",
-      "Mathematics",
-      "Science"
-    ],
-    "interests": [
-      "Natural Sciences",
-      "Agriculture"
-    ],
-    "tags": [
-      "Natural Sciences"
-    ]
-  },
-  {
     "id": "bcet-diploma-in-building-and-civil-engineering",
     "name": "Diploma in Building and Civil Engineering",
     "field": "Engineering",
@@ -6023,232 +5989,6 @@
     ],
     "tags": [
       "Technology"
-    ]
-  },
-  {
-    "id": "fce-bed-primary",
-    "name": "BEd Primary Education",
-    "field": "Humanities",
-    "university": "Francistown College of Education",
-    "minPoints": 36,
-    "subjectRequirements": {
-      "english": "C",
-      "math": "C",
-      "setswana": "C"
-    },
-    "duration": "4 years",
-    "description": "Integrated primary curriculum, literacy and numeracy methods, and extended school placements. Prepares graduates for primary classrooms in line with national teacher education standards.",
-    "fees": {
-      "domestic": 8000,
-      "currency": "BWP",
-      "per": "year",
-      "note": "Approximate - verify with the institution."
-    },
-    "officialUrl": "https://www.moe.gov.bw/",
-    "modules": [
-      {
-        "semester": 1,
-        "modules": [
-          "Child Development",
-          "Literacy Across the Curriculum",
-          "Mathematics in Primary"
-        ]
-      },
-      {
-        "semester": 2,
-        "modules": [
-          "Social Studies Methods",
-          "Science Methods",
-          "Teaching Practice I"
-        ]
-      }
-    ],
-    "careers": [
-      "Primary Teacher",
-      "ECD Practitioner",
-      "Education Assistant"
-    ],
-    "universityShort": "FCE",
-    "faculty": "Faculty of Humanities & Social Sciences",
-    "applicationDeadline": "2026-05-15",
-    "applyUrl": "https://www.moe.gov.bw/",
-    "durationYears": 4,
-    "minPointsScaleVersion": 2,
-    "careerOpportunities": [
-      "Primary Teacher",
-      "ECD Practitioner",
-      "Education Assistant"
-    ],
-    "relatedSubjects": [
-      "English Language",
-      "Mathematics",
-      "Setswana"
-    ],
-    "interests": [
-      "Humanities",
-      "Faculty of Humanities & Social Sciences"
-    ],
-    "tags": [
-      "Humanities"
-    ]
-  },
-  {
-    "id": "fce-bed-secondary-maths",
-    "name": "BEd Secondary Education (Mathematics)",
-    "field": "Humanities",
-    "university": "Francistown College of Education",
-    "minPoints": 38,
-    "subjectRequirements": {
-      "math": "B",
-      "english": "C",
-      "science": "C"
-    },
-    "duration": "4 years",
-    "description": "Mathematics teaching methods, school experience, and education studies for aspiring secondary mathematics teachers. Confirm specialisation quotas and MoE placement policies with the college.",
-    "fees": {
-      "domestic": 8500,
-      "currency": "BWP",
-      "per": "year",
-      "note": "Approximate - verify with the institution."
-    },
-    "officialUrl": "https://www.moe.gov.bw/",
-    "modules": [
-      {
-        "semester": 1,
-        "modules": [
-          "Calculus for Teachers",
-          "Algebra & Functions",
-          "Foundations of Education"
-        ]
-      },
-      {
-        "semester": 2,
-        "modules": [
-          "Geometry & Measurement",
-          "Classroom Assessment",
-          "Teaching Practice I"
-        ]
-      }
-    ],
-    "careers": [
-      "Secondary Mathematics Teacher",
-      "Education Tutor",
-      "Curriculum Support"
-    ],
-    "universityShort": "FCE",
-    "faculty": "Faculty of Humanities & Social Sciences",
-    "applicationDeadline": "2026-05-15",
-    "applyUrl": "https://www.moe.gov.bw/",
-    "durationYears": 4,
-    "minPointsScaleVersion": 2,
-    "careerOpportunities": [
-      "Secondary Mathematics Teacher",
-      "Education Tutor",
-      "Curriculum Support"
-    ],
-    "relatedSubjects": [
-      "Mathematics",
-      "English Language",
-      "Science"
-    ],
-    "interests": [
-      "Humanities",
-      "Faculty of Humanities & Social Sciences"
-    ],
-    "tags": [
-      "Humanities"
-    ]
-  },
-  {
-    "id": "fcoe-bed-primary",
-    "name": "BEd Primary Education",
-    "field": "Education",
-    "university": "Francistown College of Education",
-    "universityShort": "FCoE",
-    "minPoints": null,
-    "subjectRequirements": {},
-    "duration": "4 years",
-    "durationYears": 4,
-    "description": "Teacher education programme. Confirm entry requirements with the college or Ministry of Education.",
-    "officialUrl": "https://www.moe.gov.bw/",
-    "applyUrl": "https://www.moe.gov.bw/",
-    "modules": [],
-    "careers": [],
-    "minPointsScaleVersion": 2,
-    "interests": [
-      "Education"
-    ],
-    "tags": [
-      "Education"
-    ]
-  },
-  {
-    "id": "fcoe-bed-secondary-humanities",
-    "name": "BEd Secondary Education (Humanities)",
-    "field": "Education",
-    "university": "Francistown College of Education",
-    "universityShort": "FCoE",
-    "minPoints": null,
-    "subjectRequirements": {},
-    "duration": "4 years",
-    "durationYears": 4,
-    "description": "Teacher education programme. Confirm entry requirements with the college or Ministry of Education.",
-    "officialUrl": "https://www.moe.gov.bw/",
-    "applyUrl": "https://www.moe.gov.bw/",
-    "modules": [],
-    "careers": [],
-    "minPointsScaleVersion": 2,
-    "interests": [
-      "Education"
-    ],
-    "tags": [
-      "Education"
-    ]
-  },
-  {
-    "id": "fcoe-bed-secondary-science",
-    "name": "BEd Secondary Education (Science)",
-    "field": "Education",
-    "university": "Francistown College of Education",
-    "universityShort": "FCoE",
-    "minPoints": null,
-    "subjectRequirements": {},
-    "duration": "4 years",
-    "durationYears": 4,
-    "description": "Teacher education programme. Confirm entry requirements with the college or Ministry of Education.",
-    "officialUrl": "https://www.moe.gov.bw/",
-    "applyUrl": "https://www.moe.gov.bw/",
-    "modules": [],
-    "careers": [],
-    "minPointsScaleVersion": 2,
-    "interests": [
-      "Education"
-    ],
-    "tags": [
-      "Education"
-    ]
-  },
-  {
-    "id": "fcoe-diploma-education",
-    "name": "Diploma in Education",
-    "field": "Education",
-    "university": "Francistown College of Education",
-    "universityShort": "FCoE",
-    "minPoints": null,
-    "subjectRequirements": {},
-    "duration": "3 years",
-    "durationYears": 3,
-    "description": "Teacher education programme. Confirm entry requirements with the college or Ministry of Education.",
-    "officialUrl": "https://www.moe.gov.bw/",
-    "applyUrl": "https://www.moe.gov.bw/",
-    "modules": [],
-    "careers": [],
-    "minPointsScaleVersion": 2,
-    "interests": [
-      "Education"
-    ],
-    "tags": [
-      "Education"
     ]
   },
   {
@@ -33194,5 +32934,291 @@
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
     "sponsorshipTier": "standard"
+  },
+  {
+    "id": "naledi-training-institute-certificate-in-early-childhood-education",
+    "name": "Certificate in Early Childhood Education",
+    "field": "Education",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 5 certificate",
+    "durationYears": null,
+    "description": "Certificate in Early Childhood Education at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-certificate-in-health-and-safety-management",
+    "name": "Certificate in Health and Safety Management",
+    "field": "Health",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 5 certificate",
+    "durationYears": null,
+    "description": "Certificate in Health and Safety Management at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-certificate-in-secretarial-studies",
+    "name": "Certificate in Secretarial Studies",
+    "field": "Business",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 5 certificate",
+    "durationYears": null,
+    "description": "Certificate in Secretarial Studies at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-certificate-in-care-giving",
+    "name": "Certificate in Care Giving",
+    "field": "Health",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 5 certificate",
+    "durationYears": null,
+    "description": "Certificate in Care Giving at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-certificate-in-drug-addiction-counseling",
+    "name": "Certificate in Drug Addiction Counseling",
+    "field": "Health",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 5 certificate",
+    "durationYears": null,
+    "description": "Certificate in Drug Addiction Counseling at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-certificate-in-adolescent-sexual-and-reproductive-health-counselling",
+    "name": "Certificate in Adolescent Sexual and Reproductive Health Counselling",
+    "field": "Health",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 5 certificate",
+    "durationYears": null,
+    "description": "Certificate in Adolescent Sexual and Reproductive Health Counselling at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-diploma-in-early-childhood-education",
+    "name": "Diploma in Early Childhood Education",
+    "field": "Education",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 6 diploma",
+    "durationYears": null,
+    "description": "Diploma in Early Childhood Education at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-diploma-in-occupational-health-and-safety",
+    "name": "Diploma in Occupational Health and Safety",
+    "field": "Health",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Level 6 diploma",
+    "durationYears": null,
+    "description": "Diploma in Occupational Health and Safety at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-short-course-in-early-childhood-development",
+    "name": "Short Course in Early Childhood Development",
+    "field": "Education",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Short course",
+    "durationYears": null,
+    "description": "Short Course in Early Childhood Development at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-short-course-in-counselling",
+    "name": "Short Course in Counselling",
+    "field": "Humanities",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Short course",
+    "durationYears": null,
+    "description": "Short Course in Counselling at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-short-course-in-computer-studies",
+    "name": "Short Course in Computer Studies",
+    "field": "Computing",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Short course",
+    "durationYears": null,
+    "description": "Short Course in Computer Studies at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-short-course-in-business-and-office-administration",
+    "name": "Short Course in Business and Office Administration",
+    "field": "Business",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Short course",
+    "durationYears": null,
+    "description": "Short Course in Business and Office Administration at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "naledi-training-institute-short-course-in-bookkeeping-and-accounting",
+    "name": "Short Course in Bookkeeping and Accounting",
+    "field": "Business",
+    "university": "Naledi Training Institute",
+    "universityShort": "NTI",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://naleditraining.co.bw/qualifications/",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Short course",
+    "durationYears": null,
+    "description": "Short Course in Bookkeeping and Accounting at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
   }
 ]

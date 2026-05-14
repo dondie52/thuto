@@ -3,13 +3,13 @@ import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
 
 const desktopLinks = [
-  { to: "/app", label: "App", end: true },
-  { to: "/assistant", label: "Assistant" },
-  { to: "/fit-finder", label: "Fit Finder" },
-  { to: "/predictor", label: "Predictor" },
-  { to: "/programmes", label: "Programmes" },
+  { to: "/app", label: "Home", end: true },
+  { to: "/predictor", label: "Predict" },
+  { to: "/programmes", label: "Programs" },
+  { to: "/compare", label: "Compare" },
   { to: "/saved", label: "Saved" },
-  { to: "/universities", label: "Universities" },
+  { to: "/assistant", label: "Ask" },
+  { to: "/universities", label: "Univ" },
 ];
 
 function navLinkClass({ isActive }) {
