@@ -16,9 +16,12 @@ import { normalizePdfText, pdfToText } from "./lib/pdfText.mjs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const progPath = path.join(root, "public/data/programmes.json");
-const pdfPath = path.join(root, "docs", "2025Programmes_copy.pdf");
+const pdfPath = process.env.GUC_PDF
+  ? path.resolve(root, process.env.GUC_PDF)
+  : path.join(root, "docs", "2025Programmes_copy.pdf");
 
-const UNIVERSITY_NAME = "Gaborone University College (GUC)";
+// Keep this in sync with `public/data/universities.json` so re-runs don't duplicate rows.
+const UNIVERSITY_NAME = "Gaborone University College of Law and Professional Studies (GUC)";
 const UNIVERSITY_SHORT = "GUC";
 
 function slugify(s) {
@@ -76,7 +79,9 @@ function main() {
   const raw = normalizePdfText(pdfToText(pdfPath, { layout: true }));
   if (!raw || raw.length < 50) {
     console.error("GUC merge: PDF text extraction returned empty/too small output.");
-    console.error("If this is a scanned PDF, OCR it first (e.g. with ocrmypdf), then re-run this script.");
+    console.error("This usually means the PDF is scanned (image-only). OCR it first, then re-run.");
+    console.error("Example: `ocrmypdf -l eng --rotate-pages --deskew input.pdf output-ocr.pdf`");
+    console.error("Then: `GUC_PDF=output-ocr.pdf node scripts/merge-guc-programmes-2025.mjs`");
     process.exitCode = 1;
     return;
   }
@@ -89,7 +94,11 @@ function main() {
   }
 
   const programmes = JSON.parse(fs.readFileSync(progPath, "utf8"));
-  const kept = programmes.filter((p) => String(p.university || "") !== UNIVERSITY_NAME);
+  const kept = programmes.filter((p) => {
+    const uni = String(p.university || "");
+    const uniShort = String(p.universityShort || "");
+    return uniShort !== UNIVERSITY_SHORT && uni !== UNIVERSITY_NAME;
+  });
 
   const incoming = names.map((name) => ({
     id: `guc-${slugify(name)}`,
@@ -102,7 +111,7 @@ function main() {
     duration: null,
     durationYears: null,
     description:
-      "Programme at Gaborone University College (GUC). Programme list extracted from an institution document; confirm entry requirements, duration, and modules with the institution.",
+      "Listed in GUC 2025 programmes brochure (docs/2025Programmes_copy.pdf). Confirm entry requirements, duration, and modules with the institution.",
     officialUrl: null,
     applyUrl: null,
     modules: [],
@@ -120,4 +129,3 @@ function main() {
 }
 
 main();
-
