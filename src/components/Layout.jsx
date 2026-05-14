@@ -1,4 +1,5 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
+import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
 
 const desktopLinks = [
@@ -25,12 +26,7 @@ export default function Layout() {
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <header className="sticky top-0 z-10 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-lg flex-wrap items-center justify-between gap-2 px-4 py-3 sm:max-w-3xl">
-          <Link
-            to="/"
-            className="focus-ring font-display text-lg font-semibold tracking-tight text-brand-900"
-          >
-            Thuto
-          </Link>
+          <BrandMark />
           <nav className="hidden items-center gap-0.5 sm:flex" aria-label="Primary desktop">
             {desktopLinks.map(({ to, label, end }) => (
               <NavLink key={to} to={to} end={end} className={navLinkClass}>

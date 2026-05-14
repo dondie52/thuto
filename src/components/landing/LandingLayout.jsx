@@ -1,16 +1,12 @@
 import { Link, Outlet } from "react-router-dom";
+import BrandMark from "../BrandMark.jsx";
 
 export default function LandingLayout() {
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col text-slate-900">
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <Link
-            to="/"
-            className="focus-ring font-display text-lg font-semibold tracking-tight text-brand-900"
-          >
-            Thuto
-          </Link>
+          <BrandMark />
           <nav className="hidden items-center gap-1 sm:flex" aria-label="Marketing">
             <Link
               to="/programmes"

@@ -1,0 +1,456 @@
+{
+  "universities": {
+    "before": 61,
+    "after": 61,
+    "added": 0
+  },
+  "programmes": {
+    "before": 639,
+    "after": 808,
+    "added": 169
+  },
+  "institutions": [
+    {
+      "id": "ub",
+      "name": "University of Botswana",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "biust",
+      "name": "BIUST",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "buan",
+      "name": "Botswana University of Agriculture and Natural Resources",
+      "universityAdded": false,
+      "programmesAdded": 37,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "limkokwing",
+      "name": "Limkokwing University of Creative Technology",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "botho",
+      "name": "Botho University",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": [
+        "pdf parsing not implemented for docs/Botho-University-2026-Botswana-Campus-Prospectus_copy.pdf"
+      ]
+    },
+    {
+      "id": "ba-isago",
+      "name": "BA ISAGO University",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "new-era",
+      "name": "New Era College",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "bou",
+      "name": "Botswana Open University",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "boitekanelo",
+      "name": "Boitekanelo College",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "abm",
+      "name": "ABM University College",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "idm",
+      "name": "Institute of Development Management (IDM) Botswana",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "bac",
+      "name": "Botswana School of Business Sciences",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "ihs",
+      "name": "Institute of Health Sciences (IHS)",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "bcet",
+      "name": "Botswana College of Engineering and Technology (BCET)",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "guc",
+      "name": "Gaborone University College of Law and Professional Studies (GUC)",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "isbs",
+      "name": "Imperial School of Business and Science",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "logan-business-college",
+      "name": "Logan Business College",
+      "universityAdded": false,
+      "programmesAdded": 9,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "lcibs",
+      "name": "London College of International Business Studies (LCIBS) Botswana",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "mega-size-college",
+      "name": "Mega Size College",
+      "universityAdded": false,
+      "programmesAdded": 9,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "gtc",
+      "name": "Gaborone Technical College",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "kanye-sda-nursing",
+      "name": "Kanye Seventh Day Adventist College of Nursing",
+      "universityAdded": false,
+      "programmesAdded": 4,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "bosa-bosele",
+      "name": "Bosa Bosele Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 10,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "oodi",
+      "name": "Oodi College of Applied Arts and Technology",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "pillar-of-success",
+      "name": "Pillar of Success Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "fctve",
+      "name": "Francistown College of Technical and Vocational Education",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "gips",
+      "name": "Gaborone Institute of Professional Studies",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "fire-college",
+      "name": "College of Fire & Safety (Fire College)",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "botswana-accountancy-training",
+      "name": "Botswana Institute of Chartered Accountants Training Centre",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "tlokweng-coe",
+      "name": "Tlokweng College of Education",
+      "universityAdded": false,
+      "programmesAdded": 1,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "serowe-coe",
+      "name": "Serowe College of Education",
+      "universityAdded": false,
+      "programmesAdded": 2,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "molepolole-coe",
+      "name": "Molepolole College of Education",
+      "universityAdded": false,
+      "programmesAdded": 1,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "roads-training-centre",
+      "name": "Roads Training Centre",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "dawn-training",
+      "name": "Dawn Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "cep-training",
+      "name": "CEP Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "learneasy",
+      "name": "LEARNeasy Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "stargems",
+      "name": "Stargems Diamond Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "homeland-college",
+      "name": "Homeland College",
+      "universityAdded": false,
+      "programmesAdded": 8,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "gcca",
+      "name": "Gaborone College of Culinary Arts",
+      "universityAdded": false,
+      "programmesAdded": 1,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "gaborone-commercial-college",
+      "name": "Gaborone Commercial College of Higher Studies",
+      "universityAdded": false,
+      "programmesAdded": 37,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "tebelopele",
+      "name": "Tebelopele College",
+      "universityAdded": false,
+      "programmesAdded": 2,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "byte-size-college",
+      "name": "Byte Size College",
+      "universityAdded": false,
+      "programmesAdded": 7,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "insurance-training-institute",
+      "name": "Insurance Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "realic",
+      "name": "Realic Professional and Technical College",
+      "universityAdded": false,
+      "programmesAdded": 8,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "crackit",
+      "name": "CrackiT College",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "palapye-technical-college",
+      "name": "Palapye Technical College",
+      "universityAdded": false,
+      "programmesAdded": 14,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "assembly-bible-college",
+      "name": "Assembly Bible College",
+      "universityAdded": false,
+      "programmesAdded": 4,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "bibf",
+      "name": "Botswana Institute of Banking and Finance",
+      "universityAdded": false,
+      "programmesAdded": 5,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "tonota-coe",
+      "name": "Tonota College of Education",
+      "universityAdded": false,
+      "programmesAdded": 1,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "bamalete-nursing",
+      "name": "Bamalete Lutheran School of Nursing",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "aafm",
+      "name": "Aviation Academy Flying Mission (AAFM)",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "jwaneng-technical-college",
+      "name": "Jwaneng Technical College",
+      "universityAdded": false,
+      "programmesAdded": 5,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "botswana-brigades",
+      "name": "Botswana Brigades",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "africa-insurance-training-institute",
+      "name": "Africa Insurance Training Institute",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "awil-college",
+      "name": "Awil College",
+      "universityAdded": false,
+      "programmesAdded": 4,
+      "programmesUpdated": 0,
+      "warnings": []
+    },
+    {
+      "id": "delta-training-academy",
+      "name": "Delta Training Academy",
+      "universityAdded": false,
+      "programmesAdded": 0,
+      "programmesUpdated": 0,
+      "warnings": []
+    }
+  ]
+}

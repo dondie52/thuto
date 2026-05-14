@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import LandingLayout from "./components/landing/LandingLayout.jsx";
 import Layout from "./components/Layout.jsx";
+import SplashScreen from "./components/SplashScreen.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import Home from "./pages/Home.jsx";
 import Predictor from "./pages/Predictor.jsx";
@@ -17,28 +19,49 @@ import Disclaimer from "./pages/Disclaimer.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
+const splashEnterMs = 1450;
+const splashExitMs = 550;
+
 export default function App() {
+  const [splashPhase, setSplashPhase] = useState("enter");
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const enterMs = prefersReducedMotion ? 550 : splashEnterMs;
+    const exitMs = prefersReducedMotion ? 80 : splashExitMs;
+    const exitTimer = window.setTimeout(() => setSplashPhase("exit"), enterMs);
+    const hideTimer = window.setTimeout(() => setSplashPhase("hidden"), enterMs + exitMs);
+
+    return () => {
+      window.clearTimeout(exitTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, []);
+
   return (
-    <Routes>
-      <Route element={<LandingLayout />}>
-        <Route path="/" element={<LandingPage />} />
-      </Route>
-      <Route element={<Layout />}>
-        <Route path="/app" element={<Home />} />
-        <Route path="/assistant" element={<Assistant />} />
-        <Route path="/fit-finder" element={<FitFinder />} />
-        <Route path="/predictor" element={<Predictor />} />
-        <Route path="/programmes" element={<Programmes />} />
-        <Route path="/programmes/:id" element={<ProgrammeDetail />} />
-        <Route path="/universities" element={<Universities />} />
-        <Route path="/universities/:id" element={<UniversityDetail />} />
-        <Route path="/saved" element={<SavedProgrammes />} />
-        <Route path="/compare" element={<CompareProgrammes />} />
-        <Route path="/share" element={<ShareAdmissionResult />} />
-        <Route path="/disclaimer" element={<Disclaimer />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route element={<LandingLayout />}>
+          <Route path="/" element={<LandingPage />} />
+        </Route>
+        <Route element={<Layout />}>
+          <Route path="/app" element={<Home />} />
+          <Route path="/assistant" element={<Assistant />} />
+          <Route path="/fit-finder" element={<FitFinder />} />
+          <Route path="/predictor" element={<Predictor />} />
+          <Route path="/programmes" element={<Programmes />} />
+          <Route path="/programmes/:id" element={<ProgrammeDetail />} />
+          <Route path="/universities" element={<Universities />} />
+          <Route path="/universities/:id" element={<UniversityDetail />} />
+          <Route path="/saved" element={<SavedProgrammes />} />
+          <Route path="/compare" element={<CompareProgrammes />} />
+          <Route path="/share" element={<ShareAdmissionResult />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+      {splashPhase !== "hidden" && <SplashScreen exiting={splashPhase === "exit"} />}
+    </>
   );
 }
