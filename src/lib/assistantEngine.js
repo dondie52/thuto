@@ -7,15 +7,18 @@ const MAX_RESULTS = 5;
 export function getProviderStatus() {
   const enabled = String(import.meta.env.VITE_AI_ENABLED || "").toLowerCase() === "true";
   const provider = String(import.meta.env.VITE_AI_PROVIDER || "").trim();
+  const hasSupabase = Boolean(
+    String(import.meta.env.VITE_SUPABASE_URL || "").trim() && String(import.meta.env.VITE_SUPABASE_ANON_KEY || "").trim(),
+  );
   return {
     enabled,
     provider,
-    configured: Boolean(enabled && provider),
-    label: enabled && provider ? `${provider} ready for a server-side integration` : "AI mode not configured yet",
+    configured: Boolean(enabled && provider && hasSupabase),
+    label: enabled && provider && hasSupabase ? `${provider} assistant ready` : "AI mode not configured yet",
     note:
-      enabled && provider
-        ? "This build still answers locally. Future AI calls should go through a server or serverless function."
-        : "Local mode is active and works offline after data is cached.",
+      enabled && provider && hasSupabase
+        ? "Gemini requests go through Supabase so provider keys stay server-side."
+        : "Local mode is active until AI flags and Supabase are configured.",
   };
 }
 
@@ -72,6 +75,102 @@ function applicationLineForUniversity(university) {
   if (open && close) return `${university.name}: applications listed from ${open} to ${close}.`;
   if (close) return `${university.name}: application close listed as ${close}.`;
   return `${university.name}: application dates are not listed in Thuto.`;
+}
+
+function compactModules(programme) {
+  return (programme.modules || [])
+    .flatMap((block) => block?.modules || [])
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
+function compactCareers(programme) {
+  return (programme.careerOpportunities?.length ? programme.careerOpportunities : programme.careers || [])
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
+function compactProgramme(programme, predictorSnap) {
+  const admission =
+    predictorSnap?.grades && predictorSnap?.total != null
+      ? evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total)
+      : null;
+  return {
+    id: programme.id,
+    name: programme.name,
+    university: programme.university,
+    field: programme.field,
+    faculty: programme.faculty,
+    qualification: programme.qualification,
+    studyMode: programme.studyMode,
+    minPoints: programmeHasAdmissionPoints(programme) ? programme.minPoints : null,
+    subjectRequirements: programme.subjectRequirements || {},
+    admissionStatus: admission?.status || null,
+    description: programme.description,
+    careers: compactCareers(programme),
+    modules: compactModules(programme),
+    href: `/programmes/${programme.id}`,
+  };
+}
+
+function compactUniversity(university) {
+  return {
+    id: university.id,
+    name: university.name,
+    location: university.location,
+    description: university.description,
+    applicationOpen: university.applicationOpen || null,
+    applicationClose: university.applicationClose || null,
+    applicationSummary: applicationLineForUniversity(university),
+    website: university.website || "",
+    applyUrl: university.applyUrl || "",
+    href: `/universities/${university.id}`,
+  };
+}
+
+export function buildGeminiAssistantContext({ question, programmes = [], universities = [], predictorSnap = null }) {
+  const q = String(question || "").trim();
+  const programmeMatches = findProgrammeMatches(q, programmes);
+  let rankedMatches = [];
+
+  if (predictorSnap?.grades && predictorSnap?.total != null) {
+    rankedMatches = rankProgrammeMatches(
+      programmes,
+      {
+        requirementGrades: predictorSnap.grades,
+        bestSixTotal: predictorSnap.total,
+        interests: q,
+        careerArea: q,
+        strengths: q,
+      },
+      { limit: MAX_RESULTS },
+    ).map((match) => match.programme);
+  }
+
+  const programmesById = new Map();
+  for (const programme of [...rankedMatches, ...programmeMatches]) {
+    if (programme?.id && !programmesById.has(programme.id)) {
+      programmesById.set(programme.id, programme);
+    }
+  }
+
+  const universityMatches = findUniversityMatches(q, universities);
+  const relevantUniversities = universityMatches.length ? universityMatches : universities.slice(0, MAX_RESULTS);
+
+  return {
+    source: "Thuto bundled programme and university data",
+    question: q,
+    predictor: predictorSnap?.grades && predictorSnap?.total != null
+      ? {
+          bestSixTotal: predictorSnap.total,
+          grades: predictorSnap.grades,
+        }
+      : null,
+    programmes: Array.from(programmesById.values()).slice(0, 8).map((programme) => compactProgramme(programme, predictorSnap)),
+    universities: relevantUniversities.slice(0, 6).map(compactUniversity),
+    guidance:
+      "Use this context first. If it is not enough, say what is missing and give general guidance without inventing official admission decisions.",
+  };
 }
 
 function programmeSummary(programme, predictorSnap) {

@@ -5,6 +5,8 @@ import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 
+const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
+
 export default function UniversityDetail() {
   const { id } = useParams();
   const [university, setUniversity] = useState(null);
@@ -78,8 +80,17 @@ export default function UniversityDetail() {
       </Link>
 
       <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{university.name}</h1>
-        <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          {university.logo ? (
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
+              <img src={assetUrl(university.logo)} alt={`${university.name} logo`} className="max-h-full max-w-full object-contain" />
+            </div>
+          ) : null}
+          <div className="min-w-0">
+            <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{university.name}</h1>
+            <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
+          </div>
+        </div>
         <p className="mt-3 text-sm leading-relaxed text-slate-700">{university.description}</p>
         <dl className="mt-4 space-y-2 border-t border-brand-100 pt-4 text-sm text-slate-600">
           {university.phone && (

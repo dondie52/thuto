@@ -98,20 +98,6 @@
     "sponsorshipTier": "standard"
   },
   {
-    "id": "francistown-coe",
-    "name": "Francistown College of Education",
-    "location": "Francistown",
-    "description": "Public teacher-education college preparing secondary and primary educators with emphasis on classroom practice and national curriculum alignment.",
-    "website": "https://www.moe.gov.bw/",
-    "phone": "+267 241 7366",
-    "applicationOpen": "2026-04-01",
-    "applicationClose": "2026-05-15",
-    "academicYearStart": "2026-08",
-    "applyUrl": "https://www.moe.gov.bw/",
-    "featured": false,
-    "sponsorshipTier": "standard"
-  },
-  {
     "id": "gtc",
     "name": "Gaborone Technical College",
     "location": "Gaborone",
@@ -192,20 +178,6 @@
     "applicationClose": "2026-08-31",
     "academicYearStart": "2026-09",
     "applyUrl": "https://www.bocodol.ac.bw/",
-    "featured": false,
-    "sponsorshipTier": "standard"
-  },
-  {
-    "id": "bca",
-    "name": "Botswana College of Agriculture",
-    "location": "Gaborone",
-    "description": "Agriculture and natural resources focused tertiary institution with practical and applied science training.",
-    "website": "https://www.bca.ac.bw/",
-    "phone": "+267 365 0100",
-    "applicationOpen": "2026-03-01",
-    "applicationClose": "2026-06-30",
-    "academicYearStart": "2026-08",
-    "applyUrl": "https://www.bca.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard"
   },
@@ -834,5 +806,17 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard"
+  },
+  {
+    "id": "naledi-training-institute",
+    "name": "Naledi Training Institute",
+    "location": "Gaborone",
+    "description": "Botswana training institute offering certificate, diploma, and short-course pathways in early childhood education, occupational health and safety, counselling, care giving, office administration, computing, and bookkeeping. Accreditation number listed by the institution: ETP0165.",
+    "website": "https://naleditraining.co.bw/",
+    "phone": "+267 71458649 / +267 77851168",
+    "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/naledi.jpg"
   }
 ]

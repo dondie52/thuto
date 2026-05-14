@@ -24,14 +24,12 @@ const UNIVERSITY_ALIASES = {
   "ba-isago": ["BA ISAGO University", "BA ISAGO"],
   abm: ["ABM University College", "ABM"],
   limkokwing: ["Limkokwing University of Creative Technology", "Limkokwing", "limkonkwing university of creative technology"],
-  "francistown-coe": ["Francistown College of Education"],
   gtc: ["Gaborone Technical College"],
   bou: ["Botswana Open University", "BOU"],
   boitekanelo: ["Boitekanelo College"],
   "new-era": ["New Era College"],
   gips: ["Gaborone Institute of Professional Studies", "GIPS"],
   bocodol: ["Botswana College of Distance and Open Learning", "BOCODOL"],
-  bca: ["Botswana College of Agriculture"],
   "botswana-accountancy-training": ["Botswana Institute of Chartered Accountants Training Centre"],
   "chobe-brigade": ["Chobe Vocational Training Centre"],
   kgale: ["Kgale College"],
@@ -84,6 +82,7 @@ const UNIVERSITY_ALIASES = {
     "Oodi College of Applied Arts and Technology (OCAAT)",
     "OCAAT",
   ],
+  "naledi-training-institute": ["Naledi Training Institute", "NTI"],
 };
 
 export function programmeBelongsToUniversity(programme, university) {
