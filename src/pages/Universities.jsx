@@ -62,22 +62,24 @@ export default function Universities() {
             className="flex flex-col rounded-2xl border border-brand-200 bg-white p-5 shadow-sm"
           >
             <div className="flex flex-1 flex-col">
-              {u.logo ? (
-                <Link
-                  to={`/universities/${u.id}`}
-                  className="mb-4 flex h-24 items-center justify-center rounded-2xl border border-brand-100 bg-brand-50/40 p-4 transition hover:border-brand-300 hover:bg-brand-50"
-                  aria-label={`${u.name} profile`}
-                >
-                  <img src={assetUrl(u.logo)} alt={`${u.name} logo`} className="max-h-full max-w-full object-contain" />
-                </Link>
-              ) : null}
-              <div className="min-w-0">
-                <h2 className="font-display text-lg font-semibold text-brand-900">
-                  <Link to={`/universities/${u.id}`} className="hover:text-brand-700 hover:underline">
-                    {u.name}
+              <div className="flex items-start gap-4">
+                {u.logo ? (
+                  <Link
+                    to={`/universities/${u.id}`}
+                    className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
+                    aria-label={`${u.name} profile`}
+                  >
+                    <img src={assetUrl(u.logo)} alt={`${u.name} logo`} className="max-h-full max-w-full object-contain" />
                   </Link>
-                </h2>
-                <p className="mt-1 text-xs font-medium text-brand-600">{u.location}</p>
+                ) : null}
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-display text-xl font-semibold leading-snug text-brand-900">
+                    <Link to={`/universities/${u.id}`} className="hover:text-brand-700 hover:underline">
+                      {u.name}
+                    </Link>
+                  </h2>
+                  <p className="mt-2 text-sm font-medium text-brand-600">{u.location}</p>
+                </div>
               </div>
               {u.featured ? (
                 <span className="mt-2 inline-flex w-fit rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900">
