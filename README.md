@@ -59,26 +59,42 @@ The `/fit-finder` page uses rule-based local scoring. It combines:
 
 Fit percentages are guidance for sorting and exploration only. They are not official admission scores.
 
-## Future AI mode
+## Gemini AI assistant
 
-No paid AI API is required. The current app does **not** call OpenAI, Gemini, Groq, OpenRouter, or any other paid AI
-provider from the browser.
+No paid AI API is required for local mode. When AI is enabled, the browser still does **not** call Gemini directly.
+The `/assistant` page sends the question plus compact Thuto context to the Supabase Edge Function at
+`supabase/functions/assistant/index.ts`, and that function calls Gemini with the server-side key.
 
-Future AI flags:
+Frontend flags:
 
 ```bash
 VITE_AI_ENABLED=true
 VITE_AI_PROVIDER=gemini
+VITE_SUPABASE_URL=https://xxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key
 ```
 
-These flags only tell the frontend that a future provider may exist. They are not secret keys.
+These flags are not secret keys. They only tell the frontend where the Supabase project is and whether the AI chat UI
+should try the `assistant` function before falling back to local mode.
 
-Never store Gemini, OpenAI, Groq, or OpenRouter API keys in Vite frontend variables. Vite exposes `VITE_*` values to
-browser code. Provider keys must live only in a server, backend, or serverless environment.
+Server-side Supabase secrets:
 
-An optional placeholder exists at `supabase/functions/assistant/index.ts`. It is not required to run Thuto. If you later
-deploy it, store provider keys as Supabase function secrets such as `GEMINI_API_KEY`, `OPENAI_API_KEY`, `GROQ_API_KEY`,
-or `OPENROUTER_API_KEY`, then implement provider calls server-side with local mode kept as the fallback.
+```bash
+supabase secrets set GEMINI_API_KEY=your_gemini_key
+supabase secrets set AI_PROVIDER=gemini
+supabase secrets set GEMINI_MODEL=gemini-2.5-flash
+supabase functions deploy assistant
+```
+
+Never store Gemini, OpenAI, Groq, OpenRouter, or similar provider keys in Vite frontend variables. Vite exposes `VITE_*`
+values to browser code. The Gemini key must live only in Supabase function secrets.
+
+The assistant uses a hybrid flow:
+
+- local programmes, universities, application dates, and saved predictor grades are compacted in the browser
+- Gemini receives only the relevant context, not the full catalogue
+- if Supabase, Gemini, or the network fails, the page answers with the bundled local assistant
+- browser speech recognition can fill the question box, and browser speech synthesis can read assistant replies aloud
 
 ## Live university application dates
 

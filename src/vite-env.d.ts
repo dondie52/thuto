@@ -3,6 +3,8 @@
 
 interface ImportMetaEnv {
   readonly VITE_UNIVERSITIES_REMOTE_URL?: string;
+  readonly VITE_AI_ENABLED?: string;
+  readonly VITE_AI_PROVIDER?: string;
   readonly VITE_SUPABASE_URL?: string;
   readonly VITE_SUPABASE_ANON_KEY?: string;
 }
