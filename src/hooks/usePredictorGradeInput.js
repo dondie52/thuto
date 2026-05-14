@@ -15,6 +15,18 @@ function newRow() {
   return { key, subjectId: "", grade: "" };
 }
 
+function toRow(row = {}) {
+  return {
+    key:
+      row.key ||
+      (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `r-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`),
+    subjectId: row.subjectId || "",
+    grade: row.grade || "",
+  };
+}
+
 /**
  * Shared BGCSE row state, validation, best-six breakdown, requirement grades, and session sync
  * (same keys as the Admission predictor page).
@@ -71,7 +83,7 @@ export function usePredictorGradeInput() {
   }
 
   function addRow() {
-    setRows((prev) => (prev.length >= 9 ? prev : [...prev, newRow()]));
+    setRows((prev) => (prev.length >= 12 ? prev : [...prev, newRow()]));
   }
 
   function removeRow(rowKey) {
@@ -85,6 +97,16 @@ export function usePredictorGradeInput() {
     setRows([newRow()]);
   }
 
+  function replaceRows(nextRows) {
+    const cleaned = Array.isArray(nextRows)
+      ? nextRows
+          .map((row) => toRow(row))
+          .filter((row) => row.subjectId || row.grade)
+          .slice(0, 12)
+      : [];
+    setRows(cleaned.length ? cleaned : [newRow()]);
+  }
+
   return {
     rows,
     setRows,
@@ -96,8 +118,9 @@ export function usePredictorGradeInput() {
     addRow,
     removeRow,
     resetRows,
-    canAdd: rows.length < 9,
-    /** All BGCSE subjects for select options */
+    replaceRows,
+    canAdd: rows.length < 12,
+    /** All predictor subjects for select options */
     bgcseSubjects: BGCSE_SUBJECTS,
   };
 }

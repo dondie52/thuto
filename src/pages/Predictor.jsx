@@ -6,6 +6,7 @@ import {
 import { usePredictorGradeInput } from "../hooks/usePredictorGradeInput.js";
 import PredictorGradeSection from "../components/PredictorGradeSection.jsx";
 import ProgrammePredictorResults from "../components/ProgrammePredictorResults.jsx";
+import CertificateImportCard from "../components/CertificateImportCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 
@@ -43,6 +44,7 @@ export default function Predictor() {
     addRow,
     removeRow,
     resetRows,
+    replaceRows,
     canAdd,
     bgcseSubjects,
   } = usePredictorGradeInput();
@@ -99,6 +101,15 @@ export default function Predictor() {
     document.getElementById("predictor-grade-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  function handleImportedRows(importedRows) {
+    replaceRows(importedRows);
+    hasAutoScrolledToResultsRef.current = false;
+    setShareFeedback(null);
+    requestAnimationFrame(() => {
+      document.getElementById("predictor-grade-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   async function handleShare() {
     if (!breakdown || breakdown.invalid || !results?.length) return;
     const text = buildShareText(breakdown.total, results);
@@ -117,7 +128,7 @@ export default function Predictor() {
         <h1 className="font-display text-2xl font-bold text-brand-900">Admission predictor</h1>
         <p className="mt-2 text-sm text-slate-600">
           Points: A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Best-six maximum = 48 pts. Your total is the sum of
-          your <strong>best six</strong> subjects (you can enter up to nine). Eligibility still checks subject
+          your <strong>best six</strong> subjects (you can enter up to twelve). Eligibility still checks subject
           requirements (e.g. Maths, English Language, Science) using your best grade in each category.
         </p>
       </div>
@@ -127,6 +138,8 @@ export default function Predictor() {
           {loadError}
         </p>
       )}
+
+      <CertificateImportCard onUseGrades={handleImportedRows} />
 
       <PredictorGradeSection
         rows={rows}

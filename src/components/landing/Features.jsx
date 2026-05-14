@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const features = [
   {
     title: "Admission predictor",
-    body: "Turn your BGCSE grades into points and see which programmes in the directory may line up with your profile.",
+    body: "Calculate your points and explore programmes that may match your results.",
     to: "/predictor",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
@@ -13,7 +13,7 @@ const features = [
   },
   {
     title: "Programme explorer",
-    body: "Filter by field and institution, open full programme pages, and see modules and careers side by side with requirements.",
+    body: "Browse programmes, requirements, careers, and modules in one place.",
     to: "/programmes",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
@@ -23,7 +23,7 @@ const features = [
   },
   {
     title: "University profiles",
-    body: "Skim where each institution is based, what it offers, and when applications tend to close - then jump to programmes.",
+    body: "Compare institutions, locations, and application timelines.",
     to: "/universities",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
@@ -33,7 +33,7 @@ const features = [
   },
   {
     title: "Course comparison",
-    body: "Pick up to three programmes and open a shareable comparison table for you, your family, or a counsellor.",
+    body: "Compare up to three programmes side by side.",
     to: "/compare",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
@@ -45,20 +45,29 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="border-y border-slate-100 bg-slate-50/50 py-16 sm:py-20" aria-labelledby="features-heading">
+    <section className="border-y border-slate-100 bg-slate-50/50 py-14 sm:py-18" aria-labelledby="features-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="mb-12 max-w-2xl">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            Apply with more confidence
+          </h2>
+          <p className="mt-3 text-base leading-relaxed text-slate-600">
+            Instead of opening multiple university websites and guessing where you qualify, use Thuto to build a clearer
+            shortlist before applications open.
+          </p>
+        </div>
         <h2 id="features-heading" className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
           Built for Botswana applicants
         </h2>
         <p className="mt-3 max-w-2xl text-base text-slate-600">
-          Everything runs in the browser as a lightweight PWA - no accounts required to explore the sample directory.
+          Designed for students comparing universities and programmes across Botswana.
         </p>
-        <ul className="mt-12 grid gap-6 sm:grid-cols-2">
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2">
           {features.map((f) => (
             <li key={f.title}>
               <Link
                 to={f.to}
-                className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-brand-200 hover:shadow-md"
+                className="group flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-brand-200 hover:shadow-md"
               >
                 <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-100 text-brand-800 transition group-hover:bg-brand-200">
                   {f.icon}

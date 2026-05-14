@@ -1,4 +1,4 @@
-import { BGCSE_SUBJECT_BY_ID } from "./bgcseSubjects.js";
+import { SUBJECTS_BY_ID } from "./bgcseSubjects.js";
 
 /**
  * Official Botswana BGCSE grade points for admission scoring.
@@ -69,7 +69,7 @@ export function computeBestSixBreakdown(rows) {
     if (!g) continue;
     const p = gradeToPoints(g);
     if (p == null) {
-      const meta = BGCSE_SUBJECT_BY_ID[row.subjectId];
+      const meta = SUBJECTS_BY_ID[row.subjectId];
       return {
         total: 0,
         counted: [],
@@ -77,7 +77,7 @@ export function computeBestSixBreakdown(rows) {
         invalid: `Invalid grade for ${meta?.label ?? row.subjectId}. Use A*, A–G, or U.`,
       };
     }
-    const meta = BGCSE_SUBJECT_BY_ID[row.subjectId];
+    const meta = SUBJECTS_BY_ID[row.subjectId];
     if (!meta) {
       return { total: 0, counted: [], dropped: [], invalid: "Unknown subject in row." };
     }
@@ -112,7 +112,7 @@ export function rowsToRequirementGrades(rows) {
     if (!g) continue;
     const pts = gradeToPoints(g);
     if (pts == null) continue;
-    const meta = BGCSE_SUBJECT_BY_ID[row.subjectId];
+    const meta = SUBJECTS_BY_ID[row.subjectId];
     if (!meta?.requirementKey) continue;
     const k = meta.requirementKey;
     if (best[k] == null || pts > best[k].points) {

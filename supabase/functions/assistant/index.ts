@@ -4,7 +4,9 @@ type ChatMessage = {
 };
 
 type AssistantRequest = {
+  action?: "chat" | "speak";
   question?: string;
+  text?: string;
   history?: ChatMessage[];
   localContext?: unknown;
 };
@@ -39,6 +41,16 @@ function jsonResponse(body: unknown, status = 200) {
 
 function cleanText(value: unknown, max = 4000) {
   return String(value || "").trim().slice(0, max);
+}
+
+function base64FromArrayBuffer(buffer: ArrayBuffer) {
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000;
+  let binary = "";
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
 }
 
 function compactHistory(history: unknown) {
@@ -105,6 +117,66 @@ Deno.serve(async (request) => {
     return jsonResponse({ error: "Method not allowed" }, 405);
   }
 
+  let body: AssistantRequest = {};
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse({ error: "Invalid JSON request" }, 400);
+  }
+
+  if (body.action === "speak") {
+    const elevenLabsKey = Deno.env.get("ELEVENLABS_API_KEY");
+    if (!elevenLabsKey) {
+      return jsonResponse({ error: "ElevenLabs is not configured on the server" }, 503);
+    }
+
+    const text = cleanText(body.text, 1200);
+    if (!text) {
+      return jsonResponse({ error: "Text is required" }, 400);
+    }
+
+    const voiceId = Deno.env.get("ELEVENLABS_VOICE_ID") || "21m00Tcm4TlvDq8ikWAM";
+    const modelId = Deno.env.get("ELEVENLABS_MODEL_ID") || "eleven_flash_v2_5";
+    const endpoint = `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(
+      voiceId,
+    )}?output_format=mp3_44100_128`;
+
+    const speechResponse = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "audio/mpeg",
+        "xi-api-key": elevenLabsKey,
+      },
+      body: JSON.stringify({
+        text,
+        model_id: modelId,
+        voice_settings: {
+          stability: 0.5,
+          similarity_boost: 0.75,
+        },
+      }),
+    });
+
+    if (!speechResponse.ok) {
+      const errorText = await speechResponse.text().catch(() => "");
+      return jsonResponse(
+        {
+          error: errorText || "ElevenLabs speech request failed",
+        },
+        502,
+      );
+    }
+
+    return jsonResponse({
+      provider: "elevenlabs",
+      model: modelId,
+      voiceId,
+      mimeType: speechResponse.headers.get("Content-Type") || "audio/mpeg",
+      audioContent: base64FromArrayBuffer(await speechResponse.arrayBuffer()),
+    });
+  }
+
   const provider = Deno.env.get("AI_PROVIDER") || "gemini";
   if (provider !== "gemini") {
     return jsonResponse({ error: "Only Gemini is configured for this assistant" }, 400);
@@ -113,13 +185,6 @@ Deno.serve(async (request) => {
   const geminiKey = Deno.env.get("GEMINI_API_KEY");
   if (!geminiKey) {
     return jsonResponse({ error: "Gemini is not configured on the server" }, 503);
-  }
-
-  let body: AssistantRequest = {};
-  try {
-    body = await request.json();
-  } catch {
-    return jsonResponse({ error: "Invalid JSON request" }, 400);
   }
 
   const question = cleanText(body.question, 1200);

@@ -103,7 +103,7 @@ export default function UniversitiesSection() {
   return (
     <section
       ref={sectionRef}
-      className="overflow-hidden border-t border-emerald-950/10 bg-[#f8f5ee] py-16 sm:py-20"
+      className="overflow-hidden border-t border-emerald-950/10 bg-[#f8f5ee] py-14 sm:py-18"
       aria-labelledby="unis-heading"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -116,15 +116,14 @@ export default function UniversitiesSection() {
               id="unis-heading"
               className="logo-showcase-copy mt-3 max-w-xl font-display text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"
             >
-              Recognizable institutions, now easier to scan.
+              Compare institutions across Botswana.
             </h2>
             <p className="logo-showcase-copy mt-4 max-w-xl text-base leading-relaxed text-slate-600">
-              Browse programmes across Botswana universities and training institutions, with familiar logos guiding you
-              through the directory.
+              Browse universities and training institutions, then jump straight into their programmes.
             </p>
           </div>
 
-          <div className="logo-showcase-copy flex flex-col gap-3 rounded-3xl border border-white/80 bg-white/65 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-5">
+          <div className="logo-showcase-copy flex flex-col gap-3 rounded-xl border border-white/80 bg-white/65 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-5">
             <div className="flex items-center justify-between gap-4">
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Featured</span>
               <span className="rounded-full bg-brand-700 px-3 py-1 text-xs font-bold text-white">
@@ -216,7 +215,7 @@ export default function UniversitiesSection() {
           >
             View all universities
           </Link>
-          <span className="text-sm text-slate-500">More profiles and programmes are inside the app.</span>
+          <span className="text-sm text-slate-500">Profiles include locations, programmes, and application timing.</span>
         </div>
       </div>
     </section>

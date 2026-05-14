@@ -116,7 +116,7 @@ export default function FitFinder() {
         <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Programme fit finder</p>
         <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Find programmes that may fit you</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Enter your BGCSE results and preferences to rank programmes using local data, sample admission rules, and
+          Enter your BGCSE or IGCSE results and preferences to rank programmes using local data, sample admission rules, and
           explainable scoring. This is guidance only - always verify with each university.
         </p>
       </header>

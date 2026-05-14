@@ -12,10 +12,11 @@ import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 
 const STARTER_QUESTIONS = [
-  "I have 36 points. What is the best programme for me?",
+  "I have 36 APS. What can I study?",
   "Which programmes lead to software careers?",
-  "When do applications close?",
-  "Show programmes with modules listed",
+  "Compare Computer Science and IT",
+  "What can I study with Maths Literacy?",
+  "Which applications are still open?",
 ];
 
 const speechRecognition =
@@ -81,23 +82,15 @@ function normalizeAssistantPayload(data) {
   };
 }
 
-function getSpeechSupportLabel() {
-  if (!speechRecognition && typeof window !== "undefined" && !window.speechSynthesis) {
-    return "Voice input and read aloud are not supported in this browser.";
-  }
-  if (!speechRecognition) return "Voice input is not supported in this browser.";
-  if (typeof window !== "undefined" && !window.speechSynthesis) return "Read aloud is not supported in this browser.";
-  return "";
-}
-
 export default function Assistant() {
-  useDocumentTitle("Assistant | Thuto");
+  useDocumentTitle("Ask Thuto | Thuto");
   const [question, setQuestion] = useState("");
   const [programmes, setProgrammes] = useState([]);
   const [universities, setUniversities] = useState([]);
   const [error, setError] = useState(null);
   const [isSending, setIsSending] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [speakingMessageId, setSpeakingMessageId] = useState(null);
   const [lastQuestion, setLastQuestion] = useState("");
   const [messages, setMessages] = useState(() => [
     createMessage(
@@ -110,9 +103,9 @@ export default function Assistant() {
     ),
   ]);
   const recognitionRef = useRef(null);
+  const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
   const providerStatus = getProviderStatus();
-  const speechSupportLabel = getSpeechSupportLabel();
 
   useEffect(() => {
     let cancelled = false;
@@ -139,6 +132,8 @@ export default function Assistant() {
   useEffect(() => {
     return () => {
       recognitionRef.current?.stop?.();
+      audioRef.current?.pause?.();
+      if (audioRef.current?.src?.startsWith("blob:")) URL.revokeObjectURL(audioRef.current.src);
       if (typeof window !== "undefined") window.speechSynthesis?.cancel();
     };
   }, []);
@@ -146,7 +141,7 @@ export default function Assistant() {
   const predictorSnap = useMemo(() => readPredictorSession(), []);
   const canUseGemini = providerStatus.configured && Boolean(getSupabase());
   const canListen = Boolean(speechRecognition);
-  const canSpeak = typeof window !== "undefined" && Boolean(window.speechSynthesis);
+  const canSpeak = Boolean(getSupabase()) || (typeof window !== "undefined" && Boolean(window.speechSynthesis));
 
   async function askGemini(value) {
     const supabase = getSupabase();
@@ -214,7 +209,7 @@ export default function Assistant() {
       ]);
     } catch (e) {
       const fallback = buildFallbackMessage(clean, "fallback");
-      setError(`Gemini could not answer just now, so I used Thuto's local data. ${e.message || ""}`.trim());
+      setError("Thuto could not complete the live answer just now, so it used available programme information.");
       setMessages((current) => [...current, fallback]);
     } finally {
       setIsSending(false);
@@ -254,23 +249,70 @@ export default function Assistant() {
     recognition.start();
   }
 
-  function readAloud(text) {
-    if (!canSpeak || !text) return;
+  function playBrowserSpeech(text) {
+    if (typeof window === "undefined" || !window.speechSynthesis || !text) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text.replace(/\s+/g, " ").slice(0, 1200));
     utterance.lang = "en-BW";
     window.speechSynthesis.speak(utterance);
   }
 
+  async function readAloud(message) {
+    const text = message?.content;
+    if (!canSpeak || !text || speakingMessageId) return;
+
+    const supabase = getSupabase();
+    if (!supabase) {
+      playBrowserSpeech(text);
+      return;
+    }
+
+    setSpeakingMessageId(message.id);
+    setError(null);
+    try {
+      audioRef.current?.pause?.();
+      if (audioRef.current?.src?.startsWith("blob:")) URL.revokeObjectURL(audioRef.current.src);
+
+      const { data, error: functionError } = await supabase.functions.invoke("assistant", {
+        body: { action: "speak", text },
+      });
+      if (functionError) throw functionError;
+      if (data?.error) throw new Error(data.error);
+      if (!data?.audioContent) throw new Error("ElevenLabs returned no audio");
+
+      const binary = atob(data.audioContent);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i += 1) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      const url = URL.createObjectURL(new Blob([bytes], { type: data.mimeType || "audio/mpeg" }));
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        setSpeakingMessageId(null);
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(url);
+        setSpeakingMessageId(null);
+        playBrowserSpeech(text);
+      };
+      await audio.play();
+    } catch (e) {
+      setError("ElevenLabs speech is unavailable just now, so Thuto used browser speech instead.");
+      playBrowserSpeech(text);
+      setSpeakingMessageId(null);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Gemini-guided support</p>
-        <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Assistant</h1>
+        <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
+        <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
-          Ask about programmes, universities, requirements, modules, careers, application dates, or what may fit your
-          saved grades. Thuto sends compact local context to Gemini when AI is configured, then falls back locally when
-          needed.
+          Ask about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.
         </p>
       </header>
 
@@ -278,10 +320,11 @@ export default function Assistant() {
         <div className="border-b border-brand-100 px-4 py-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold text-brand-900">
-                {canUseGemini ? "Gemini chat is active" : "Local fallback is active"}
+              <p className="text-sm font-semibold text-brand-900">What can I help you with?</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                Use this page to explore study options, understand requirements, compare programmes, and prepare for
+                applications.
               </p>
-              <p className="mt-1 text-xs text-slate-500">{providerStatus.note}</p>
             </div>
             <Link
               to="/fit-finder"
@@ -290,7 +333,18 @@ export default function Assistant() {
               Fit Finder
             </Link>
           </div>
-          {speechSupportLabel ? <p className="mt-2 text-xs text-slate-500">{speechSupportLabel}</p> : null}
+          <div className="mt-3 flex flex-wrap gap-2">
+            {STARTER_QUESTIONS.map((suggestion) => (
+              <button
+                key={suggestion}
+                type="button"
+                onClick={() => ask(suggestion)}
+                className="rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="max-h-[34rem] space-y-4 overflow-y-auto px-4 py-5" aria-live="polite">
@@ -309,26 +363,16 @@ export default function Assistant() {
                 {message.role === "assistant" ? (
                   <button
                     type="button"
-                    onClick={() => readAloud(message.content)}
-                    disabled={!canSpeak}
+                    onClick={() => readAloud(message)}
+                    disabled={!canSpeak || Boolean(speakingMessageId)}
                     className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-800 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
-                    aria-label="Read aloud"
-                    title={canSpeak ? "Read aloud" : "Read aloud is not supported"}
+                    aria-label={speakingMessageId === message.id ? "Reading aloud" : "Read aloud"}
+                    title={canSpeak ? "Read aloud with ElevenLabs" : "Read aloud unavailable"}
                   >
                     <VolumeIcon />
                   </button>
                 ) : null}
               </div>
-
-              {message.role === "assistant" && message.source ? (
-                <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-brand-700">
-                  {message.source === "gemini"
-                    ? `Gemini${message.usedLocalContext ? " with Thuto context" : ""}`
-                    : message.source === "fallback"
-                      ? "Local fallback"
-                      : "Local assistant"}
-                </p>
-              ) : null}
 
               {message.references?.length ? (
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -376,7 +420,7 @@ export default function Assistant() {
           ))}
           {isSending ? (
             <div className="max-w-[24rem] rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-3 text-sm text-slate-600">
-              Thinking with Thuto context...
+              Checking programme information...
             </div>
           ) : null}
           <div ref={messagesEndRef} />
@@ -387,7 +431,7 @@ export default function Assistant() {
             {error}
             {lastQuestion ? (
               <button type="button" onClick={retryLastQuestion} className="ml-2 font-semibold underline">
-                Retry Gemini
+                Try again
               </button>
             ) : null}
           </div>
@@ -403,7 +447,7 @@ export default function Assistant() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               rows={3}
-              placeholder="e.g. I passed 36 points. Which programme is best for me?"
+              placeholder="Example: I have 33 APS and enjoy maths and coding. Which programmes should I consider?"
               className="min-h-24 w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
             <div className="flex gap-2 md:flex-col">
@@ -416,7 +460,7 @@ export default function Assistant() {
                   isListening ? "border-brand-500 bg-brand-50 text-brand-900" : "",
                 ].join(" ")}
                 aria-label={isListening ? "Listening" : "Speak your question"}
-                title={canListen ? (isListening ? "Listening" : "Speak your question") : "Voice input is not supported"}
+                title={canListen ? (isListening ? "Listening" : "Speak your question") : "Speech entry unavailable"}
               >
                 <MicrophoneIcon active={isListening} />
               </button>
@@ -433,8 +477,8 @@ export default function Assistant() {
       </section>
 
       <p className="text-xs leading-relaxed text-slate-500">
-        Thuto avoids guessing. Gemini is asked to use local programme and university context first, and to say when
-        official requirements or dates are missing.
+        Thuto provides guidance based on available programme information. Always confirm final requirements and dates
+        with the university.
       </p>
     </div>
   );
