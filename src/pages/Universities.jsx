@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -63,15 +64,23 @@ export default function Universities() {
           >
             <div className="flex flex-1 flex-col">
               <div className="flex items-start gap-4">
-                {u.logo ? (
-                  <Link
-                    to={`/universities/${u.id}`}
-                    className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
-                    aria-label={`${u.name} profile`}
-                  >
-                    <img src={assetUrl(u.logo)} alt={`${u.name} logo`} className="max-h-full max-w-full object-contain" />
-                  </Link>
-                ) : null}
+                <Link
+                  to={`/universities/${u.id}`}
+                  className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
+                  aria-label={`${u.name} profile`}
+                >
+                  {resolveUniversityLogo(u) ? (
+                    <img
+                      src={assetUrl(resolveUniversityLogo(u))}
+                      alt={`${u.name} logo`}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  ) : (
+                    <span className="inline-flex h-14 min-w-14 items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-3 text-sm font-semibold tracking-wide text-brand-800">
+                      {deriveUniversityInitials(u)}
+                    </span>
+                  )}
+                </Link>
                 <div className="min-w-0 flex-1">
                   <h2 className="font-display text-xl font-semibold leading-snug text-brand-900">
                     <Link to={`/universities/${u.id}`} className="hover:text-brand-700 hover:underline">

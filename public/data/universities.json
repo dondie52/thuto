@@ -11,7 +11,8 @@
     "academicYearStart": "2026-08",
     "applyUrl": "https://www.ub.bw/admissions",
     "featured": true,
-    "sponsorshipTier": "core"
+    "sponsorshipTier": "core",
+    "logo": "university-logos/ub.jpg"
   },
   {
     "id": "biust",
@@ -25,7 +26,8 @@
     "academicYearStart": "2026-08",
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "featured": true,
-    "sponsorshipTier": "core"
+    "sponsorshipTier": "core",
+    "logo": "university-logos/biust.jpg"
   },
   {
     "id": "bac",
@@ -39,7 +41,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "featured": true,
-    "sponsorshipTier": "core"
+    "sponsorshipTier": "core",
+    "logo": "university-logos/bac.jpg"
   },
   {
     "id": "botho",
@@ -53,7 +56,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "featured": true,
-    "sponsorshipTier": "core"
+    "sponsorshipTier": "core",
+    "logo": "university-logos/botho.jpg"
   },
   {
     "id": "ba-isago",
@@ -67,7 +71,8 @@
     "academicYearStart": "2026-08",
     "applyUrl": "https://www.baisago.ac.bw/admissions",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/ba-isago.jpg"
   },
   {
     "id": "abm",
@@ -81,7 +86,8 @@
     "academicYearStart": "2026-08",
     "applyUrl": "https://www.abm.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/abm.jpg"
   },
   {
     "id": "limkokwing",
@@ -95,7 +101,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/limkokwing.jpg"
   },
   {
     "id": "gtc",
@@ -123,7 +130,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://www.bou.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/bou.jpg"
   },
   {
     "id": "boitekanelo",
@@ -137,7 +145,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://boitekanelo.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/boitekanelo.jpg"
   },
   {
     "id": "new-era",
@@ -151,7 +160,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://www.neweracollege.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/new-era.jpg"
   },
   {
     "id": "gips",
@@ -307,7 +317,8 @@
     "phone": "+267 241 2607",
     "applyUrl": null,
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/fctve.jpg"
   },
   {
     "id": "ihs",
@@ -371,7 +382,8 @@
     "academicYearStart": null,
     "applyUrl": "https://www.buan.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/buan.jpg"
   },
   {
     "id": "logan-business-college",

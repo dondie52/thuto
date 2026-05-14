@@ -4,6 +4,7 @@ import UniversityApplicationBlock from "../components/UniversityApplicationBlock
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -81,11 +82,19 @@ export default function UniversityDetail() {
 
       <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          {university.logo ? (
-            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
-              <img src={assetUrl(university.logo)} alt={`${university.name} logo`} className="max-h-full max-w-full object-contain" />
-            </div>
-          ) : null}
+          <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
+            {resolveUniversityLogo(university) ? (
+              <img
+                src={assetUrl(resolveUniversityLogo(university))}
+                alt={`${university.name} logo`}
+                className="max-h-full max-w-full object-contain"
+              />
+            ) : (
+              <span className="inline-flex h-14 min-w-14 items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-3 text-sm font-semibold tracking-wide text-brand-800">
+                {deriveUniversityInitials(university)}
+              </span>
+            )}
+          </div>
           <div className="min-w-0">
             <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{university.name}</h1>
             <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
