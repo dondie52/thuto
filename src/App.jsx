@@ -11,6 +11,7 @@ import UniversityDetail from "./pages/UniversityDetail.jsx";
 import SavedProgrammes from "./pages/SavedProgrammes.jsx";
 import CompareProgrammes from "./pages/CompareProgrammes.jsx";
 import FitFinder from "./pages/FitFinder.jsx";
+import Assistant from "./pages/Assistant.jsx";
 import ShareAdmissionResult from "./pages/ShareAdmissionResult.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
 import Privacy from "./pages/Privacy.jsx";
@@ -24,6 +25,7 @@ export default function App() {
       </Route>
       <Route element={<Layout />}>
         <Route path="/app" element={<Home />} />
+        <Route path="/assistant" element={<Assistant />} />
         <Route path="/fit-finder" element={<FitFinder />} />
         <Route path="/predictor" element={<Predictor />} />
         <Route path="/programmes" element={<Programmes />} />

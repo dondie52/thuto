@@ -12,6 +12,12 @@ import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import {
+  getProgrammeCareers,
+  getProgrammeInterests,
+  getProgrammeRelatedSubjects,
+  isFitFinderCompatible,
+} from "../lib/programmeInsights.js";
 
 const SORT_OPTIONS = [
   { value: "name_asc", label: "Name (A–Z)" },
@@ -351,6 +357,10 @@ export default function Programmes() {
         {filteredSorted.map((p) => {
           const rowEligibility = eligibilityById.get(p.id);
           const compareDisabled = !isSelected(p.id) && !canAdd;
+          const interests = getProgrammeInterests(p).slice(0, 3);
+          const careers = getProgrammeCareers(p).slice(0, 3);
+          const subjects = getProgrammeRelatedSubjects(p).slice(0, 3);
+          const fitCompatible = isFitFinderCompatible(p);
           return (
             <li key={p.id} className="flex items-stretch">
               <div className="flex shrink-0 items-center border-r border-brand-100 px-2">
@@ -369,20 +379,40 @@ export default function Programmes() {
               <Link
                 to={`/programmes/${p.id}`}
                 state={{ fromProgrammes: location.search }}
-                className="flex min-w-0 flex-1 flex-col gap-2 px-3 py-3 transition hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-4"
+                className="flex min-w-0 flex-1 flex-col gap-3 px-3 py-3 transition hover:bg-brand-50 sm:px-4"
               >
-                <div className="min-w-0">
-                  <span className="font-medium text-brand-900">{p.name}</span>
-                  <p className="text-xs text-slate-500">
-                    {p.university}
-                    {p.field ? ` · ${p.field}` : ""}
-                  </p>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
+                    <span className="font-medium text-brand-900">{p.name}</span>
+                    <p className="text-xs text-slate-500">
+                      {p.university}
+                      {p.field ? ` · ${p.field}` : ""}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
+                    {rowEligibility ? <EligibilityPill eligibility={rowEligibility} /> : null}
+                    <span className="text-xs font-medium text-brand-700">
+                      {programmeHasAdmissionPoints(p) ? `Min ${p.minPoints} pts` : "Min pts not listed"} →
+                    </span>
+                  </div>
                 </div>
-                <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
-                  {rowEligibility ? <EligibilityPill eligibility={rowEligibility} /> : null}
-                  <span className="text-xs font-medium text-brand-700">
-                    {programmeHasAdmissionPoints(p) ? `Min ${p.minPoints} pts` : "Min pts not listed"} →
-                  </span>
+                <div className="grid gap-1.5 text-xs text-slate-600 sm:grid-cols-2">
+                  <p>
+                    <span className="font-semibold text-slate-700">Best for: </span>
+                    {interests.length ? interests.join(", ") : "interests not listed"}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-slate-700">Careers: </span>
+                    {careers.length ? careers.join(", ") : "not listed"}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-slate-700">Subjects that help: </span>
+                    {subjects.length ? subjects.join(", ") : "not listed"}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-slate-700">Fit Finder: </span>
+                    {fitCompatible ? "compatible" : "limited data"}
+                  </p>
                 </div>
               </Link>
               <div className="flex items-center pr-2">

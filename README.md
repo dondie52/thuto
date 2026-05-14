@@ -1,6 +1,7 @@
 # Thuto (BUC)
 
-Progressive Web App MVP: Botswana University Companion - admission predictor (sample rules), programmes, and universities using local JSON (no backend).
+Progressive Web App MVP: Botswana University Companion - admission predictor, programme fit guidance,
+assistant, programmes, and universities using local JSON first.
 
 ## Prerequisites
 
@@ -30,10 +31,54 @@ Use Chrome or Edge on desktop or Android: open the app, then use **Install** / *
 
 ## Project layout
 
-- `src/pages` - Home, Predictor, Programmes, Programme detail, Universities
+- `src/pages` - Home, Assistant, Fit Finder, Predictor, Programmes, Programme detail, Universities
 - `src/lib/admissions.js` - grade points, best-six total, qualification status
+- `src/lib/assistantEngine.js` - local assistant replies and future AI provider status
+- `src/lib/fitFinder.js` - rule-based programme fit scoring and explanations
 - `public/data/programmes.json` - sample programmes (edit to extend)
-- `public/data/universities.json` - UB, BIUST, BAC
+- `public/data/universities.json` - university records and application windows
+
+## Local Assistant and Fit Finder
+
+Thuto is free-first and offline-friendly. The `/assistant` page works in **Local mode** by default and answers from:
+
+- `public/data/programmes.json`
+- `public/data/universities.json`
+- admission checks in `src/lib/admissions.js`
+- saved predictor grades, when available
+
+The assistant can help with programmes, universities, entry requirements, modules, careers, application dates, and
+"what can I study with my grades?" questions. If data is missing, it says the data is missing instead of guessing.
+
+The `/fit-finder` page uses rule-based local scoring. It combines:
+
+- BGCSE subjects and grades
+- interests, strengths, preferred career area, institution, qualification level, and study mode
+- subjects the student wants to avoid
+- sample admission compatibility from `src/lib/admissions.js`
+
+Fit percentages are guidance for sorting and exploration only. They are not official admission scores.
+
+## Future AI mode
+
+No paid AI API is required. The current app does **not** call OpenAI, Gemini, Groq, OpenRouter, or any other paid AI
+provider from the browser.
+
+Future AI flags:
+
+```bash
+VITE_AI_ENABLED=true
+VITE_AI_PROVIDER=gemini
+```
+
+These flags only tell the frontend that a future provider may exist. They are not secret keys.
+
+Never store Gemini, OpenAI, Groq, or OpenRouter API keys in Vite frontend variables. Vite exposes `VITE_*` values to
+browser code. Provider keys must live only in a server, backend, or serverless environment.
+
+An optional placeholder exists at `supabase/functions/assistant/index.ts`. It is not required to run Thuto. If you later
+deploy it, store provider keys as Supabase function secrets such as `GEMINI_API_KEY`, `OPENAI_API_KEY`, `GROQ_API_KEY`,
+or `OPENROUTER_API_KEY`, then implement provider calls server-side with local mode kept as the fallback.
 
 ## Live university application dates
 

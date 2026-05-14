@@ -3,7 +3,8 @@ import BottomNav from "./BottomNav.jsx";
 
 const desktopLinks = [
   { to: "/app", label: "App", end: true },
-  { to: "/fit-finder", label: "Fit finder" },
+  { to: "/assistant", label: "Assistant" },
+  { to: "/fit-finder", label: "Fit Finder" },
   { to: "/predictor", label: "Predictor" },
   { to: "/programmes", label: "Programmes" },
   { to: "/saved", label: "Saved" },

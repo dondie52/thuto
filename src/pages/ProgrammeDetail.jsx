@@ -14,6 +14,13 @@ import ProgrammeCommunityStats from "../components/ProgrammeCommunityStats.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import {
+  getProgrammeCareers,
+  getProgrammeInterests,
+  getProgrammeRelatedSubjects,
+  getSimilarProgrammes,
+  isFitFinderCompatible,
+} from "../lib/programmeInsights.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -53,20 +60,7 @@ export default function ProgrammeDetail() {
   }, [id]);
 
   const similarProgrammes = useMemo(() => {
-    if (!programme) return [];
-    const others = allProgrammes.filter((p) => p.id !== programme.id);
-    const byField = others.filter((p) => p.field === programme.field);
-    const byUni = others.filter((p) => p.field !== programme.field && p.university === programme.university);
-    const merged = [...byField, ...byUni];
-    const seen = new Set();
-    const out = [];
-    for (const p of merged) {
-      if (seen.has(p.id)) continue;
-      seen.add(p.id);
-      out.push(p);
-      if (out.length >= 3) break;
-    }
-    return out;
+    return getSimilarProgrammes(programme, allProgrammes, 3);
   }, [programme, allProgrammes]);
 
   const documentTitle = error
@@ -115,6 +109,10 @@ export default function ProgrammeDetail() {
 
   const admissionListed = programmeHasAdmissionPoints(programme);
   const profileCompleteness = programme.profileCompleteness ?? (programme.modules?.length && programme.careers?.length ? "full" : "partial");
+  const interests = getProgrammeInterests(programme);
+  const careers = getProgrammeCareers(programme);
+  const relatedSubjects = getProgrammeRelatedSubjects(programme);
+  const fitCompatible = isFitFinderCompatible(programme);
 
   return (
     <article className="space-y-6 pb-24 sm:pb-6">
@@ -202,6 +200,38 @@ export default function ProgrammeDetail() {
       </header>
 
       <ProgrammeCommunityStats programmeId={programme.id} />
+
+      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+        <h2 className="font-display text-lg font-semibold text-brand-900">Smart programme guide</h2>
+        <div className="mt-3 grid gap-4 text-sm sm:grid-cols-2">
+          <InsightBlock title="Best for students interested in" items={interests} empty="Interest tags are not listed yet." />
+          <InsightBlock title="Related careers" items={careers} empty="Career examples are not listed yet." />
+          <InsightBlock title="Subjects that help" items={relatedSubjects} empty="Related subjects are not listed yet." />
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Fit Finder compatible</p>
+            <p className="mt-1 text-slate-700">
+              {fitCompatible
+                ? "Yes - this profile has enough local signals for rule-based matching."
+                : "Limited - matching can still work, but this profile has missing local data."}
+            </p>
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {programme.studyMode ? (
+            <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-900">
+              {programme.studyMode}
+            </span>
+          ) : null}
+          {(programme.tags || []).slice(0, 5).map((tag) => (
+            <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+              {tag}
+            </span>
+          ))}
+          {!programme.studyMode && !(programme.tags || []).length ? (
+            <span className="text-xs text-slate-500">Study mode and tags are not listed for this programme.</span>
+          ) : null}
+        </div>
+      </section>
 
       {programme.description ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
@@ -308,13 +338,13 @@ export default function ProgrammeDetail() {
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Career prospects</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
-          {(programme.careers || []).map((c) => (
+          {careers.map((c) => (
             <li key={c} className="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-900">
               {c}
             </li>
           ))}
         </ul>
-        {!(programme.careers || []).length && (
+        {!careers.length && (
           <p className="text-sm text-slate-500">Career prospects are being prepared for this programme.</p>
         )}
       </section>
@@ -347,5 +377,24 @@ export default function ProgrammeDetail() {
 
       {compareIds.length > 0 ? <CompareSelectionBar ids={compareIds} onClear={clearCompare} /> : null}
     </article>
+  );
+}
+
+function InsightBlock({ title, items, empty }) {
+  return (
+    <div>
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+      {items.length ? (
+        <ul className="mt-2 flex flex-wrap gap-2">
+          {items.slice(0, 6).map((item) => (
+            <li key={item} className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-900">
+              {item}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-1 text-slate-500">{empty}</p>
+      )}
+    </div>
   );
 }

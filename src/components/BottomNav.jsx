@@ -12,6 +12,16 @@ const links = [
     ),
   },
   {
+    to: "/assistant",
+    label: "Ask",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5A3.5 3.5 0 017.5 2h9A3.5 3.5 0 0120 5.5v6A3.5 3.5 0 0116.5 15H10l-4.5 4v-4A3.5 3.5 0 014 11.5v-6z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 7h6M9 10.5h4" />
+      </svg>
+    ),
+  },
+  {
     to: "/predictor",
     label: "Predictor",
     icon: (
