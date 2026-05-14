@@ -292,5 +292,76 @@
     "applyUrl": "https://www.isbs.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard"
+  },
+  {
+    "id": "idm",
+    "name": "Institute of Development Management (IDM) Botswana",
+    "location": "Gaborone and Francistown",
+    "description": "Tertiary institution offering certificate, diploma, degree and postgraduate programmes across business, HR/OD and public health disciplines.",
+    "website": "https://www.idmbls.com/",
+    "phone": null,
+    "applyUrl": "https://www.idmbls.com/bw",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "fire-college",
+    "name": "College of Fire & Safety (Fire College)",
+    "location": "Botswana",
+    "description": "Accredited fire prevention, protection and rescue training provider offering qualification programmes in fire safety, fire technology and related fields.",
+    "website": "https://firecollege.co.bw/",
+    "phone": null,
+    "applyUrl": "https://firecollege.co.bw/qualifications-form/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "lcibs",
+    "name": "London College of International Business Studies (LCIBS) Botswana",
+    "location": "Gaborone",
+    "description": "Business-focused tertiary provider offering undergraduate Bachelor of Commerce programmes and certificate-level study.",
+    "website": "https://lcibs.ac.bw/",
+    "phone": "+267 397 1699",
+    "applyUrl": "https://lcibs.ac.bw/apply/",
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "bcet",
+    "name": "Botswana College of Engineering and Technology (BCET)",
+    "location": "Gaborone",
+    "description": "Public technical college (Ministry of Higher Education) offering engineering and built-environment diploma programmes.",
+    "website": null,
+    "phone": "+267 395 3961",
+    "applicationOpen": null,
+    "applicationClose": "2025-04-30",
+    "academicYearStart": "2025-07",
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "fctve",
+    "name": "Francistown College of Technical and Vocational Education",
+    "location": "Francistown",
+    "description": "Public technical and vocational college (Ministry of Higher Education) offering NCC craft certificates and diploma programmes.",
+    "website": null,
+    "phone": "+267 241 2607",
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard"
+  },
+  {
+    "id": "ihs",
+    "name": "Institute of Health Sciences (IHS)",
+    "location": "Botswana (multiple campuses)",
+    "description": "Public health sciences training institution(s) under the Ministry of Higher Education offering nursing and allied health programmes.",
+    "website": null,
+    "phone": null,
+    "applicationClose": "2026-05-22",
+    "academicYearStart": "2026-08",
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard"
   }
 ]

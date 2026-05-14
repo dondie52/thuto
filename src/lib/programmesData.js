@@ -37,6 +37,19 @@ const UNIVERSITY_ALIASES = {
   "chobe-brigade": ["Chobe Vocational Training Centre"],
   kgale: ["Kgale College"],
   bohss: ["Botswana Harvard Health Sciences"],
+  idm: ["Institute of Development Management (IDM) Botswana", "Institute of Development Management", "IDM"],
+  "fire-college": ["College of Fire & Safety (Fire College)", "College of Fire and Safety", "Fire College", "COFS"],
+  lcibs: [
+    "London College of International Business Studies (LCIBS) Botswana",
+    "London College of International Business Studies",
+    "LCIBS",
+  ],
+  bcet: ["Botswana College of Engineering and Technology (BCET)", "Botswana College of Engineering and Technology", "BCET"],
+  fctve: [
+    "Francistown College of Technical and Vocational Education",
+    "Francistown College of Technical & Vocational Education",
+  ],
+  ihs: ["Institute of Health Sciences (IHS)", "Institute of Health Sciences", "IHS"],
 };
 
 export function programmeBelongsToUniversity(programme, university) {
@@ -46,4 +59,3 @@ export function programmeBelongsToUniversity(programme, university) {
   const full = normalize(programme.university);
   return aliasSet.has(short) || aliasSet.has(full);
 }
-
