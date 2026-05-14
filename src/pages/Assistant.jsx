@@ -21,6 +21,29 @@ const STARTER_QUESTIONS = [
 const speechRecognition =
   typeof window !== "undefined" ? window.SpeechRecognition || window.webkitSpeechRecognition : null;
 
+function MicrophoneIcon({ active = false }) {
+  return (
+    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 14.5a3.5 3.5 0 003.5-3.5V6a3.5 3.5 0 00-7 0v5a3.5 3.5 0 003.5 3.5z"
+      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 10.5a7 7 0 0014 0M12 17.5V21M9 21h6" />
+      {active ? <path strokeLinecap="round" strokeLinejoin="round" d="M18.5 5.5 20 4M5.5 5.5 4 4" /> : null}
+    </svg>
+  );
+}
+
+function VolumeIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 9v6h4l5 4V5L8 9H4z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16 9.5a4 4 0 010 5M19 7a8 8 0 010 10" />
+    </svg>
+  );
+}
+
 function createMessage(role, content, extras = {}) {
   return {
     id:
@@ -288,10 +311,11 @@ export default function Assistant() {
                     type="button"
                     onClick={() => readAloud(message.content)}
                     disabled={!canSpeak}
-                    className="shrink-0 rounded-full border border-brand-200 bg-white px-2 py-1 text-xs font-semibold text-brand-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-800 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    aria-label="Read aloud"
                     title={canSpeak ? "Read aloud" : "Read aloud is not supported"}
                   >
-                    Speak
+                    <VolumeIcon />
                   </button>
                 ) : null}
               </div>
@@ -387,10 +411,14 @@ export default function Assistant() {
                 type="button"
                 onClick={startListening}
                 disabled={!canListen || isListening}
-                className="rounded-lg border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-800 shadow-sm hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
-                title={canListen ? "Speak your question" : "Voice input is not supported"}
+                className={[
+                  "inline-flex h-11 min-w-11 items-center justify-center rounded-lg border border-brand-200 bg-white px-3 text-brand-800 shadow-sm transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50",
+                  isListening ? "border-brand-500 bg-brand-50 text-brand-900" : "",
+                ].join(" ")}
+                aria-label={isListening ? "Listening" : "Speak your question"}
+                title={canListen ? (isListening ? "Listening" : "Speak your question") : "Voice input is not supported"}
               >
-                {isListening ? "Listening" : "Mic"}
+                <MicrophoneIcon active={isListening} />
               </button>
               <button
                 type="submit"
