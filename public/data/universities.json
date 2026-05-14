@@ -353,12 +353,12 @@
   },
   {
     "id": "guc",
-    "name": "Gaborone University College (GUC)",
+    "name": "Gaborone University College of Law and Professional Studies (GUC)",
     "location": "Gaborone",
-    "description": "Private tertiary institution offering diploma and degree programmes. Confirm official contact and application dates with the institution.",
-    "website": null,
-    "phone": null,
-    "applyUrl": null,
+    "description": "Private tertiary institution offering law and professional studies programmes. Confirm official contact details, application windows, and programme accreditation with the institution.",
+    "website": "https://www.guc.ac.bw/",
+    "phone": "+267 318 5596",
+    "applyUrl": "https://www.guc.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard"
   },
