@@ -372,5 +372,19 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard"
+  },
+  {
+    "id": "oodi",
+    "name": "Oodi College of Applied Arts and Technology",
+    "location": "Oodi",
+    "description": "Public technical college offering applied arts and technology diploma programmes. Address: Plot No. 188, Mmadikota Ward, Private Bag 003, Oodi, Botswana. Contacts: +267 368 4600 / 4700, Fax: +267 393 4696. 2026/27 programmes commence July 2026.",
+    "website": null,
+    "phone": "+267 368 4600",
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": "2026-07",
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard"
   }
 ]

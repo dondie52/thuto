@@ -55,6 +55,12 @@ const UNIVERSITY_ALIASES = {
     "Pillar of Success",
     "Pillar of Success Training Institute Botswana",
   ],
+  oodi: [
+    "Oodi College of Applied Arts and Technology",
+    "Oodi College of Applied Arts & Technology",
+    "Oodi College of Applied Arts and Technology (OCAAT)",
+    "OCAAT",
+  ],
 };
 
 export function programmeBelongsToUniversity(programme, university) {
