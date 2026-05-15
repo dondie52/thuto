@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { evaluateProgramme, readPredictorSession, SUBJECT_FIELDS } from "../lib/admissions.js";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { compareSelectionHref, getCompareIds, setCompareIds } from "../lib/compareSelection.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
@@ -72,8 +73,20 @@ export default function CompareProgrammes() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [error, setError] = useState(null);
+  const [storedCompareIds, setStoredCompareIds] = useState(() => getCompareIds());
 
-  const requestedIds = useMemo(() => parseIdsParam(searchParams.get("ids")), [searchParams]);
+  const rawIdsParam = searchParams.get("ids");
+  const hasIdsParam = rawIdsParam != null && rawIdsParam.trim() !== "";
+  const requestedIds = useMemo(() => parseIdsParam(rawIdsParam), [rawIdsParam]);
+  const effectiveIds = hasIdsParam ? requestedIds : storedCompareIds;
+
+  useEffect(() => {
+    if (hasIdsParam) return;
+    const href = compareSelectionHref(storedCompareIds);
+    if (!href) return;
+    const query = href.split("?")[1] || "";
+    setSearchParams(new URLSearchParams(query), { replace: true });
+  }, [hasIdsParam, setSearchParams, storedCompareIds]);
 
   useEffect(() => {
     let cancelled = false;
@@ -100,23 +113,25 @@ export default function CompareProgrammes() {
   const validationMessage = useMemo(() => {
     if (error) return error;
     if (!allProgrammes.length) return null;
-    if (requestedIds.length < 2) {
-      return "Add at least two programme IDs to compare, e.g. /compare?ids=ub-bsc-cs,ub-ba-econ";
+    if (effectiveIds.length < 2) {
+      return hasIdsParam
+        ? "Pick at least two programmes to compare. This link does not have enough programme IDs yet."
+        : "Pick at least two programmes to compare, then come back here for a side-by-side view.";
     }
-    if (requestedIds.length > 3) {
+    if (effectiveIds.length > 3) {
       return "You can compare at most three programmes at once. Remove extra ids from the URL.";
     }
-    const missing = requestedIds.filter((id) => !byId.has(id));
+    const missing = effectiveIds.filter((id) => !byId.has(id));
     if (missing.length) {
       return `Unknown programme id(s): ${missing.join(", ")}`;
     }
     return null;
-  }, [error, requestedIds, byId, allProgrammes.length]);
+  }, [error, effectiveIds, hasIdsParam, byId, allProgrammes.length]);
 
   const selected = useMemo(() => {
     if (validationMessage) return [];
-    return requestedIds.map((id) => byId.get(id)).filter(Boolean);
-  }, [requestedIds, byId, validationMessage]);
+    return effectiveIds.map((id) => byId.get(id)).filter(Boolean);
+  }, [effectiveIds, byId, validationMessage]);
 
   const minPointsList = selected.map((p) => p.minPoints).filter((n) => Number.isFinite(n));
   const minPtsLow = minPointsList.length ? Math.min(...minPointsList) : null;
@@ -140,11 +155,13 @@ export default function CompareProgrammes() {
 
   const removeProgrammeFromUrl = useCallback(
     (idToRemove) => {
-      const next = requestedIds.filter((x) => x !== idToRemove);
+      const next = effectiveIds.filter((x) => x !== idToRemove);
+      setCompareIds(next);
+      setStoredCompareIds(next);
       if (next.length === 0) setSearchParams({});
       else setSearchParams({ ids: next.join(",") });
     },
-    [requestedIds, setSearchParams],
+    [effectiveIds, setSearchParams],
   );
 
   const showDeadlineRow = selected.some((p) => p.applicationDeadline);

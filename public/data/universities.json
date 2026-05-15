@@ -12,7 +12,51 @@
     "applyUrl": "https://www.ub.bw/admissions",
     "featured": true,
     "sponsorshipTier": "core",
-    "logo": "university-logos/ub.jpg"
+    "logo": "university-logos/ub.jpg",
+    "resources": [
+      {
+        "title": "A Guide to Prospective Applicants 2026 - Undergraduate Admissions",
+        "category": "Application guide",
+        "url": "https://www.ub.bw/sites/default/files/2026-04/A-GUIDE_TO-PROSPECTIVE-APPLICANTS-2026-UNDEGRADUATE-14042026.pdf",
+        "format": "PDF",
+        "sourceLabel": "University of Botswana"
+      },
+      {
+        "title": "Step-by-step Online Application Guide",
+        "category": "How to apply",
+        "url": "https://www.ub.bw/sites/default/files/2021-02/2021-Online-Booklet_Edit-2.pdf",
+        "format": "PDF",
+        "sourceLabel": "University of Botswana"
+      },
+      {
+        "title": "2025/26 Financial Procedures",
+        "category": "Fees",
+        "url": "https://www.ub.bw/sites/default/files/2025-07/University_of_Botswana_2025-26_Schedule_of_Fees_Final-14072025.pdf",
+        "format": "PDF",
+        "sourceLabel": "University of Botswana"
+      },
+      {
+        "title": "Tuition Fee Payment Plan",
+        "category": "Fees",
+        "url": "https://www.ub.bw/sites/default/files/2021-09/Revised-Payment-Plan-Contract-07092021.pdf",
+        "format": "PDF",
+        "sourceLabel": "University of Botswana"
+      },
+      {
+        "title": "UB Almanac 2025/2026",
+        "category": "Calendar",
+        "url": "https://www.ub.bw/sites/default/files/2025-07/UB_Almanac_for_the_2025-2026_Academic_Year.pdf",
+        "format": "PDF",
+        "sourceLabel": "University of Botswana"
+      },
+      {
+        "title": "Undergraduate admissions page",
+        "category": "Admissions page",
+        "url": "https://www.ub.bw/study/undergraduate/how-apply-admission",
+        "format": "Web page",
+        "sourceLabel": "University of Botswana"
+      }
+    ]
   },
   {
     "id": "biust",
@@ -27,7 +71,37 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "featured": true,
     "sponsorshipTier": "core",
-    "logo": "university-logos/biust.jpg"
+    "logo": "university-logos/biust.jpg",
+    "resources": [
+      {
+        "title": "Undergraduate admissions hub",
+        "category": "Admissions page",
+        "url": "https://www.biust.ac.bw/undergraduate/",
+        "format": "Web page",
+        "sourceLabel": "BIUST"
+      },
+      {
+        "title": "How to Apply (Undergraduate)",
+        "category": "How to apply",
+        "url": "https://www.biust.ac.bw/undergraduate-how-to-apply/",
+        "format": "Web page",
+        "sourceLabel": "BIUST"
+      },
+      {
+        "title": "Entry requirements",
+        "category": "Application guide",
+        "url": "https://www.biust.ac.bw/entry-requirements/",
+        "format": "Web page",
+        "sourceLabel": "BIUST"
+      },
+      {
+        "title": "Undergraduate programmes",
+        "category": "Brochure",
+        "url": "https://www.biust.ac.bw/undergraduate-programmes/",
+        "format": "Web page",
+        "sourceLabel": "BIUST"
+      }
+    ]
   },
   {
     "id": "bac",
@@ -42,7 +116,23 @@
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "featured": true,
     "sponsorshipTier": "core",
-    "logo": "university-logos/bac.jpg"
+    "logo": "university-logos/bac.jpg",
+    "resources": [
+      {
+        "title": "Admissions and enrolment guide",
+        "category": "Admissions page",
+        "url": "https://www.bac.ac.bw/admissions.php",
+        "format": "Web page",
+        "sourceLabel": "BSBS/BAC"
+      },
+      {
+        "title": "Online application portal",
+        "category": "How to apply",
+        "url": "https://thitoacademics.bac.ac.bw/",
+        "format": "Web page",
+        "sourceLabel": "BSBS/BAC"
+      }
+    ]
   },
   {
     "id": "botho",

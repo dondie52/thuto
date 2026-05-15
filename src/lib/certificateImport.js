@@ -15,6 +15,8 @@ const GRADE_ALIASES = {
 };
 
 const VALID_GRADES = new Set(["A*", "A", "B", "C", "D", "E", "F", "G", "U"]);
+const MIN_READY_IMPORT_ROWS = 6;
+const MIN_PDF_TEXT_CHARS = 50;
 
 const OCR_OPTIONS = {
   tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789*&-/.:() ",
@@ -198,6 +200,23 @@ function createIssues(rows) {
   return issues;
 }
 
+function countReadyRows(rows) {
+  const seenSubjects = new Set();
+  let count = 0;
+
+  for (const row of rows) {
+    if (!row.subjectId || !VALID_GRADES.has(row.grade) || seenSubjects.has(row.subjectId)) continue;
+    seenSubjects.add(row.subjectId);
+    count += 1;
+  }
+
+  return count;
+}
+
+function hasEnoughReadyRows(rows) {
+  return countReadyRows(rows) >= MIN_READY_IMPORT_ROWS;
+}
+
 async function ensureOcrWorker(onProgress) {
   if (!ocrWorkerPromise) {
     ocrWorkerPromise = import("tesseract.js").then(async ({ createWorker }) => {
@@ -265,35 +284,42 @@ async function loadPdfJs() {
   return pdfjsLib;
 }
 
+async function renderPdfPageToCanvas(page) {
+  const viewport = page.getViewport({ scale: 2 });
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.ceil(viewport.width);
+  canvas.height = Math.ceil(viewport.height);
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (!context) return null;
+  await page.render({ canvasContext: context, viewport }).promise;
+  return canvas;
+}
+
 async function extractPdfText(file, onProgress) {
   const pdfjsLib = await loadPdfJs();
   const data = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data }).promise;
   const chunks = [];
-  const pageCanvases = [];
+  const pagesNeedingOcr = [];
+
+  if (typeof onProgress === "function") {
+    onProgress({ status: "Reading PDF text...", progress: 0 });
+  }
 
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
     if (typeof onProgress === "function") {
-      onProgress({ status: `Reading page ${pageNumber} of ${pdf.numPages}`, progress: pageNumber / pdf.numPages });
+      onProgress({ status: "Reading PDF text...", progress: pageNumber / pdf.numPages });
     }
     const page = await pdf.getPage(pageNumber);
     const content = await page.getTextContent().catch(() => null);
     const text = content?.items?.map((item) => item.str).join("\n").trim() || "";
     if (text) chunks.push(text);
-    if (!text || text.length < 50) {
-      const viewport = page.getViewport({ scale: 2 });
-      const canvas = document.createElement("canvas");
-      canvas.width = Math.ceil(viewport.width);
-      canvas.height = Math.ceil(viewport.height);
-      const context = canvas.getContext("2d", { willReadFrequently: true });
-      if (context) {
-        await page.render({ canvasContext: context, viewport }).promise;
-        pageCanvases.push(canvas);
-      }
+    if (!text || text.length < MIN_PDF_TEXT_CHARS) {
+      pagesNeedingOcr.push({ pageNumber, page });
     }
   }
 
-  return { text: chunks.join("\n"), pageCanvases, pageCount: pdf.numPages };
+  return { text: chunks.join("\n"), pagesNeedingOcr, pageCount: pdf.numPages };
 }
 
 export function reviewIssueLabel(type) {
@@ -327,19 +353,38 @@ export async function importCertificateFile(file, onProgress) {
   const isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
 
   if (isPdf) {
-    const { text, pageCanvases, pageCount } = await extractPdfText(file, onProgress);
+    const { text, pagesNeedingOcr, pageCount } = await extractPdfText(file, onProgress);
     let ocrText = text;
-    for (let index = 0; index < pageCanvases.length; index += 1) {
+    let rows = parseRowsFromText(ocrText);
+
+    if (hasEnoughReadyRows(rows)) {
+      if (typeof onProgress === "function") onProgress({ status: "Found subjects, preparing review...", progress: 1 });
+      return buildImportReview(rows, { kind: "pdf", pageCount, fileName: file.name }, ocrText);
+    }
+
+    for (let index = 0; index < pagesNeedingOcr.length; index += 1) {
+      const { page } = pagesNeedingOcr[index];
       if (typeof onProgress === "function") {
         onProgress({
-          status: `Scanning PDF page ${index + 1} of ${pageCanvases.length}`,
-          progress: (index + 1) / Math.max(pageCanvases.length, 1),
+          status: `Scanning page ${index + 1} of ${pagesNeedingOcr.length}...`,
+          progress: index / Math.max(pagesNeedingOcr.length, 1),
         });
       }
-      const nextText = await recognizeCanvas(pageCanvases[index], onProgress);
+      const canvas = await renderPdfPageToCanvas(page);
+      if (!canvas) continue;
+      const nextText = await recognizeCanvas(canvas, (message) => {
+        if (typeof onProgress !== "function") return;
+        onProgress({
+          ...message,
+          status: `Scanning page ${index + 1} of ${pagesNeedingOcr.length}...`,
+        });
+      });
       ocrText = [ocrText, nextText].filter(Boolean).join("\n");
+      rows = parseRowsFromText(ocrText);
+      if (hasEnoughReadyRows(rows)) break;
     }
-    const rows = parseRowsFromText(ocrText);
+
+    if (typeof onProgress === "function") onProgress({ status: "Found subjects, preparing review...", progress: 1 });
     return buildImportReview(rows, { kind: "pdf", pageCount, fileName: file.name }, ocrText);
   }
 

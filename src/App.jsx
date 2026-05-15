@@ -14,9 +14,15 @@ import SavedProgrammes from "./pages/SavedProgrammes.jsx";
 import CompareProgrammes from "./pages/CompareProgrammes.jsx";
 import FitFinder from "./pages/FitFinder.jsx";
 import Assistant from "./pages/Assistant.jsx";
+import Auth from "./pages/Auth.jsx";
 import ShareAdmissionResult from "./pages/ShareAdmissionResult.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
+import Profile from "./pages/Profile.jsx";
 import Privacy from "./pages/Privacy.jsx";
+import Settings from "./pages/Settings.jsx";
+import Sponsorships from "./pages/Sponsorships.jsx";
+import Support from "./pages/Support.jsx";
+import Upgrade from "./pages/Upgrade.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 const splashEnterMs = 1450;
@@ -47,15 +53,21 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/app" element={<Home />} />
           <Route path="/assistant" element={<Assistant />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/fit-finder" element={<FitFinder />} />
           <Route path="/predictor" element={<Predictor />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/programmes" element={<Programmes />} />
           <Route path="/programmes/:id" element={<ProgrammeDetail />} />
           <Route path="/universities" element={<Universities />} />
           <Route path="/universities/:id" element={<UniversityDetail />} />
           <Route path="/saved" element={<SavedProgrammes />} />
           <Route path="/compare" element={<CompareProgrammes />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/share" element={<ShareAdmissionResult />} />
+          <Route path="/sponsorships" element={<Sponsorships />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
