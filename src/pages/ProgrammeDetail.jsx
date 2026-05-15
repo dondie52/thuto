@@ -21,6 +21,7 @@ import {
   getSimilarProgrammes,
   isFitFinderCompatible,
 } from "../lib/programmeInsights.js";
+import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -101,11 +102,13 @@ export default function ProgrammeDetail() {
 
   const inCompare = isSelected(programme.id);
   const compareToggleDisabled = !inCompare && !canAdd;
+  const applyHref = safeExternalUrl(programme.applyUrl);
+  const officialHref = safeExternalUrl(programme.officialUrl);
 
   const hasApplicationBlock =
     programme.applicationDeadline ||
-    programme.applyUrl ||
-    programme.officialUrl;
+    applyHref ||
+    officialHref;
 
   const admissionListed = programmeHasAdmissionPoints(programme);
   const profileCompleteness = programme.profileCompleteness ?? (programme.modules?.length && programme.careers?.length ? "full" : "partial");
@@ -257,9 +260,9 @@ export default function ProgrammeDetail() {
             ) : null}
           </ul>
           <div className="mt-4 flex flex-wrap gap-3">
-            {programme.applyUrl ? (
+            {applyHref ? (
               <a
-                href={programme.applyUrl}
+                href={applyHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
@@ -267,9 +270,9 @@ export default function ProgrammeDetail() {
                 Apply / admissions
               </a>
             ) : null}
-            {programme.officialUrl ? (
+            {officialHref ? (
               <a
-                href={programme.officialUrl}
+                href={officialHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex rounded-xl border border-brand-300 bg-white px-4 py-2 text-sm font-semibold text-brand-800 shadow-sm hover:bg-brand-50"

@@ -24,6 +24,7 @@ import Sponsorships from "./pages/Sponsorships.jsx";
 import Support from "./pages/Support.jsx";
 import Upgrade from "./pages/Upgrade.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import AuthPage from "./pages/AuthPage.jsx";
 
 const splashEnterMs = 1450;
 const splashExitMs = 550;
@@ -47,6 +48,8 @@ export default function App() {
   return (
     <>
       <Routes>
+        <Route path="/login" element={<AuthPage mode="login" />} />
+        <Route path="/signup" element={<AuthPage mode="signup" />} />
         <Route element={<LandingLayout />}>
           <Route path="/" element={<LandingPage />} />
         </Route>

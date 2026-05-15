@@ -10,6 +10,7 @@ import { readPredictorSession } from "../lib/admissions.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
+import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
 const STARTER_QUESTIONS = [
   "I have 36 APS. What can I study?",
@@ -376,29 +377,30 @@ export default function Assistant() {
 
               {message.references?.length ? (
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {message.references.map((reference, index) =>
-                    reference.href ? (
-                      reference.external ? (
-                        <a
-                          key={`${reference.href}-${index}`}
-                          href={reference.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
-                        >
-                          {reference.title || "Open source"}
-                        </a>
-                      ) : (
-                        <Link
-                          key={`${reference.href}-${index}`}
-                          to={reference.href}
-                          className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
-                        >
-                          {reference.title || "Open in Thuto"}
-                        </Link>
-                      )
-                    ) : null,
-                  )}
+                  {message.references.map((reference, index) => {
+                    if (!reference.href) return null;
+                    const safeHref = reference.external ? safeExternalUrl(reference.href) : safeInternalPath(reference.href);
+                    if (!safeHref) return null;
+                    return reference.external ? (
+                      <a
+                        key={`${reference.href}-${index}`}
+                        href={safeHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
+                      >
+                        {reference.title || "Open source"}
+                      </a>
+                    ) : (
+                      <Link
+                        key={`${reference.href}-${index}`}
+                        to={safeHref}
+                        className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
+                      >
+                        {reference.title || "Open in Thuto"}
+                      </Link>
+                    );
+                  })}
                 </div>
               ) : null}
 

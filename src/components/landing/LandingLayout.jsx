@@ -27,14 +27,14 @@ export default function LandingLayout() {
               App
             </Link>
             <Link
-              to="/predictor"
+              to="/login?next=/predictor"
               className="focus-ring ml-1 rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-brand-800"
             >
               Check eligibility
             </Link>
           </nav>
           <Link
-            to="/predictor"
+            to="/login?next=/predictor"
             className="focus-ring rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-brand-800 sm:hidden"
           >
             Get started

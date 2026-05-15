@@ -5,12 +5,15 @@ import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
+import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
-  return resources.filter((resource) => resource?.title && resource?.url);
+  return resources
+    .map((resource) => ({ ...resource, href: safeExternalUrl(resource?.url) }))
+    .filter((resource) => resource?.title && resource.href);
 }
 
 function resourceActionLabel(resource) {
@@ -52,7 +55,7 @@ function UniversityResourcesSection({ resources }) {
         {resources.map((resource) => (
           <li key={`${resource.title}-${resource.url}`}>
             <a
-              href={resource.url}
+              href={resource.href}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex min-w-0 flex-col gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-sm transition hover:border-brand-300 hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between"
@@ -140,6 +143,7 @@ export default function UniversityDetail() {
   const fields = ["All", ...new Set(forUniversity.map((p) => p.field).filter(Boolean))];
   const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
   const resources = normalizeResources(university.resources);
+  const websiteHref = safeExternalUrl(university.website);
 
   return (
     <article className="space-y-6">
@@ -179,12 +183,12 @@ export default function UniversityDetail() {
               </dd>
             </div>
           )}
-          {university.website && (
+          {websiteHref && (
             <div>
               <dt className="text-xs font-medium text-slate-500">Website</dt>
               <dd>
                 <a
-                  href={university.website}
+                  href={websiteHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="break-all font-medium text-brand-700 hover:underline"

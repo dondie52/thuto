@@ -89,6 +89,17 @@ supabase functions deploy assistant
 Never store Gemini, OpenAI, Groq, OpenRouter, or similar provider keys in Vite frontend variables. Vite exposes `VITE_*`
 values to browser code. The Gemini key must live only in Supabase function secrets.
 
+### Supabase keep-alive
+
+The workflow at [`.github/workflows/keep-supabase-awake.yml`](.github/workflows/keep-supabase-awake.yml) pings the
+Supabase REST API once per day and can also be run manually from the GitHub Actions tab. It uses the same repository
+secrets as the Pages deploy:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+If either secret is missing, the job exits successfully with a notice instead of failing the workflow.
+
 The assistant uses a hybrid flow:
 
 - local programmes, universities, application dates, and saved predictor grades are compacted in the browser
