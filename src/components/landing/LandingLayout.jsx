@@ -9,19 +9,19 @@ export default function LandingLayout() {
           <BrandMark />
           <nav className="hidden items-center gap-1 sm:flex" aria-label="Marketing">
             <Link
-              to="/programmes"
+              to="/login?next=/programmes"
               className="focus-ring rounded-xl px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-white/80 hover:text-brand-900"
             >
               Programmes
             </Link>
             <Link
-              to="/universities"
+              to="/login?next=/universities"
               className="focus-ring rounded-xl px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-white/80 hover:text-brand-900"
             >
               Universities
             </Link>
             <Link
-              to="/app"
+              to="/login?next=/app"
               className="focus-ring rounded-xl px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-white/80 hover:text-brand-900"
             >
               App
