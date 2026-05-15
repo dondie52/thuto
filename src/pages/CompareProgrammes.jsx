@@ -5,6 +5,7 @@ import EligibilityPill from "../components/EligibilityPill.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { compareSelectionHref, getCompareIds, setCompareIds } from "../lib/compareSelection.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -165,7 +166,7 @@ export default function CompareProgrammes() {
   );
 
   const showDeadlineRow = selected.some((p) => p.applicationDeadline);
-  const showApplyRow = selected.some((p) => p.applyUrl);
+  const showApplyRow = selected.some((p) => safeExternalUrl(p.applyUrl));
 
   if (!error && !allProgrammes.length) {
     return (
@@ -279,22 +280,25 @@ export default function CompareProgrammes() {
             {showApplyRow ? (
               <tr>
                 <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500">Apply</th>
-                {selected.map((p) => (
-                  <td key={p.id} className="px-3 py-2">
-                    {p.applyUrl ? (
-                      <a
-                        href={p.applyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-medium text-brand-700 underline"
-                      >
-                        Apply / admissions
-                      </a>
-                    ) : (
-                      "-"
-                    )}
-                  </td>
-                ))}
+                {selected.map((p) => {
+                  const applyHref = safeExternalUrl(p.applyUrl);
+                  return (
+                    <td key={p.id} className="px-3 py-2">
+                      {applyHref ? (
+                        <a
+                          href={applyHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-brand-700 underline"
+                        >
+                          Apply / admissions
+                        </a>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ) : null}
             {reqKeys.map((key) => {
@@ -370,17 +374,20 @@ export default function CompareProgrammes() {
             </tr>
             <tr>
               <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500 align-top">Official</th>
-              {selected.map((p) => (
-                <td key={p.id} className="px-3 py-2">
-                  {p.officialUrl ? (
-                    <a href={p.officialUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-700 underline">
-                      Open page
-                    </a>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-              ))}
+              {selected.map((p) => {
+                const officialHref = safeExternalUrl(p.officialUrl);
+                return (
+                  <td key={p.id} className="px-3 py-2">
+                    {officialHref ? (
+                      <a href={officialHref} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-700 underline">
+                        Open page
+                      </a>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                );
+              })}
             </tr>
           </tbody>
         </table>

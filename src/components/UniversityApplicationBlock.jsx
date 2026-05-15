@@ -6,13 +6,14 @@ import {
   formatDisplayDate,
   isDeadlineWithinDays,
 } from "../lib/applicationDates.js";
+import { safeExternalUrl } from "../lib/urlSafety.js";
 
 /**
  * @param {{ university: object, compact?: boolean, profileLink?: boolean }} props
  */
 export default function UniversityApplicationBlock({ university: u, compact = false, profileLink = false }) {
   const hasWindow = u.applicationOpen || u.applicationClose;
-  const applyHref = u.applyUrl || u.website;
+  const applyHref = safeExternalUrl(u.applyUrl) || safeExternalUrl(u.website);
   const daysLeft = u.applicationClose ? daysFromTodayTo(u.applicationClose) : null;
   const urgent = u.applicationClose && isDeadlineWithinDays(u.applicationClose, 30);
   const countdown = u.applicationClose ? formatCountdown(u.applicationClose) : null;

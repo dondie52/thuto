@@ -16,6 +16,7 @@ import {
   saveFitAnswersToStorage,
 } from "../lib/fitFinder.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const STEPS = /** @type {const} */ (["grades", "profile", "results"]);
 
@@ -365,6 +366,7 @@ export default function FitFinder() {
 
 function FitResultCard({ match, isBookmarked, onToggle }) {
   const { programme, admission, fitScore, why, concerns, nextSteps, matchedInstitution, applyLink } = match;
+  const safeApplyLink = safeExternalUrl(applyLink);
   const status = admission.status;
   const badge =
     status === "Qualified"
@@ -402,9 +404,9 @@ function FitResultCard({ match, isBookmarked, onToggle }) {
                 {admission.status}
                 {admission.reason ? ` - ${admission.reason}` : ""}
               </p>
-              {applyLink ? (
+              {safeApplyLink ? (
                 <a
-                  href={applyLink}
+                  href={safeApplyLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-2 inline-flex font-semibold text-brand-700 underline"

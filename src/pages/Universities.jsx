@@ -4,6 +4,7 @@ import UniversityApplicationBlock from "../components/UniversityApplicationBlock
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
+import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -57,78 +58,81 @@ export default function Universities() {
       )}
 
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {universities.map((u) => (
-          <li
-            key={u.id}
-            className="flex flex-col rounded-2xl border border-brand-200 bg-white p-5 shadow-sm"
-          >
-            <div className="flex flex-1 flex-col">
-              <div className="flex items-start gap-4">
-                <Link
-                  to={`/universities/${u.id}`}
-                  className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
-                  aria-label={`${u.name} profile`}
-                >
-                  {resolveUniversityLogo(u) ? (
-                    <img
-                      src={assetUrl(resolveUniversityLogo(u))}
-                      alt={`${u.name} logo`}
-                      className="max-h-full max-w-full object-contain"
-                    />
-                  ) : (
-                    <span className="inline-flex h-14 min-w-14 items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-3 text-sm font-semibold tracking-wide text-brand-800">
-                      {deriveUniversityInitials(u)}
-                    </span>
-                  )}
-                </Link>
-                <div className="min-w-0 flex-1">
-                  <h2 className="font-display text-xl font-semibold leading-snug text-brand-900">
-                    <Link to={`/universities/${u.id}`} className="hover:text-brand-700 hover:underline">
-                      {u.name}
-                    </Link>
-                  </h2>
-                  <p className="mt-2 text-sm font-medium text-brand-600">{u.location}</p>
+        {universities.map((u) => {
+          const websiteHref = safeExternalUrl(u.website);
+          return (
+            <li
+              key={u.id}
+              className="flex flex-col rounded-2xl border border-brand-200 bg-white p-5 shadow-sm"
+            >
+              <div className="flex flex-1 flex-col">
+                <div className="flex items-start gap-4">
+                  <Link
+                    to={`/universities/${u.id}`}
+                    className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
+                    aria-label={`${u.name} profile`}
+                  >
+                    {resolveUniversityLogo(u) ? (
+                      <img
+                        src={assetUrl(resolveUniversityLogo(u))}
+                        alt={`${u.name} logo`}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    ) : (
+                      <span className="inline-flex h-14 min-w-14 items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-3 text-sm font-semibold tracking-wide text-brand-800">
+                        {deriveUniversityInitials(u)}
+                      </span>
+                    )}
+                  </Link>
+                  <div className="min-w-0 flex-1">
+                    <h2 className="font-display text-xl font-semibold leading-snug text-brand-900">
+                      <Link to={`/universities/${u.id}`} className="hover:text-brand-700 hover:underline">
+                        {u.name}
+                      </Link>
+                    </h2>
+                    <p className="mt-2 text-sm font-medium text-brand-600">{u.location}</p>
+                  </div>
                 </div>
+                {u.featured ? (
+                  <span className="mt-2 inline-flex w-fit rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900">
+                    Featured institution
+                  </span>
+                ) : null}
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{u.description}</p>
+                <div className="mt-4">
+                  <UniversityApplicationBlock university={u} compact profileLink />
+                </div>
+                <dl className="mt-4 space-y-2 border-t border-brand-100 pt-4 text-xs text-slate-600">
+                  {u.phone && (
+                    <div>
+                      <dt className="font-medium text-slate-500">Phone</dt>
+                      <dd>
+                        <a href={`tel:${String(u.phone).replace(/\s/g, "")}`} className="text-brand-700 hover:underline">
+                          {u.phone}
+                        </a>
+                      </dd>
+                    </div>
+                  )}
+                  {websiteHref && (
+                    <div>
+                      <dt className="font-medium text-slate-500">Website</dt>
+                      <dd>
+                        <a
+                          href={websiteHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="break-all font-medium text-brand-700 hover:underline"
+                        >
+                          {u.website}
+                        </a>
+                      </dd>
+                    </div>
+                  )}
+                </dl>
               </div>
-              {u.featured ? (
-                <span className="mt-2 inline-flex w-fit rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900">
-                  Featured institution
-                </span>
-              ) : null}
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{u.description}</p>
-              <div className="mt-4">
-                <UniversityApplicationBlock university={u} compact profileLink />
-              </div>
-              <dl className="mt-4 space-y-2 border-t border-brand-100 pt-4 text-xs text-slate-600">
-                {u.phone && (
-                  <div>
-                    <dt className="font-medium text-slate-500">Phone</dt>
-                    <dd>
-                      <a href={`tel:${String(u.phone).replace(/\s/g, "")}`} className="text-brand-700 hover:underline">
-                        {u.phone}
-                      </a>
-                    </dd>
-                  </div>
-                )}
-                {u.website && (
-                  <div>
-                    <dt className="font-medium text-slate-500">Website</dt>
-                    <dd>
-                      <a
-                        href={u.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="break-all font-medium text-brand-700 hover:underline"
-                      >
-                        {u.website}
-                      </a>
-                    </dd>
-                  </div>
-                )}
-              </dl>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
