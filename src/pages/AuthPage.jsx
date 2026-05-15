@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import BrandMark from "../components/BrandMark.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
@@ -33,6 +33,20 @@ export default function AuthPage({ mode }) {
   const [submitting, setSubmitting] = useState(false);
 
   const alternateHref = authLink(isSignup ? "/login" : "/signup", nextPath);
+
+  useEffect(() => {
+    if (!configured) return undefined;
+    let cancelled = false;
+    const sb = getSupabase();
+    sb?.auth.getSession().then(({ data }) => {
+      if (!cancelled && data?.session) {
+        navigate(nextPath, { replace: true });
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [configured, navigate, nextPath]);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -81,37 +95,40 @@ export default function AuthPage({ mode }) {
   }
 
   return (
-    <div className="thuto-page-bg min-h-dvh text-slate-900">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+    <div className="thuto-page-bg min-h-dvh overflow-hidden text-slate-900">
+      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <BrandMark />
         <Link
           to="/"
-          className="focus-ring rounded-xl px-3 py-2 text-sm font-semibold text-stone-600 transition hover:bg-white/80 hover:text-brand-900"
+          className="focus-ring rounded-xl border border-white/60 bg-white/45 px-3 py-2 text-sm font-semibold text-stone-600 shadow-sm backdrop-blur transition hover:bg-white/80 hover:text-brand-900"
         >
           Back home
         </Link>
       </header>
 
-      <main className="mx-auto grid min-h-[calc(100dvh-5.5rem)] w-full max-w-6xl items-center gap-8 px-4 pb-10 pt-3 sm:px-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <section className="hidden lg:block">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-brand-700">Thuto account</p>
-          <h1 className="mt-4 max-w-lg font-display text-5xl font-semibold leading-tight text-brand-900">
-            Keep your university path in one calm place.
-          </h1>
-          <p className="mt-5 max-w-md text-base leading-7 text-stone-600">
-            Save your shortlist, return to eligibility checks, and keep exploring programmes with a profile that follows
-            your planning.
-          </p>
-          <div className="mt-8 grid max-w-md grid-cols-3 gap-3">
-            {["Eligibility", "Shortlists", "Guidance"].map((label) => (
-              <div key={label} className="rounded-2xl border border-brand-100 bg-white/70 px-4 py-3 shadow-sm">
-                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-700">{label}</span>
-              </div>
-            ))}
+      <main className="relative z-10 mx-auto grid min-h-[calc(100dvh-5.5rem)] w-full max-w-6xl items-center gap-8 px-4 pb-10 pt-3 sm:px-6 lg:grid-cols-[0.95fr_1.05fr]">
+        <section className="relative hidden lg:block">
+          <div className="thuto-auth-ribbon pointer-events-none absolute -left-16 top-1/2 h-72 w-[34rem] -translate-y-1/2 rotate-[-7deg] rounded-[3rem] opacity-70" aria-hidden />
+          <div className="relative">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-brand-700">Thuto account</p>
+            <h1 className="mt-4 max-w-lg font-display text-5xl font-semibold leading-tight text-brand-900 drop-shadow-[0_1px_0_rgba(255,255,255,0.65)]">
+              Keep your university path in one calm place.
+            </h1>
+            <p className="mt-5 max-w-md text-base leading-7 text-stone-600">
+              Save your shortlist, return to eligibility checks, and keep exploring programmes with a profile that follows
+              your planning.
+            </p>
+            <div className="mt-8 grid max-w-md grid-cols-3 gap-3">
+              {["Eligibility", "Shortlists", "Guidance"].map((label) => (
+                <div key={label} className="rounded-2xl border border-white/70 bg-white/65 px-4 py-3 shadow-sm backdrop-blur">
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-700">{label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-md rounded-[1.75rem] border border-stone-200 bg-[var(--thuto-surface-elevated)] p-5 shadow-card sm:p-7">
+        <section className="thuto-surface-panel mx-auto w-full max-w-md rounded-[1.75rem] border border-white/70 p-5 shadow-card backdrop-blur-xl sm:p-7">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Student portal</p>
             <h2 className="mt-3 font-display text-3xl font-semibold text-brand-900">

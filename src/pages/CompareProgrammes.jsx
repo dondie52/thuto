@@ -170,23 +170,25 @@ export default function CompareProgrammes() {
 
   if (!error && !allProgrammes.length) {
     return (
-      <div className="space-y-4">
-        <h1 className="font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
-        <p className="text-sm text-slate-600">Loading programme data…</p>
+      <div className="thuto-surface-panel rounded-2xl border border-white/70 p-5 backdrop-blur">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
+        <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
+        <p className="mt-3 text-sm text-slate-600">Loading programme data...</p>
       </div>
     );
   }
 
   if (validationMessage || !selected.length) {
     return (
-      <div className="space-y-4">
-        <h1 className="font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
-        <p className="text-sm text-slate-700">{validationMessage ?? "Could not build comparison."}</p>
-        <div className="flex flex-wrap gap-3 text-sm">
-          <Link to="/programmes" className="font-medium text-brand-700 underline">
+      <div className="thuto-surface-panel overflow-hidden rounded-2xl border border-white/70 p-5 backdrop-blur sm:p-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
+        <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
+        <p className="mt-3 text-sm leading-6 text-slate-700">{validationMessage ?? "Could not build comparison."}</p>
+        <div className="mt-5 flex flex-wrap gap-3 text-sm">
+          <Link to="/programmes" className="focus-ring rounded-xl border border-brand-200 bg-white/80 px-4 py-2 font-semibold text-brand-800 shadow-sm transition hover:bg-brand-50">
             Browse programmes
           </Link>
-          <Link to="/saved" className="font-medium text-brand-700 underline">
+          <Link to="/saved" className="focus-ring rounded-xl border border-brand-200 bg-white/60 px-4 py-2 font-semibold text-brand-800 shadow-sm transition hover:bg-brand-50">
             Saved programmes
           </Link>
         </div>
@@ -195,19 +197,35 @@ export default function CompareProgrammes() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Side-by-side view for up to three programmes. Share this page using your browser - the list is in the URL.
-        </p>
+    <div className="space-y-5">
+      <div className="thuto-surface-panel overflow-hidden rounded-2xl border border-white/70 p-5 backdrop-blur sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
+            <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
+              Side-by-side view for up to three programmes. Share this page using your browser - the list is in the URL.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-brand-100 bg-white/60 p-2 text-center shadow-sm sm:min-w-48">
+            <div className="rounded-xl bg-brand-50/80 px-3 py-2">
+              <span className="block text-xl font-bold text-brand-900">{selected.length}</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-700">Selected</span>
+            </div>
+            <div className="rounded-xl bg-white/80 px-3 py-2">
+              <span className="block text-xl font-bold text-brand-900">{reqKeys.length}</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-700">Subjects</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-brand-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-card backdrop-blur">
+        <div className="overflow-x-auto">
         <table className="w-full min-w-[520px] border-collapse text-left text-sm">
           <thead>
-            <tr className="border-b border-brand-200 bg-brand-50/80">
-              <th className="sticky left-0 z-[1] min-w-[140px] bg-brand-50/95 px-3 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600">
+            <tr className="border-b border-brand-200 bg-brand-50/90">
+              <th className="sticky left-0 z-[1] min-w-[140px] bg-brand-50 px-3 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 shadow-[1px_0_0_rgba(153,246,228,0.75)]">
                 Detail
               </th>
               {selected.map((p) => {
@@ -391,9 +409,10 @@ export default function CompareProgrammes() {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
-      <p className="text-xs text-slate-500">
+      <p className="rounded-2xl border border-white/70 bg-white/55 px-4 py-3 text-xs leading-5 text-slate-600 shadow-sm backdrop-blur">
         Subject cells highlighted in amber differ between programmes in this comparison. Min points and fee highlights show the lowest and highest values in this set only (lower min points is easier; lower fees is cheaper).
       </p>
     </div>
