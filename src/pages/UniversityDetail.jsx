@@ -8,6 +8,72 @@ import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universi
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
+function normalizeResources(resources) {
+  if (!Array.isArray(resources)) return [];
+  return resources.filter((resource) => resource?.title && resource?.url);
+}
+
+function resourceActionLabel(resource) {
+  const format = String(resource?.format || "");
+  const url = String(resource?.url || "");
+  return format.toLowerCase().includes("pdf") || url.toLowerCase().includes(".pdf") ? "Download" : "Open";
+}
+
+function UniversityResourcesSection({ resources }) {
+  if (!resources.length) return null;
+
+  const categories = [...new Set(resources.map((resource) => resource.category).filter(Boolean))];
+
+  return (
+    <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="font-display text-lg font-semibold text-brand-900">Downloads & resources</h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-600">
+            Official guides, calendars, fees and application links from the institution.
+          </p>
+        </div>
+        <p className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+          {resources.length} {resources.length === 1 ? "resource" : "resources"}
+        </p>
+      </div>
+
+      {categories.length ? (
+        <div className="mt-3 flex flex-wrap gap-2" aria-label="Resource categories">
+          {categories.map((category) => (
+            <span key={category} className="rounded-full border border-brand-100 bg-white px-3 py-1 text-xs font-semibold text-brand-800">
+              {category}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      <ul className="mt-4 grid gap-3">
+        {resources.map((resource) => (
+          <li key={`${resource.title}-${resource.url}`}>
+            <a
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex min-w-0 flex-col gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-sm transition hover:border-brand-300 hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <span className="min-w-0">
+                <span className="block break-words font-semibold text-brand-900 group-hover:underline">{resource.title}</span>
+                <span className="mt-1 block text-xs leading-relaxed text-slate-500">
+                  {[resource.category, resource.format, resource.sourceLabel].filter(Boolean).join(" · ")}
+                </span>
+              </span>
+              <span className="inline-flex w-fit shrink-0 items-center rounded-full bg-brand-700 px-3 py-1 text-xs font-semibold text-white">
+                {resourceActionLabel(resource)}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 export default function UniversityDetail() {
   const { id } = useParams();
   const [university, setUniversity] = useState(null);
@@ -73,6 +139,7 @@ export default function UniversityDetail() {
   const forUniversity = programmes.filter((p) => programmeBelongsToUniversity(p, university));
   const fields = ["All", ...new Set(forUniversity.map((p) => p.field).filter(Boolean))];
   const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
+  const resources = normalizeResources(university.resources);
 
   return (
     <article className="space-y-6">
@@ -181,6 +248,8 @@ export default function UniversityDetail() {
           <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
         )}
       </section>
+
+      <UniversityResourcesSection resources={resources} />
     </article>
   );
 }

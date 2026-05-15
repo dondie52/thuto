@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
 
@@ -24,8 +25,8 @@ function navLinkClass({ isActive }) {
 export default function Layout() {
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:pb-6">
-      <header className="sticky top-0 z-10 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-lg flex-wrap items-center justify-between gap-2 px-4 py-3 sm:max-w-3xl">
+      <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
+        <div className="mx-auto flex max-w-lg flex-wrap items-center justify-between gap-2 px-4 py-3 sm:max-w-4xl">
           <BrandMark />
           <nav className="hidden items-center gap-0.5 sm:flex" aria-label="Primary desktop">
             {desktopLinks.map(({ to, label, end }) => (
@@ -34,6 +35,7 @@ export default function Layout() {
               </NavLink>
             ))}
           </nav>
+          <AccountDrawer />
           <span className="w-full text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
             Botswana University Companion
           </span>

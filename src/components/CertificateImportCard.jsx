@@ -16,7 +16,8 @@ function reviewSummary(issues) {
 }
 
 export default function CertificateImportCard({ onUseGrades }) {
-  const inputRef = useRef(null);
+  const photoInputRef = useRef(null);
+  const pdfInputRef = useRef(null);
   const [isBusy, setIsBusy] = useState(false);
   const [importError, setImportError] = useState("");
   const [progressLabel, setProgressLabel] = useState("");
@@ -28,8 +29,12 @@ export default function CertificateImportCard({ onUseGrades }) {
     };
   }, [review]);
 
-  function openPicker() {
-    inputRef.current?.click();
+  function openPhotoPicker() {
+    photoInputRef.current?.click();
+  }
+
+  function openPdfPicker() {
+    pdfInputRef.current?.click();
   }
 
   async function onFileChange(event) {
@@ -96,20 +101,37 @@ export default function CertificateImportCard({ onUseGrades }) {
               Upload a certificate photo or PDF, review what Thuto finds, then use the confirmed rows in your predictor.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={openPicker}
-            disabled={isBusy}
-            className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isBusy ? "Reading certificate..." : "Upload certificate"}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={openPhotoPicker}
+              disabled={isBusy}
+              className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isBusy ? "Reading..." : "Upload photo"}
+            </button>
+            <button
+              type="button"
+              onClick={openPdfPicker}
+              disabled={isBusy}
+              className="rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 shadow-sm hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Upload PDF
+            </button>
+          </div>
         </div>
         <input
-          ref={inputRef}
+          ref={photoInputRef}
           type="file"
-          accept="image/*,.pdf,application/pdf"
+          accept="image/*"
           capture="environment"
+          className="hidden"
+          onChange={onFileChange}
+        />
+        <input
+          ref={pdfInputRef}
+          type="file"
+          accept="application/pdf,.pdf"
           className="hidden"
           onChange={onFileChange}
         />
