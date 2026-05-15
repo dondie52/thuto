@@ -29,7 +29,7 @@ export default function Hero() {
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Link
-            to="/predictor"
+            to="/login?next=/predictor"
             className="focus-ring-on-dark inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg ring-1 ring-white/60 transition hover:bg-brand-50 hover:shadow-xl"
           >
             Check eligibility
