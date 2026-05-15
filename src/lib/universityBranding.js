@@ -12,6 +12,23 @@ export const UNIVERSITY_LOGO_BY_ID = {
   fctve: "university-logos/fctve.jpg",
   buan: "university-logos/buan.jpg",
   "naledi-training-institute": "university-logos/naledi.jpg",
+  gips: "university-logos/gips.jpeg",
+  idm: "university-logos/idm.jpeg",
+  guc: "university-logos/guc.jpeg",
+  oodi: "university-logos/oodi.jpeg",
+  "botswana-accountancy-training": "university-logos/botswana-accountancy-training.jpeg",
+  "serowe-coe": "university-logos/serowe-coe.jpeg",
+  "tlokweng-coe": "university-logos/tlokweng-coe.jpeg",
+  "molepolole-coe": "university-logos/molepolole-coe.jpeg",
+  "cep-training": "university-logos/cep-training.jpeg",
+  gcca: "university-logos/gcca.jpeg",
+  tebelopele: "university-logos/tebelopele.jpeg",
+  "insurance-training-institute": "university-logos/insurance-training-institute.jpeg",
+  realic: "university-logos/realic.jpeg",
+  bibf: "university-logos/bibf.jpeg",
+  "awil-college": "university-logos/awil-college.jpeg",
+  "elsimate-institute": "university-logos/elsimate-institute.jpeg",
+  "nampol-college-of-education": "university-logos/nampol-college-of-education.jpeg",
 };
 
 export function deriveUniversityInitials(university) {

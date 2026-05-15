@@ -83,6 +83,8 @@ const UNIVERSITY_ALIASES = {
     "OCAAT",
   ],
   "naledi-training-institute": ["Naledi Training Institute", "NTI"],
+  "elsimate-institute": ["ElsiMate Institute", "Elsimate Institute", "ELSIMATE INSTITUTE", "ElsiMate"],
+  "nampol-college-of-education": ["Nampol College of Education", "Nampol College Of Education", "NCE"],
 };
 
 export function programmeBelongsToUniversity(programme, university) {

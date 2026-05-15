@@ -830,5 +830,37 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "logo": "university-logos/naledi.jpg"
+  },
+  {
+    "id": "elsimate-institute",
+    "name": "ElsiMate Institute",
+    "location": "Gaborone",
+    "description": "BQA-registered and accredited TVET institute based at Gaborone West Industrial, offering diploma and certificate pathways in business, records management, occupational health and safety, logistics, law, computing, and related fields.",
+    "website": "https://elsimateinstitute.ac.bw/",
+    "phone": "+267 39 733 70 / +267 71 809 178",
+    "email": "customerservice@elsimate.co.bw",
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/elsimate-institute.jpeg"
+  },
+  {
+    "id": "nampol-college-of-education",
+    "name": "Nampol College of Education",
+    "location": "Molepolole",
+    "description": "College of education in Legotlhong Ward, Molepolole, offering education diplomas, early childhood education, and practical computing-related courses.",
+    "website": "https://nce.ac.bw/",
+    "phone": "+267 5910392 / +267 73804323",
+    "email": "enquiries@nce.ac.bw",
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://nce.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/nampol-college-of-education.jpeg"
   }
 ]

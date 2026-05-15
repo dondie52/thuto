@@ -33220,5 +33220,792 @@
     "duration": "Short course",
     "durationYears": null,
     "description": "Short Course in Bookkeeping and Accounting at Naledi Training Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution."
+  },
+  {
+    "id": "elsimate-institute-diploma-in-archives-and-records-management",
+    "name": "Diploma in Archives and Records Management",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/diploma-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Academic Writing & Study Skills",
+      "Managing Semi-Current Records",
+      "Arrangement & Description of Archives",
+      "Principles of Marketing",
+      "Human Resource Management",
+      "Project Management",
+      "Introduction to Records Management",
+      "Introduction to Archives Management",
+      "Computer Applications",
+      "Practicum 1",
+      "Introduction to Public Relations",
+      "Research Methods",
+      "Knowledge Management",
+      "Occupational Health & Safety",
+      "Preservation & Conservation",
+      "Basic Library & Information Management"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Diploma pathway at ElsiMate Institute covering archives, records management, preservation, knowledge management, project management, and workplace support modules. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-diploma-in-business-management",
+    "name": "Diploma in Business Management",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/diploma-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Introduction to Computer Applications",
+      "Principles of Management",
+      "Introduction to Accounting",
+      "Principles of Marketing",
+      "Introduction to Business Communication",
+      "Small Business & Entrepreneurship",
+      "Introduction to Business",
+      "Introduction to Quantitative Methods",
+      "Human Resource Management",
+      "Business and Industrial Psychology",
+      "Business Law - Botswana",
+      "Operations Management",
+      "Leadership",
+      "Managerial Accounting",
+      "Labour Law",
+      "Business Environment",
+      "Project Management",
+      "Entrepreneurial Behaviour & Dynamic Capabilities",
+      "Financial Planning and Management"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Diploma pathway at ElsiMate Institute covering management, accounting, marketing, entrepreneurship, business law, operations, leadership, and financial planning. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-diploma-in-occupational-health-and-safety",
+    "name": "Diploma in Occupational Health and Safety",
+    "field": "Health",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/diploma-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Communication & Study Skills",
+      "Information Technology",
+      "Occupational Health & Safety I",
+      "Safety Principles & Practice I",
+      "Risk Management",
+      "Environmental Management",
+      "Organizational Behaviour & Ethics",
+      "Bio Statistics & Research",
+      "Occupational Health & Safety II",
+      "Safety Principles & Practice II",
+      "Occupational Hygiene",
+      "Accident Investigation & Prevention",
+      "Occupational Health & Safety Legislation",
+      "Industrial Ergonomics",
+      "Emergency & Disaster Management",
+      "Toxicology",
+      "Epidemiology",
+      "Labour Law",
+      "Building Maintenance",
+      "Attachment"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Diploma pathway at ElsiMate Institute covering occupational safety, risk, environmental management, hygiene, legislation, emergency management, toxicology, epidemiology, and attachment. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Health"
+    ],
+    "tags": [
+      "Health"
+    ]
+  },
+  {
+    "id": "elsimate-institute-diploma-in-logistics-and-transport-management",
+    "name": "Diploma in Logistics and Transport Management",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/diploma-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Introduction to Business Communication",
+      "Introduction to Computer Applications",
+      "Introduction to Accounting",
+      "Principles of Purchasing & Supply",
+      "Principles of Logistics",
+      "Principles of Transport Management",
+      "Principles of Economics",
+      "Principles of Management",
+      "Introduction to Quantitative Methods",
+      "Health & Safety",
+      "Warehousing & Material Handling",
+      "Corporate Governance & Ethics",
+      "Supply Chain Management",
+      "Inventory & Stores Management",
+      "Transport Costing & Pricing",
+      "Distribution Channel Management",
+      "Marketing Management",
+      "Research Project"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Diploma pathway at ElsiMate Institute covering logistics, purchasing and supply, transport management, warehousing, inventory, distribution, costing, and marketing. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-foundation-certificate-in-accounting",
+    "name": "Foundation Certificate in Accounting",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Financial Accounting",
+      "Commercial Environment",
+      "Organizational Behaviour"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Foundation certificate at ElsiMate Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-foundation-certificate-in-business-management",
+    "name": "Foundation Certificate in Business Management",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Business Management",
+      "Principles of Marketing",
+      "Cost Accounting"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Foundation certificate at ElsiMate Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-foundation-certificate-in-human-resource-management",
+    "name": "Foundation Certificate in Human Resource Management",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Elementary Occupational Health & Safety",
+      "Introduction to Human Resource",
+      "Organizational Behaviour"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Foundation certificate at ElsiMate Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-foundation-certificate-in-secretarial-studies",
+    "name": "Foundation Certificate in Secretarial Studies",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Organizational Behaviour",
+      "Secretarial Principles",
+      "Business Communication"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Foundation certificate at ElsiMate Institute. Confirm entry requirements, fees, mode of study, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-law",
+    "name": "Certificate in Law",
+    "field": "Law",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Business Law",
+      "Criminal Law",
+      "Business Communication",
+      "Principles of Management",
+      "Corporate Governance",
+      "Introduction to Constitutional Law",
+      "Basic Industrial and Employment Relations"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering foundational law, governance, employment relations, and communication modules. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Law"
+    ],
+    "tags": [
+      "Law"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-procurement-and-logistics",
+    "name": "Certificate in Procurement and Logistics",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Principles of Procurement & Logistics Management",
+      "Supply Chain",
+      "Principles of Economics",
+      "Cost Accounting",
+      "Basic Bargaining & Negotiation Skills",
+      "Business Management",
+      "Business Law"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering procurement, logistics, supply chain, negotiation, business management, and business law. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-transport-and-fleet",
+    "name": "Certificate in Transport and Fleet",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Supply Chain",
+      "Business Law",
+      "Principles of Transport Management",
+      "Computer Applications",
+      "Principles of Management",
+      "Principles of Procurement & Logistics Management",
+      "Basic Bargaining & Negotiation Skills",
+      "Fleet Management"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering transport, fleet, supply chain, procurement, negotiation, and management modules. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-archives-and-records-management",
+    "name": "Certificate in Archives and Records Management",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Introduction to Archives Management",
+      "Introduction to Records Management",
+      "Organizational Behaviour",
+      "Computer Applications",
+      "Basic Library and Information Management",
+      "Preservation & Conservation",
+      "Managing E-Records",
+      "Principles of Management"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering archives, records, library information management, preservation, e-records, and management modules. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-project-management",
+    "name": "Certificate in Project Management",
+    "field": "Business",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Risk Management",
+      "Elementary Procurement & Logistics",
+      "Project Management",
+      "Cost Accounting",
+      "Principles of Management",
+      "Business Law",
+      "Basic Bargaining & Negotiation Skills"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering project management, risk, procurement, costing, business law, and negotiation modules. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Business"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-security-management",
+    "name": "Certificate in Security Management",
+    "field": "Law",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Elementary Security Management",
+      "Criminal Law",
+      "Risk Management",
+      "Principles of Management",
+      "Principles of Public Relations",
+      "Organizational Behaviour",
+      "Introduction to Psychology"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering security management, criminal law, risk, public relations, organizational behaviour, and psychology. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Law"
+    ],
+    "tags": [
+      "Law"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-ohs",
+    "name": "Certificate in OHS",
+    "field": "Health",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Elementary Occupational Health & Safety",
+      "Risk Management",
+      "First Aid & Basic Fire Management",
+      "Principles of Management",
+      "Accident Investigation",
+      "Introduction to Psychology",
+      "Environmental Management"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering occupational health and safety, risk, first aid, fire management, accident investigation, psychology, and environmental management. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Health"
+    ],
+    "tags": [
+      "Health"
+    ]
+  },
+  {
+    "id": "elsimate-institute-certificate-in-computer-studies",
+    "name": "Certificate in Computer Studies",
+    "field": "Computing",
+    "university": "ElsiMate Institute",
+    "universityShort": "ElsiMate",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://elsimateinstitute.ac.bw/certificate-courses/",
+    "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
+    "modules": [
+      "Computer Applications",
+      "Computer Systems Fundamentals",
+      "Business Communication",
+      "Arithmetic",
+      "Introduction to Programming",
+      "Network & Internet",
+      "Business Management",
+      "Managing E-Records"
+    ],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Full time, part time & distance",
+    "durationYears": null,
+    "description": "Certificate at ElsiMate Institute covering computer applications, systems fundamentals, programming, networks, business communication, and e-records. Confirm entry requirements, fees, and current intake dates with the institution.",
+    "interests": [
+      "Computing"
+    ],
+    "tags": [
+      "Computing"
+    ]
+  },
+  {
+    "id": "nampol-college-of-education-diploma-in-secondary-education",
+    "name": "Diploma in Secondary Education",
+    "field": "Education",
+    "university": "Nampol College of Education",
+    "universityShort": "NCE",
+    "minPoints": 30,
+    "subjectRequirements": {
+      "english": "C"
+    },
+    "officialUrl": "https://nce.ac.bw/diplomainsecondaryschool/",
+    "applyUrl": "https://nce.ac.bw/",
+    "modules": [],
+    "careers": [
+      "Secondary School Teacher",
+      "Education Officer or Administrator",
+      "Curriculum Developer",
+      "Educational Technology Specialist",
+      "Special Needs Educator",
+      "Guidance and Counselling Educator",
+      "Religious or Moral Education Instructor"
+    ],
+    "applicationDeadline": null,
+    "minPointsSource": "Nampol College of Education programme pages: minimum five O Level passes at BGCSE or equivalent, credits at Grade C or better including English, translating to at least 30 points or better.",
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "standard",
+    "sponsorshipTier": "standard",
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Three-year diploma designed to prepare secondary school teachers with subject knowledge, professional teaching skills, and practical teaching experience. Specialisation areas listed by Nampol include Mathematics, English, Business Studies, Social Studies, Moral Education, and Religious Education.",
+    "interests": [
+      "Education"
+    ],
+    "tags": [
+      "Education"
+    ]
+  },
+  {
+    "id": "nampol-college-of-education-diploma-in-primary-education",
+    "name": "Diploma in Primary Education",
+    "field": "Education",
+    "university": "Nampol College of Education",
+    "universityShort": "NCE",
+    "minPoints": 30,
+    "subjectRequirements": {
+      "english": "C"
+    },
+    "officialUrl": "https://nce.ac.bw/diplomainprimaryeducation/",
+    "applyUrl": "https://nce.ac.bw/",
+    "modules": [],
+    "careers": [
+      "Primary School Teacher",
+      "Educational Resource Developer",
+      "Curriculum Specialist for Primary Education",
+      "Educational Administrator or Coordinator",
+      "Special Needs Teacher",
+      "Educational Technology Facilitator",
+      "School Counsellor or Guidance Educator"
+    ],
+    "applicationDeadline": null,
+    "minPointsSource": "Nampol College of Education programme pages: minimum five O Level passes at BGCSE or equivalent, credits at Grade C or better including English, translating to at least 30 points or better.",
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "standard",
+    "sponsorshipTier": "standard",
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Three-year diploma designed to develop competent primary school teachers with foundational subject knowledge, teaching strategies, classroom practice, and support for holistic child development.",
+    "interests": [
+      "Education"
+    ],
+    "tags": [
+      "Education"
+    ]
+  },
+  {
+    "id": "nampol-college-of-education-diploma-in-early-childhood-education",
+    "name": "Diploma in Early Childhood Education",
+    "field": "Education",
+    "university": "Nampol College of Education",
+    "universityShort": "NCE",
+    "minPoints": 30,
+    "subjectRequirements": {
+      "english": "C"
+    },
+    "officialUrl": "https://nce.ac.bw/diplomainearlychildhoodeducation/",
+    "applyUrl": "https://nce.ac.bw/",
+    "modules": [],
+    "careers": [
+      "Early Childhood Educator",
+      "Child Care Center Administrator or Director",
+      "Early Childhood Education Consultant",
+      "Curriculum Developer for Early Childhood Education",
+      "Special Needs Educator for Early Childhood",
+      "Family and Community Liaison Officer",
+      "Educational Researcher"
+    ],
+    "applicationDeadline": null,
+    "minPointsSource": "Nampol College of Education programme pages: minimum five O Level passes at BGCSE or equivalent, credits at Grade C or better including English, translating to at least 30 points or better.",
+    "minPointsTier": "institution_minimum",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "standard",
+    "sponsorshipTier": "standard",
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Three-year diploma designed to prepare educators who support young children through early learning, child development, play-based teaching, safe learning environments, and family/community collaboration.",
+    "interests": [
+      "Education"
+    ],
+    "tags": [
+      "Education"
+    ]
+  },
+  {
+    "id": "nampol-college-of-education-certificate-v-in-early-childhood-education",
+    "name": "Certificate V in Early Childhood Education",
+    "field": "Education",
+    "university": "Nampol College of Education",
+    "universityShort": "NCE",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://nce.ac.bw/courses/",
+    "applyUrl": "https://nce.ac.bw/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Not specified",
+    "durationYears": null,
+    "description": "Certificate V course listed by Nampol College of Education. Confirm entry requirements, fees, modules, mode of study, and current intake dates with the institution.",
+    "interests": [
+      "Education"
+    ],
+    "tags": [
+      "Education"
+    ]
+  },
+  {
+    "id": "nampol-college-of-education-word-processing-and-spreadsheet-techniques",
+    "name": "Word Processing and Spreadsheet Techniques",
+    "field": "Computing",
+    "university": "Nampol College of Education",
+    "universityShort": "NCE",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "officialUrl": "https://nce.ac.bw/courses/",
+    "applyUrl": "https://nce.ac.bw/",
+    "modules": [],
+    "careers": [],
+    "applicationDeadline": null,
+    "minPointsSource": null,
+    "minPointsTier": "manual",
+    "minPointsScaleVersion": 2,
+    "profileCompleteness": "partial",
+    "sponsorshipTier": "standard",
+    "duration": "Not specified",
+    "durationYears": null,
+    "description": "Course listed by Nampol College of Education. Confirm entry requirements, fees, modules, mode of study, and current intake dates with the institution.",
+    "interests": [
+      "Computing"
+    ],
+    "tags": [
+      "Computing"
+    ]
   }
 ]
