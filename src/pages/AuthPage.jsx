@@ -5,6 +5,15 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { getSupabase, isSupabaseConfigured } from "../lib/supabase.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
 
+const authLogoTiles = [
+  { src: "university-logos/ub.jpg", alt: "University of Botswana" },
+  { src: "university-logos/biust.jpg", alt: "BIUST" },
+  { src: "university-logos/botho.jpg", alt: "Botho University" },
+  { src: "university-logos/bac.jpg", alt: "Botswana Accountancy College" },
+  { src: "university-logos/limkokwing.jpg", alt: "Limkokwing University" },
+  { src: "university-logos/bou.jpg", alt: "Botswana Open University" },
+];
+
 function getSafeNext(searchParams) {
   return safeInternalPath(searchParams.get("next")) || "/predictor";
 }
@@ -20,6 +29,7 @@ export default function AuthPage({ mode }) {
   const isSignup = mode === "signup";
   useDocumentTitle(`${isSignup ? "Sign up" : "Log in"} | Thuto`);
 
+  const baseUrl = import.meta.env.BASE_URL;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const nextPath = useMemo(() => getSafeNext(searchParams), [searchParams]);
@@ -118,6 +128,15 @@ export default function AuthPage({ mode }) {
               Save your shortlist, return to eligibility checks, and keep exploring programmes with a profile that follows
               your planning.
             </p>
+            <div className="mt-8 max-w-lg overflow-hidden rounded-[2rem] border border-white/70 bg-white/50 p-3 shadow-card backdrop-blur">
+              <div className="grid grid-cols-3 gap-3">
+                {authLogoTiles.map((logo) => (
+                  <div key={logo.src} className="flex h-24 items-center justify-center rounded-2xl border border-brand-100/70 bg-white/85 p-4 shadow-sm">
+                    <img src={`${baseUrl}${logo.src}`} alt={logo.alt} className="max-h-full max-w-full object-contain" loading="lazy" />
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className="mt-8 grid max-w-md grid-cols-3 gap-3">
               {["Eligibility", "Shortlists", "Guidance"].map((label) => (
                 <div key={label} className="rounded-2xl border border-white/70 bg-white/65 px-4 py-3 shadow-sm backdrop-blur">

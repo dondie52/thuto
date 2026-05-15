@@ -8,6 +8,12 @@ import { fetchProgrammes } from "../lib/programmesData.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
+const compareLogoStrip = [
+  { src: "university-logos/ub.jpg", alt: "University of Botswana" },
+  { src: "university-logos/biust.jpg", alt: "BIUST" },
+  { src: "university-logos/botho.jpg", alt: "Botho University" },
+  { src: "university-logos/bac.jpg", alt: "Botswana Accountancy College" },
+];
 
 /**
  * @param {string | null | undefined} raw
@@ -71,6 +77,7 @@ function formatApplicationDeadline(iso) {
 
 export default function CompareProgrammes() {
   useDocumentTitle("Compare programmes | Thuto");
+  const baseUrl = import.meta.env.BASE_URL;
   const [searchParams, setSearchParams] = useSearchParams();
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [error, setError] = useState(null);
@@ -199,13 +206,20 @@ export default function CompareProgrammes() {
   return (
     <div className="space-y-5">
       <div className="thuto-surface-panel overflow-hidden rounded-2xl border border-white/70 p-5 backdrop-blur sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
             <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
               Side-by-side view for up to three programmes. Share this page using your browser - the list is in the URL.
             </p>
+            <div className="mt-4 flex -space-x-2">
+              {compareLogoStrip.map((logo) => (
+                <span key={logo.src} className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-white p-1.5 shadow-sm">
+                  <img src={`${baseUrl}${logo.src}`} alt={logo.alt} className="max-h-full max-w-full rounded-full object-contain" loading="lazy" />
+                </span>
+              ))}
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-2 rounded-2xl border border-brand-100 bg-white/60 p-2 text-center shadow-sm sm:min-w-48">
             <div className="rounded-xl bg-brand-50/80 px-3 py-2">
