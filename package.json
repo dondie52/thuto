@@ -20,7 +20,8 @@
     "merge-new-era": "node scripts/merge-new-era-prospectus-2025.mjs",
     "merge-isbs": "node scripts/merge-isbs-prospectus-2025.mjs",
     "merge-admission-overrides": "node scripts/merge-admission-overrides.mjs",
-    "merge-docs": "npm run merge-ub-admissions && npm run merge-bac && npm run merge-bou && npm run merge-boitekanelo && npm run merge-new-era && npm run merge-isbs && npm run merge-admission-overrides"
+    "merge-docs": "npm run merge-ub-admissions && npm run merge-bac && npm run merge-bou && npm run merge-boitekanelo && npm run merge-new-era && npm run merge-isbs && npm run merge-admission-overrides",
+    "render:landing-video": "cd my-video && npx remotion render src/index.ts MyComp ../public/landing/thuto-scroll-story.mp4"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.1",
