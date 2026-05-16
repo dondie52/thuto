@@ -8,6 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
+    "video": "remotion studio src/Root.tsx",
+    "render:video": "remotion render src/Root.tsx ThutoBUC out/thuto-buc.mp4",
     "build": "vite build",
     "postbuild": "node scripts/copy-spa-404.mjs",
     "preview": "vite preview",
@@ -23,6 +25,7 @@
     "merge-docs": "npm run merge-ub-admissions && npm run merge-bac && npm run merge-bou && npm run merge-boitekanelo && npm run merge-new-era && npm run merge-isbs && npm run merge-admission-overrides"
   },
   "dependencies": {
+    "@remotion/cli": "^4.0.462",
     "@supabase/supabase-js": "^2.105.1",
     "gsap": "^3.15.0",
     "node-html-parser": "^7.0.1",
@@ -30,6 +33,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
+    "remotion": "^4.0.462",
     "tesseract.js": "^5.1.1"
   },
   "devDependencies": {
@@ -37,6 +41,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
+    "typescript": "^5.9.3",
     "vite": "^5.4.11",
     "vite-plugin-pwa": "^0.21.1"
   }
