@@ -31,9 +31,20 @@ export default {
           from: { opacity: "0", transform: "translateY(10px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "compare-in": {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "compare-check": {
+          "0%": { transform: "scale(0.96)", boxShadow: "0 0 0 0 rgba(15, 118, 110, 0.24)" },
+          "70%": { transform: "scale(1)", boxShadow: "0 0 0 7px rgba(15, 118, 110, 0)" },
+          "100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(15, 118, 110, 0)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out both",
+        "compare-in": "compare-in 220ms cubic-bezier(0.22, 1, 0.36, 1) both",
+        "compare-check": "compare-check 220ms cubic-bezier(0.22, 1, 0.36, 1) both",
       },
     },
   },

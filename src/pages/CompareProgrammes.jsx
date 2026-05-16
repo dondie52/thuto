@@ -13,9 +13,9 @@ const ROW_HEADER_CLASS =
 const CELL_CLASS = "min-w-[15rem] px-3 py-3 align-top sm:min-w-[16rem]";
 const EMPTY_MARK = <span className="text-stone-400">Not listed</span>;
 const ACTION_LINK_CLASS =
-  "focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-brand-700 bg-brand-700 px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-800";
+  "focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-brand-700 bg-brand-700 px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-800 hover:shadow-card motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]";
 const SECONDARY_ACTION_LINK_CLASS =
-  "focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-brand-200 bg-white/80 px-3 py-2 text-xs font-bold text-brand-800 shadow-sm transition hover:bg-brand-50";
+  "focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-brand-200 bg-white/80 px-3 py-2 text-xs font-bold text-brand-800 shadow-sm transition hover:bg-brand-50 hover:shadow-card motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]";
 
 /**
  * @param {string | null | undefined} raw
@@ -157,7 +157,7 @@ function MobileCompareCards({
 }) {
   return (
     <div className="grid gap-4 md:hidden">
-      {selected.map((p) => {
+      {selected.map((p, index) => {
         const minLow = Number.isFinite(p.minPoints) && p.minPoints === minPtsLow && minPtsLow !== minPtsHigh;
         const minHigh = Number.isFinite(p.minPoints) && p.minPoints === minPtsHigh && minPtsLow !== minPtsHigh;
         const minLabel = comparisonLabel(p.minPoints, minLow, minHigh);
@@ -187,7 +187,11 @@ function MobileCompareCards({
         const eligibility = eligibilityFor(p);
 
         return (
-          <article key={p.id} className="rounded-2xl border border-white/70 bg-white/85 p-4 shadow-card backdrop-blur">
+          <article
+            key={p.id}
+            className="rounded-2xl border border-white/70 bg-white/85 p-4 shadow-card backdrop-blur motion-safe:animate-compare-in motion-reduce:animate-none"
+            style={{ animationDelay: `${index * 45}ms` }}
+          >
             <div className="flex items-start gap-3">
               <span className="flex h-10 min-w-10 items-center justify-center rounded-full bg-brand-700 px-2 text-xs font-bold text-white">
                 {programmeInitials(p)}
@@ -203,7 +207,7 @@ function MobileCompareCards({
               <button
                 type="button"
                 onClick={() => removeProgrammeFromUrl(p.id)}
-                className="focus-ring inline-flex min-h-10 items-center rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs font-bold text-red-800 transition hover:bg-red-100"
+                className="focus-ring inline-flex min-h-10 items-center rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs font-bold text-red-800 transition hover:bg-red-100 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]"
               >
                 Remove
               </button>
@@ -520,9 +524,9 @@ export default function CompareProgrammes() {
                   onClick={() => toggleChosenProgramme(id)}
                   disabled={disabled}
                   className={[
-                    "focus-ring flex min-h-16 items-start gap-3 rounded-xl border px-3 py-3 text-left transition",
+                    "focus-ring flex min-h-16 items-start gap-3 rounded-xl border px-3 py-3 text-left transition motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 motion-safe:active:scale-[0.99] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
                     checked
-                      ? "border-brand-300 bg-brand-50 text-brand-950 shadow-sm"
+                      ? "border-brand-300 bg-brand-50 text-brand-950 shadow-sm motion-safe:animate-compare-check motion-reduce:animate-none"
                       : "border-white/80 bg-white/70 text-stone-700 hover:border-brand-200 hover:bg-white",
                     disabled && "cursor-not-allowed opacity-55",
                   ]
@@ -571,7 +575,7 @@ export default function CompareProgrammes() {
         showDeadlineRow={showDeadlineRow}
       />
 
-      <div className="hidden overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-card backdrop-blur md:block">
+      <div className="hidden overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-card backdrop-blur motion-safe:animate-compare-in motion-reduce:animate-none md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[56rem] border-collapse text-left text-sm">
             <caption className="sr-only">Programme comparison table</caption>
@@ -599,7 +603,7 @@ export default function CompareProgrammes() {
                         <button
                           type="button"
                           onClick={() => removeProgrammeFromUrl(p.id)}
-                          className="focus-ring -ml-2 inline-flex min-h-9 items-center self-start rounded-lg px-2 text-xs font-semibold text-red-700 underline decoration-red-200 underline-offset-4 transition hover:bg-red-50 hover:text-red-900"
+                          className="focus-ring -ml-2 inline-flex min-h-9 items-center self-start rounded-lg px-2 text-xs font-semibold text-red-700 underline decoration-red-200 underline-offset-4 transition hover:bg-red-50 hover:text-red-900 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]"
                         >
                           Remove
                         </button>
