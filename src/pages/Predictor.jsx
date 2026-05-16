@@ -9,6 +9,7 @@ import ProgrammePredictorResults from "../components/ProgrammePredictorResults.j
 import CertificateImportCard from "../components/CertificateImportCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import { scrollElementIntoView } from "../lib/motion.js";
 
 function buildShareText(breakdownTotal, results) {
   const qualified = results.filter((r) => r.status === "Qualified");
@@ -86,7 +87,7 @@ export default function Predictor() {
     if (hasAutoScrolledToResultsRef.current) return;
     hasAutoScrolledToResultsRef.current = true;
     requestAnimationFrame(() => {
-      resultsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      scrollElementIntoView(resultsSectionRef.current, { block: "nearest" });
     });
   }, [results, summary, breakdown]);
 
@@ -98,7 +99,7 @@ export default function Predictor() {
   }
 
   function scrollToGradeSection() {
-    document.getElementById("predictor-grade-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollElementIntoView(document.getElementById("predictor-grade-section"), { block: "start" });
   }
 
   function handleImportedRows(importedRows) {
@@ -106,7 +107,7 @@ export default function Predictor() {
     hasAutoScrolledToResultsRef.current = false;
     setShareFeedback(null);
     requestAnimationFrame(() => {
-      document.getElementById("predictor-grade-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollElementIntoView(document.getElementById("predictor-grade-section"), { block: "start" });
     });
   }
 

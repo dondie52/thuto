@@ -13,7 +13,7 @@ const links = [
   },
   {
     to: "/predictor",
-    label: "Predict",
+    label: "Predictor",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18M7 16l4-4 4 4 6-6" />
@@ -22,19 +22,10 @@ const links = [
   },
   {
     to: "/programmes",
-    label: "Programs",
+    label: "Programmes",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-      </svg>
-    ),
-  },
-  {
-    to: "/compare",
-    label: "Compare",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H5v14h4V5zm10 0h-4v14h4V5z" />
       </svg>
     ),
   },
@@ -57,20 +48,11 @@ const links = [
       </svg>
     ),
   },
-  {
-    to: "/universities",
-    label: "Univ",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9v0M9 12v0M9 15v0M9 18v0" />
-      </svg>
-    ),
-  },
 ];
 
 function linkClass({ isActive }) {
   return [
-    "focus-ring flex min-w-0 flex-col items-center gap-1 rounded-xl px-0.5 py-2 text-[9px] font-semibold leading-none transition-all duration-200",
+    "focus-ring flex min-h-[52px] min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[10px] font-semibold leading-none transition-all duration-200",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-stone-500 hover:bg-stone-100 hover:text-brand-800",
   ].join(" ");
 }
@@ -82,7 +64,7 @@ export default function BottomNav() {
       aria-label="Primary"
     >
       <div className="mx-auto max-w-lg rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md">
-        <div className="grid grid-cols-7 gap-0.5 px-1 py-1.5">
+        <div className="grid grid-cols-5 gap-1 px-1.5 py-1.5">
           {links.map(({ to, label, end, icon }) => (
             <NavLink key={to} to={to} end={end} className={linkClass}>
               {icon}

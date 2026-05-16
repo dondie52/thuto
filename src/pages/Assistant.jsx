@@ -10,6 +10,7 @@ import { readPredictorSession } from "../lib/admissions.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
+import { scrollElementIntoView } from "../lib/motion.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
 const STARTER_QUESTIONS = [
@@ -127,7 +128,7 @@ export default function Assistant() {
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    scrollElementIntoView(messagesEndRef.current, { block: "end" });
   }, [messages, isSending]);
 
   useEffect(() => {
@@ -356,7 +357,7 @@ export default function Assistant() {
                 "max-w-[48rem] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm",
                 message.role === "user"
                   ? "ml-auto bg-brand-700 text-white"
-                  : "border border-brand-100 bg-brand-50/70 text-slate-800",
+                  : "border border-brand-100 bg-brand-50/70 text-brand-950",
               ].join(" ")}
             >
               <div className="flex items-start justify-between gap-3">
@@ -421,7 +422,7 @@ export default function Assistant() {
             </article>
           ))}
           {isSending ? (
-            <div className="max-w-[24rem] rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-3 text-sm text-slate-600">
+            <div className="max-w-[24rem] rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-3 text-sm text-brand-800">
               Checking programme information...
             </div>
           ) : null}

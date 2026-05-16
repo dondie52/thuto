@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
 
@@ -49,6 +49,40 @@ const menuItems = [
   },
 ];
 
+const exploreItems = [
+  {
+    to: "/compare",
+    label: "Compare programmes",
+    description: "Review up to three options side by side",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H5v14h4V5zm10 0h-4v14h4V5z" />
+      </svg>
+    ),
+  },
+  {
+    to: "/universities",
+    label: "Universities",
+    description: "Institutions, locations, and application timing",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9v0M9 12v0M9 15v0M9 18v0" />
+      </svg>
+    ),
+  },
+  {
+    to: "/fit-finder",
+    label: "Fit Finder",
+    description: "Rank programmes from grades and preferences",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 12.5 9 16l10-10" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 20h16M4 4h9" />
+      </svg>
+    ),
+  },
+];
+
 function itemClass({ isActive }) {
   return [
     "focus-ring flex items-center gap-3 rounded-2xl border px-3 py-3 text-left transition",
@@ -58,10 +92,21 @@ function itemClass({ isActive }) {
   ].join(" ");
 }
 
+const focusableSelector = [
+  'button:not([disabled]):not([tabindex="-1"])',
+  '[href]:not([tabindex="-1"])',
+  'input:not([disabled]):not([tabindex="-1"])',
+  'select:not([disabled]):not([tabindex="-1"])',
+  'textarea:not([disabled]):not([tabindex="-1"])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(", ");
+
 export default function AccountDrawer() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [drawerError, setDrawerError] = useState("");
+  const dialogRef = useRef(null);
+  const triggerRef = useRef(null);
   const { accountMode, continueAsGuest, isLoading, logout, supabaseConfigured, user } = useAuth();
 
   const modeLabel = useMemo(() => {
@@ -76,11 +121,43 @@ export default function AccountDrawer() {
 
   useEffect(() => {
     if (!isOpen) return undefined;
+    const previouslyFocused = document.activeElement;
+
+    requestAnimationFrame(() => {
+      const firstFocusable = dialogRef.current?.querySelector(focusableSelector);
+      firstFocusable?.focus();
+    });
+
     function onKeyDown(event) {
-      if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(dialogRef.current?.querySelectorAll(focusableSelector) || []);
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
+
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      if (previouslyFocused instanceof HTMLElement && document.contains(previouslyFocused)) {
+        previouslyFocused.focus();
+      } else {
+        triggerRef.current?.focus();
+      }
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -115,6 +192,7 @@ export default function AccountDrawer() {
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
         className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-brand-100 bg-white/90 text-brand-800 shadow-sm transition hover:bg-brand-50 hover:text-brand-900"
@@ -127,12 +205,13 @@ export default function AccountDrawer() {
       </button>
 
       {isOpen ? (
-        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Account navigation">
+        <div ref={dialogRef} className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Account navigation">
           <button
             type="button"
             className="absolute inset-0 cursor-default bg-slate-950/35 backdrop-blur-[2px]"
             onClick={() => setIsOpen(false)}
             aria-label="Close account menu"
+            tabIndex={-1}
           />
           <aside className="absolute right-0 top-0 flex h-full w-[min(22rem,92vw)] flex-col border-l border-stone-200 bg-[var(--thuto-surface-elevated)] shadow-2xl">
             <div className="border-b border-stone-200 bg-brand-900 px-5 pb-5 pt-[calc(1.25rem+env(safe-area-inset-top))] text-white">
@@ -174,14 +253,30 @@ export default function AccountDrawer() {
                 </Link>
               </div>
 
-              <nav className="mt-4 space-y-1" aria-label="Account">
+              <nav className="mt-4 space-y-1" aria-label="More tools">
+                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">More tools</p>
+                {exploreItems.map(({ to, label, description, icon }) => (
+                  <NavLink key={to} to={to} className={itemClass}>
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
+                      {icon}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block break-words text-sm font-semibold">{label}</span>
+                      <span className="block truncate text-xs text-stone-500">{description}</span>
+                    </span>
+                  </NavLink>
+                ))}
+              </nav>
+
+              <nav className="mt-5 space-y-1" aria-label="Account">
+                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">Account</p>
                 {menuItems.map(({ to, label, description, icon }) => (
                   <NavLink key={to} to={to} className={itemClass}>
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
                       {icon}
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-sm font-semibold">{label}</span>
+                      <span className="block break-words text-sm font-semibold">{label}</span>
                       <span className="block truncate text-xs text-stone-500">{description}</span>
                     </span>
                   </NavLink>

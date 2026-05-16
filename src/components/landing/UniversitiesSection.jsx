@@ -45,10 +45,15 @@ export default function UniversitiesSection() {
     if (!section || !track) return undefined;
 
     const ctx = gsap.context(() => {
+      if (reducedMotion) {
+        gsap.set(".logo-showcase-copy, .logo-card", { autoAlpha: 1, clearProps: "transform" });
+        return undefined;
+      }
+
       gsap.set(".logo-showcase-copy", { autoAlpha: 0, y: 18 });
       gsap.set(".logo-card", { autoAlpha: 0, y: 22, scale: 0.96 });
 
-      const reveal = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+      const reveal = gsap.timeline({ paused: true, defaults: { ease: "expo.out" } });
       reveal
         .to(".logo-showcase-copy", { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.08 })
         .to(".logo-card", { autoAlpha: 1, y: 0, scale: 1, duration: 0.65, stagger: 0.045 }, "-=0.34");
@@ -64,14 +69,12 @@ export default function UniversitiesSection() {
       );
       observer.observe(section);
 
-      if (!reducedMotion) {
-        marqueeTweenRef.current = gsap.to(track, {
-          xPercent: -50,
-          duration: 34,
-          ease: "none",
-          repeat: -1,
-        });
-      }
+      marqueeTweenRef.current = gsap.to(track, {
+        xPercent: -50,
+        duration: 34,
+        ease: "none",
+        repeat: -1,
+      });
 
       return () => observer.disconnect();
     }, section);
@@ -91,12 +94,14 @@ export default function UniversitiesSection() {
   }
 
   function liftLogo(event) {
+    if (reducedMotion) return;
     pauseMarquee();
-    gsap.to(event.currentTarget, { y: -6, scale: 1.03, duration: 0.24, ease: "power2.out" });
+    gsap.to(event.currentTarget, { y: -6, scale: 1.03, duration: 0.24, ease: "expo.out" });
   }
 
   function settleLogo(event) {
-    gsap.to(event.currentTarget, { y: 0, scale: 1, duration: 0.24, ease: "power2.out" });
+    if (reducedMotion) return;
+    gsap.to(event.currentTarget, { y: 0, scale: 1, duration: 0.24, ease: "expo.out" });
     resumeMarquee();
   }
 
@@ -211,7 +216,7 @@ export default function UniversitiesSection() {
         <div className="logo-showcase-copy mt-8 flex flex-wrap items-center gap-4">
           <Link
             to="/universities"
-            className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-brand-800"
+            className="focus-ring landing-motion-press inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-brand-800"
           >
             View all universities
           </Link>

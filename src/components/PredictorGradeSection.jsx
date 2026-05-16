@@ -112,14 +112,14 @@ export default function PredictorGradeSection({
       )}
 
       {breakdown && !breakdown.invalid && breakdown.counted.length > 0 && (
-        <div className="space-y-3 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 text-sm text-slate-800">
+        <div className="space-y-3 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 text-sm text-emerald-950">
           <p>
             <strong className="text-brand-900">Best-six total:</strong>{" "}
             <span className="text-lg font-bold text-brand-800">{breakdown.total}</span> pts
           </p>
           <div>
             <p className="font-medium text-brand-900">Counted toward best six</p>
-            <ul className="mt-1 list-inside list-disc text-slate-700">
+            <ul className="mt-1 list-inside list-disc text-emerald-900">
               {breakdown.counted.map((e) => (
                 <li key={e.subjectId}>
                   {e.label}: {e.grade} ({e.points} pts)
@@ -129,8 +129,8 @@ export default function PredictorGradeSection({
           </div>
           {breakdown.dropped.length > 0 && (
             <div>
-              <p className="font-medium text-slate-700">Not counted (lower grades than your top six)</p>
-              <ul className="mt-1 list-inside list-disc text-slate-600">
+              <p className="font-medium text-emerald-900">Not counted (lower grades than your top six)</p>
+              <ul className="mt-1 list-inside list-disc text-emerald-800">
                 {breakdown.dropped.map((e) => (
                   <li key={e.subjectId}>
                     {e.label}: {e.grade} ({e.points} pts)

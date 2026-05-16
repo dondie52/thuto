@@ -5,7 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Figtree", "system-ui", "sans-serif"],
-        display: ["Fraunces", "Georgia", "serif"],
+        display: ["Literata", "Georgia", "serif"],
       },
       colors: {
         brand: {

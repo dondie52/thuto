@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LandingReveal from "./LandingReveal.jsx";
 
 const features = [
   {
@@ -47,7 +48,7 @@ export default function Features() {
   return (
     <section className="border-y border-slate-100 bg-slate-50/50 py-14 sm:py-18" aria-labelledby="features-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="mb-12 max-w-2xl">
+        <LandingReveal className="mb-12 max-w-2xl">
           <h2 className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
             Apply with more confidence
           </h2>
@@ -55,28 +56,33 @@ export default function Features() {
             Instead of opening multiple university websites and guessing where you qualify, use Thuto to build a clearer
             shortlist before applications open.
           </p>
-        </div>
-        <h2 id="features-heading" className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+        </LandingReveal>
+        <LandingReveal
+          as="h2"
+          id="features-heading"
+          className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl"
+          delay={80}
+        >
           Built for Botswana applicants
-        </h2>
-        <p className="mt-3 max-w-2xl text-base text-slate-600">
+        </LandingReveal>
+        <LandingReveal as="p" className="mt-3 max-w-2xl text-base text-slate-600" delay={150}>
           Designed for students comparing universities and programmes across Botswana.
-        </p>
+        </LandingReveal>
         <ul className="mt-10 grid gap-5 sm:grid-cols-2">
-          {features.map((f) => (
-            <li key={f.title}>
+          {features.map((f, index) => (
+            <LandingReveal as="li" key={f.title} delay={index * 90}>
               <Link
                 to={f.to}
-                className="group flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-brand-200 hover:shadow-md"
+                className="landing-motion-card group flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-brand-200 hover:shadow-md"
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-100 text-brand-800 transition group-hover:bg-brand-200">
+                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-100 text-brand-800 transition-colors group-hover:bg-brand-200">
                   {f.icon}
                 </span>
                 <h3 className="mt-4 font-display text-lg font-semibold text-slate-900">{f.title}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{f.body}</p>
                 <span className="mt-4 text-sm font-semibold text-brand-700">Open in app →</span>
               </Link>
-            </li>
+            </LandingReveal>
           ))}
         </ul>
       </div>

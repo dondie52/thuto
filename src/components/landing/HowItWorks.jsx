@@ -1,3 +1,5 @@
+import LandingReveal from "./LandingReveal.jsx";
+
 const steps = [
   {
     title: "Enter your BGCSE results",
@@ -32,13 +34,17 @@ export default function HowItWorks() {
   return (
     <section className="py-14 sm:py-18" aria-labelledby="how-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 id="how-heading" className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+        <LandingReveal
+          as="h2"
+          id="how-heading"
+          className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl"
+        >
           How it works
-        </h2>
+        </LandingReveal>
         <ol className="mt-10 grid gap-6 sm:grid-cols-3 lg:gap-8">
           {steps.map((step, index) => (
-            <li key={step.title}>
-              <article className="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+            <LandingReveal as="li" key={step.title} delay={index * 110}>
+              <article className="landing-motion-card flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-brand-200 hover:shadow-md">
                 <div className="flex items-start justify-between gap-3">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-800">
                     {step.icon}
@@ -48,7 +54,7 @@ export default function HowItWorks() {
                 <h3 className="mt-5 font-display text-lg font-semibold text-slate-900">{step.title}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{step.body}</p>
               </article>
-            </li>
+            </LandingReveal>
           ))}
         </ol>
       </div>

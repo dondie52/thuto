@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-16T10:24:40+02:00",
+  "title": "Design System: Thuto",
+  "extensions": {
+    "colorMeta": {
+      "surface": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "canonical": "#f3f1ec",
+        "tonalRamp": ["#1d1c1a", "#34312d", "#57534e", "#78716c", "#a8a29e", "#d6d3d1", "#e7e5e4", "#f3f1ec"]
+      },
+      "surface-elevated": {
+        "role": "neutral",
+        "displayName": "Raised Paper",
+        "canonical": "#faf9f6",
+        "tonalRamp": ["#1d1c1a", "#34312d", "#57534e", "#78716c", "#a8a29e", "#e7e5e4", "#f5f4ef", "#faf9f6"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Slate Ink",
+        "canonical": "#0f172a",
+        "tonalRamp": ["#020617", "#0f172a", "#1e293b", "#334155", "#64748b", "#94a3b8", "#cbd5e1", "#f8fafc"]
+      },
+      "brand-700": {
+        "role": "primary",
+        "displayName": "Admissions Teal",
+        "canonical": "#0f766e",
+        "tonalRamp": ["#042f2e", "#134e4a", "#115e59", "#0f766e", "#0d9488", "#14b8a6", "#99f6e4", "#f0fdfa"]
+      },
+      "brand-900": {
+        "role": "primary",
+        "displayName": "Deep Teal Ink",
+        "canonical": "#134e4a",
+        "tonalRamp": ["#022c22", "#042f2e", "#134e4a", "#115e59", "#0f766e", "#0d9488", "#5eead4", "#ccfbf1"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Brand moments and page headlines only."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All product UI, forms, list rows, and explanatory copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, compact metadata, and restrained uppercase section labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -4px rgba(15, 23, 42, 0.08)",
+        "purpose": "Standard product containers and repeated list surfaces."
+      },
+      {
+        "name": "card-hover",
+        "value": "0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 40px -8px rgba(15, 23, 42, 0.12)",
+        "purpose": "Interactive card hover state."
+      },
+      {
+        "name": "nav",
+        "value": "0 -4px 24px rgba(15, 23, 42, 0.06)",
+        "purpose": "Mobile bottom navigation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "180ms cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Button, chip, color, and press feedback."
+      },
+      {
+        "name": "state-medium",
+        "value": "220ms cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Card hover and compare selection arrival."
+      },
+      {
+        "name": "landing-reveal",
+        "value": "820ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Landing page reveal only. Disable for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary product action for forms, programme flows, and committed navigation.",
+      "html": "<button class=\"ds-btn-primary\">Check eligibility</button>",
+      "css": ".ds-btn-primary { background: #0f766e; color: #faf9f6; border: 1px solid #0f766e; border-radius: 12px; padding: 10px 16px; font-family: Figtree, system-ui, sans-serif; font-size: 14px; font-weight: 700; line-height: 1.2; transition: background-color 180ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms cubic-bezier(0.22, 1, 0.36, 1), transform 180ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-primary:hover { background: #115e59; border-color: #115e59; transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(0) scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #f3f1ec, 0 0 0 4px rgba(15, 118, 110, 0.35); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary product action where the user needs a lighter choice.",
+      "html": "<button class=\"ds-btn-secondary\">Compare programmes</button>",
+      "css": ".ds-btn-secondary { background: #faf9f6; color: #115e59; border: 1px solid #99f6e4; border-radius: 12px; padding: 10px 16px; font-family: Figtree, system-ui, sans-serif; font-size: 14px; font-weight: 700; line-height: 1.2; transition: background-color 180ms cubic-bezier(0.22, 1, 0.36, 1), color 180ms cubic-bezier(0.22, 1, 0.36, 1), transform 180ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-secondary:hover { background: #f0fdfa; color: #134e4a; transform: translateY(-1px); } .ds-btn-secondary:active { transform: translateY(0) scale(0.98); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #f3f1ec, 0 0 0 4px rgba(15, 118, 110, 0.35); }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Default product search or filter field.",
+      "html": "<label class=\"ds-field\"><span>Search</span><input placeholder=\"Programme or university...\" /></label>",
+      "css": ".ds-field { display: grid; gap: 4px; font-family: Figtree, system-ui, sans-serif; color: #57534e; font-size: 12px; font-weight: 600; } .ds-field input { width: 100%; border: 1px solid #99f6e4; border-radius: 8px; background: #faf9f6; color: #0f172a; padding: 12px; font: 400 16px/1.4 Figtree, system-ui, sans-serif; } .ds-field input:focus { outline: none; border-color: #14b8a6; box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.45); }"
+    },
+    {
+      "name": "Active Chip",
+      "kind": "chip",
+      "refersTo": "chip-active",
+      "description": "Selected filter or active compact state.",
+      "html": "<span class=\"ds-chip-active\">Programmes</span>",
+      "css": ".ds-chip-active { display: inline-flex; align-items: center; border-radius: 9999px; background: #0f766e; color: #faf9f6; padding: 8px 16px; font-family: Figtree, system-ui, sans-serif; font-size: 12px; font-weight: 700; line-height: 1; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Default product container for lists and compact panels.",
+      "html": "<article class=\"ds-card\"><h3>Programme title</h3><p>University and field metadata sit here.</p></article>",
+      "css": ".ds-card { border: 1px solid #ccfbf1; border-radius: 16px; background: #faf9f6; padding: 16px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -4px rgba(15, 23, 42, 0.08); font-family: Figtree, system-ui, sans-serif; color: #0f172a; } .ds-card h3 { margin: 0; color: #134e4a; font-size: 16px; line-height: 1.35; font-weight: 700; } .ds-card p { margin: 8px 0 0; color: #57534e; font-size: 13px; line-height: 1.5; }"
+    },
+    {
+      "name": "Mobile Nav Item",
+      "kind": "nav",
+      "refersTo": "navigation-mobile",
+      "description": "One of five primary mobile destinations.",
+      "html": "<a class=\"ds-mobile-nav-item\" href=\"#\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Zm10 0a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V6Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\"/></svg><span>Home</span></a>",
+      "css": ".ds-mobile-nav-item { display: inline-flex; min-height: 52px; min-width: 64px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 12px; padding: 8px 4px; color: #57534e; text-decoration: none; font-family: Figtree, system-ui, sans-serif; font-size: 10px; font-weight: 700; line-height: 1; transition: background-color 200ms ease, color 200ms ease; } .ds-mobile-nav-item svg { width: 20px; height: 20px; } .ds-mobile-nav-item:hover { background: #f5f5f4; color: #115e59; } .ds-mobile-nav-item:focus-visible { outline: none; box-shadow: 0 0 0 2px #f3f1ec, 0 0 0 4px rgba(15, 118, 110, 0.35); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calm Admissions Desk",
+    "overview": "Thuto is a focused student utility for Botswana university decisions. It should feel warm, trustworthy, and practical, with expressive brand moments kept away from dense product tasks.",
+    "keyCharacteristics": [
+      "Warm paper surfaces with restrained teal action states.",
+      "Figtree carries product UI; Literata is reserved for brand and page headings.",
+      "Mobile exposes five primary destinations and moves secondary tools into the drawer.",
+      "Motion supports state, never page-load theater."
+    ],
+    "rules": [
+      {
+        "name": "The Teal Earns Its Place Rule",
+        "body": "Use teal for actions, active states, focus, and trusted status, not as decoration on every card.",
+        "section": "colors"
+      },
+      {
+        "name": "The Display Is Rare Rule",
+        "body": "Literata belongs to brand moments and page titles. Dense product UI uses Figtree.",
+        "section": "typography"
+      },
+      {
+        "name": "The Border Before Shadow Rule",
+        "body": "Prefer border and tonal contrast at rest. Add shadow when a surface floats, sticks, or responds to interaction.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep product screens search-first and task-first.",
+      "Do use teal for primary actions, selected navigation, focus, and meaningful state.",
+      "Do preserve reduced-motion behavior for all imperative scrolls and animated reveals.",
+      "Do use skeleton states for content loading where lists or panels are expected."
+    ],
+    "donts": [
+      "Don't use side-stripe borders wider than 1px as card accents.",
+      "Don't use gradient text.",
+      "Don't default to glassmorphism or blurred cards for product UI.",
+      "Don't recreate hero-metric stat blocks.",
+      "Don't make users wait through decorative page-load choreography in the app."
+    ]
+  }
+}

@@ -272,7 +272,7 @@ export default function FitFinder() {
               {BGCSE_SUBJECTS.map((subject) => {
                 const checked = profile.avoidSubjects?.includes(subject.label);
                 return (
-                  <label key={subject.id} className="flex cursor-pointer items-center gap-2 rounded-lg border border-brand-100 px-3 py-2 text-sm text-slate-700 hover:bg-brand-50/60">
+                  <label key={subject.id} className="flex cursor-pointer items-center gap-2 rounded-lg border border-brand-100 px-3 py-2 text-sm text-brand-900 hover:bg-brand-50/60">
                     <input
                       type="checkbox"
                       checked={checked}
@@ -342,7 +342,7 @@ export default function FitFinder() {
               </p>
             </div>
             {!ranked.length ? (
-              <p className="rounded-xl border border-dashed border-brand-200 bg-brand-50/40 px-4 py-6 text-sm text-slate-600">
+              <p className="rounded-xl border border-dashed border-brand-200 bg-brand-50/40 px-4 py-6 text-sm text-brand-800">
                 No matches yet. Check that your grades are entered and local programme data loaded.
               </p>
             ) : (

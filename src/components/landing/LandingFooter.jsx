@@ -10,7 +10,7 @@ export default function LandingFooter() {
             <p className="mt-1 text-sm text-slate-600">Botswana University Companion</p>
             <Link
               to="/app"
-              className="mt-4 inline-flex text-sm font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4 hover:text-brand-900"
+              className="landing-motion-press mt-4 inline-flex rounded-md text-sm font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4 hover:text-brand-900"
             >
               Open full app
             </Link>

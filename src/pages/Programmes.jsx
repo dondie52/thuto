@@ -14,9 +14,6 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import {
   getProgrammeCareers,
-  getProgrammeInterests,
-  getProgrammeRelatedSubjects,
-  isFitFinderCompatible,
 } from "../lib/programmeInsights.js";
 
 const SORT_OPTIONS = [
@@ -48,6 +45,8 @@ export default function Programmes() {
   const location = useLocation();
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { toggle, isBookmarked } = useBookmarks();
   const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
 
@@ -78,6 +77,7 @@ export default function Programmes() {
   const maxPts = maxPtsRaw === "" ? null : Number(maxPtsRaw);
   const minPtsValid = minPtsRaw !== "" && Number.isFinite(minPts);
   const maxPtsValid = maxPtsRaw !== "" && Number.isFinite(maxPts);
+  const pointsRangeInvalid = minPtsValid && maxPtsValid && minPts > maxPts;
 
   const setPatch = useCallback(
     (patch) => {
@@ -88,12 +88,19 @@ export default function Programmes() {
 
   useEffect(() => {
     let cancelled = false;
+    setIsLoading(true);
     fetchProgrammes()
       .then((data) => {
-        if (!cancelled) setProgrammes(data);
+        if (!cancelled) {
+          setProgrammes(Array.isArray(data) ? data : []);
+          setError(null);
+        }
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
       });
     return () => {
       cancelled = true;
@@ -130,8 +137,8 @@ export default function Programmes() {
     }
     if (uni !== "All") list = list.filter((p) => p.university === uni);
     if (field !== "All") list = list.filter((p) => p.field === field);
-    if (minPtsValid) list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints >= minPts);
-    if (maxPtsValid) list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints <= maxPts);
+    if (!pointsRangeInvalid && minPtsValid) list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints >= minPts);
+    if (!pointsRangeInvalid && maxPtsValid) list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints <= maxPts);
     if (qualifyPoints && predTotal != null) {
       list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints <= predTotal);
     }
@@ -159,7 +166,7 @@ export default function Programmes() {
     } else sorted.sort((a, b) => a.name.localeCompare(b.name));
 
     return sorted;
-  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, sort, qualifyPoints, predTotal]);
+  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, pointsRangeInvalid, sort, qualifyPoints, predTotal]);
 
   const hasActiveFilters =
     (searchParams.get("q") ?? "").trim() !== "" ||
@@ -170,197 +177,228 @@ export default function Programmes() {
     sort !== "name_asc" ||
     qualifyPoints;
 
+  const activeFilterChips = [
+    uni !== "All" ? `University: ${uni}` : null,
+    field !== "All" ? `Field: ${field}` : null,
+    minPtsRaw !== "" ? `From ${minPtsRaw} pts` : null,
+    maxPtsRaw !== "" ? `Up to ${maxPtsRaw} pts` : null,
+    sort !== "name_asc" ? SORT_OPTIONS.find((option) => option.value === sort)?.label : null,
+    qualifyPoints ? (predTotal != null ? `Within ${predTotal} pts` : "Predictor points") : null,
+  ].filter(Boolean);
+
   function clearFilters() {
     setSearchParams({}, { replace: true });
+  }
+
+  function sanitizePoints(value) {
+    const digits = value.replace(/\D/g, "").slice(0, 2);
+    if (!digits) return "";
+    return String(Math.min(Number(digits), 48));
   }
 
   return (
     <div className={`space-y-6 ${compareIds.length > 0 ? "pb-28 sm:pb-8" : ""}`}>
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Programmes</h1>
-        <p className="mt-2 text-sm text-slate-600">Search and filter - open a programme for detail. Filters stay in the URL so the back button restores your list.</p>
+        <p className="mt-2 text-sm text-slate-600">Search by programme or university. Open a result for requirements, careers, and course detail.</p>
       </div>
 
-      {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+      {error ? (
+        <p className="break-words rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
           {error}
         </p>
-      )}
+      ) : null}
 
       <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
-        <div>
-          <label htmlFor="prog-search" className="block text-xs font-medium text-slate-600">
-            Search
-          </label>
-          <input
-            id="prog-search"
-            type="search"
-            value={searchParams.get("q") ?? ""}
-            onChange={(e) => setPatch({ q: e.target.value })}
-            placeholder="Programme or university…"
-            className="mt-1 w-full max-w-md rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
-          />
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
           <div>
-            <label htmlFor="uni-filter" className="block text-xs font-medium text-slate-600">
-              University
-            </label>
-            <select
-              id="uni-filter"
-              value={uni}
-              onChange={(e) => setPatch({ uni: e.target.value === "All" ? "" : e.target.value })}
-              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
-            >
-              {universities.map((u) => (
-                <option key={u} value={u}>
-                  {u}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="field-filter" className="block text-xs font-medium text-slate-600">
-              Field of study
-            </label>
-            <select
-              id="field-filter"
-              value={field}
-              onChange={(e) => setPatch({ field: e.target.value === "All" ? "" : e.target.value })}
-              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
-            >
-              {fields.map((f) => (
-                <option key={f} value={f}>
-                  {f}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="sort-filter" className="block text-xs font-medium text-slate-600">
-              Sort
-            </label>
-            <select
-              id="sort-filter"
-              value={sort}
-              onChange={(e) => setPatch({ sort: e.target.value === "name_asc" ? "" : e.target.value })}
-              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
-            >
-              {SORT_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <p className="text-xs font-medium text-slate-600">Field (quick)</p>
-          <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Field quick filter">
-            <button
-              type="button"
-              onClick={() => setPatch({ field: "" })}
-              className={[
-                "rounded-full px-3 py-1 text-xs font-semibold transition-colors",
-                field === "All" ? "bg-brand-700 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100",
-              ].join(" ")}
-            >
-              All
-            </button>
-            {fields
-              .filter((f) => f !== "All")
-              .map((f) => (
-                <button
-                  key={f}
-                  type="button"
-                  onClick={() => setPatch({ field: f === field ? "" : f })}
-                  className={[
-                    "rounded-full px-3 py-1 text-xs font-semibold transition-colors",
-                    field === f ? "bg-brand-700 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100",
-                  ].join(" ")}
-                >
-                  {f}
-                </button>
-              ))}
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label htmlFor="min-pts" className="block text-xs font-medium text-slate-600">
-              Min entry points (at least)
+            <label htmlFor="prog-search" className="block text-xs font-medium text-slate-600">
+              Search
             </label>
             <input
-              id="min-pts"
-              type="number"
-              inputMode="numeric"
-              min={0}
-              placeholder="e.g. 22"
-              value={searchParams.get("minPts") ?? ""}
-              onChange={(e) => setPatch({ minPts: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              id="prog-search"
+              type="search"
+              value={searchParams.get("q") ?? ""}
+              onChange={(e) => setPatch({ q: e.target.value })}
+              placeholder="Programme or university..."
+              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:max-w-md sm:py-2 sm:text-sm"
             />
           </div>
-          <div>
-            <label htmlFor="max-pts" className="block text-xs font-medium text-slate-600">
-              Min entry points (at most)
-            </label>
-            <input
-              id="max-pts"
-              type="number"
-              inputMode="numeric"
-              min={0}
-              placeholder="e.g. 32"
-              value={searchParams.get("maxPts") ?? ""}
-              onChange={(e) => setPatch({ maxPts: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
-            />
-          </div>
-        </div>
-
-        <label className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
-          <input
-            type="checkbox"
-            className="mt-1 rounded border-brand-300 text-brand-700 focus:ring-brand-500"
-            checked={qualifyPoints}
-            disabled={predTotal == null}
-            onChange={(e) => setPatch({ qualify: e.target.checked ? "1" : "" })}
-          />
-          <span>
-            Show programmes I may reach on <strong>points only</strong> (min pts ≤ my best-six total from the
-            predictor
-            {predTotal != null ? (
-              <>
-                : <strong>{predTotal}</strong> pts
-              </>
-            ) : (
-              <> - use the predictor first to set this</>
-            )}
-            ). Subject requirements are not checked here.
-          </span>
-        </label>
-
-        {hasActiveFilters && (
           <button
             type="button"
-            onClick={clearFilters}
-            className="text-sm font-medium text-brand-700 underline hover:text-brand-900"
+            onClick={() => setFiltersOpen((open) => !open)}
+            className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-100"
+            aria-expanded={filtersOpen}
+            aria-controls="programme-filter-controls"
           >
-            Clear all filters
+            {filtersOpen ? "Hide filters" : `Filters${activeFilterChips.length ? ` (${activeFilterChips.length})` : ""}`}
           </button>
-        )}
+        </div>
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-slate-600">
+            <span className="font-semibold text-brand-900">{isLoading ? "..." : filteredSorted.length}</span> programmes found
+          </p>
+          {hasActiveFilters ? (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="self-start rounded-lg text-sm font-semibold text-brand-700 underline underline-offset-4 hover:text-brand-900 sm:self-auto"
+            >
+              Clear filters
+            </button>
+          ) : null}
+        </div>
+
+        {activeFilterChips.length ? (
+          <div className="flex flex-wrap gap-2" aria-label="Active filters">
+            {activeFilterChips.map((chip) => (
+              <span key={chip} className="max-w-full break-words rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+                {chip}
+              </span>
+            ))}
+          </div>
+        ) : null}
+
+        <div id="programme-filter-controls" className={`${filtersOpen ? "block" : "hidden"} space-y-4`}>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div>
+              <label htmlFor="uni-filter" className="block text-xs font-medium text-slate-600">
+                University
+              </label>
+              <select
+                id="uni-filter"
+                value={uni}
+                onChange={(e) => setPatch({ uni: e.target.value === "All" ? "" : e.target.value })}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              >
+                {universities.map((u) => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="field-filter" className="block text-xs font-medium text-slate-600">
+                Field of study
+              </label>
+              <select
+                id="field-filter"
+                value={field}
+                onChange={(e) => setPatch({ field: e.target.value === "All" ? "" : e.target.value })}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              >
+                {fields.map((f) => (
+                  <option key={f} value={f}>
+                    {f}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="sort-filter" className="block text-xs font-medium text-slate-600">
+                Sort
+              </label>
+              <select
+                id="sort-filter"
+                value={sort}
+                onChange={(e) => setPatch({ sort: e.target.value === "name_asc" ? "" : e.target.value })}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="min-pts" className="block text-xs font-medium text-slate-600">
+                Min entry points (at least)
+              </label>
+              <input
+                id="min-pts"
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={48}
+                placeholder="e.g. 22"
+                value={searchParams.get("minPts") ?? ""}
+                onChange={(e) => setPatch({ minPts: sanitizePoints(e.target.value) })}
+                aria-invalid={pointsRangeInvalid}
+                aria-describedby={pointsRangeInvalid ? "points-range-error" : undefined}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="max-pts" className="block text-xs font-medium text-slate-600">
+                Min entry points (at most)
+              </label>
+              <input
+                id="max-pts"
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={48}
+                placeholder="e.g. 32"
+                value={searchParams.get("maxPts") ?? ""}
+                onChange={(e) => setPatch({ maxPts: sanitizePoints(e.target.value) })}
+                aria-invalid={pointsRangeInvalid}
+                aria-describedby={pointsRangeInvalid ? "points-range-error" : undefined}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              />
+            </div>
+          </div>
+
+          {pointsRangeInvalid ? (
+            <p id="points-range-error" className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900" role="alert">
+              The lower point value is higher than the upper value. Adjust the range to filter by points.
+            </p>
+          ) : null}
+
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-brand-50/60 px-3 py-3 text-sm text-brand-900">
+            <input
+              type="checkbox"
+              className="mt-1 rounded border-brand-300 text-brand-700 focus:ring-brand-500"
+              checked={qualifyPoints}
+              disabled={predTotal == null}
+              onChange={(e) => setPatch({ qualify: e.target.checked ? "1" : "" })}
+            />
+            <span>
+              Show programmes I may reach on <strong>points only</strong>
+              {predTotal != null ? (
+                <>
+                  {" "}
+                  using <strong>{predTotal}</strong> pts.
+                </>
+              ) : (
+                <> after using the predictor.</>
+              )}{" "}
+              Subject requirements are not checked here.
+            </span>
+          </label>
+        </div>
       </div>
 
-      <ul className="divide-y divide-brand-100 overflow-hidden rounded-xl border border-brand-200 bg-white shadow-sm">
+      <ul className="divide-y divide-brand-100 overflow-hidden rounded-xl border border-brand-200 bg-white shadow-sm" aria-busy={isLoading}>
+        {isLoading ? (
+          <li className="space-y-3 px-4 py-5" role="status">
+            {[0, 1, 2].map((item) => (
+              <div key={item} className="animate-pulse rounded-xl border border-brand-100 bg-brand-50/40 p-3">
+                <div className="h-4 w-2/3 rounded bg-brand-100" />
+                <div className="mt-3 h-3 w-1/2 rounded bg-brand-100/80" />
+              </div>
+            ))}
+          </li>
+        ) : null}
         {filteredSorted.map((p) => {
           const rowEligibility = eligibilityById.get(p.id);
           const compareDisabled = !isSelected(p.id) && !canAdd;
-          const interests = getProgrammeInterests(p).slice(0, 3);
-          const careers = getProgrammeCareers(p).slice(0, 3);
-          const subjects = getProgrammeRelatedSubjects(p).slice(0, 3);
-          const fitCompatible = isFitFinderCompatible(p);
+          const careers = getProgrammeCareers(p).slice(0, 2);
           return (
             <li key={p.id} className="flex items-stretch">
               <div className="flex shrink-0 items-center border-r border-brand-100 px-2">
@@ -379,12 +417,12 @@ export default function Programmes() {
               <Link
                 to={`/programmes/${p.id}`}
                 state={{ fromProgrammes: location.search }}
-                className="flex min-w-0 flex-1 flex-col gap-3 px-3 py-3 transition hover:bg-brand-50 sm:px-4"
+                className="flex min-w-0 flex-1 flex-col gap-2 px-3 py-3 transition hover:bg-brand-50 sm:px-4"
               >
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
-                    <span className="font-medium text-brand-900">{p.name}</span>
-                    <p className="text-xs text-slate-500">
+                    <span className="break-words font-medium text-brand-900">{p.name}</span>
+                    <p className="break-words text-xs text-slate-500">
                       {p.university}
                       {p.field ? ` · ${p.field}` : ""}
                     </p>
@@ -396,24 +434,9 @@ export default function Programmes() {
                     </span>
                   </div>
                 </div>
-                <div className="grid gap-1.5 text-xs text-slate-600 sm:grid-cols-2">
-                  <p>
-                    <span className="font-semibold text-slate-700">Best for: </span>
-                    {interests.length ? interests.join(", ") : "interests not listed"}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-slate-700">Careers: </span>
-                    {careers.length ? careers.join(", ") : "not listed"}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-slate-700">Subjects that help: </span>
-                    {subjects.length ? subjects.join(", ") : "not listed"}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-slate-700">Fit Finder: </span>
-                    {fitCompatible ? "compatible" : "limited data"}
-                  </p>
-                </div>
+                <p className="text-xs text-slate-600">
+                  {careers.length ? `Careers: ${careers.join(", ")}` : "Open for requirements, careers, and course detail."}
+                </p>
               </Link>
               <div className="flex items-center pr-2">
                 <ProgrammeBookmarkButton
@@ -426,10 +449,10 @@ export default function Programmes() {
             </li>
           );
         })}
-        {!filteredSorted.length && !error && (
+        {!isLoading && !filteredSorted.length && !error && (
           <li className="px-4 py-8 text-center text-sm text-slate-600">
             <p className="font-medium text-slate-800">No programmes match these filters.</p>
-            <p className="mt-2">Try clearing a filter or widening the points range.</p>
+            <p className="mt-2">{pointsRangeInvalid ? "Adjust the point range to continue." : "Try clearing a filter or widening the points range."}</p>
             {hasActiveFilters && (
               <button
                 type="button"

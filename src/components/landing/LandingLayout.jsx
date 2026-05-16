@@ -10,32 +10,32 @@ export default function LandingLayout() {
           <nav className="hidden items-center gap-1 sm:flex" aria-label="Marketing">
             <Link
               to="/login?next=/programmes"
-              className="focus-ring rounded-xl px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-white/80 hover:text-brand-900"
+              className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
             >
               Programmes
             </Link>
             <Link
               to="/login?next=/universities"
-              className="focus-ring rounded-xl px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-white/80 hover:text-brand-900"
+              className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
             >
               Universities
             </Link>
             <Link
               to="/login?next=/app"
-              className="focus-ring rounded-xl px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-white/80 hover:text-brand-900"
+              className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
             >
               App
             </Link>
             <Link
               to="/login?next=/predictor"
-              className="focus-ring ml-1 rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-brand-800"
+              className="focus-ring landing-motion-press ml-1 rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-brand-800"
             >
               Check eligibility
             </Link>
           </nav>
           <Link
             to="/login?next=/predictor"
-            className="focus-ring rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-brand-800 sm:hidden"
+            className="focus-ring landing-motion-press rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-brand-800 sm:hidden"
           >
             Get started
           </Link>

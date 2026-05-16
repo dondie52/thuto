@@ -5,12 +5,12 @@ import BottomNav from "./BottomNav.jsx";
 
 const desktopLinks = [
   { to: "/app", label: "Home", end: true },
-  { to: "/predictor", label: "Predict" },
-  { to: "/programmes", label: "Programs" },
+  { to: "/predictor", label: "Predictor" },
+  { to: "/programmes", label: "Programmes" },
   { to: "/compare", label: "Compare" },
   { to: "/saved", label: "Saved" },
   { to: "/assistant", label: "Ask" },
-  { to: "/universities", label: "Univ" },
+  { to: "/universities", label: "Universities" },
 ];
 
 function navLinkClass({ isActive }) {
@@ -26,7 +26,7 @@ export default function Layout() {
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-lg flex-wrap items-center justify-between gap-2 px-4 py-3 sm:max-w-4xl">
+        <div className="mx-auto flex max-w-lg flex-wrap items-center justify-between gap-2 px-4 py-3 sm:max-w-5xl">
           <BrandMark />
           <nav className="hidden items-center gap-0.5 sm:flex" aria-label="Primary desktop">
             {desktopLinks.map(({ to, label, end }) => (

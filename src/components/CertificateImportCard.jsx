@@ -166,13 +166,13 @@ export default function CertificateImportCard({ onUseGrades }) {
                 className="w-full rounded-2xl border border-brand-100 object-cover shadow-sm"
               />
             ) : (
-              <div className="rounded-2xl border border-dashed border-brand-200 bg-brand-50/40 p-4 text-sm leading-relaxed text-slate-600">
+              <div className="rounded-2xl border border-dashed border-brand-200 bg-brand-50/40 p-4 text-sm leading-relaxed text-brand-800">
                 PDF preview is not shown here, but the extracted subjects and grades are ready for review on the right.
               </div>
             )}
             <div className="rounded-2xl border border-brand-100 bg-brand-50/50 p-3">
               <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Review status</p>
-              <p className="mt-1 text-sm text-slate-700">{reviewSummary(review.issues)}</p>
+              <p className="mt-1 text-sm text-brand-900">{reviewSummary(review.issues)}</p>
             </div>
           </div>
 
