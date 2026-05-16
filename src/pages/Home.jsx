@@ -12,8 +12,8 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 const cards = [
   {
     to: "/predictor",
-    title: "Admission predictor",
-    body: "Enter your BGCSE grades and see which programmes you may qualify for.",
+    title: "Check eligibility",
+    body: "Start with real or estimated BGCSE grades and see which programmes you may qualify for.",
   },
   {
     to: "/fit-finder",
@@ -129,12 +129,18 @@ export default function Home() {
         />
         <p className="relative text-xs font-semibold uppercase tracking-[0.2em] text-brand-200">Thuto · BUC</p>
         <h1 className="relative mt-3 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
-          Your Botswana university companion
+          Check what your BGCSE results may qualify you for
         </h1>
         <p className="relative mt-3 max-w-xl text-sm leading-relaxed text-brand-100/95">
-          Explore programmes, check rough eligibility from your points, and read course outlines - all in one
-          lightweight app.
+          Start with your grades, get indicative programme matches, and use the result to build a shortlist before you
+          confirm details with each institution.
         </p>
+        <Link
+          to="/predictor"
+          className="focus-ring-on-dark relative mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-900 shadow-md transition hover:bg-brand-50 hover:shadow-lg"
+        >
+          Check eligibility
+        </Link>
       </section>
 
       <section className="space-y-4">

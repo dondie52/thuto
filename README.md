@@ -129,6 +129,8 @@ One-time setup on GitHub:
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
    - `VITE_UNIVERSITIES_REMOTE_URL`
+   - `VITE_SITE_URL` (repository variable; defaults to `https://dondie52.github.io/thuto/`)
+   - `VITE_BASE_PATH` (repository variable; defaults to `/thuto/`)
 3. Push to `main` (or run the workflow manually from the **Actions** tab). The site goes live at <https://dondie52.github.io/thuto/>.
 
 How it is wired:
@@ -142,5 +144,5 @@ How it is wired:
 ### Switching to a custom domain (e.g. `thuto.bw`)
 
 1. Add a `public/CNAME` file containing `thuto.bw` (it gets copied to `dist/CNAME` automatically).
-2. Set `VITE_BASE_PATH=/` in the workflow's build step (or as a repo secret/variable) so assets resolve from the domain root.
+2. Set repository variables `VITE_BASE_PATH=/` and `VITE_SITE_URL=https://thuto.bw/` so assets, canonicals, `robots.txt`, and `sitemap.xml` resolve from the domain root.
 3. Configure DNS as per [GitHub's docs](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site) and enable **Enforce HTTPS** under Settings -> Pages.

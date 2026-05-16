@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import LandingReveal from "./LandingReveal.jsx";
+import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
 /** Example programmes (min points ≤ 44 on the official BGCSE A=8 scale) - matches public/data/programmes.json ids */
 const samples = [
@@ -9,8 +10,10 @@ const samples = [
 ];
 
 export default function UseCaseShowcase() {
+  const { isSignedIn } = useLandingAuth();
+
   return (
-    <section className="py-14 sm:py-18" aria-labelledby="usecase-heading">
+    <section id="programmes" className="scroll-mt-24 py-14 sm:py-18" aria-labelledby="usecase-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <LandingReveal
           as="h2"
@@ -21,19 +24,21 @@ export default function UseCaseShowcase() {
         </LandingReveal>
         <LandingReveal as="p" className="mt-3 max-w-2xl text-base text-slate-600" delay={80}>
           With <strong className="font-semibold text-slate-800">44 points</strong>, you may qualify for programmes like these
-          in the Thuto sample directory. Subject requirements still apply.
+          in the Thuto sample directory. Check your own grades first, because subject requirements still apply.
         </LandingReveal>
         <ul className="mt-8 grid gap-5 sm:grid-cols-3">
           {samples.map((p, index) => (
             <LandingReveal as="li" key={p.id} delay={index * 90}>
               <Link
-                to={`/programmes/${p.id}`}
+                to={landingTo(isSignedIn, `/programmes/${p.id}`, "#programmes")}
                 className="landing-motion-card flex h-full flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:border-brand-300 hover:shadow-md"
               >
                 <span className="text-xs font-semibold uppercase tracking-wide text-brand-700">{p.university}</span>
                 <h3 className="mt-2 font-display text-base font-semibold leading-snug text-slate-900">{p.name}</h3>
                 <p className="mt-3 text-sm text-slate-500">From {p.minPoints} points in the directory</p>
-                <span className="mt-4 text-sm font-semibold text-brand-700">View programme →</span>
+                <span className="mt-4 text-sm font-semibold text-brand-700">
+                  {isSignedIn ? "View programme ->" : "Review examples ->"}
+                </span>
               </Link>
             </LandingReveal>
           ))}

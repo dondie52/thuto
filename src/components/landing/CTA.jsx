@@ -10,11 +10,10 @@ export default function CTA() {
           id="cta-heading"
           className="font-display text-2xl font-bold tracking-tight text-white sm:text-3xl"
         >
-          Start exploring your options
+          Check eligibility before you build your shortlist
         </LandingReveal>
         <LandingReveal as="p" className="mx-auto mt-3 max-w-lg text-base text-brand-100" delay={80}>
-          Use the admission predictor with your real or estimated grades, then browse programmes and save what you like on
-          this device.
+          Use real or estimated grades to get an indicative match list, then save or compare the programmes worth a closer look.
         </LandingReveal>
         <LandingReveal
           as={Link}
@@ -22,7 +21,7 @@ export default function CTA() {
           className="focus-ring-on-dark landing-motion-press mt-8 inline-flex min-h-[48px] min-w-[48px] items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-brand-900 shadow-lg hover:bg-brand-50"
           delay={170}
         >
-          Open predictor
+          Check eligibility
         </LandingReveal>
       </div>
     </section>

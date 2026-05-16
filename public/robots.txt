@@ -1,3 +1,5 @@
-# Production host: https://thuto.bw — update if you deploy elsewhere.
+# Build rewrites this file in dist/ using VITE_SITE_URL when available.
 User-agent: *
 Allow: /
+
+Sitemap: https://dondie52.github.io/thuto/sitemap.xml

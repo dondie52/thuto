@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
 const featuredLogos = [
   { id: "ub", short: "UB", name: "University of Botswana", src: "university-logos/ub.jpg" },
@@ -25,6 +26,7 @@ export default function UniversitiesSection() {
   const trackRef = useRef(null);
   const marqueeTweenRef = useRef(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const { isSignedIn } = useLandingAuth();
 
   const visibleLogos = useMemo(
     () => (reducedMotion ? featuredLogos : [...featuredLogos, ...featuredLogos]),
@@ -107,8 +109,9 @@ export default function UniversitiesSection() {
 
   return (
     <section
+      id="universities"
       ref={sectionRef}
-      className="overflow-hidden border-t border-emerald-950/10 bg-[#f8f5ee] py-14 sm:py-18"
+      className="scroll-mt-24 overflow-hidden border-t border-emerald-950/10 bg-[#f8f5ee] py-14 sm:py-18"
       aria-labelledby="unis-heading"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -139,7 +142,7 @@ export default function UniversitiesSection() {
               {featuredLogos.slice(0, 6).map((u) => (
                 <li key={u.id}>
                   <Link
-                    to={`/universities/${u.id}`}
+                    to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
                     className="logo-card flex h-24 min-w-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
                     onMouseEnter={liftLogo}
                     onMouseLeave={settleLogo}
@@ -184,7 +187,7 @@ export default function UniversitiesSection() {
                   return (
                     <li key={`${u.id}-${index}`} aria-hidden={duplicateLogo}>
                       <Link
-                        to={`/universities/${u.id}`}
+                        to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
                         className="logo-card group flex h-28 w-40 shrink-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
                         tabIndex={duplicateLogo ? -1 : undefined}
                         aria-hidden={duplicateLogo}
@@ -215,10 +218,10 @@ export default function UniversitiesSection() {
 
         <div className="logo-showcase-copy mt-8 flex flex-wrap items-center gap-4">
           <Link
-            to="/universities"
+            to={landingTo(isSignedIn, "/universities", "#universities")}
             className="focus-ring landing-motion-press inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-brand-800"
           >
-            View all universities
+            {isSignedIn ? "View all universities" : "Explore universities"}
           </Link>
           <span className="text-sm text-slate-500">Profiles include locations, programmes, and application timing.</span>
         </div>

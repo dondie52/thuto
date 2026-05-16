@@ -32,6 +32,8 @@ jobs:
 
       - name: Build
         env:
+          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/thuto/' }}
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
           VITE_AI_ENABLED: ${{ secrets.VITE_AI_ENABLED }}
           VITE_AI_PROVIDER: ${{ secrets.VITE_AI_PROVIDER }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}

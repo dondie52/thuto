@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen.jsx";
+import { useRouteSeo } from "./hooks/useRouteSeo.js";
 
 const LandingLayout = lazy(() => import("./components/landing/LandingLayout.jsx"));
 const Layout = lazy(() => import("./components/Layout.jsx"));
@@ -48,6 +49,7 @@ function getInitialSplashPhase() {
 
 export default function App() {
   const [splashPhase, setSplashPhase] = useState(getInitialSplashPhase);
+  useRouteSeo();
 
   useEffect(() => {
     if (splashPhase === "hidden") return undefined;

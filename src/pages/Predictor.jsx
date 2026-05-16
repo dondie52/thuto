@@ -20,12 +20,12 @@ function buildShareText(breakdownTotal, results) {
   }
   const first = qualified[0].programme.name;
   if (qualified.length === 1) {
-    return `I scored ${breakdownTotal} pts on Thuto - I qualify for ${first}. Check yours at ${origin}`;
+    return `I scored ${breakdownTotal} pts on Thuto - I may qualify for ${first}. Check yours at ${origin}`;
   }
   const second = qualified[1].programme.name;
   const more = qualified.length - 2;
   const tail = more > 0 ? `, ${second} and ${more} more` : ` and ${second}`;
-  return `I scored ${breakdownTotal} pts on Thuto - I qualify for ${first}${tail}. Check yours at ${origin}`;
+  return `I scored ${breakdownTotal} pts on Thuto - I may qualify for ${first}${tail}. Check yours at ${origin}`;
 }
 
 export default function Predictor() {
@@ -123,16 +123,48 @@ export default function Predictor() {
     window.setTimeout(() => setShareFeedback(null), 4000);
   }
 
+  const hasResults = Boolean(results && summary);
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Admission predictor</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Points: A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Best-six maximum = 48 pts. Your total is the sum of
-          your <strong>best six</strong> subjects (you can enter up to twelve). Eligibility still checks subject
-          requirements (e.g. Maths, English Language, Science) using your best grade in each category.
+          Start with real or estimated BGCSE grades. Thuto calculates your best-six points and shows programmes you may
+          qualify for, so you can spot options and requirements before application time.
+        </p>
+        <p className="mt-2 text-xs leading-relaxed text-slate-500">
+          Indicative guidance only: A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Best-six maximum = 48 pts. Always
+          confirm final requirements with each institution.
         </p>
       </div>
+
+      <ol className="grid gap-3 sm:grid-cols-2" aria-label="Eligibility check steps">
+        <li
+          className={[
+            "rounded-2xl border p-4 shadow-sm",
+            hasResults ? "border-emerald-200 bg-emerald-50/70" : "border-brand-200 bg-white",
+          ].join(" ")}
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">Step 1</p>
+          <h2 className="mt-1 font-display text-base font-semibold text-brand-900">Add your grades</h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-600">
+            Estimated grades are enough to start. You can edit them anytime.
+          </p>
+        </li>
+        <li
+          className={[
+            "rounded-2xl border p-4 shadow-sm",
+            hasResults ? "border-brand-200 bg-white" : "border-stone-200 bg-stone-50/80",
+          ].join(" ")}
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">Step 2</p>
+          <h2 className="mt-1 font-display text-base font-semibold text-brand-900">Review your matches</h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-600">
+            Use the results to open, save, or compare programmes worth checking officially.
+          </p>
+        </li>
+      </ol>
 
       {loadError && (
         <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">

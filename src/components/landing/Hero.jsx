@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
 /**
  * Hero imagery (Unsplash, real photo):
@@ -14,6 +15,8 @@ const HERO_STATS = [
 ];
 
 export default function Hero() {
+  const { isSignedIn } = useLandingAuth();
+
   return (
     <section className="relative isolate flex min-h-[min(86vh,42rem)] items-end overflow-hidden sm:min-h-[min(82vh,44rem)] sm:items-center">
       <div
@@ -32,23 +35,23 @@ export default function Hero() {
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-12 pt-28 sm:px-6 sm:pb-16 sm:pt-32">
         <p className="landing-hero-kicker text-xs font-semibold uppercase tracking-[0.25em] text-brand-200 sm:text-sm">Thuto · Botswana University Companion</p>
         <h1 className="landing-hero-title mt-3 max-w-2xl font-display text-4xl font-semibold leading-[1.08] text-white sm:text-5xl lg:text-6xl">
-          Know where your BGCSE points can take you
+          Check what your BGCSE results may qualify you for
         </h1>
         <p className="landing-hero-copy mt-5 max-w-xl text-base leading-7 text-slate-100/95 sm:text-lg">
-          Check eligibility, explore local programmes, compare requirements, and keep your shortlist close before applications open.
+          Start with real or estimated grades, see possible programme matches, and spot requirements to confirm before applications open.
         </p>
         <div className="landing-hero-actions mt-8 flex flex-wrap items-center gap-3 sm:mt-9">
           <Link
-            to="/login?next=/predictor"
+            to="/predictor"
             className="focus-ring-on-dark landing-motion-press inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg ring-1 ring-white/60 hover:bg-brand-50 hover:shadow-xl"
           >
             Check eligibility
           </Link>
           <Link
-            to="/login?next=/compare"
+            to={landingTo(isSignedIn, "/programmes", "#programmes")}
             className="focus-ring-on-dark landing-motion-press inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-sm backdrop-blur-sm hover:border-white/55 hover:bg-white/20"
           >
-            Compare programmes
+            Browse programmes
           </Link>
         </div>
         <dl className="landing-hero-stats mt-10 grid max-w-2xl grid-cols-1 gap-2 sm:grid-cols-3">
@@ -64,7 +67,7 @@ export default function Hero() {
           ))}
         </dl>
         <p className="landing-hero-note mt-5 max-w-xl text-sm leading-6 text-slate-200/90">
-          Eligibility is indicative. Always confirm final requirements with each institution.
+          Thuto is planning guidance, not an admission decision. Always confirm final requirements with each institution.
         </p>
       </div>
     </section>

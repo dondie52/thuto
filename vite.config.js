@@ -4,7 +4,10 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // Deployed to GitHub Pages at https://dondie52.github.io/thuto/.
 // Override with VITE_BASE_PATH=/ when serving from a custom domain (e.g. thuto.bw).
-const base = process.env.VITE_BASE_PATH ?? "/thuto/";
+const base = process.env.VITE_BASE_PATH || "/thuto/";
+const defaultSiteUrl = base === "/" ? "https://thuto.bw/" : "https://dondie52.github.io/thuto/";
+const siteUrl = process.env.VITE_SITE_URL || defaultSiteUrl;
+process.env.VITE_SITE_URL = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
 
 export default defineConfig({
   base,

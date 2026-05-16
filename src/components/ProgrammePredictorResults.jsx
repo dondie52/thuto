@@ -25,12 +25,18 @@ export default function ProgrammePredictorResults({
   return (
     <section ref={sectionRef} id="predictor-results-section" className="space-y-3" aria-live="polite">
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Programme match (live)</h2>
+        <h2 className="font-display text-lg font-semibold text-brand-900">Step 2: Review your programme matches</h2>
         <div className="flex flex-wrap gap-2">
+          <Link
+            to="/programmes?qualify=1"
+            className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+          >
+            Browse within points
+          </Link>
           <button
             type="button"
             onClick={onShare}
-            className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+            className="rounded-lg border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-brand-800 hover:bg-brand-50"
           >
             Share results
           </button>
@@ -57,10 +63,20 @@ export default function ProgrammePredictorResults({
           and help future students.
         </p>
       )}
+      <p className="text-sm leading-relaxed text-slate-600">
+        These matches are for planning, not a final admission decision. Open any promising programme and confirm the
+        latest requirements on the institution's official site.
+      </p>
       <p className="text-sm text-slate-600">
         Qualified: <strong>{summary.Qualified}</strong> · Close: <strong>{summary.Close}</strong> · Not eligible:{" "}
         <strong>{summary["Not eligible"]}</strong> · Unverified: <strong>{summary.Unknown ?? 0}</strong>
       </p>
+      <div className="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-700">Next small step</p>
+        <p className="mt-1 text-sm leading-relaxed text-brand-950">
+          Pick one programme that looks realistic, open its details, then save it or compare it with another option.
+        </p>
+      </div>
       <ul className="divide-y divide-brand-100 overflow-hidden rounded-xl border border-brand-200 bg-white shadow-sm">
         {results.map(({ programme, status, reason, total }) => (
           <li key={programme.id} className="px-4 py-3">
@@ -92,6 +108,14 @@ export default function ProgrammePredictorResults({
               )}
             </p>
             {reason && <p className="mt-2 text-sm text-slate-600">{reason}</p>}
+            <p className="mt-2">
+              <Link
+                to={`/programmes/${programme.id}`}
+                className="text-xs font-medium text-brand-700 underline hover:text-brand-900"
+              >
+                Open programme details
+              </Link>
+            </p>
             {communityEnabled && (
               <p className="mt-2">
                 <Link
