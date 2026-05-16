@@ -8,12 +8,10 @@ import { fetchProgrammes } from "../lib/programmesData.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
-const compareLogoStrip = [
-  { src: "university-logos/ub.jpg", alt: "University of Botswana" },
-  { src: "university-logos/biust.jpg", alt: "BIUST" },
-  { src: "university-logos/botho.jpg", alt: "Botho University" },
-  { src: "university-logos/bac.jpg", alt: "Botswana Accountancy College" },
-];
+const ROW_HEADER_CLASS =
+  "sticky left-0 z-[1] w-36 min-w-36 bg-stone-50/95 px-3 py-3 text-xs font-semibold text-stone-600 shadow-[1px_0_0_rgba(204,251,241,0.9)] sm:w-40 sm:min-w-40";
+const CELL_CLASS = "min-w-[13rem] px-3 py-3 align-top sm:min-w-[14.5rem]";
+const EMPTY_MARK = <span className="text-stone-400">Not listed</span>;
 
 /**
  * @param {string | null | undefined} raw
@@ -75,9 +73,47 @@ function formatApplicationDeadline(iso) {
   return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 }
 
+function programmeInitials(programme) {
+  const short = String(programme?.universityShort || "").trim();
+  if (short) return short.slice(0, 6).toUpperCase();
+  const name = String(programme?.university || "").trim();
+  if (!name) return "UNI";
+  return name
+    .replace(/[()&]/g, " ")
+    .split(/\s+/)
+    .filter((word) => word && !["of", "and", "the", "in"].includes(word.toLowerCase()))
+    .slice(0, 3)
+    .map((word) => word[0]?.toUpperCase() || "")
+    .join("");
+}
+
+function CompareShell({ children, className = "" }) {
+  return (
+    <section
+      className={["thuto-surface-panel overflow-hidden rounded-2xl border border-white/70 p-5 backdrop-blur sm:p-6", className]
+        .filter(Boolean)
+        .join(" ")}
+      aria-labelledby="compare-heading"
+    >
+      {children}
+    </section>
+  );
+}
+
+function CompareIntro({ children }) {
+  return (
+    <>
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
+      <h1 id="compare-heading" className="mt-2 font-display text-2xl font-bold leading-tight text-brand-900">
+        Compare programmes
+      </h1>
+      {children}
+    </>
+  );
+}
+
 export default function CompareProgrammes() {
   useDocumentTitle("Compare programmes | Thuto");
-  const baseUrl = import.meta.env.BASE_URL;
   const [searchParams, setSearchParams] = useSearchParams();
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [error, setError] = useState(null);
@@ -177,105 +213,117 @@ export default function CompareProgrammes() {
 
   if (!error && !allProgrammes.length) {
     return (
-      <div className="thuto-surface-panel rounded-2xl border border-white/70 p-5 backdrop-blur">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
-        <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
-        <p className="mt-3 text-sm text-slate-600">Loading programme data...</p>
-      </div>
+      <CompareShell>
+        <CompareIntro>
+          <p className="mt-3 text-sm leading-6 text-stone-600">Loading programme data...</p>
+        </CompareIntro>
+        <div className="mt-5 grid gap-3" aria-hidden="true">
+          <div className="h-3 w-40 rounded-full bg-brand-100/80" />
+          <div className="h-20 rounded-2xl bg-white/65 shadow-sm" />
+          <div className="h-20 rounded-2xl bg-white/55 shadow-sm" />
+        </div>
+      </CompareShell>
     );
   }
 
   if (validationMessage || !selected.length) {
     return (
-      <div className="thuto-surface-panel overflow-hidden rounded-2xl border border-white/70 p-5 backdrop-blur sm:p-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
-        <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
-        <p className="mt-3 text-sm leading-6 text-slate-700">{validationMessage ?? "Could not build comparison."}</p>
+      <CompareShell>
+        <CompareIntro>
+          <p className="mt-3 max-w-prose text-sm leading-6 text-stone-700">{validationMessage ?? "Could not build comparison."}</p>
+        </CompareIntro>
         <div className="mt-5 flex flex-wrap gap-3 text-sm">
-          <Link to="/programmes" className="focus-ring rounded-xl border border-brand-200 bg-white/80 px-4 py-2 font-semibold text-brand-800 shadow-sm transition hover:bg-brand-50">
+          <Link
+            to="/programmes"
+            className="focus-ring inline-flex min-h-11 items-center rounded-xl bg-brand-700 px-4 py-2 font-semibold text-white shadow-sm transition hover:bg-brand-800"
+          >
             Browse programmes
           </Link>
-          <Link to="/saved" className="focus-ring rounded-xl border border-brand-200 bg-white/60 px-4 py-2 font-semibold text-brand-800 shadow-sm transition hover:bg-brand-50">
+          <Link
+            to="/saved"
+            className="focus-ring inline-flex min-h-11 items-center rounded-xl border border-brand-200 bg-white/70 px-4 py-2 font-semibold text-brand-800 shadow-sm transition hover:bg-brand-50"
+          >
             Saved programmes
           </Link>
         </div>
-      </div>
+      </CompareShell>
     );
   }
 
   return (
     <div className="space-y-5">
-      <div className="thuto-surface-panel overflow-hidden rounded-2xl border border-white/70 p-5 backdrop-blur sm:p-6">
+      <CompareShell>
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme compare</p>
-            <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Compare programmes</h1>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-              Side-by-side view for up to three programmes. Share this page using your browser - the list is in the URL.
-            </p>
-            <div className="mt-4 flex -space-x-2">
-              {compareLogoStrip.map((logo) => (
-                <span key={logo.src} className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-white p-1.5 shadow-sm">
-                  <img src={`${baseUrl}${logo.src}`} alt={logo.alt} className="max-h-full max-w-full rounded-full object-contain" loading="lazy" />
+            <CompareIntro>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-stone-600">
+                Side-by-side facts for up to three programmes. Share this page from your browser; the selected programmes are saved in the URL.
+              </p>
+            </CompareIntro>
+            <div className="mt-4 flex flex-wrap gap-2" aria-label="Selected institutions">
+              {selected.map((programme) => (
+                <span
+                  key={programme.id}
+                  className="inline-flex min-h-9 items-center gap-2 rounded-full border border-brand-100 bg-white/70 py-1 pl-1 pr-3 text-xs font-semibold text-brand-900 shadow-sm"
+                >
+                  <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-brand-700 px-1.5 text-[10px] font-bold text-white">
+                    {programmeInitials(programme)}
+                  </span>
+                  <span className="max-w-[12rem] truncate">{programme.university}</span>
                 </span>
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-brand-100 bg-white/60 p-2 text-center shadow-sm sm:min-w-48">
-            <div className="rounded-xl bg-brand-50/80 px-3 py-2">
-              <span className="block text-xl font-bold text-brand-900">{selected.length}</span>
-              <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-700">Selected</span>
-            </div>
-            <div className="rounded-xl bg-white/80 px-3 py-2">
-              <span className="block text-xl font-bold text-brand-900">{reqKeys.length}</span>
-              <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-700">Subjects</span>
-            </div>
+          <div className="rounded-2xl border border-brand-100 bg-white/65 px-4 py-3 text-sm leading-6 text-stone-700 shadow-sm sm:max-w-56">
+            <span className="font-semibold text-brand-900">{selected.length} programmes</span>, {reqKeys.length} subject rows
+            {predSnap.total != null ? <span className="block text-xs text-stone-500">Using your saved predictor result: {predSnap.total} points.</span> : null}
           </div>
         </div>
-      </div>
+      </CompareShell>
 
       <div className="overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-card backdrop-blur">
         <div className="overflow-x-auto">
-        <table className="w-full min-w-[520px] border-collapse text-left text-sm">
-          <thead>
-            <tr className="border-b border-brand-200 bg-brand-50/90">
-              <th className="sticky left-0 z-[1] min-w-[140px] bg-brand-50 px-3 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 shadow-[1px_0_0_rgba(153,246,228,0.75)]">
-                Detail
-              </th>
-              {selected.map((p) => {
-                const el = eligibilityFor(p);
-                return (
-                  <th key={p.id} className="min-w-[180px] px-3 py-3 align-bottom">
-                    <div className="flex flex-col gap-2">
-                      <div>
-                        <span className="font-display text-sm font-bold text-brand-900">{p.name}</span>
-                        <span className="mt-1 block text-xs font-normal text-slate-600">{p.university}</span>
+          <table className="w-full min-w-[44rem] border-collapse text-left text-sm">
+            <caption className="sr-only">Programme comparison table</caption>
+            <thead>
+              <tr className="border-b border-brand-200 bg-brand-50/90">
+                <th className="sticky left-0 z-[2] w-36 min-w-36 bg-brand-50 px-3 py-3 text-xs font-semibold uppercase tracking-wide text-stone-600 shadow-[1px_0_0_rgba(153,246,228,0.75)] sm:w-40 sm:min-w-40">
+                  Detail
+                </th>
+                {selected.map((p) => {
+                  const el = eligibilityFor(p);
+                  return (
+                    <th key={p.id} className={`${CELL_CLASS} align-bottom`}>
+                      <div className="flex flex-col gap-2">
+                        <div>
+                          <span className="font-display text-sm font-bold leading-snug text-brand-900">{p.name}</span>
+                          <span className="mt-1 block text-xs font-normal leading-5 text-stone-600">{p.university}</span>
+                        </div>
+                        {el ? <EligibilityPill eligibility={el} /> : null}
+                        <button
+                          type="button"
+                          onClick={() => removeProgrammeFromUrl(p.id)}
+                          className="focus-ring -ml-2 inline-flex min-h-9 items-center self-start rounded-lg px-2 text-xs font-semibold text-red-700 underline decoration-red-200 underline-offset-4 transition hover:bg-red-50 hover:text-red-900"
+                        >
+                          Remove
+                        </button>
                       </div>
-                      {el ? <EligibilityPill eligibility={el} /> : null}
-                      <button
-                        type="button"
-                        onClick={() => removeProgrammeFromUrl(p.id)}
-                        className="self-start text-xs font-semibold text-red-700 underline hover:text-red-900"
-                      >
-                        Remove from compare
-                      </button>
-                    </div>
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-brand-100">
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-brand-100">
             <tr>
-              <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500">Duration</th>
+              <th className={ROW_HEADER_CLASS}>Duration</th>
               {selected.map((p) => (
-                <td key={p.id} className="px-3 py-2 font-medium text-brand-900">
-                  {p.duration ?? "-"}
+                <td key={p.id} className={`${CELL_CLASS} font-medium text-brand-900`}>
+                  {p.duration ?? EMPTY_MARK}
                 </td>
               ))}
             </tr>
             <tr>
-              <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500">Min points (best six)</th>
+              <th className={ROW_HEADER_CLASS}>Min points (best six)</th>
               {selected.map((p) => {
                 const low =
                   Number.isFinite(p.minPoints) && p.minPoints === minPtsLow && minPtsLow !== minPtsHigh;
@@ -285,7 +333,8 @@ export default function CompareProgrammes() {
                   <td
                     key={p.id}
                     className={[
-                      "px-3 py-2 font-semibold",
+                      CELL_CLASS,
+                      "font-semibold",
                       low && "bg-emerald-50 text-emerald-900",
                       high && "bg-amber-50 text-amber-950",
                       minPtsLow === minPtsHigh && "text-brand-900",
@@ -294,39 +343,39 @@ export default function CompareProgrammes() {
                       .join(" ")}
                     title={low ? "Lower bar among this set" : high ? "Higher bar among this set" : undefined}
                   >
-                    {p.minPoints ?? "-"}
+                    {p.minPoints ?? EMPTY_MARK}
                   </td>
                 );
               })}
             </tr>
             {showDeadlineRow ? (
               <tr>
-                <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500">Application deadline</th>
+                <th className={ROW_HEADER_CLASS}>Application deadline</th>
                 {selected.map((p) => (
-                  <td key={p.id} className="px-3 py-2 text-slate-800">
-                    {p.applicationDeadline ? formatApplicationDeadline(p.applicationDeadline) : "-"}
+                  <td key={p.id} className={`${CELL_CLASS} text-stone-800`}>
+                    {p.applicationDeadline ? formatApplicationDeadline(p.applicationDeadline) : EMPTY_MARK}
                   </td>
                 ))}
               </tr>
             ) : null}
             {showApplyRow ? (
               <tr>
-                <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500">Apply</th>
+                <th className={ROW_HEADER_CLASS}>Apply</th>
                 {selected.map((p) => {
                   const applyHref = safeExternalUrl(p.applyUrl);
                   return (
-                    <td key={p.id} className="px-3 py-2">
+                    <td key={p.id} className={CELL_CLASS}>
                       {applyHref ? (
                         <a
                           href={applyHref}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-medium text-brand-700 underline"
+                          className="focus-ring inline-flex min-h-9 items-center rounded-lg px-2 font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4 hover:bg-brand-50 hover:text-brand-900"
                         >
                           Apply / admissions
                         </a>
                       ) : (
-                        "-"
+                        EMPTY_MARK
                       )}
                     </td>
                   );
@@ -337,7 +386,7 @@ export default function CompareProgrammes() {
               const diff = subjectValuesDiffer(selected, key);
               return (
                 <tr key={key}>
-                  <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500">
+                  <th className={ROW_HEADER_CLASS}>
                     {REQ_LABEL[key] ?? key}
                   </th>
                   {selected.map((p) => {
@@ -345,11 +394,11 @@ export default function CompareProgrammes() {
                     return (
                       <td
                         key={p.id}
-                        className={["px-3 py-2 text-brand-900", diff && "bg-amber-50 font-semibold text-amber-950"]
+                        className={[CELL_CLASS, "text-brand-900", diff && "bg-amber-50 font-semibold text-amber-950"]
                           .filter(Boolean)
                           .join(" ")}
                       >
-                        {g != null && g !== "" ? `At least ${g}` : "-"}
+                        {g != null && g !== "" ? `At least ${g}` : EMPTY_MARK}
                       </td>
                     );
                   })}
@@ -357,13 +406,13 @@ export default function CompareProgrammes() {
               );
             })}
             <tr>
-              <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500">Fees (approx.)</th>
+              <th className={ROW_HEADER_CLASS}>Fees (approx.)</th>
               {selected.map((p) => {
                 const f = p.fees;
                 const text =
                   f && typeof f.domestic === "number" && f.currency
                     ? `${f.currency} ${f.domestic.toLocaleString()}${f.per ? ` / ${f.per}` : ""}`
-                    : "-";
+                    : null;
                 const dom = f?.domestic;
                 const low =
                   typeof dom === "number" &&
@@ -383,7 +432,8 @@ export default function CompareProgrammes() {
                   <td
                     key={p.id}
                     className={[
-                      "px-3 py-2 text-slate-800",
+                      CELL_CLASS,
+                      "text-stone-800",
                       low && "bg-emerald-50 font-semibold text-emerald-900",
                       high && "bg-amber-50 font-semibold text-amber-950",
                     ]
@@ -391,43 +441,48 @@ export default function CompareProgrammes() {
                       .join(" ")}
                     title={low ? "Lower fee in this set" : high ? "Higher fee in this set" : undefined}
                   >
-                    {text}
+                    {text ?? EMPTY_MARK}
                   </td>
                 );
               })}
             </tr>
             <tr>
-              <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500 align-top">Careers</th>
+              <th className={`${ROW_HEADER_CLASS} align-top`}>Careers</th>
               {selected.map((p) => (
-                <td key={p.id} className="px-3 py-2 text-slate-800">
-                  {(p.careers || []).length ? (p.careers || []).join(", ") : "-"}
+                <td key={p.id} className={`${CELL_CLASS} leading-6 text-stone-800`}>
+                  {(p.careers || []).length ? (p.careers || []).join(", ") : EMPTY_MARK}
                 </td>
               ))}
             </tr>
             <tr>
-              <th className="sticky left-0 bg-white px-3 py-2 text-xs font-medium text-slate-500 align-top">Official</th>
+              <th className={`${ROW_HEADER_CLASS} align-top`}>Official</th>
               {selected.map((p) => {
                 const officialHref = safeExternalUrl(p.officialUrl);
                 return (
-                  <td key={p.id} className="px-3 py-2">
+                  <td key={p.id} className={CELL_CLASS}>
                     {officialHref ? (
-                      <a href={officialHref} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-700 underline">
+                      <a
+                        href={officialHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="focus-ring inline-flex min-h-9 items-center rounded-lg px-2 font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4 hover:bg-brand-50 hover:text-brand-900"
+                      >
                         Open page
                       </a>
                     ) : (
-                      "-"
+                      EMPTY_MARK
                     )}
                   </td>
                 );
               })}
             </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
         </div>
       </div>
 
       <p className="rounded-2xl border border-white/70 bg-white/55 px-4 py-3 text-xs leading-5 text-slate-600 shadow-sm backdrop-blur">
-        Subject cells highlighted in amber differ between programmes in this comparison. Min points and fee highlights show the lowest and highest values in this set only (lower min points is easier; lower fees is cheaper).
+        Amber cells differ across this comparison. Green marks the lower points or fee value in this set; amber marks the higher value. Always confirm final requirements with the institution.
       </p>
     </div>
   );
