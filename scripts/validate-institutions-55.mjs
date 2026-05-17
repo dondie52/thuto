@@ -104,6 +104,7 @@ function main() {
   }
 
   console.error("validate-institutions-55: OK");
+  console.error("Tip: run node scripts/validate-university-resources.mjs for resources[] checks");
 }
 
 main();

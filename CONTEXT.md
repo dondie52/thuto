@@ -99,6 +99,27 @@ Array of programme objects. Typical fields include:
 
 Institution cards (UB, BIUST, BAC-style entries): branding copy, links, and **application window** fields consumed for banners and detail pages.
 
+Optional **`resources[]`** on each university (external links only — Thuto does not host PDFs):
+
+| Field | Role |
+|--------|------|
+| `title` | Link label shown in the Downloads & resources section |
+| `category` | e.g. Application guide, How to apply, Fees, Calendar, Prospectus, Admissions page |
+| `url` | Absolute `https://` URL to the institution’s PDF or page |
+| `format` | `PDF` or `Web page` |
+| `sourceLabel` | Institution name for attribution |
+
+The university detail page always shows **Downloads & resources** after Programmes; when `resources` is empty, students still get **Official website** / **Apply online** fallbacks from the main record.
+
+**Curating resources (55 canonical institutions):**
+
+1. `node scripts/discover-university-resources.mjs` — crawl official sites → `scripts/data/drafts/university-resources-draft.json`
+2. `node scripts/build-university-resources-curated.mjs` — baseline curated file from bundled data
+3. `node scripts/apply-resources-draft-to-curated.mjs` — merge draft PDFs into curated (optional)
+4. Edit `scripts/data/curated/university-resources.json` as needed
+5. `node scripts/merge-university-resources.mjs` — write into `public/data/universities.json`
+6. `node scripts/validate-university-resources.mjs`
+
 ### Scripts / source material (`scripts/`)
 
 - **`build-programmes-catalog.mjs`**, **`merge-ub-admissions-2025.mjs`**, **`merge-admission-overrides.mjs`**, **`merge-ub-modules-from-calendar.mjs`**: pipeline to enrich or reconcile `programmes.json` from text/PDF-derived sources (see `scripts/data/*`, `ADMISSIONS-MINPOINTS.md`).

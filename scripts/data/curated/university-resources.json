@@ -1,0 +1,965 @@
+{
+  "version": 1,
+  "note": "Curated official links for 55 institutions. Edit then run: node scripts/merge-university-resources.mjs",
+  "universities": [
+    {
+      "universityId": "ub",
+      "sourceLabel": "University of Botswana",
+      "replace": true,
+      "resources": [
+        {
+          "title": "A Guide to Prospective Applicants 2026 - Undergraduate Admissions",
+          "category": "Application guide",
+          "url": "https://www.ub.bw/sites/default/files/2026-04/A-GUIDE_TO-PROSPECTIVE-APPLICANTS-2026-UNDEGRADUATE-14042026.pdf",
+          "format": "PDF",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "title": "Step-by-step Online Application Guide",
+          "category": "How to apply",
+          "url": "https://www.ub.bw/sites/default/files/2021-02/2021-Online-Booklet_Edit-2.pdf",
+          "format": "PDF",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "title": "2025/26 Financial Procedures",
+          "category": "Fees",
+          "url": "https://www.ub.bw/sites/default/files/2025-07/University_of_Botswana_2025-26_Schedule_of_Fees_Final-14072025.pdf",
+          "format": "PDF",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "title": "Tuition Fee Payment Plan",
+          "category": "Fees",
+          "url": "https://www.ub.bw/sites/default/files/2021-09/Revised-Payment-Plan-Contract-07092021.pdf",
+          "format": "PDF",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "title": "UB Almanac 2025/2026",
+          "category": "Calendar",
+          "url": "https://www.ub.bw/sites/default/files/2025-07/UB_Almanac_for_the_2025-2026_Academic_Year.pdf",
+          "format": "PDF",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "title": "Undergraduate admissions page",
+          "category": "Admissions page",
+          "url": "https://www.ub.bw/study/undergraduate/how-apply-admission",
+          "format": "Web page",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "title": "Postgraduate Admissions Online Application - Step-By-Step Guide for Applicants",
+          "category": "How to apply",
+          "url": "https://www.ub.bw/sites/default/files/2025-03/Step-by-Step-Online-application-31032025.pdf",
+          "format": "PDF",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "title": "Reference Report Form for Admission to Graduate Programmes",
+          "category": "Admissions page",
+          "url": "https://www.ub.bw/sites/default/files/2025-03/Reference-form-2025-2026-31032025.pdf",
+          "format": "PDF",
+          "sourceLabel": "University of Botswana"
+        }
+      ]
+    },
+    {
+      "universityId": "biust",
+      "sourceLabel": "BIUST",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Undergraduate admissions hub",
+          "category": "Admissions page",
+          "url": "https://www.biust.ac.bw/undergraduate/",
+          "format": "Web page",
+          "sourceLabel": "BIUST"
+        },
+        {
+          "title": "How to Apply (Undergraduate)",
+          "category": "How to apply",
+          "url": "https://www.biust.ac.bw/undergraduate-how-to-apply/",
+          "format": "Web page",
+          "sourceLabel": "BIUST"
+        },
+        {
+          "title": "Entry requirements",
+          "category": "Application guide",
+          "url": "https://www.biust.ac.bw/entry-requirements/",
+          "format": "Web page",
+          "sourceLabel": "BIUST"
+        },
+        {
+          "title": "Undergraduate programmes",
+          "category": "Brochure",
+          "url": "https://www.biust.ac.bw/undergraduate-programmes/",
+          "format": "Web page",
+          "sourceLabel": "BIUST"
+        },
+        {
+          "title": "here",
+          "category": "Brochure",
+          "url": "https://www.biust.ac.bw/wp-content/uploads/2025/12/2026-BIUST-SHORT-COURSES-REGISTRATION-FORM.pdf",
+          "format": "PDF",
+          "sourceLabel": "BIUST"
+        },
+        {
+          "title": "here",
+          "category": "Brochure",
+          "url": "https://www.biust.ac.bw/wp-content/uploads/2025/12/2026-BIUST-SHORT-COURSES-BOOKLET-FINAL.pdf",
+          "format": "PDF",
+          "sourceLabel": "BIUST"
+        },
+        {
+          "title": "Contact Admissions",
+          "category": "Admissions page",
+          "url": "https://www.biust.ac.bw/contact-us/",
+          "format": "Web page",
+          "sourceLabel": "BIUST"
+        },
+        {
+          "title": "How to apply",
+          "category": "How to apply",
+          "url": "https://www.biust.ac.bw/international-student/",
+          "format": "Web page",
+          "sourceLabel": "BIUST"
+        }
+      ]
+    },
+    {
+      "universityId": "buan",
+      "sourceLabel": "Botswana University of Agriculture and Natural Resources",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.buan.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.buan.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        },
+        {
+          "title": "Academic Calendar",
+          "category": "Calendar",
+          "url": "https://www.buan.ac.bw/common_up/buan/ACADEMIC%20CALENDAR%202025-2026%20(FINAL%20AMENDED)%20(1).pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        },
+        {
+          "title": "Data Protect Policy",
+          "category": "Brochure",
+          "url": "https://www.buan.ac.bw/common_up/buan/BUAN%20DATA%20PROTECTION%20POLICY%20STATEMENT.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        },
+        {
+          "title": "Strategic Plan",
+          "category": "Brochure",
+          "url": "https://www.buan.ac.bw/common_up/buan/Strategic%20Plan%20Writeup%20Final%20V2.2022_Master%20Doc.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        },
+        {
+          "title": "Document",
+          "category": "Brochure",
+          "url": "https://www.buan.ac.bw/common_up/buan/doc_1773915548.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        },
+        {
+          "title": "Document",
+          "category": "Brochure",
+          "url": "https://www.buan.ac.bw/common_up/buan/doc_1715145393.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        },
+        {
+          "title": "Document",
+          "category": "Brochure",
+          "url": "https://www.buan.ac.bw/common_up/buan/doc_1714590307.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana University of Agriculture and Natural Resources"
+        }
+      ]
+    },
+    {
+      "universityId": "limkokwing",
+      "sourceLabel": "Limkokwing University of Creative Technology",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.limkokwing.net/botswana/",
+          "format": "Web page",
+          "sourceLabel": "Limkokwing University of Creative Technology"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.limkokwing.net/admissions",
+          "format": "Web page",
+          "sourceLabel": "Limkokwing University of Creative Technology"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://www.limkokwing.net/botswana/admissions",
+          "format": "Web page",
+          "sourceLabel": "Limkokwing University of Creative Technology"
+        }
+      ]
+    },
+    {
+      "universityId": "botho",
+      "sourceLabel": "Botho University",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.bothouniversity.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Botho University"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.bothouniversity.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Botho University"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://www.bothouniversity.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Botho University"
+        }
+      ]
+    },
+    {
+      "universityId": "ba-isago",
+      "sourceLabel": "BA ISAGO University",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.baisago.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "BA ISAGO University"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.baisago.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "BA ISAGO University"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://www.baisago.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "BA ISAGO University"
+        },
+        {
+          "title": "Download",
+          "category": "Brochure",
+          "url": "https://www.baisago.ac.bw/sites/default/files/2025-12/Tender%20Document%20%281%29_4.pdf",
+          "format": "PDF",
+          "sourceLabel": "BA ISAGO University"
+        },
+        {
+          "title": "Download",
+          "category": "Brochure",
+          "url": "https://www.baisago.ac.bw/sites/default/files/2025-12/Tender%20Document%20%281%29_5.pdf",
+          "format": "PDF",
+          "sourceLabel": "BA ISAGO University"
+        },
+        {
+          "title": "How to Apply",
+          "category": "How to apply",
+          "url": "https://www.baisago.ac.bw/admissions/how-apply",
+          "format": "Web page",
+          "sourceLabel": "BA ISAGO University"
+        },
+        {
+          "title": "Entry Requirements",
+          "category": "Application guide",
+          "url": "https://www.baisago.ac.bw/admissions/entry-requirements",
+          "format": "Web page",
+          "sourceLabel": "BA ISAGO University"
+        },
+        {
+          "title": "Registration Process",
+          "category": "Admissions page",
+          "url": "https://www.baisago.ac.bw/admissions/registration-process",
+          "format": "Web page",
+          "sourceLabel": "BA ISAGO University"
+        }
+      ]
+    },
+    {
+      "universityId": "new-era",
+      "sourceLabel": "New Era College",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.neweracollege.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "New Era College"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.neweracollege.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "New Era College"
+        },
+        {
+          "title": "Download",
+          "category": "Prospectus",
+          "url": "https://www.neweracollege.ac.bw/downloads/New_Era_College_Prospectus.pdf",
+          "format": "PDF",
+          "sourceLabel": "New Era College"
+        }
+      ]
+    },
+    {
+      "universityId": "bou",
+      "sourceLabel": "Botswana Open University",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.bou.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Botswana Open University"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.bou.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Botswana Open University"
+        },
+        {
+          "title": "Study at BOU",
+          "category": "Brochure",
+          "url": "https://www.bou.ac.bw/media/attachments/2025/06/23/bou_applications_final_2025_26.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana Open University"
+        },
+        {
+          "title": "Fees",
+          "category": "Fees",
+          "url": "https://www.bou.ac.bw/media/attachments/2026/04/28/2026_programme_fees.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana Open University"
+        },
+        {
+          "title": "Learn More",
+          "category": "Prospectus",
+          "url": "https://www.bou.ac.bw/media/attachments/2026/02/19/micro-credential-brochure-2026.pdf",
+          "format": "PDF",
+          "sourceLabel": "Botswana Open University"
+        },
+        {
+          "title": "Faculty of Education",
+          "category": "Admissions page",
+          "url": "https://www.bou.ac.bw/index.php/study-at-bou/faculties/faculty-of-education",
+          "format": "Web page",
+          "sourceLabel": "Botswana Open University"
+        },
+        {
+          "title": "Faculty of Business & Management Studies",
+          "category": "Admissions page",
+          "url": "https://www.bou.ac.bw/index.php/study-at-bou/faculties/faculty-of-business-management-studies",
+          "format": "Web page",
+          "sourceLabel": "Botswana Open University"
+        },
+        {
+          "title": "Faculty of Science & Technology",
+          "category": "Admissions page",
+          "url": "https://www.bou.ac.bw/index.php/study-at-bou/faculties/faculty-of-science-technology",
+          "format": "Web page",
+          "sourceLabel": "Botswana Open University"
+        }
+      ]
+    },
+    {
+      "universityId": "boitekanelo",
+      "sourceLabel": "Boitekanelo College",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.boitekanelo.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Boitekanelo College"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.boitekanelo.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Boitekanelo College"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://boitekanelo.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Boitekanelo College"
+        },
+        {
+          "title": "Download Application Form",
+          "category": "Brochure",
+          "url": "https://www.boitekanelo.ac.bw/assets/website/images/downloads/bc_application_form.pdf",
+          "format": "PDF",
+          "sourceLabel": "Boitekanelo College"
+        },
+        {
+          "title": "click to view application guide",
+          "category": "Application guide",
+          "url": "https://www.boitekanelo.ac.bw/uploads/downloads/applicant_portal_guide.pdf",
+          "format": "PDF",
+          "sourceLabel": "Boitekanelo College"
+        },
+        {
+          "title": "Download",
+          "category": "Brochure",
+          "url": "https://www.boitekanelo.ac.bw/uploads/downloads/website/2025-March/20250319095412235523.pdf",
+          "format": "PDF",
+          "sourceLabel": "Boitekanelo College"
+        },
+        {
+          "title": "Download",
+          "category": "Brochure",
+          "url": "https://www.boitekanelo.ac.bw/uploads/downloads/website/2025-March/20250319095514359170.pdf",
+          "format": "PDF",
+          "sourceLabel": "Boitekanelo College"
+        },
+        {
+          "title": "Download",
+          "category": "Brochure",
+          "url": "https://www.boitekanelo.ac.bw/uploads/downloads/website/2026-April/20260413123228330757.pdf",
+          "format": "PDF",
+          "sourceLabel": "Boitekanelo College"
+        }
+      ]
+    },
+    {
+      "universityId": "abm",
+      "sourceLabel": "ABM University College",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.abm.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "ABM University College"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.abm.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "ABM University College"
+        }
+      ]
+    },
+    {
+      "universityId": "idm",
+      "sourceLabel": "Institute of Development Management (IDM) Botswana",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.idmbls.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Institute of Development Management (IDM) Botswana"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.idmbls.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Institute of Development Management (IDM) Botswana"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://www.idmbls.com/bw",
+          "format": "Web page",
+          "sourceLabel": "Institute of Development Management (IDM) Botswana"
+        }
+      ]
+    },
+    {
+      "universityId": "bac",
+      "sourceLabel": "Botswana School of Business Sciences",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Admissions and enrolment guide",
+          "category": "Admissions page",
+          "url": "https://www.bac.ac.bw/admissions.php",
+          "format": "Web page",
+          "sourceLabel": "BSBS/BAC"
+        },
+        {
+          "title": "Online application portal",
+          "category": "How to apply",
+          "url": "https://thitoacademics.bac.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "BSBS/BAC"
+        }
+      ]
+    },
+    {
+      "universityId": "ihs",
+      "sourceLabel": "Institute of Health Sciences (IHS)",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "bcet",
+      "sourceLabel": "Botswana College of Engineering and Technology (BCET)",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "guc",
+      "sourceLabel": "Gaborone University College of Law and Professional Studies (GUC)",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.guc.co.bw/",
+          "format": "Web page",
+          "sourceLabel": "Gaborone University College of Law and Professional Studies (GUC)"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.guc.co.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Gaborone University College of Law and Professional Studies (GUC)"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://www.guc.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Gaborone University College of Law and Professional Studies (GUC)"
+        }
+      ]
+    },
+    {
+      "universityId": "isbs",
+      "sourceLabel": "Imperial School of Business and Science",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.isbs.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Imperial School of Business and Science"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.isbs.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Imperial School of Business and Science"
+        },
+        {
+          "title": "Download Enrolment Form",
+          "category": "Admissions page",
+          "url": "https://www.isbs.ac.bw/common_up/isbs/files/ISBS_Contract_Enrolment_Form_2026.pdf",
+          "format": "PDF",
+          "sourceLabel": "Imperial School of Business and Science"
+        },
+        {
+          "title": "Admissions",
+          "category": "Admissions page",
+          "url": "https://www.isbs.ac.bw/index.php/isbs-content/cid/18/admissions/",
+          "format": "Web page",
+          "sourceLabel": "Imperial School of Business and Science"
+        }
+      ]
+    },
+    {
+      "universityId": "logan-business-college",
+      "sourceLabel": "Logan Business College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "lcibs",
+      "sourceLabel": "London College of International Business Studies (LCIBS) Botswana",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.lcibs.co.bw/",
+          "format": "Web page",
+          "sourceLabel": "London College of International Business Studies (LCIBS) Botswana"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.lcibs.co.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "London College of International Business Studies (LCIBS) Botswana"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://lcibs.ac.bw/apply/",
+          "format": "Web page",
+          "sourceLabel": "London College of International Business Studies (LCIBS) Botswana"
+        }
+      ]
+    },
+    {
+      "universityId": "mega-size-college",
+      "sourceLabel": "Mega Size College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "gtc",
+      "sourceLabel": "Gaborone Technical College",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.gtc.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Gaborone Technical College"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.gtc.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Gaborone Technical College"
+        }
+      ]
+    },
+    {
+      "universityId": "kanye-sda-nursing",
+      "sourceLabel": "Kanye Seventh Day Adventist College of Nursing",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "bosa-bosele",
+      "sourceLabel": "Bosa Bosele Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "oodi",
+      "sourceLabel": "Oodi College of Applied Arts and Technology",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "pillar-of-success",
+      "sourceLabel": "Pillar of Success Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "fctve",
+      "sourceLabel": "Francistown College of Technical and Vocational Education",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "gips",
+      "sourceLabel": "Gaborone Institute of Professional Studies",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.gips.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Gaborone Institute of Professional Studies"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.gips.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Gaborone Institute of Professional Studies"
+        }
+      ]
+    },
+    {
+      "universityId": "fire-college",
+      "sourceLabel": "College of Fire & Safety (Fire College)",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://firecollege.co.bw/",
+          "format": "Web page",
+          "sourceLabel": "College of Fire & Safety (Fire College)"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://firecollege.co.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "College of Fire & Safety (Fire College)"
+        },
+        {
+          "title": "Apply online",
+          "category": "How to apply",
+          "url": "https://firecollege.co.bw/qualifications-form/",
+          "format": "Web page",
+          "sourceLabel": "College of Fire & Safety (Fire College)"
+        },
+        {
+          "title": "Company Profile",
+          "category": "Prospectus",
+          "url": "https://firecollege.co.bw/wp-content/uploads/2025/12/COLLEGE-OF-FIRE-SAFETY-PROSPECTUS-23.pdf",
+          "format": "PDF",
+          "sourceLabel": "College of Fire & Safety (Fire College)"
+        },
+        {
+          "title": "Apply Online",
+          "category": "Admissions page",
+          "url": "https://firecollege.co.bw/training/",
+          "format": "Web page",
+          "sourceLabel": "College of Fire & Safety (Fire College)"
+        }
+      ]
+    },
+    {
+      "universityId": "botswana-accountancy-training",
+      "sourceLabel": "Botswana Institute of Chartered Accountants Training Centre",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.bica.org.bw/",
+          "format": "Web page",
+          "sourceLabel": "Botswana Institute of Chartered Accountants Training Centre"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.bica.org.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Botswana Institute of Chartered Accountants Training Centre"
+        }
+      ]
+    },
+    {
+      "universityId": "tlokweng-coe",
+      "sourceLabel": "Tlokweng College of Education",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "serowe-coe",
+      "sourceLabel": "Serowe College of Education",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "molepolole-coe",
+      "sourceLabel": "Molepolole College of Education",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "roads-training-centre",
+      "sourceLabel": "Roads Training Centre",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "dawn-training",
+      "sourceLabel": "Dawn Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "cep-training",
+      "sourceLabel": "CEP Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "learneasy",
+      "sourceLabel": "LEARNeasy Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "stargems",
+      "sourceLabel": "Stargems Diamond Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "homeland-college",
+      "sourceLabel": "Homeland College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "gcca",
+      "sourceLabel": "Gaborone College of Culinary Arts",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "gaborone-commercial-college",
+      "sourceLabel": "Gaborone Commercial College of Higher Studies",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "tebelopele",
+      "sourceLabel": "Tebelopele College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "byte-size-college",
+      "sourceLabel": "Byte Size College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "insurance-training-institute",
+      "sourceLabel": "Insurance Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "realic",
+      "sourceLabel": "Realic Professional and Technical College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "crackit",
+      "sourceLabel": "CrackiT College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "palapye-technical-college",
+      "sourceLabel": "Palapye Technical College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "assembly-bible-college",
+      "sourceLabel": "Assembly Bible College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "bibf",
+      "sourceLabel": "Botswana Institute of Banking and Finance",
+      "replace": true,
+      "resources": [
+        {
+          "title": "Official website",
+          "category": "Admissions page",
+          "url": "https://www.bibf.ac.bw/",
+          "format": "Web page",
+          "sourceLabel": "Botswana Institute of Banking and Finance"
+        },
+        {
+          "title": "Admissions information",
+          "category": "Admissions page",
+          "url": "https://www.bibf.ac.bw/admissions",
+          "format": "Web page",
+          "sourceLabel": "Botswana Institute of Banking and Finance"
+        }
+      ]
+    },
+    {
+      "universityId": "tonota-coe",
+      "sourceLabel": "Tonota College of Education",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "bamalete-nursing",
+      "sourceLabel": "Bamalete Lutheran School of Nursing",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "aafm",
+      "sourceLabel": "Aviation Academy Flying Mission (AAFM)",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "jwaneng-technical-college",
+      "sourceLabel": "Jwaneng Technical College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "botswana-brigades",
+      "sourceLabel": "Botswana Brigades",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "africa-insurance-training-institute",
+      "sourceLabel": "Africa Insurance Training Institute",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "awil-college",
+      "sourceLabel": "Awil College",
+      "replace": true,
+      "resources": []
+    },
+    {
+      "universityId": "delta-training-academy",
+      "sourceLabel": "Delta Training Academy",
+      "replace": true,
+      "resources": []
+    }
+  ]
+}
