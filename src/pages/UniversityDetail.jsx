@@ -22,9 +22,16 @@ function resourceActionLabel(resource) {
   return format.toLowerCase().includes("pdf") || url.toLowerCase().includes(".pdf") ? "Download" : "Open";
 }
 
-function UniversityResourcesSection({ resources }) {
-  if (!resources.length) return null;
+function isPdfResource(resource) {
+  const format = String(resource?.format || "").toLowerCase();
+  const url = String(resource?.url || resource?.href || "").toLowerCase();
+  return format.includes("pdf") || url.includes(".pdf");
+}
 
+function UniversityResourcesSection({ university, resources }) {
+  const websiteHref = safeExternalUrl(university.website);
+  const applyHref = safeExternalUrl(university.applyUrl);
+  const hasResources = resources.length > 0;
   const categories = [...new Set(resources.map((resource) => resource.category).filter(Boolean))];
 
   return (
@@ -36,46 +43,95 @@ function UniversityResourcesSection({ resources }) {
             Official guides, calendars, fees and application links from the institution.
           </p>
         </div>
-        <p className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
-          {resources.length} {resources.length === 1 ? "resource" : "resources"}
-        </p>
+        {hasResources ? (
+          <p className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+            {resources.length} {resources.length === 1 ? "resource" : "resources"}
+          </p>
+        ) : null}
       </div>
 
-      {categories.length ? (
-        <div className="mt-3 flex flex-wrap gap-2" aria-label="Resource categories">
-          {categories.map((category) => (
-            <span key={category} className="rounded-full border border-brand-100 bg-white px-3 py-1 text-xs font-semibold text-brand-800">
-              {category}
-            </span>
-          ))}
+      {!hasResources ? (
+        <div className="mt-4 rounded-xl border border-brand-100 bg-brand-50/50 p-4">
+          <p className="text-sm leading-relaxed text-slate-600">
+            Official brochures, prospectuses and application guides will appear here when available. Use the links below to
+            visit the institution&apos;s website or apply.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {websiteHref ? (
+              <a
+                href={websiteHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-full border border-brand-200 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 transition hover:border-brand-300 hover:bg-brand-50"
+              >
+                Official website
+              </a>
+            ) : null}
+            {applyHref && applyHref !== websiteHref ? (
+              <a
+                href={applyHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-full bg-brand-700 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-brand-800"
+              >
+                Apply online
+              </a>
+            ) : null}
+          </div>
         </div>
-      ) : null}
-
-      <ul className="mt-4 grid gap-3">
-        {resources.map((resource) => (
-          <li key={`${resource.title}-${resource.url}`}>
-            <a
-              href={resource.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex min-w-0 flex-col gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-sm transition hover:border-brand-300 hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <span className="min-w-0">
-                <span className="block break-words font-semibold text-brand-900 group-hover:underline">{resource.title}</span>
-                <span className="mt-1 block text-xs leading-relaxed text-slate-500">
-                  {[resource.category, resource.format, resource.sourceLabel].filter(Boolean).join(" · ")}
+      ) : (
+        <>
+          {categories.length ? (
+            <div className="mt-3 flex flex-wrap gap-2" aria-label="Resource categories">
+              {categories.map((category) => (
+                <span key={category} className="rounded-full border border-brand-100 bg-white px-3 py-1 text-xs font-semibold text-brand-800">
+                  {category}
                 </span>
-              </span>
-              <span className="inline-flex w-fit shrink-0 items-center rounded-full bg-brand-700 px-3 py-1 text-xs font-semibold text-white">
-                {resourceActionLabel(resource)}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+              ))}
+            </div>
+          ) : null}
+
+          <ul className="mt-4 grid gap-3">
+            {resources.map((resource) => (
+              <li key={`${resource.title}-${resource.url}`}>
+                <a
+                  href={resource.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex min-w-0 flex-col gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-sm transition hover:border-brand-300 hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <span className="flex min-w-0 items-start gap-2 sm:items-center">
+                    {isPdfResource(resource) ? (
+                      <span
+                        className="mt-0.5 inline-flex shrink-0 rounded border border-red-200 bg-red-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-red-700 sm:mt-0"
+                        aria-hidden
+                      >
+                        PDF
+                      </span>
+                    ) : null}
+                    <span className="min-w-0">
+                      <span className="block break-words font-semibold text-brand-900 group-hover:underline">{resource.title}</span>
+                      <span className="mt-1 block text-xs leading-relaxed text-slate-500">
+                        {[resource.category, resource.format, resource.sourceLabel].filter(Boolean).join(" · ")}
+                      </span>
+                    </span>
+                  </span>
+                  <span className="inline-flex w-fit shrink-0 items-center rounded-full bg-brand-700 px-3 py-1 text-xs font-semibold text-white">
+                    {resourceActionLabel(resource)}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs leading-relaxed text-slate-500">
+            Links open the institution&apos;s official site. Files and dates may change.
+          </p>
+        </>
+      )}
     </section>
   );
 }
+
 
 export default function UniversityDetail() {
   const { id } = useParams();
@@ -253,7 +309,7 @@ export default function UniversityDetail() {
         )}
       </section>
 
-      <UniversityResourcesSection resources={resources} />
+      <UniversityResourcesSection university={university} resources={resources} />
     </article>
   );
 }
