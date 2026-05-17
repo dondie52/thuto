@@ -26,19 +26,23 @@ export default function Layout() {
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-lg flex-wrap items-center justify-between gap-2 px-4 py-3 sm:max-w-5xl">
-          <BrandMark />
-          <nav className="hidden items-center gap-0.5 sm:flex" aria-label="Primary desktop">
-            {desktopLinks.map(({ to, label, end }) => (
-              <NavLink key={to} to={to} end={end} className={navLinkClass}>
-                {label}
-              </NavLink>
-            ))}
-          </nav>
-          <AccountDrawer />
-          <span className="w-full text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
+        <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-5xl">
+          <div className="flex items-center justify-between gap-2">
+            <BrandMark className="min-w-0 shrink" />
+            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 sm:flex" aria-label="Primary desktop">
+              {desktopLinks.map(({ to, label, end }) => (
+                <NavLink key={to} to={to} end={end} className={navLinkClass}>
+                  {label}
+                </NavLink>
+              ))}
+            </nav>
+            <div className="shrink-0">
+              <AccountDrawer />
+            </div>
+          </div>
+          <p className="mt-1.5 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
             Botswana University Companion
-          </span>
+          </p>
         </div>
       </header>
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 sm:max-w-3xl sm:py-8">

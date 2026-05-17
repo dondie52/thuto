@@ -11,7 +11,7 @@ export default function Auth() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const mode = cleanMode(searchParams.get("mode"));
-  const { continueAsGuest, signIn, signUp, supabaseConfigured, user } = useAuth();
+  const { signIn, signUp, supabaseConfigured, user } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,19 +35,6 @@ export default function Auth() {
     setMessage("");
     setError("");
     setSearchParams({ mode: nextMode });
-  }
-
-  async function handleGuest() {
-    setIsSubmitting(true);
-    setError("");
-    try {
-      await continueAsGuest();
-      navigate("/app");
-    } catch (err) {
-      setError(err.message || "Could not continue as guest.");
-    } finally {
-      setIsSubmitting(false);
-    }
   }
 
   async function handleSubmit(event) {
@@ -80,25 +67,12 @@ export default function Auth() {
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Thuto account</p>
         <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">{title}</h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Keep your pathway available across visits, or continue locally as a guest.
+          Sign in to save your pathway and keep your preferences across visits.
         </p>
       </div>
 
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
-        <button
-          type="button"
-          onClick={handleGuest}
-          disabled={isSubmitting}
-          className="focus-ring flex w-full items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3 text-left font-semibold text-brand-900 hover:bg-brand-100 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <span>
-            <span className="block text-sm">Continue as guest</span>
-            <span className="mt-1 block text-xs font-normal text-slate-600">Use Thuto on this device without an account.</span>
-          </span>
-          <span aria-hidden>-&gt;</span>
-        </button>
-
-        <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-stone-100 p-1">
+        <div className="grid grid-cols-2 gap-2 rounded-2xl bg-stone-100 p-1">
           <button
             type="button"
             onClick={() => switchMode("signup")}

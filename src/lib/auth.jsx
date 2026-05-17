@@ -1,32 +1,23 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 
-export const ACCOUNT_MODE_KEY = "thuto-account-mode";
+const LEGACY_ACCOUNT_MODE_KEY = "thuto-account-mode";
 
 const AuthContext = createContext(null);
-
-function readAccountMode() {
-  try {
-    return localStorage.getItem(ACCOUNT_MODE_KEY) || "guest";
-  } catch {
-    return "guest";
-  }
-}
-
-function writeAccountMode(mode) {
-  try {
-    localStorage.setItem(ACCOUNT_MODE_KEY, mode);
-  } catch {
-    /* ignore */
-  }
-}
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured());
   const [authError, setAuthError] = useState("");
-  const [accountMode, setAccountMode] = useState(() => readAccountMode());
   const supabaseConfigured = isSupabaseConfigured();
+
+  useEffect(() => {
+    try {
+      localStorage.removeItem(LEGACY_ACCOUNT_MODE_KEY);
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   useEffect(() => {
     const supabase = getSupabase();
@@ -39,12 +30,7 @@ export function AuthProvider({ children }) {
     supabase.auth.getSession().then(({ data, error }) => {
       if (!active) return;
       if (error) setAuthError(error.message);
-      const nextSession = data?.session || null;
-      setSession(nextSession);
-      if (nextSession) {
-        writeAccountMode("account");
-        setAccountMode("account");
-      }
+      setSession(data?.session || null);
       setIsLoading(false);
     });
 
@@ -52,10 +38,7 @@ export function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      if (nextSession) {
-        writeAccountMode("account");
-        setAccountMode("account");
-      }
+      if (!nextSession) setAuthError("");
     });
 
     return () => {
@@ -63,21 +46,6 @@ export function AuthProvider({ children }) {
       subscription.unsubscribe();
     };
   }, []);
-
-  function setGuestMode() {
-    writeAccountMode("guest");
-    setAccountMode("guest");
-    setAuthError("");
-  }
-
-  async function continueAsGuest() {
-    const supabase = getSupabase();
-    if (supabase && session) {
-      await supabase.auth.signOut();
-      setSession(null);
-    }
-    setGuestMode();
-  }
 
   async function signUp({ email, password, fullName }) {
     const supabase = getSupabase();
@@ -99,8 +67,6 @@ export function AuthProvider({ children }) {
       throw error;
     }
     if (data?.session) {
-      writeAccountMode("account");
-      setAccountMode("account");
       setSession(data.session);
     }
     return data;
@@ -117,8 +83,6 @@ export function AuthProvider({ children }) {
       setAuthError(error.message);
       throw error;
     }
-    writeAccountMode("account");
-    setAccountMode("account");
     setSession(data?.session || null);
     return data;
   }
@@ -134,25 +98,20 @@ export function AuthProvider({ children }) {
       }
     }
     setSession(null);
-    setGuestMode();
   }
 
   const value = useMemo(
     () => ({
-      accountMode: session ? "account" : accountMode,
       authError,
-      continueAsGuest,
-      isGuest: !session && accountMode === "guest",
       isLoading,
       logout,
       session,
-      setGuestMode,
       signIn,
       signUp,
       supabaseConfigured,
       user: session?.user || null,
     }),
-    [accountMode, authError, isLoading, session, supabaseConfigured],
+    [authError, isLoading, session, supabaseConfigured],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
