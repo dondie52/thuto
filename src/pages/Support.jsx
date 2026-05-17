@@ -68,7 +68,7 @@ export default function Support() {
       <section className="rounded-2xl border border-brand-100 bg-brand-50/70 p-4">
         <p className="text-sm font-semibold text-brand-900">Account context</p>
         <p className="mt-1 text-sm text-slate-600">
-          {user?.email ? `Signed in as ${user.email}.` : "You are not signed in. Guest feedback is still welcome."}
+          {user?.email ? `Signed in as ${user.email}.` : "You are not signed in. Feedback is still welcome."}
         </p>
         {!user ? (
           <Link to="/auth?mode=login" className="mt-3 inline-flex text-sm font-semibold text-brand-800 underline">

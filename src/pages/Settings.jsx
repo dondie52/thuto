@@ -7,7 +7,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 
 export default function Settings() {
   useDocumentTitle("General Settings | Thuto");
-  const { accountMode, supabaseConfigured, user } = useAuth();
+  const { supabaseConfigured, user } = useAuth();
   const [notice, setNotice] = useState("");
 
   function clearPredictor() {
@@ -35,7 +35,7 @@ export default function Settings() {
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Settings</p>
         <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">General settings</h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Manage account mode, local data, and app preferences for this device.
+          Manage your account, local data, and app preferences for this device.
         </p>
       </div>
 
@@ -43,8 +43,8 @@ export default function Settings() {
         <h2 className="font-display text-xl font-semibold text-brand-900">Account</h2>
         <dl className="mt-3 space-y-2 text-sm">
           <div className="flex items-center justify-between gap-3">
-            <dt className="text-slate-500">Mode</dt>
-            <dd className="font-semibold text-brand-900">{user ? "Student account" : accountMode}</dd>
+            <dt className="text-slate-500">Status</dt>
+            <dd className="font-semibold text-brand-900">{user ? "Signed in" : "Not signed in"}</dd>
           </div>
           <div className="flex items-center justify-between gap-3">
             <dt className="text-slate-500">Email</dt>

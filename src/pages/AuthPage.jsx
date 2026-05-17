@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import BrandMark from "../components/BrandMark.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
-import { getSupabase, isSupabaseConfigured } from "../lib/supabase.js";
+import { useAuth } from "../lib/auth.jsx";
+import { isSupabaseConfigured } from "../lib/supabase.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
 
 const authLogoTiles = [
@@ -34,6 +35,7 @@ export default function AuthPage({ mode }) {
   const [searchParams] = useSearchParams();
   const nextPath = useMemo(() => getSafeNext(searchParams), [searchParams]);
   const configured = isSupabaseConfigured();
+  const { isLoading, signIn, signUp, user } = useAuth();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -45,26 +47,16 @@ export default function AuthPage({ mode }) {
   const alternateHref = authLink(isSignup ? "/login" : "/signup", nextPath);
 
   useEffect(() => {
-    if (!configured) return undefined;
-    let cancelled = false;
-    const sb = getSupabase();
-    sb?.auth.getSession().then(({ data }) => {
-      if (!cancelled && data?.session) {
-        navigate(nextPath, { replace: true });
-      }
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [configured, navigate, nextPath]);
+    if (!configured || isLoading) return undefined;
+    if (user) navigate(nextPath, { replace: true });
+  }, [configured, isLoading, navigate, nextPath, user]);
 
   async function onSubmit(e) {
     e.preventDefault();
     setError(null);
     setStatus(null);
 
-    const sb = getSupabase();
-    if (!sb) {
+    if (!configured) {
       setError("Supabase is not configured yet. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to enable accounts.");
       return;
     }
@@ -72,29 +64,18 @@ export default function AuthPage({ mode }) {
     setSubmitting(true);
     try {
       if (isSignup) {
-        const { data, error: signUpError } = await sb.auth.signUp({
+        const data = await signUp({
           email: email.trim(),
           password,
-          options: {
-            data: {
-              full_name: fullName.trim(),
-            },
-          },
+          fullName: fullName.trim(),
         });
-
-        if (signUpError) throw signUpError;
         if (data?.session) {
           navigate(nextPath, { replace: true });
           return;
         }
         setStatus("Account created. Check your email to confirm your address, then log in to continue.");
       } else {
-        const { error: signInError } = await sb.auth.signInWithPassword({
-          email: email.trim(),
-          password,
-        });
-
-        if (signInError) throw signInError;
+        await signIn({ email: email.trim(), password });
         navigate(nextPath, { replace: true });
       }
     } catch (err) {

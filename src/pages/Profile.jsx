@@ -20,7 +20,7 @@ function readPredictorSummary() {
 
 export default function Profile() {
   useDocumentTitle("Profile | Thuto");
-  const { accountMode, supabaseConfigured, user } = useAuth();
+  const { supabaseConfigured, user } = useAuth();
   const savedCount = getBookmarkIds().length;
   const predictor = readPredictorSummary();
   const isSignedIn = Boolean(user);
@@ -30,19 +30,19 @@ export default function Profile() {
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Profile</p>
         <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">
-          {isSignedIn ? "Your Thuto account" : "Guest profile"}
+          {isSignedIn ? "Your Thuto account" : "Your profile"}
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
           {isSignedIn
             ? "Your account is active. Local predictor and shortlist data still stay on this device for this version."
-            : "You are using Thuto locally as a guest. Sign in when you want an account session."}
+            : "Sign in to save your pathway and sync your account across visits."}
         </p>
       </div>
 
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Current mode</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Account status</p>
         <p className="mt-2 font-display text-2xl font-semibold text-brand-900">
-          {isSignedIn ? "Student account" : accountMode === "guest" ? "Guest mode" : "Local mode"}
+          {isSignedIn ? "Signed in" : "Not signed in"}
         </p>
         <p className="mt-1 text-sm text-slate-600">
           {isSignedIn ? user.email : supabaseConfigured ? "No account signed in." : "Account login is not configured yet."}

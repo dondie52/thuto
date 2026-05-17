@@ -2,10 +2,10 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen.jsx";
 import { useRouteSeo } from "./hooks/useRouteSeo.js";
+import { AuthProvider } from "./lib/auth.jsx";
 
 const LandingLayout = lazy(() => import("./components/landing/LandingLayout.jsx"));
 const Layout = lazy(() => import("./components/Layout.jsx"));
-const AuthRoute = lazy(() => import("./components/AuthRoute.jsx"));
 const LandingPage = lazy(() => import("./pages/LandingPage.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Predictor = lazy(() => import("./pages/Predictor.jsx"));
@@ -67,35 +67,15 @@ export default function App() {
   }, [splashPhase]);
 
   return (
-    <>
+    <AuthProvider>
       <Suspense fallback={<PageFallback />}>
         <Routes>
-          <Route
-            path="/login"
-            element={
-              <AuthRoute>
-                <AuthPage mode="login" />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <AuthRoute>
-                <AuthPage mode="signup" />
-              </AuthRoute>
-            }
-          />
+          <Route path="/login" element={<AuthPage mode="login" />} />
+          <Route path="/signup" element={<AuthPage mode="signup" />} />
           <Route element={<LandingLayout />}>
             <Route path="/" element={<LandingPage />} />
           </Route>
-          <Route
-            element={
-              <AuthRoute>
-                <Layout />
-              </AuthRoute>
-            }
-          >
+          <Route element={<Layout />}>
             <Route path="/app" element={<Home />} />
             <Route path="/assistant" element={<Assistant />} />
             <Route path="/auth" element={<Auth />} />
@@ -120,6 +100,6 @@ export default function App() {
         </Routes>
       </Suspense>
       {splashPhase !== "hidden" && <SplashScreen exiting={splashPhase === "exit"} />}
-    </>
+    </AuthProvider>
   );
 }

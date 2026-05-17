@@ -107,13 +107,23 @@ export default function AccountDrawer() {
   const [drawerError, setDrawerError] = useState("");
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
-  const { accountMode, continueAsGuest, isLoading, logout, supabaseConfigured, user } = useAuth();
+  const { isLoading, logout, supabaseConfigured, user } = useAuth();
 
-  const modeLabel = useMemo(() => {
-    if (isLoading) return "Checking account...";
-    if (user?.email) return "Student account";
-    return accountMode === "guest" ? "Guest mode" : "Student account";
-  }, [accountMode, isLoading, user?.email]);
+  const isSignedIn = Boolean(user);
+
+  const profileDisplayName = useMemo(() => {
+    if (isLoading) return "Account";
+    if (user) {
+      const fullName = user.user_metadata?.full_name?.trim();
+      if (fullName) return fullName;
+      const emailLocal = user.email?.split("@")[0]?.trim();
+      if (emailLocal) return emailLocal;
+      return "Student";
+    }
+    return "Sign in";
+  }, [isLoading, user]);
+
+  const profileLinkTo = isSignedIn ? "/settings" : "/auth?mode=login";
 
   useEffect(() => {
     setIsOpen(false);
@@ -169,16 +179,6 @@ export default function AccountDrawer() {
     };
   }, [isOpen]);
 
-  async function handleGuestMode() {
-    setDrawerError("");
-    try {
-      await continueAsGuest();
-      setIsOpen(false);
-    } catch (error) {
-      setDrawerError(error.message || "Could not switch to guest mode.");
-    }
-  }
-
   async function handleLogout() {
     setDrawerError("");
     try {
@@ -195,9 +195,10 @@ export default function AccountDrawer() {
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
-        className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-brand-100 bg-white/90 text-brand-800 shadow-sm transition hover:bg-brand-50 hover:text-brand-900"
-        aria-label="Open account menu"
+        className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-brand-200 bg-brand-50 text-brand-900 shadow-md transition hover:border-brand-300 hover:bg-brand-100 hover:shadow-lg"
+        aria-label="Open menu"
         aria-expanded={isOpen}
+        aria-haspopup="dialog"
       >
         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
@@ -210,36 +211,46 @@ export default function AccountDrawer() {
             type="button"
             className="absolute inset-0 cursor-default bg-slate-950/35 backdrop-blur-[2px]"
             onClick={() => setIsOpen(false)}
-            aria-label="Close account menu"
+            aria-label="Close menu"
             tabIndex={-1}
           />
           <aside className="absolute right-0 top-0 flex h-full w-[min(22rem,92vw)] flex-col border-l border-stone-200 bg-[var(--thuto-surface-elevated)] shadow-2xl">
-            <div className="border-b border-stone-200 bg-brand-900 px-5 pb-5 pt-[calc(1.25rem+env(safe-area-inset-top))] text-white">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-100">Thuto account</p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold">{modeLabel}</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-50/85">
-                    {user?.email
-                      ? user.email
-                      : "Save your pathway, manage preferences, and keep support close."}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  className="focus-ring-on-dark inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20"
-                  aria-label="Close account menu"
-                >
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
-                  </svg>
-                </button>
-              </div>
+            <div className="flex items-center justify-between gap-3 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
+              <Link
+                to={profileLinkTo}
+                className="focus-ring min-w-0 flex-1 truncate font-display text-lg font-semibold text-brand-900 transition hover:text-brand-700"
+              >
+                {profileDisplayName}
+              </Link>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="focus-ring inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-600 transition hover:bg-stone-50 hover:text-brand-900"
+                aria-label="Close menu"
+              >
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
             </div>
 
             <div className="flex-1 overflow-y-auto px-4 py-4">
-              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 shadow-sm">
+              <nav className="space-y-1" aria-label="Account">
+                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">Account</p>
+                {menuItems.map(({ to, label, description, icon }) => (
+                  <NavLink key={to} to={to} className={itemClass}>
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
+                      {icon}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block break-words text-sm font-semibold">{label}</span>
+                      <span className="block truncate text-xs text-stone-500">{description}</span>
+                    </span>
+                  </NavLink>
+                ))}
+              </nav>
+
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-3 shadow-sm">
                 <p className="text-xs font-semibold uppercase tracking-wide text-amber-800">Upgrade</p>
                 <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Premium</p>
                 <p className="mt-1 text-xs leading-relaxed text-stone-600">
@@ -267,27 +278,12 @@ export default function AccountDrawer() {
                   </NavLink>
                 ))}
               </nav>
-
-              <nav className="mt-5 space-y-1" aria-label="Account">
-                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">Account</p>
-                {menuItems.map(({ to, label, description, icon }) => (
-                  <NavLink key={to} to={to} className={itemClass}>
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
-                      {icon}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block break-words text-sm font-semibold">{label}</span>
-                      <span className="block truncate text-xs text-stone-500">{description}</span>
-                    </span>
-                  </NavLink>
-                ))}
-              </nav>
             </div>
 
             <div className="border-t border-stone-200 bg-white/70 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
               {!supabaseConfigured ? (
                 <p className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
-                  Account login is not configured yet. Guest mode still works on this device.
+                  Account login is not configured yet. You can still browse programmes on this device.
                 </p>
               ) : null}
               {drawerError ? (
@@ -295,34 +291,32 @@ export default function AccountDrawer() {
                   {drawerError}
                 </p>
               ) : null}
-              <button
-                type="button"
-                onClick={handleGuestMode}
-                className="focus-ring mb-2 inline-flex min-h-[42px] w-full items-center justify-center rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-700 hover:bg-white"
-              >
-                Continue as guest
-              </button>
-              <div className="grid grid-cols-2 gap-2">
-                <Link
-                  to="/auth?mode=signup"
-                  className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl bg-brand-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+              {isLoading ? (
+                <p className="py-2 text-center text-sm text-stone-500">Checking account...</p>
+              ) : isSignedIn ? (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="focus-ring inline-flex min-h-[42px] w-full items-center justify-center rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100"
                 >
-                  Sign up
-                </Link>
-                <Link
-                  to="/auth?mode=login"
-                  className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50"
-                >
-                  Log in
-                </Link>
-              </div>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="focus-ring mt-2 inline-flex min-h-[42px] w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-              >
-                Log out
-              </button>
+                  Log out
+                </button>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                    <Link
+                      to="/auth?mode=signup"
+                      className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl bg-brand-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+                    >
+                      Sign up
+                    </Link>
+                    <Link
+                      to="/auth?mode=login"
+                      className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50"
+                    >
+                      Log in
+                    </Link>
+                </div>
+              )}
             </div>
           </aside>
         </div>
