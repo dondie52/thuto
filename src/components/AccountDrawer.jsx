@@ -195,7 +195,7 @@ export default function AccountDrawer() {
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
-        className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-brand-200 bg-brand-50 text-brand-900 shadow-md transition hover:border-brand-300 hover:bg-brand-100 hover:shadow-lg"
+        className="focus-ring relative z-40 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-brand-200 bg-brand-50 text-brand-900 shadow-md transition hover:border-brand-300 hover:bg-brand-100 hover:shadow-lg"
         aria-label="Open menu"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
