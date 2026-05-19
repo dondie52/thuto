@@ -214,7 +214,7 @@ export default function AccountDrawer() {
             aria-label="Close menu"
             tabIndex={-1}
           />
-          <aside className="absolute right-0 top-0 flex h-full w-[min(22rem,92vw)] flex-col border-l border-stone-200 bg-[var(--thuto-surface-elevated)] shadow-2xl">
+          <aside className="absolute inset-x-0 top-0 flex h-full w-full flex-col bg-[var(--thuto-surface-elevated)] shadow-2xl sm:inset-x-auto sm:right-0 sm:w-[min(22rem,92vw)] sm:border-l sm:border-stone-200">
             <div className="flex items-center justify-between gap-3 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
               <Link
                 to={profileLinkTo}
