@@ -27,8 +27,8 @@ export default function Layout() {
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
         <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-5xl">
-          <div className="flex items-center justify-between gap-2">
-            <BrandMark className="min-w-0 shrink" />
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
+            <BrandMark className="min-w-0 justify-self-start" />
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 sm:flex" aria-label="Primary desktop">
               {desktopLinks.map(({ to, label, end }) => (
                 <NavLink key={to} to={to} end={end} className={navLinkClass}>
@@ -36,7 +36,7 @@ export default function Layout() {
                 </NavLink>
               ))}
             </nav>
-            <div className="shrink-0">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center justify-self-end">
               <AccountDrawer />
             </div>
           </div>
