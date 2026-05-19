@@ -206,15 +206,21 @@ export default function AccountDrawer() {
       </button>
 
       {isOpen ? (
-        <div ref={dialogRef} className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Account navigation">
+        <div
+          ref={dialogRef}
+          className="fixed inset-0 z-50 bg-[#faf9f6] sm:bg-transparent"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Account navigation"
+        >
           <button
             type="button"
-            className="absolute inset-0 cursor-default bg-slate-950/35 backdrop-blur-[2px]"
+            className="absolute inset-0 cursor-default bg-[#faf9f6] sm:bg-slate-950/35 sm:backdrop-blur-[2px]"
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
             tabIndex={-1}
           />
-          <aside className="absolute inset-x-0 top-0 flex h-full w-full flex-col bg-[var(--thuto-surface-elevated)] shadow-2xl sm:inset-x-auto sm:right-0 sm:w-[min(22rem,92vw)] sm:border-l sm:border-stone-200">
+          <aside className="fixed inset-0 z-10 flex h-dvh w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:w-[min(22rem,92vw)] sm:border-l sm:border-stone-200">
             <div className="flex items-center justify-between gap-3 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
               <Link
                 to={profileLinkTo}
