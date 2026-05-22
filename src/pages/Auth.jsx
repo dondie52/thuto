@@ -45,11 +45,11 @@ export default function Auth() {
     try {
       if (mode === "login") {
         await signIn({ email, password });
-        navigate("/app");
+        navigate(nextPath);
       } else {
         const data = await signUp({ email, password, fullName });
         if (data?.session) {
-          navigate("/app");
+          navigate(nextPath);
         } else {
           setMessage("Check your email to finish setting up your Thuto account.");
         }

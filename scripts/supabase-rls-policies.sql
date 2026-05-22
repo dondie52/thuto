@@ -30,6 +30,9 @@ create policy anon_insert on submissions for insert with check (true);
 create policy read_verified on submissions
   for select using (verified = true and flagged = false);
 
+-- Premium / profiles: see supabase/migrations/20260522000000_profiles_and_premium.sql
+-- (profiles, user_bookmarks, user_predictor_snapshots, analytics_events + auth trigger)
+
 -- Verification checklist (manual):
 -- [ ] Use the anon (publishable) key in VITE_SUPABASE_ANON_KEY — never the service_role key in the web app.
 -- [ ] Insert a test row via /share; confirm select from programme stats returns nothing until verified = true.
