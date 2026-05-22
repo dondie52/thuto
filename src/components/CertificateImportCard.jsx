@@ -48,7 +48,9 @@ export default function CertificateImportCard({ onUseGrades }) {
         if (message?.status) setProgressLabel(message.status);
       });
       setReview(nextReview);
-      if (!nextReview.rows.length) {
+      if (nextReview.documentWarning) {
+        setImportError("");
+      } else if (!nextReview.rows.length) {
         setImportError("I could not find clear subjects and grades yet. You can still add or correct rows below.");
       }
     } catch (error) {
@@ -89,6 +91,9 @@ export default function CertificateImportCard({ onUseGrades }) {
     onUseGrades(cleaned);
     cancelReview();
   }
+
+  const showReviewPanel = Boolean(review.sourceMeta?.fileName);
+  const hasExtractedRows = review.rows.length > 0;
 
   return (
     <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
@@ -147,7 +152,7 @@ export default function CertificateImportCard({ onUseGrades }) {
         ) : null}
       </div>
 
-      {review.rows.length || review.sourceMeta?.fileName ? (
+      {showReviewPanel ? (
         <div className="grid gap-4 px-4 py-4 md:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-3">
             <div className="rounded-2xl border border-brand-100 bg-stone-50 p-3">
@@ -159,28 +164,45 @@ export default function CertificateImportCard({ onUseGrades }) {
                   : "Image certificate"}
               </p>
             </div>
+            {review.documentWarning ? (
+              <div
+                className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm leading-relaxed text-red-900"
+                role="alert"
+              >
+                <p className="font-semibold">Wrong file type</p>
+                <p className="mt-2">{review.documentWarning}</p>
+              </div>
+            ) : null}
             {review.sourceMeta?.previewUrl ? (
               <img
                 src={review.sourceMeta.previewUrl}
                 alt="Uploaded certificate preview"
                 className="w-full rounded-2xl border border-brand-100 object-cover shadow-sm"
               />
-            ) : (
+            ) : review.documentWarning ? null : (
               <div className="rounded-2xl border border-dashed border-brand-200 bg-brand-50/40 p-4 text-sm leading-relaxed text-brand-800">
                 PDF preview is not shown here, but the extracted subjects and grades are ready for review on the right.
               </div>
             )}
-            <div className="rounded-2xl border border-brand-100 bg-brand-50/50 p-3">
-              <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Review status</p>
-              <p className="mt-1 text-sm text-brand-900">{reviewSummary(review.issues)}</p>
-            </div>
+            {hasExtractedRows ? (
+              <div className="rounded-2xl border border-brand-100 bg-brand-50/50 p-3">
+                <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Review status</p>
+                <p className="mt-1 text-sm text-brand-900">{reviewSummary(review.issues)}</p>
+              </div>
+            ) : null}
           </div>
 
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <h3 className="text-sm font-semibold text-brand-900">Check the extracted rows</h3>
-                <p className="mt-1 text-xs text-slate-500">Fix anything that looks off before using these grades.</p>
+                <h3 className="text-sm font-semibold text-brand-900">
+                  {hasExtractedRows ? "Check the extracted rows" : "Add grades manually"}
+                </h3>
+                <p className="mt-1 text-xs text-slate-500">
+                  {hasExtractedRows
+                    ? "Fix anything that looks off before using these grades."
+                    : "Upload a results certificate, or add each subject and grade yourself."}
+                </p>
               </div>
               <button
                 type="button"
@@ -190,6 +212,13 @@ export default function CertificateImportCard({ onUseGrades }) {
                 Add row
               </button>
             </div>
+
+            {!hasExtractedRows && review.documentWarning ? (
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">
+                No subjects were imported from this file. Use &quot;Add row&quot; if you still want to enter grades here,
+                or upload a different file.
+              </div>
+            ) : null}
 
             <div className="space-y-3">
               {review.rows.map((row) => {
@@ -260,6 +289,14 @@ export default function CertificateImportCard({ onUseGrades }) {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 border-t border-brand-100 pt-3">
+              <button
+                type="button"
+                onClick={openPhotoPicker}
+                disabled={isBusy}
+                className="rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Upload again
+              </button>
               <button
                 type="button"
                 onClick={useGrades}
