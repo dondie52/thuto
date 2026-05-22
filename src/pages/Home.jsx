@@ -44,8 +44,6 @@ const cards = [
 
 export default function Home() {
   useDocumentTitle("Thuto - Your Botswana University Companion");
-  const { isPremium } = useAuth();
-  const savedProgrammeCount = getBookmarkIds().length;
   const [urgentUnis, setUrgentUnis] = useState([]);
   /** @type {'remote' | 'bundled' | null} */
   const [uniDataSource, setUniDataSource] = useState(null);
