@@ -3,8 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { evaluateProgramme, readPredictorSession, SUBJECT_FIELDS } from "../lib/admissions.js";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
 import { compareSelectionHref, getCompareIds, setCompareIds } from "../lib/compareSelection.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import { getCompareMax } from "../lib/premium.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
