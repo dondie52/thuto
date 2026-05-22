@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen.jsx";
 import { useRouteSeo } from "./hooks/useRouteSeo.js";
 import { AuthProvider } from "./lib/auth.jsx";
@@ -27,7 +27,6 @@ const Sponsorships = lazy(() => import("./pages/Sponsorships.jsx"));
 const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
-const AuthPage = lazy(() => import("./pages/AuthPage.jsx"));
 
 const splashEnterMs = 520;
 const splashExitMs = 180;
@@ -70,8 +69,8 @@ export default function App() {
     <AuthProvider>
       <Suspense fallback={<PageFallback />}>
         <Routes>
-          <Route path="/login" element={<AuthPage mode="login" />} />
-          <Route path="/signup" element={<AuthPage mode="signup" />} />
+          <Route path="/login" element={<Navigate to="/auth?mode=login" replace />} />
+          <Route path="/signup" element={<Navigate to="/auth?mode=signup" replace />} />
           <Route element={<LandingLayout />}>
             <Route path="/" element={<LandingPage />} />
           </Route>
