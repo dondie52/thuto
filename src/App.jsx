@@ -26,6 +26,8 @@ const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Sponsorships = lazy(() => import("./pages/Sponsorships.jsx"));
 const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
+const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
+const UpgradeCancel = lazy(() => import("./pages/UpgradeCancel.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
 const splashEnterMs = 520;

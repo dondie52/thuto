@@ -5,6 +5,7 @@ import { getBookmarkIds, STORAGE_KEY, toggleBookmark as toggleBookmarkStorage } 
  * @returns {{ ids: string[], toggle: (id: string) => boolean, isBookmarked: (id: string) => boolean }}
  */
 export function useBookmarks() {
+  const { profile, isPremium } = useAuth();
   const [ids, setIds] = useState(() => getBookmarkIds());
 
   const refresh = useCallback(() => {

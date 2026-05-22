@@ -316,6 +316,21 @@ export default function Assistant() {
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
           Ask about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.
         </p>
+        {canUseGemini ? (
+          <p className="mt-2 text-xs text-slate-500">
+            AI questions today: {getAssistantUsageToday(isPremium).count} / {getAssistantUsageToday(isPremium).limit}
+            {!isPremium ? (
+              <>
+                {" "}
+                ·{" "}
+                <Link to="/upgrade" className="font-semibold text-brand-700 underline">
+                  Premium
+                </Link>{" "}
+                raises the daily limit
+              </>
+            ) : null}
+          </p>
+        ) : null}
       </header>
 
       <section className="rounded-2xl border border-brand-200 bg-white shadow-sm">

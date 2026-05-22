@@ -258,17 +258,29 @@ export default function AccountDrawer() {
                 ))}
               </nav>
 
-              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-3 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-wide text-amber-800">Upgrade</p>
+              <div
+                className={`mt-4 rounded-2xl border p-3 shadow-sm ${
+                  isPremium ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"
+                }`}
+              >
+                <p
+                  className={`text-xs font-semibold uppercase tracking-wide ${
+                    isPremium ? "text-emerald-800" : "text-amber-800"
+                  }`}
+                >
+                  {isPremium ? "Premium active" : "Upgrade"}
+                </p>
                 <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Premium</p>
                 <p className="mt-1 text-xs leading-relaxed text-stone-600">
-                  Unlock deeper shortlist tracking, alerts, and richer admissions guidance when premium is ready.
+                  {isPremium
+                    ? "Alerts, cloud shortlist sync, and extended compare are unlocked."
+                    : "Unlock deeper shortlist tracking, alerts, and richer admissions guidance."}
                 </p>
                 <Link
-                  to="/upgrade"
+                  to={isPremium ? "/settings" : "/upgrade"}
                   className="focus-ring mt-3 inline-flex min-h-[40px] items-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
                 >
-                  Upgrade to premium
+                  {isPremium ? "Manage plan" : "Upgrade to premium"}
                 </Link>
               </div>
 
