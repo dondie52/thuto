@@ -107,7 +107,7 @@ export default function AccountDrawer() {
   const [drawerError, setDrawerError] = useState("");
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
-  const { isLoading, logout, supabaseConfigured, user } = useAuth();
+  const { isLoading, isPremium, logout, supabaseConfigured, user } = useAuth();
 
   const isSignedIn = Boolean(user);
 

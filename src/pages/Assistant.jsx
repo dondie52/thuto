@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
 import {
   buildGeminiAssistantContext,
   buildLocalAssistantReply,
@@ -11,6 +12,7 @@ import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { scrollElementIntoView } from "../lib/motion.js";
+import { getAssistantUsageToday } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
 const STARTER_QUESTIONS = [
@@ -86,6 +88,7 @@ function normalizeAssistantPayload(data) {
 
 export default function Assistant() {
   useDocumentTitle("Ask Thuto | Thuto");
+  const { isPremium } = useAuth();
   const [question, setQuestion] = useState("");
   const [programmes, setProgrammes] = useState([]);
   const [universities, setUniversities] = useState([]);
