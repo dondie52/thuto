@@ -127,7 +127,7 @@ export default function AccountDrawer() {
 
   useEffect(() => {
     setIsOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -220,27 +220,29 @@ export default function AccountDrawer() {
             aria-label="Close menu"
             tabIndex={-1}
           />
-          <aside className="fixed inset-0 z-10 flex h-dvh w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:w-[min(22rem,92vw)] sm:border-l sm:border-stone-200">
-            <div className="flex items-center justify-between gap-3 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
-              <Link
-                to={profileLinkTo}
-                className="focus-ring min-w-0 flex-1 truncate font-display text-lg font-semibold text-brand-900 transition hover:text-brand-700"
-              >
-                {profileDisplayName}
-              </Link>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="focus-ring inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-600 transition hover:bg-stone-50 hover:text-brand-900"
-                aria-label="Close menu"
-              >
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
-                </svg>
-              </button>
+          <aside className="fixed inset-0 z-10 flex h-dvh min-h-0 w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:left-auto sm:right-0 sm:w-[min(24rem,92vw)] sm:border-l sm:border-stone-200">
+            <div className="shrink-0 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
+              <div className="flex items-center justify-between gap-3">
+                <Link
+                  to={profileLinkTo}
+                  className="focus-ring min-w-0 flex-1 truncate font-display text-lg font-semibold text-brand-900 transition hover:text-brand-700"
+                >
+                  {profileDisplayName}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="focus-ring inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-600 transition hover:bg-stone-50 hover:text-brand-900"
+                  aria-label="Close menu"
+                >
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-4 py-4">
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
               <nav className="space-y-1" aria-label="Account">
                 <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">Account</p>
                 {menuItems.map(({ to, label, description, icon }) => (
@@ -286,7 +288,7 @@ export default function AccountDrawer() {
               </nav>
             </div>
 
-            <div className="border-t border-stone-200 bg-white/70 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
+            <div className="shrink-0 border-t border-stone-200 bg-white/70 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
               {!supabaseConfigured ? (
                 <p className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
                   Account login is not configured yet. You can still browse programmes on this device.
@@ -309,18 +311,18 @@ export default function AccountDrawer() {
                 </button>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
-                    <Link
-                      to="/auth?mode=signup"
-                      className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl bg-brand-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
-                    >
-                      Sign up
-                    </Link>
-                    <Link
-                      to="/auth?mode=login"
-                      className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50"
-                    >
-                      Log in
-                    </Link>
+                  <Link
+                    to="/auth?mode=signup"
+                    className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl bg-brand-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+                  >
+                    Sign up
+                  </Link>
+                  <Link
+                    to="/auth?mode=login"
+                    className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50"
+                  >
+                    Log in
+                  </Link>
                 </div>
               )}
             </div>
