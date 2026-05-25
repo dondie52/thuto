@@ -7,6 +7,13 @@ import {
   isDeadlineWithinDays,
 } from "../lib/applicationDates.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
+import {
+  fundingSpotlightForWeek,
+  localMondayWeekKey,
+  pickDistinctBySeed,
+  programmeEligibleForWeeklySpotlight,
+} from "../lib/weeklyHomeSpotlight.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 
 const cards = [
@@ -42,11 +49,23 @@ const cards = [
   },
 ];
 
+/** Shown if the programme directory fails to load (ids match sample landing content). */
+const FALLBACK_WEEKLY_PROGRAMMES = [
+  { id: "ub-bsc-cs", name: "BSc Computer Science", university: "University of Botswana", minPoints: 42 },
+  { id: "biust-bsc-data", name: "BSc Data Science", university: "BIUST", minPoints: 43 },
+  { id: "bac-bcom-accounting", name: "BCom Accounting", university: "Botswana School of Business Sciences", minPoints: 38 },
+];
+
 export default function Home() {
   useDocumentTitle("Thuto - Your Botswana University Companion");
   const [urgentUnis, setUrgentUnis] = useState([]);
   /** @type {'remote' | 'bundled' | null} */
   const [uniDataSource, setUniDataSource] = useState(null);
+  const weekKey = localMondayWeekKey();
+  const fundingSpotlight = fundingSpotlightForWeek(weekKey);
+  /** @type {Array<{ id: string, name: string, university?: string, minPoints?: number | null }>} */
+  const [weeklyProgrammes, setWeeklyProgrammes] = useState([]);
+  const [weeklyProgrammesReady, setWeeklyProgrammesReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -76,6 +95,30 @@ export default function Home() {
       ac.abort();
     };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const ac = new AbortController();
+    fetchProgrammes({ signal: ac.signal })
+      .then((list) => {
+        if (cancelled) return;
+        const pool = list.filter(programmeEligibleForWeeklySpotlight).sort((a, b) => a.id.localeCompare(b.id));
+        const seed = `${weekKey}|weekly-programmes|v1`;
+        const picked = pool.length >= 3 ? pickDistinctBySeed(pool, 3, seed) : FALLBACK_WEEKLY_PROGRAMMES;
+        setWeeklyProgrammes(picked);
+        setWeeklyProgrammesReady(true);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setWeeklyProgrammes(FALLBACK_WEEKLY_PROGRAMMES);
+          setWeeklyProgrammesReady(true);
+        }
+      });
+    return () => {
+      cancelled = true;
+      ac.abort();
+    };
+  }, [weekKey]);
 
   return (
     <div className="space-y-10">
@@ -141,6 +184,73 @@ export default function Home() {
         >
           Check eligibility
         </Link>
+      </section>
+
+      <section className="animate-fade-up space-y-3" aria-labelledby="weekly-programmes-heading">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <h2 id="weekly-programmes-heading" className="font-display text-xl font-semibold tracking-tight text-brand-900">
+              Programmes of the week
+            </h2>
+            <p className="mt-1 text-xs leading-relaxed text-stone-500">
+              Three picks from the directory, rotated each Monday. Indicative only—subject rules and institution notices still apply.
+            </p>
+          </div>
+          <Link
+            to="/programmes"
+            className="focus-ring shrink-0 rounded text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
+          >
+            Browse all
+          </Link>
+        </div>
+        {!weeklyProgrammesReady ? (
+          <ul className="grid gap-3 sm:grid-cols-3" aria-busy="true" aria-label="Loading weekly programme picks">
+            {[0, 1, 2].map((i) => (
+              <li key={i} className="h-[7.5rem] animate-pulse rounded-2xl border border-stone-200/80 bg-stone-100/80" />
+            ))}
+          </ul>
+        ) : (
+          <ul className="grid gap-3 sm:grid-cols-3">
+            {weeklyProgrammes.map((p, i) => (
+              <li key={p.id} className="animate-fade-up" style={{ animationDelay: `${60 + i * 50}ms` }}>
+                <Link
+                  to={`/programmes/${p.id}`}
+                  className="focus-ring flex h-full flex-col rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)] p-4 shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card-hover"
+                >
+                  {p.university ? (
+                    <span className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">{p.university}</span>
+                  ) : null}
+                  <h3 className="mt-1 font-display text-base font-semibold leading-snug text-brand-900">{p.name}</h3>
+                  {typeof p.minPoints === "number" ? (
+                    <p className="mt-2 text-sm text-stone-500">From {p.minPoints} points in the directory</p>
+                  ) : null}
+                  <span className="mt-auto pt-3 text-sm font-semibold text-brand-700">
+                    View programme <span aria-hidden>→</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="animate-fade-up" aria-labelledby="weekly-scholarship-heading">
+        <h2 id="weekly-scholarship-heading" className="font-display text-xl font-semibold tracking-tight text-brand-900">
+          Scholarship of the week
+        </h2>
+        <p className="mt-1 text-xs leading-relaxed text-stone-500">
+          A funding topic to dig into, refreshed each Monday. Thuto does not process awards—always confirm on official funder and university notices.
+        </p>
+        <article className="mt-3 rounded-2xl border border-brand-100 bg-gradient-to-br from-white to-brand-50/40 p-4 shadow-card sm:p-5">
+          <h3 className="font-display text-lg font-semibold text-brand-900">{fundingSpotlight.title}</h3>
+          <p className="mt-2 text-sm leading-relaxed text-stone-600">{fundingSpotlight.body}</p>
+          <Link
+            to={fundingSpotlight.to}
+            className="focus-ring mt-4 inline-flex min-h-10 items-center rounded-full bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
+          >
+            {fundingSpotlight.cta}
+          </Link>
+        </article>
       </section>
 
       <section className="space-y-4">
