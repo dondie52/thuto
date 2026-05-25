@@ -84,6 +84,13 @@ supabase secrets set GEMINI_API_KEY=your_gemini_key
 supabase secrets set AI_PROVIDER=gemini
 supabase secrets set GEMINI_MODEL=gemini-2.5-flash
 supabase functions deploy assistant
+supabase functions deploy home-spotlight
+```
+
+Optional: disable Google Search grounding for the home spotlight only (scholarship block falls back to model knowledge):
+
+```bash
+supabase secrets set HOME_SPOTLIGHT_DISABLE_GOOGLE_SEARCH=true
 ```
 
 Never store Gemini, OpenAI, Groq, OpenRouter, or similar provider keys in Vite frontend variables. Vite exposes `VITE_*`
