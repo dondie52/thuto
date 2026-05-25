@@ -8,15 +8,11 @@ export function hash32(s) {
   return h >>> 0;
 }
 
-/** Monday-start calendar week key in local time (YYYY-MM-DD of that Monday). */
-export function localMondayWeekKey(date = new Date()) {
-  const x = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const dow = x.getDay();
-  const delta = dow === 0 ? -6 : 1 - dow;
-  x.setDate(x.getDate() + delta);
-  const y = x.getFullYear();
-  const m = String(x.getMonth() + 1).padStart(2, "0");
-  const d = String(x.getDate()).padStart(2, "0");
+/** Local calendar date key (YYYY-MM-DD) — used for daily spotlight rotation. */
+export function localCalendarDateKey(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
 }
 
@@ -46,7 +42,7 @@ export function pickDistinctBySeed(list, count, seedStr) {
 }
 
 /** @param {{ id?: string, name?: string, minPoints?: unknown }} programme */
-export function programmeEligibleForWeeklySpotlight(programme) {
+export function programmeEligibleForSpotlight(programme) {
   return (
     programme &&
     typeof programme.id === "string" &&
@@ -108,8 +104,8 @@ export const WEEKLY_FUNDING_SPOTLIGHTS = [
   },
 ];
 
-/** @param {string} weekKey */
-export function fundingSpotlightForWeek(weekKey) {
-  const i = hash32(`${weekKey}|funding-spotlight`) % WEEKLY_FUNDING_SPOTLIGHTS.length;
+/** @param {string} dayKey YYYY-MM-DD (local) */
+export function fundingSpotlightForDay(dayKey) {
+  const i = hash32(`${dayKey}|funding-spotlight`) % WEEKLY_FUNDING_SPOTLIGHTS.length;
   return WEEKLY_FUNDING_SPOTLIGHTS[i];
 }

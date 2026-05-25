@@ -9,10 +9,10 @@ import {
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import {
-  fundingSpotlightForWeek,
-  localMondayWeekKey,
+  fundingSpotlightForDay,
+  localCalendarDateKey,
   pickDistinctBySeed,
-  programmeEligibleForWeeklySpotlight,
+  programmeEligibleForSpotlight,
 } from "../lib/weeklyHomeSpotlight.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 
@@ -50,7 +50,7 @@ const cards = [
 ];
 
 /** Shown if the programme directory fails to load (ids match sample landing content). */
-const FALLBACK_WEEKLY_PROGRAMMES = [
+const FALLBACK_DAILY_PROGRAMMES = [
   { id: "ub-bsc-cs", name: "BSc Computer Science", university: "University of Botswana", minPoints: 42 },
   { id: "biust-bsc-data", name: "BSc Data Science", university: "BIUST", minPoints: 43 },
   { id: "bac-bcom-accounting", name: "BCom Accounting", university: "Botswana School of Business Sciences", minPoints: 38 },
@@ -61,11 +61,27 @@ export default function Home() {
   const [urgentUnis, setUrgentUnis] = useState([]);
   /** @type {'remote' | 'bundled' | null} */
   const [uniDataSource, setUniDataSource] = useState(null);
-  const weekKey = localMondayWeekKey();
-  const fundingSpotlight = fundingSpotlightForWeek(weekKey);
+  const [calendarDayKey, setCalendarDayKey] = useState(() => localCalendarDateKey());
+  const fundingSpotlight = fundingSpotlightForDay(calendarDayKey);
   /** @type {Array<{ id: string, name: string, university?: string, minPoints?: number | null }>} */
-  const [weeklyProgrammes, setWeeklyProgrammes] = useState([]);
-  const [weeklyProgrammesReady, setWeeklyProgrammesReady] = useState(false);
+  const [dailyProgrammes, setDailyProgrammes] = useState([]);
+  const [dailyProgrammesReady, setDailyProgrammesReady] = useState(false);
+
+  useEffect(() => {
+    const syncDay = () => {
+      const next = localCalendarDateKey();
+      setCalendarDayKey((prev) => (prev !== next ? next : prev));
+    };
+    const id = setInterval(syncDay, 30_000);
+    const onVis = () => {
+      if (!document.hidden) syncDay();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -99,26 +115,27 @@ export default function Home() {
   useEffect(() => {
     let cancelled = false;
     const ac = new AbortController();
-    fetchProgrammes({ signal: ac.signal })
+    setDailyProgrammesReady(false);
+    fetchProgrammes({ signal: ac.signal, cacheBuster: calendarDayKey })
       .then((list) => {
         if (cancelled) return;
-        const pool = list.filter(programmeEligibleForWeeklySpotlight).sort((a, b) => a.id.localeCompare(b.id));
-        const seed = `${weekKey}|weekly-programmes|v1`;
-        const picked = pool.length >= 3 ? pickDistinctBySeed(pool, 3, seed) : FALLBACK_WEEKLY_PROGRAMMES;
-        setWeeklyProgrammes(picked);
-        setWeeklyProgrammesReady(true);
+        const pool = list.filter(programmeEligibleForSpotlight).sort((a, b) => a.id.localeCompare(b.id));
+        const seed = `${calendarDayKey}|daily-programmes|v1`;
+        const picked = pool.length >= 3 ? pickDistinctBySeed(pool, 3, seed) : FALLBACK_DAILY_PROGRAMMES;
+        setDailyProgrammes(picked);
+        setDailyProgrammesReady(true);
       })
       .catch(() => {
         if (!cancelled) {
-          setWeeklyProgrammes(FALLBACK_WEEKLY_PROGRAMMES);
-          setWeeklyProgrammesReady(true);
+          setDailyProgrammes(FALLBACK_DAILY_PROGRAMMES);
+          setDailyProgrammesReady(true);
         }
       });
     return () => {
       cancelled = true;
       ac.abort();
     };
-  }, [weekKey]);
+  }, [calendarDayKey]);
 
   return (
     <div className="space-y-10">
@@ -186,14 +203,16 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="animate-fade-up space-y-3" aria-labelledby="weekly-programmes-heading">
+      <section className="animate-fade-up space-y-3" aria-labelledby="daily-programmes-heading">
         <div className="flex flex-wrap items-end justify-between gap-2">
           <div>
-            <h2 id="weekly-programmes-heading" className="font-display text-xl font-semibold tracking-tight text-brand-900">
-              Programmes of the week
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">Live directory</p>
+            <h2 id="daily-programmes-heading" className="font-display text-xl font-semibold tracking-tight text-brand-900">
+              Today{"'"}s featured programmes
             </h2>
             <p className="mt-1 text-xs leading-relaxed text-stone-500">
-              Three picks from the directory, rotated each Monday. Indicative only—subject rules and institution notices still apply.
+              Three picks refresh every day at local midnight and reload the programme list from the server so you see the latest
+              directory. Indicative only—subject rules and institution notices still apply.
             </p>
           </div>
           <Link
@@ -203,15 +222,15 @@ export default function Home() {
             Browse all
           </Link>
         </div>
-        {!weeklyProgrammesReady ? (
-          <ul className="grid gap-3 sm:grid-cols-3" aria-busy="true" aria-label="Loading weekly programme picks">
+        {!dailyProgrammesReady ? (
+          <ul className="grid gap-3 sm:grid-cols-3" aria-busy="true" aria-label={"Loading today's programme picks"}>
             {[0, 1, 2].map((i) => (
               <li key={i} className="h-[7.5rem] animate-pulse rounded-2xl border border-stone-200/80 bg-stone-100/80" />
             ))}
           </ul>
         ) : (
           <ul className="grid gap-3 sm:grid-cols-3">
-            {weeklyProgrammes.map((p, i) => (
+            {dailyProgrammes.map((p, i) => (
               <li key={p.id} className="animate-fade-up" style={{ animationDelay: `${60 + i * 50}ms` }}>
                 <Link
                   to={`/programmes/${p.id}`}
@@ -234,12 +253,14 @@ export default function Home() {
         )}
       </section>
 
-      <section className="animate-fade-up" aria-labelledby="weekly-scholarship-heading">
-        <h2 id="weekly-scholarship-heading" className="font-display text-xl font-semibold tracking-tight text-brand-900">
-          Scholarship of the week
+      <section className="animate-fade-up" aria-labelledby="daily-scholarship-heading">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">Daily tip</p>
+        <h2 id="daily-scholarship-heading" className="font-display text-xl font-semibold tracking-tight text-brand-900">
+          Today{"'"}s scholarship spotlight
         </h2>
         <p className="mt-1 text-xs leading-relaxed text-stone-500">
-          A funding topic to dig into, refreshed each Monday. Thuto does not process awards—always confirm on official funder and university notices.
+          A funding topic to explore, chosen for this calendar day. Thuto does not process awards—always confirm on official funder
+          and university notices.
         </p>
         <article className="mt-3 rounded-2xl border border-brand-100 bg-gradient-to-br from-white to-brand-50/40 p-4 shadow-card sm:p-5">
           <h3 className="font-display text-lg font-semibold text-brand-900">{fundingSpotlight.title}</h3>
