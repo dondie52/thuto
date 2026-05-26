@@ -49,6 +49,11 @@ const cards = [
     title: "Universities",
     body: "Institutions, locations, and application windows.",
   },
+  {
+    to: "/sponsorships",
+    title: "Sponsorships & funding",
+    body: "Government sponsorship steps (DTEF online portal), scholarships, and other funding routes.",
+  },
 ];
 
 /** Shown if the programme directory fails to load (ids match sample landing content). */
