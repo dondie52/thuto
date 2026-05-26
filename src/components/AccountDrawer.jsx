@@ -20,8 +20,8 @@ const menuItems = [
     description: "Funding routes and sponsored options",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16v10H4z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V5h8v2M8 17v2h8v-2M12 10v4M10 12h4" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L4 7v2c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V7l-8-4z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
       </svg>
     ),
   },

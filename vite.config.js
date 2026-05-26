@@ -22,6 +22,8 @@ export default defineConfig({
         "icons/icon-192.png",
         "icons/icon-512.png",
         "icons/thuto-logo.png",
+        "icons/thuto-mark.svg",
+        "icons/tef-portal-mark.svg",
         "og-image.png",
       ],
       manifest: {

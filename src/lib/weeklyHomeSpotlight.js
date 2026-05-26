@@ -102,6 +102,12 @@ export const WEEKLY_FUNDING_SPOTLIGHTS = [
     to: "/universities",
     cta: "Browse institutions",
   },
+  {
+    title: "Government tertiary sponsorship (DTEF)",
+    body: "New-student applications for national sponsorship often run through the Online Tertiary Education Sponsorship portal. Thuto lists the published steps and DTEF contact numbers—always confirm deadlines on the live site.",
+    to: "/sponsorships",
+    cta: "Open sponsorship guide",
+  },
 ];
 
 /** @param {string} dayKey YYYY-MM-DD (local) */

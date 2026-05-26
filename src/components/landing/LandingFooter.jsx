@@ -22,6 +22,9 @@ export default function LandingFooter() {
             <a href="#about" className="font-medium text-slate-700 hover:text-brand-800">
               About
             </a>
+            <Link to="/sponsorships" className="font-medium text-slate-700 hover:text-brand-800">
+              Sponsorships
+            </Link>
             <a href="mailto:hello@thuto.bw" className="font-medium text-slate-700 hover:text-brand-800">
               Contact
             </a>
