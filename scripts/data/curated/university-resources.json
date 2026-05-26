@@ -674,7 +674,22 @@
       "universityId": "kanye-sda-nursing",
       "sourceLabel": "Kanye Seventh Day Adventist College of Nursing",
       "replace": true,
-      "resources": []
+      "resources": [
+        {
+          "title": "Application form",
+          "category": "How to apply",
+          "url": "https://drive.google.com/file/d/1VEjEztNV69FgwSjLFsQYZ0AQCOAX4bhF/view?usp=sharing",
+          "format": "PDF",
+          "sourceLabel": "Kanye Seventh Day Adventist College of Nursing"
+        },
+        {
+          "title": "Official Facebook page",
+          "category": "Admissions page",
+          "url": "https://www.facebook.com/people/Kanye-Seventh-Day-Adventist-College-of-Nursing/100090482242245/",
+          "format": "Web page",
+          "sourceLabel": "Kanye Seventh Day Adventist College of Nursing"
+        }
+      ]
     },
     {
       "universityId": "bosa-bosele",
