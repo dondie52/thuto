@@ -20,6 +20,7 @@ export default function SplashScreen({ exiting = false }) {
           className="splash-logo relative h-48 w-48 rounded-[3.25rem] object-contain drop-shadow-[0_28px_55px_rgba(15,118,110,0.28)] sm:h-56 sm:w-56"
           width="224"
           height="224"
+          decoding="async"
         />
         <p className="mt-8 text-xs font-bold uppercase tracking-[0.32em] text-brand-700">Thuto</p>
         <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-brand-900 sm:text-4xl">

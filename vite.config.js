@@ -21,7 +21,6 @@ export default defineConfig({
         "icons/apple-touch-icon.png",
         "icons/icon-192.png",
         "icons/icon-512.png",
-        "icons/thuto-logo.png",
         "icons/thuto-mark.svg",
         "icons/tef-portal-mark.svg",
         "og-image.png",
