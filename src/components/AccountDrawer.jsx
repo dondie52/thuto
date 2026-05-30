@@ -2,95 +2,53 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
 
-const menuItems = [
-  {
-    to: "/profile",
-    label: "Profile",
-    description: "Your saved results and preferences",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20 21a8 8 0 10-16 0" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
-      </svg>
-    ),
-  },
-  {
-    to: "/sponsorships",
-    label: "Sponsorships",
-    description: "Government DTEF guide and private sponsor posts",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L4 7v2c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V7l-8-4z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
-      </svg>
-    ),
-  },
+function EmojiIcon({ emoji, label }) {
+  return (
+    <span className="text-xl leading-none" role="img" aria-label={label}>
+      {emoji}
+    </span>
+  );
+}
+
+const primaryToolItems = [
   {
     to: "/internships",
     label: "Internships",
-    description: "Latest internship announcements",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M4 7h16v11a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 12v4M9 12h6" />
-      </svg>
-    ),
+    description: "Attachments and graduate programmes",
+    emoji: "💼",
+  },
+  {
+    to: "/saved",
+    label: "Saved Programmes",
+    description: "Your shortlisted options",
+    emoji: "🤍",
+  },
+  {
+    to: "/compare",
+    label: "Compare Programmes",
+    description: "Review up to three options side by side",
+    emoji: "⚖️",
+  },
+];
+
+const moreToolItems = [
+  {
+    to: "/fit-finder",
+    label: "Fit Finder",
+    description: "Discover programmes suited to you",
+    emoji: "🔍",
   },
   {
     to: "/settings",
     label: "General Settings",
     description: "App preferences and data controls",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19.4 15a1.8 1.8 0 00.36 1.98l.05.05-2.12 2.12-.05-.05a1.8 1.8 0 00-1.98-.36 1.8 1.8 0 00-1.1 1.66V20.5h-3v-.1a1.8 1.8 0 00-1.1-1.66 1.8 1.8 0 00-1.98.36l-.05.05-2.12-2.12.05-.05A1.8 1.8 0 004.6 15a1.8 1.8 0 00-1.66-1.1H2.8v-3h.14A1.8 1.8 0 004.6 9a1.8 1.8 0 00-.36-1.98l-.05-.05 2.12-2.12.05.05A1.8 1.8 0 008.34 5.26a1.8 1.8 0 001.1-1.66V3.5h3v.1a1.8 1.8 0 001.1 1.66 1.8 1.8 0 001.98-.36l.05-.05 2.12 2.12-.05.05A1.8 1.8 0 0019.4 9a1.8 1.8 0 001.66 1.9h.14v3h-.14A1.8 1.8 0 0019.4 15z" />
-      </svg>
-    ),
+    emoji: "⚙️",
   },
   {
     to: "/support",
     label: "Support and Feedback",
     description: "Report a problem or share ideas",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5A3.5 3.5 0 017.5 2h9A3.5 3.5 0 0120 5.5v6A3.5 3.5 0 0116.5 15H10l-4.5 4v-4A3.5 3.5 0 014 11.5v-6z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 7.5h6M9 11h3.5" />
-      </svg>
-    ),
-  },
-];
-
-const exploreItems = [
-  {
-    to: "/compare",
-    label: "Compare programmes",
-    description: "Review up to three options side by side",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H5v14h4V5zm10 0h-4v14h4V5z" />
-      </svg>
-    ),
-  },
-  {
-    to: "/universities",
-    label: "Universities",
-    description: "Institutions, locations, and application timing",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9v0M9 12v0M9 15v0M9 18v0" />
-      </svg>
-    ),
-  },
-  {
-    to: "/fit-finder",
-    label: "Fit Finder",
-    description: "Rank programmes from grades and preferences",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 12.5 9 16l10-10" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 20h16M4 4h9" />
-      </svg>
-    ),
+    emoji: "💬",
   },
 ];
 
@@ -111,6 +69,20 @@ const focusableSelector = [
   'textarea:not([disabled]):not([tabindex="-1"])',
   '[tabindex]:not([tabindex="-1"])',
 ].join(", ");
+
+function DrawerNavItem({ to, label, description, emoji }) {
+  return (
+    <NavLink to={to} className={itemClass}>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
+        <EmojiIcon emoji={emoji} label={label} />
+      </span>
+      <span className="min-w-0">
+        <span className="block break-words text-sm font-semibold">{label}</span>
+        <span className="block truncate text-xs text-stone-500">{description}</span>
+      </span>
+    </NavLink>
+  );
+}
 
 export default function AccountDrawer() {
   const location = useLocation();
@@ -254,18 +226,9 @@ export default function AccountDrawer() {
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-              <nav className="space-y-1" aria-label="Account">
-                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">Account</p>
-                {menuItems.map(({ to, label, description, icon }) => (
-                  <NavLink key={to} to={to} className={itemClass}>
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
-                      {icon}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block break-words text-sm font-semibold">{label}</span>
-                      <span className="block truncate text-xs text-stone-500">{description}</span>
-                    </span>
-                  </NavLink>
+              <nav className="space-y-1" aria-label="Tools">
+                {primaryToolItems.map((item) => (
+                  <DrawerNavItem key={item.to} {...item} />
                 ))}
               </nav>
 
@@ -285,28 +248,20 @@ export default function AccountDrawer() {
                 <p className="mt-1 text-xs leading-relaxed text-stone-600">
                   {isPremium
                     ? "PDF downloads, WhatsApp support, and unlimited tools are unlocked."
-                    : "Download programme PDFs, get WhatsApp support, and unlock unlimited application tools."}
+                    : "Download programme breakdowns, get WhatsApp support, and unlock unlimited tools to finalise your applications."}
                 </p>
                 <Link
                   to={isPremium ? "/settings" : "/upgrade"}
-                  className="focus-ring mt-3 inline-flex min-h-[40px] items-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
+                  className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
                 >
-                  {isPremium ? "Manage plan" : "Upgrade to Pro"}
+                  {isPremium ? "Manage plan" : "Upgrade to Pro — P59"}
                 </Link>
               </div>
 
               <nav className="mt-4 space-y-1" aria-label="More tools">
                 <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">More tools</p>
-                {exploreItems.map(({ to, label, description, icon }) => (
-                  <NavLink key={to} to={to} className={itemClass}>
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
-                      {icon}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block break-words text-sm font-semibold">{label}</span>
-                      <span className="block truncate text-xs text-stone-500">{description}</span>
-                    </span>
-                  </NavLink>
+                {moreToolItems.map((item) => (
+                  <DrawerNavItem key={item.to} {...item} />
                 ))}
               </nav>
             </div>
