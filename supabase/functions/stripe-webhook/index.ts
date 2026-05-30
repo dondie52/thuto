@@ -3,13 +3,15 @@ import { jsonResponse } from "../_shared/cors.ts";
 import { getStripe } from "../_shared/stripe.ts";
 import { getSupabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
+/** Application season pass covers Apr–Aug; access ends 31 August. */
 function seasonPassUntil() {
   const now = new Date();
-  const end = new Date(now.getFullYear(), 2, 31, 23, 59, 59);
-  if (end.getTime() <= now.getTime()) {
-    end.setFullYear(end.getFullYear() + 1);
+  const month = now.getMonth();
+  let endYear = now.getFullYear();
+  if (month > 7) {
+    endYear += 1;
   }
-  return end.toISOString();
+  return new Date(endYear, 7, 31, 23, 59, 59).toISOString();
 }
 
 async function activatePremium(

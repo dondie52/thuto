@@ -5,7 +5,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { syncFromCloud } from "../lib/cloudSync.js";
 
 export default function UpgradeSuccess() {
-  useDocumentTitle("Premium activated | Thuto");
+  useDocumentTitle("Pro activated | Thuto");
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const { refreshProfile, profile } = useAuth();
@@ -19,11 +19,11 @@ export default function UpgradeSuccess() {
   return (
     <div className="space-y-5">
       <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm">
-        <h1 className="font-display text-2xl font-bold text-emerald-950">Welcome to Thuto Premium</h1>
+        <h1 className="font-display text-2xl font-bold text-emerald-950">Welcome to Thuto Pro</h1>
         <p className="mt-2 text-sm leading-relaxed text-emerald-900">
           {sessionId
-            ? "Your payment was received. Premium may take a minute to activate while we confirm with Stripe."
-            : "Thank you. If you just completed checkout, premium will activate shortly."}
+            ? "Your payment was received. Pro may take a minute to activate while we confirm with Stripe."
+            : "Thank you. If you just completed checkout, Pro will activate shortly."}
         </p>
         <p className="mt-2 text-sm text-emerald-800">
           Refresh your profile if benefits do not appear right away.

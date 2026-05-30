@@ -81,7 +81,7 @@ export default function Settings() {
           </div>
           <div className="flex items-center justify-between gap-3">
             <dt className="text-slate-500">Plan</dt>
-            <dd className="font-semibold text-brand-900">{isPremium ? "Premium" : "Free"}</dd>
+            <dd className="font-semibold text-brand-900">{isPremium ? "Pro" : "Free"}</dd>
           </div>
           {isPremium && premiumUntil ? (
             <div className="flex items-center justify-between gap-3">
@@ -125,7 +125,7 @@ export default function Settings() {
                 to="/upgrade"
                 className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
               >
-                Upgrade to Premium
+                Upgrade to Pro
               </Link>
             )}
           </div>
@@ -136,7 +136,7 @@ export default function Settings() {
         <section className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 shadow-sm">
           <h2 className="font-display text-xl font-semibold text-emerald-950">Cloud backup</h2>
           <p className="mt-2 text-sm leading-relaxed text-emerald-900">
-            Premium keeps your saved programmes and predictor snapshot in your account. Data still loads locally first for
+            Pro keeps your saved programmes and predictor snapshot in your account. Data still loads locally first for
             speed.
           </p>
           <button
@@ -152,7 +152,7 @@ export default function Settings() {
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <h2 className="font-display text-xl font-semibold text-brand-900">Local data</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Predictor summaries and saved programmes are stored on this device. Premium can mirror them to your account.
+          Predictor summaries and saved programmes are stored on this device. Pro can mirror them to your account.
         </p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           <button
