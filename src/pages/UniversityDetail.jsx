@@ -6,6 +6,7 @@ import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmes
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
+import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -287,10 +288,11 @@ export default function UniversityDetail() {
         {filteredProgrammes.length ? (
           <ul className="mt-4 divide-y divide-brand-100 rounded-xl border border-brand-100">
             {filteredProgrammes.map((programme) => (
-              <li key={programme.id}>
+              <li key={programme.id} className="flex items-stretch">
+                <ProgrammeThemeAccent programme={programme} />
                 <Link
                   to={`/programmes/${programme.id}`}
-                  className="flex items-center justify-between gap-3 px-3 py-3 text-sm transition hover:bg-brand-50"
+                  className="flex min-w-0 flex-1 items-center justify-between gap-3 px-3 py-3 text-sm transition hover:bg-brand-50"
                 >
                   <span className="min-w-0">
                     <span className="block truncate font-medium text-brand-900">{programme.name}</span>

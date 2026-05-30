@@ -24,6 +24,7 @@ export default defineConfig({
         "icons/thuto-mark.svg",
         "icons/tef-portal-mark.svg",
         "og-image.png",
+        "programme-themes/*.jpg",
       ],
       manifest: {
         name: "Thuto - Botswana University Companion",
@@ -55,7 +56,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,jpg,svg,woff2}"],
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname.includes("/data/"),

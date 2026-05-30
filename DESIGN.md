@@ -98,6 +98,8 @@ Thuto should feel like a focused student utility: warm, trustworthy, and practic
 
 The product surface uses restrained teal, warm stone neutrals, familiar navigation, and clear form controls. Landing pages can be more expressive with photography and motion, but app screens should stay task-first and dense only where density helps comparison.
 
+**Programme theme imagery.** Programme detail pages, list rows, and featured cards use field- and keyword-matched cover photos from `public/programme-themes/` (resolved via `src/lib/programmeBranding.js`). Images are illustrative stock photography—not official institution marketing. Keep heroes short (detail band ~10–12rem), always use a dark teal gradient overlay for readable white titles, and never let photography replace admission facts (points, grades, deadlines).
+
 **Key Characteristics:**
 - Warm neutral surfaces with teal reserved for primary action, selection, and state.
 - Familiar product UI patterns: sticky top nav, bottom mobile nav, drawers, lists, tables, and inline filters.
