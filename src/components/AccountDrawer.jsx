@@ -17,11 +17,22 @@ const menuItems = [
   {
     to: "/sponsorships",
     label: "Sponsorships",
-    description: "Funding routes and sponsored options",
+    description: "Government DTEF guide and private sponsor posts",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L4 7v2c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V7l-8-4z" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    to: "/internships",
+    label: "Internships",
+    description: "Latest internship announcements",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M4 7h16v11a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 12v4M9 12h6" />
       </svg>
     ),
   },

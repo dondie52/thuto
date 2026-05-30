@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import OpportunityPostsFeed from "../components/OpportunityPostsFeed.jsx";
+import { OPPORTUNITY_CATEGORY } from "../lib/opportunityPosts.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 
 const DTEF_PORTAL = "https://tef.gov.bw";
@@ -174,6 +176,31 @@ export default function Sponsorships() {
             <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{body}</p>
           </article>
         ))}
+      </section>
+
+      <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm" aria-labelledby="private-sponsorship-heading">
+        <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800/95 to-[#1a4d48] px-4 py-4 text-white sm:px-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">Private &amp; sector</p>
+          <h2 id="private-sponsorship-heading" className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
+            Private sponsorship updates
+          </h2>
+          <p className="mt-1 text-sm text-brand-100/95">
+            BDF, employers, and other private sponsors—summaries from their official posts. No in-app applications.
+          </p>
+        </div>
+        <div className="p-4 sm:p-6">
+          <OpportunityPostsFeed
+            category={OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP}
+            emptyTitle="No private sponsorship posts yet"
+            emptyBody="When a sponsor like BDF publishes a window, add it in Supabase and it will appear here."
+          />
+          <p className="mt-4 text-sm text-slate-600">
+            Looking for internship openings?{" "}
+            <Link to="/internships" className="font-semibold text-brand-800 underline">
+              See internships
+            </Link>
+          </p>
+        </div>
       </section>
 
       <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
