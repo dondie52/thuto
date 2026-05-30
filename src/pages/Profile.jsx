@@ -45,8 +45,8 @@ export default function Profile() {
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
           {isSignedIn
             ? isPremium
-              ? "Premium is active. Your shortlist and predictor summary can sync across devices when you use saved programmes."
-              : "Your account is active. Local predictor and shortlist data stay on this device unless you upgrade to Premium."
+              ? "Pro is active. Your shortlist and predictor summary can sync across devices when you use saved programmes."
+              : "Your account is active. Local predictor and shortlist data stay on this device unless you upgrade to Pro."
             : "Sign in to save your pathway and sync your account across visits."}
         </p>
       </div>
@@ -80,7 +80,7 @@ export default function Profile() {
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Thuto plan</p>
         <p className="mt-2 font-display text-2xl font-semibold text-brand-900">
-          {isPremium ? "Premium" : "Free"}
+          {isPremium ? "Pro" : "Free"}
         </p>
         {isPremium && premiumUntil ? (
           <p className="mt-1 text-sm text-slate-600">Active until {premiumUntil}.</p>
@@ -102,7 +102,7 @@ export default function Profile() {
               to="/upgrade"
               className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
             >
-              Upgrade to Premium
+              Upgrade to Pro
             </Link>
           )}
           <button

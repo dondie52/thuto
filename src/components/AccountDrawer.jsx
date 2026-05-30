@@ -268,19 +268,19 @@ export default function AccountDrawer() {
                     isPremium ? "text-emerald-800" : "text-amber-800"
                   }`}
                 >
-                  {isPremium ? "Premium active" : "Upgrade"}
+                  {isPremium ? "Pro active" : "Upgrade"}
                 </p>
-                <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Premium</p>
+                <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Pro</p>
                 <p className="mt-1 text-xs leading-relaxed text-stone-600">
                   {isPremium
-                    ? "Alerts, cloud shortlist sync, and extended compare are unlocked."
-                    : "Unlock deeper shortlist tracking, alerts, and richer admissions guidance."}
+                    ? "PDF downloads, WhatsApp support, and unlimited tools are unlocked."
+                    : "Download programme PDFs, get WhatsApp support, and unlock unlimited application tools."}
                 </p>
                 <Link
                   to={isPremium ? "/settings" : "/upgrade"}
                   className="focus-ring mt-3 inline-flex min-h-[40px] items-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
                 >
-                  {isPremium ? "Manage plan" : "Upgrade to premium"}
+                  {isPremium ? "Manage plan" : "Upgrade to Pro"}
                 </Link>
               </div>
 

@@ -327,7 +327,7 @@ export default function Assistant() {
                 {" "}
                 ·{" "}
                 <Link to="/upgrade" className="font-semibold text-brand-700 underline">
-                  Premium
+                  Pro
                 </Link>{" "}
                 raises the daily limit
               </>

@@ -1,14 +1,14 @@
-# Stripe and Thuto Premium setup
+# Stripe and Thuto Pro setup
 
-Use this checklist when connecting payments for Thuto Premium on GitHub Pages + Supabase.
+Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supabase.
 
 ## 1. Stripe Dashboard (test mode first)
 
-1. Create a **Product** named `Thuto Premium`.
+1. Create a **Product** named `Thuto Pro`.
 2. Create three **Prices**:
-   - **Monthly** recurring (e.g. BWP 35/month) → copy Price ID → `STRIPE_PRICE_MONTHLY`
-   - **Annual** recurring (e.g. BWP 350/year) → `STRIPE_PRICE_ANNUAL`
-   - **Season pass** one-time (e.g. BWP 99) → `STRIPE_PRICE_SEASON`
+   - **Monthly** recurring (e.g. BWP 29/month) → copy Price ID → `STRIPE_PRICE_MONTHLY`
+   - **Annual** recurring (e.g. BWP 199/year) → `STRIPE_PRICE_ANNUAL`
+   - **Application season pass** one-time (e.g. BWP 59, Apr–Aug window) → `STRIPE_PRICE_SEASON`
 3. Enable **Customer Portal** (Settings → Billing → Customer portal) for subscription management.
 4. Add a **Webhook** endpoint:
    - URL: `https://<project-ref>.supabase.co/functions/v1/stripe-webhook`
@@ -61,8 +61,8 @@ Use this checklist when connecting payments for Thuto Premium on GitHub Pages + 
 2. Update Privacy and Disclaimer (already note Thuto Premium vs university fees).
 3. Remove test-only banners if any remain.
 
-## Monetization beyond base Premium
+## Monetization beyond base Pro
 
-- Nudge **annual** plan on `/upgrade` (default badge).
-- **Season pass** for students who avoid subscriptions.
+- Nudge **Application Season Pass** on `/upgrade` (default “Most Popular” badge).
+- **Monthly** and **annual** for students who want ongoing access outside the season window.
 - Future: family plan, AI add-on packs, sponsored listings (separate Stripe products).

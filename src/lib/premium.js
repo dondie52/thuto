@@ -107,24 +107,41 @@ export function formatPremiumUntil(profile) {
 
 export const PREMIUM_PLANS = [
   {
+    id: "season_pass",
+    name: "Application Season Pass",
+    priceLabel: "P59 one-time",
+    description: "Apr–Aug application window. One payment, no auto-renew.",
+    badge: "Most Popular",
+    highlighted: true,
+  },
+  {
     id: "monthly",
     name: "Monthly",
-    priceLabel: "P35 / month",
-    description: "Ongoing alerts, cloud shortlist sync, and richer guidance.",
+    priceLabel: "P29 / month",
+    description: "Flexible month-to-month access to all Pro tools.",
     badge: null,
+    highlighted: false,
   },
   {
     id: "annual",
     name: "Annual",
-    priceLabel: "P350 / year",
-    description: "Best value — about two months free vs monthly.",
-    badge: "Popular",
-  },
-  {
-    id: "season_pass",
-    name: "Application season",
-    priceLabel: "P99 one-time",
-    description: "Aug–Mar pass with no auto-renew. Full premium for one cycle.",
-    badge: "Season",
+    priceLabel: "P199 / year",
+    description: "Best long-term value — save vs paying monthly.",
+    badge: null,
+    highlighted: false,
   },
 ];
+
+/** @param {'monthly' | 'annual' | 'season_pass'} planId */
+export function getPlanCheckoutLabel(planId) {
+  switch (planId) {
+    case "season_pass":
+      return "Upgrade to Pro – P59";
+    case "monthly":
+      return "Subscribe – P29/mo";
+    case "annual":
+      return "Subscribe – P199/yr";
+    default:
+      return "Subscribe";
+  }
+}
