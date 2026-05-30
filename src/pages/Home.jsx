@@ -53,7 +53,12 @@ const cards = [
   {
     to: "/sponsorships",
     title: "Sponsorships & funding",
-    body: "Government sponsorship steps (DTEF online portal), scholarships, and other funding routes.",
+    body: "Government sponsorship steps (DTEF online portal), private sponsor posts, and other funding routes.",
+  },
+  {
+    to: "/internships",
+    title: "Internships",
+    body: "Latest internship windows copied from official posts—apply on the original channel.",
   },
 ];
 
