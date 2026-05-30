@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
-/**
- * Hero imagery (Unsplash, real photo):
- * https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80
- */
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80";
+import { resolveProgrammeThemeUrl } from "../../lib/programmeBranding.js";
+
+/** Local Botswana-focused campus imagery (see public/programme-themes/attribution.json). */
+const HERO_IMAGE = resolveProgrammeThemeUrl("programme-themes/landing-hero-bw.jpg");
 
 const HERO_STATS = [
   { value: "55+", label: "institutions" },

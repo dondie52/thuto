@@ -8,6 +8,7 @@ import {
 import { useBookmarks } from "../hooks/useBookmarks.js";
 import { useCompareSelection } from "../hooks/useCompareSelection.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
+import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
@@ -401,6 +402,7 @@ export default function Programmes() {
           const careers = getProgrammeCareers(p).slice(0, 2);
           return (
             <li key={p.id} className="flex items-stretch">
+              <ProgrammeThemeAccent programme={p} />
               <div className="flex shrink-0 items-center border-r border-brand-100 px-2">
                 <label className={`flex items-center p-1 ${compareDisabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}>
                   <input

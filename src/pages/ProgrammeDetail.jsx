@@ -22,6 +22,7 @@ import {
   isFitFinderCompatible,
 } from "../lib/programmeInsights.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
+import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -133,13 +134,17 @@ export default function ProgrammeDetail() {
         </p>
       ) : null}
 
-      <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div className="min-w-0 flex-1">
-            <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{programme.name}</h1>
-            <p className="mt-1 text-sm text-slate-600">{programme.university}</p>
-          </div>
-          <div className="flex shrink-0 flex-wrap items-start gap-2">
+      <header className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
+        <ProgrammeThemeHero programme={programme} variant="detail">
+          <h1 className="font-display text-xl font-bold text-white sm:text-2xl">{programme.name}</h1>
+          <p className="mt-1 text-sm text-white/90">
+            {programme.university}
+            {programme.field ? ` · ${programme.field}` : ""}
+          </p>
+        </ProgrammeThemeHero>
+        <div className="p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-end">
+            <div className="flex shrink-0 flex-wrap items-start gap-2 sm:ml-auto">
             <ProgrammeBookmarkButton
               programmeId={programme.id}
               programmeName={programme.name}
@@ -164,8 +169,8 @@ export default function ProgrammeDetail() {
               {inCompare ? "In compare" : "Add to compare"}
             </button>
             {eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
+            </div>
           </div>
-        </div>
         {eligibility?.reason && <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p>}
         {predictorSnap.total != null && predictorSnap.grades == null && (
           <p className="mt-3 text-sm text-slate-600">
@@ -200,6 +205,7 @@ export default function ProgrammeDetail() {
             <dd className="font-medium text-brand-900">{profileCompleteness === "full" ? "Full profile" : "Partial profile"}</dd>
           </div>
         </dl>
+        </div>
       </header>
 
       <ProgrammeCommunityStats programmeId={programme.id} />

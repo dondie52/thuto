@@ -1,0 +1,76 @@
+{
+  "license": "Unsplash License (https://unsplash.com/license)",
+  "note": "Theme photos are illustrative stock imagery for programme context, not official institution photography.",
+  "images": [
+    {
+      "file": "engineering.jpg",
+      "source": "https://unsplash.com/photos/1504307651254-35680f356dfd",
+      "theme": "engineering"
+    },
+    {
+      "file": "fire-safety.jpg",
+      "source": "https://unsplash.com/photos/1565008576549-57569a49371d",
+      "theme": "fire-safety"
+    },
+    {
+      "file": "aviation.jpg",
+      "source": "https://unsplash.com/photos/1436491865332-7a61a109cc05",
+      "theme": "aviation"
+    },
+    {
+      "file": "technology.jpg",
+      "source": "https://unsplash.com/photos/1498050108023-c5249f4df085",
+      "theme": "technology"
+    },
+    {
+      "file": "health.jpg",
+      "source": "https://unsplash.com/photos/1576091160550-2173dba999ef",
+      "theme": "health"
+    },
+    {
+      "file": "education.jpg",
+      "source": "https://unsplash.com/photos/1503676260728-1c00da094a0b",
+      "theme": "education"
+    },
+    {
+      "file": "agriculture.jpg",
+      "source": "https://unsplash.com/photos/1625246333195-78d9c38ad449",
+      "theme": "agriculture"
+    },
+    {
+      "file": "law.jpg",
+      "source": "https://unsplash.com/photos/1589829545856-d10d557cf95f",
+      "theme": "law"
+    },
+    {
+      "file": "business.jpg",
+      "source": "https://unsplash.com/photos/1486406146926-c627a92ad1ab",
+      "theme": "business"
+    },
+    {
+      "file": "trades.jpg",
+      "source": "https://unsplash.com/photos/1504328345606-18bbc8c9d7d1",
+      "theme": "trades"
+    },
+    {
+      "file": "hospitality.jpg",
+      "source": "https://unsplash.com/photos/1559339352-11d035aa65de",
+      "theme": "hospitality"
+    },
+    {
+      "file": "creative.jpg",
+      "source": "https://unsplash.com/photos/1513364776144-60967b0f800f",
+      "theme": "creative"
+    },
+    {
+      "file": "default-bw.jpg",
+      "source": "https://unsplash.com/photos/1547471080-7cc2caa01a7e",
+      "theme": "default-bw"
+    },
+    {
+      "file": "landing-hero-bw.jpg",
+      "source": "https://unsplash.com/photos/1523240795612-9a054b0db644",
+      "theme": "landing-hero"
+    }
+  ]
+}

@@ -17,6 +17,7 @@ import {
 import { fetchGeminiHomeSpotlight, isHomeSpotlightAiEnabled } from "../lib/fetchHomeSpotlight.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
 
 const cards = [
   {
@@ -324,19 +325,23 @@ export default function Home() {
               <li key={p.id} className="animate-fade-up" style={{ animationDelay: `${60 + i * 50}ms` }}>
                 <Link
                   to={`/programmes/${p.id}`}
-                  className="focus-ring flex h-full flex-col rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)] p-4 shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card-hover"
+                  className="focus-ring flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)] shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card-hover"
                 >
-                  {p.university ? (
-                    <span className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">{p.university}</span>
-                  ) : null}
-                  <h3 className="mt-1 font-display text-base font-semibold leading-snug text-brand-900">{p.name}</h3>
-                  {typeof p.minPoints === "number" ? (
-                    <p className="mt-2 text-sm text-stone-500">From {p.minPoints} points in the directory</p>
-                  ) : null}
-                  {p.teaser ? <p className="mt-2 text-sm leading-relaxed text-stone-600">{p.teaser}</p> : null}
-                  <span className="mt-auto pt-3 text-sm font-semibold text-brand-700">
-                    View programme <span aria-hidden>→</span>
-                  </span>
+                  <ProgrammeThemeHero programme={p} variant="card">
+                    {p.university ? (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-white/90">{p.university}</span>
+                    ) : null}
+                    <h3 className="mt-1 font-display text-base font-semibold leading-snug text-white">{p.name}</h3>
+                  </ProgrammeThemeHero>
+                  <div className="flex flex-1 flex-col p-4">
+                    {typeof p.minPoints === "number" ? (
+                      <p className="text-sm text-stone-500">From {p.minPoints} points in the directory</p>
+                    ) : null}
+                    {p.teaser ? <p className="mt-2 text-sm leading-relaxed text-stone-600">{p.teaser}</p> : null}
+                    <span className="mt-auto pt-3 text-sm font-semibold text-brand-700">
+                      View programme <span aria-hidden>→</span>
+                    </span>
+                  </div>
                 </Link>
               </li>
             ))}

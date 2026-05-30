@@ -4,6 +4,7 @@ import { useBookmarks } from "../hooks/useBookmarks.js";
 import { useCompareSelection } from "../hooks/useCompareSelection.js";
 import { compareSelectionHref } from "../lib/compareSelection.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
+import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
@@ -109,6 +110,7 @@ export default function SavedProgrammes() {
             return (
               <li key={id}>
                 <div className="flex items-stretch gap-0">
+                  <ProgrammeThemeAccent programme={p} />
                   <div className="flex shrink-0 items-center border-r border-brand-100 px-2">
                     <label
                       className={`flex items-center p-1 ${compareDisabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
