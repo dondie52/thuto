@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import FeedPostCard from "../components/FeedPostCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
-import { safeExternalUrl } from "../lib/urlSafety.js";
 import {
   FEED_CATEGORIES,
-  FEED_REACTIONS,
-  FEED_STATUS_LABELS,
-  categoryLabel,
   fetchFeedPosts,
   isSupabaseConfigured,
   reportFeedTarget,
@@ -16,150 +13,11 @@ import {
   submitFeedPost,
 } from "../lib/feed.js";
 
-function formatDate(value) {
-  if (!value) return "";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleString(undefined, {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 function publishMessage(status) {
   if (status === "published") return "Posted live. Your update is on the feed.";
   if (status === "rejected") return "Not published. AI rejected it for safety or relevance.";
   if (status === "pending_ai") return "Submitted. AI moderation is still processing your post.";
   return "Submitted for admin review. You can see it below while it waits for approval.";
-}
-
-function postStatusLabel(status) {
-  return FEED_STATUS_LABELS[status] || status;
-}
-
-function FeedImages({ images }) {
-  if (!images?.length) return null;
-  return (
-    <div className={`mt-4 grid gap-2 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
-      {images.map((image) => (
-        <a
-          key={image.id || image.publicUrl}
-          href={image.publicUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group overflow-hidden rounded-2xl border border-stone-200 bg-stone-100"
-        >
-          <img
-            src={image.publicUrl}
-            alt={image.altText || "Feed attachment"}
-            className="aspect-[4/3] h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-            loading="lazy"
-          />
-        </a>
-      ))}
-    </div>
-  );
-}
-
-function ReactionBar({ post, disabled, onReact }) {
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {FEED_REACTIONS.map((reaction) => {
-        const active = post.viewerReaction === reaction.value;
-        const count = post.reactionCounts?.[reaction.value] || 0;
-        return (
-          <button
-            key={reaction.value}
-            type="button"
-            disabled={disabled}
-            onClick={() => onReact(post, reaction.value)}
-            className={[
-              "focus-ring rounded-full border px-3 py-1.5 text-xs font-semibold transition",
-              active
-                ? "border-brand-700 bg-brand-700 text-white"
-                : "border-brand-100 bg-white text-brand-800 hover:bg-brand-50",
-              disabled ? "cursor-not-allowed opacity-60" : "",
-            ].join(" ")}
-          >
-            {reaction.shortLabel}
-            {count ? <span className="ml-1 opacity-80">{count}</span> : null}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function CommentList({ post, user, draft, isSubmitting, onDraftChange, onSubmitComment, onReport }) {
-  return (
-    <div className="mt-4 border-t border-stone-100 pt-4">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
-          Comments {post.comments.length ? `(${post.comments.length})` : ""}
-        </p>
-        <button
-          type="button"
-          onClick={() => onReport("post", post.id)}
-          className="text-xs font-semibold text-stone-500 underline hover:text-red-700"
-        >
-          Report post
-        </button>
-      </div>
-
-      {post.comments.length ? (
-        <ul className="mt-3 space-y-2">
-          {post.comments.map((comment) => (
-            <li key={comment.id} className="rounded-2xl bg-stone-50 px-3 py-2">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold text-brand-900">{comment.authorDisplayName}</p>
-                  <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-stone-700">{comment.body}</p>
-                  <p className="mt-1 text-[11px] text-stone-400">{formatDate(comment.publishedAt || comment.createdAt)}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onReport("comment", comment.id)}
-                  className="shrink-0 text-[11px] font-semibold text-stone-400 underline hover:text-red-700"
-                >
-                  Report
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="mt-3 rounded-2xl bg-stone-50 px-3 py-3 text-sm text-stone-500">No comments yet.</p>
-      )}
-
-      {user ? (
-        <form className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]" onSubmit={(event) => onSubmitComment(event, post.id)}>
-          <input
-            value={draft || ""}
-            onChange={(event) => onDraftChange(post.id, event.target.value)}
-            maxLength={1000}
-            placeholder="Add a useful comment..."
-            className="min-h-11 rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200"
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting || !String(draft || "").trim()}
-            className="focus-ring rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Comment
-          </button>
-        </form>
-      ) : (
-        <p className="mt-3 text-xs text-stone-500">
-          <Link to="/auth?mode=login" className="font-semibold text-brand-700 underline">
-            Log in
-          </Link>{" "}
-          to comment or react.
-        </p>
-      )}
-    </div>
-  );
 }
 
 export default function Feed() {
@@ -173,6 +31,8 @@ export default function Feed() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [commentDrafts, setCommentDrafts] = useState({});
+  const [expandedComments, setExpandedComments] = useState({});
+  const commentInputRefs = useRef({});
   const [fileInputKey, setFileInputKey] = useState(0);
   const [form, setForm] = useState({
     category: "general",
@@ -204,6 +64,23 @@ export default function Feed() {
 
   function updateCommentDraft(postId, value) {
     setCommentDrafts((current) => ({ ...current, [postId]: value }));
+  }
+
+  function toggleComments(postId, { focusReply = false } = {}) {
+    setExpandedComments((current) => {
+      const nextOpen = focusReply ? true : !current[postId];
+      return { ...current, [postId]: nextOpen };
+    });
+    if (focusReply) {
+      window.requestAnimationFrame(() => {
+        commentInputRefs.current[postId]?.focus();
+      });
+    }
+  }
+
+  function setCommentInputRef(postId, node) {
+    if (node) commentInputRefs.current[postId] = node;
+    else delete commentInputRefs.current[postId];
   }
 
   const canCompose = configured && !isAuthLoading;
@@ -458,83 +335,23 @@ export default function Feed() {
           </div>
         ) : null}
 
-        {posts.map((post) => {
-          const linkUrl = safeExternalUrl(post.linkUrl);
-          const isPublished = post.status === "published";
-          const isOwnPost = user?.id && post.authorId === user.id;
-          return (
-            <article
-              key={post.id}
-              className={[
-                "rounded-3xl border bg-white p-4 shadow-sm sm:p-5",
-                isPublished ? "border-brand-100" : "border-amber-200 bg-amber-50/30",
-              ].join(" ")}
-            >
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
-                      {categoryLabel(post.category)}
-                    </span>
-                    {!isPublished && isOwnPost ? (
-                      <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
-                        {postStatusLabel(post.status)}
-                      </span>
-                    ) : null}
-                  </div>
-                  <p className="mt-3 text-sm font-semibold text-brand-950">{post.authorDisplayName}</p>
-                  <p className="mt-0.5 text-xs text-stone-500">{formatDate(post.publishedAt || post.createdAt)}</p>
-                </div>
-                {post.reportCount ? (
-                  <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
-                    {post.reportCount} report{post.reportCount === 1 ? "" : "s"}
-                  </span>
-                ) : null}
-              </div>
-
-              {post.title ? <h3 className="mt-4 font-display text-xl font-semibold text-brand-950">{post.title}</h3> : null}
-              <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-stone-700">{post.body}</p>
-              {!isPublished && isOwnPost && post.moderationReason ? (
-                <p className="mt-3 rounded-xl bg-white/80 px-3 py-2 text-xs leading-relaxed text-amber-900">
-                  {post.moderationReason}
-                </p>
-              ) : null}
-
-              {linkUrl ? (
-                <a
-                  href={linkUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex break-all rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 underline"
-                >
-                  Open source link
-                </a>
-              ) : null}
-
-              <FeedImages images={post.images} />
-
-              {isPublished ? (
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                  <ReactionBar post={post} disabled={!user} onReact={handleReaction} />
-                </div>
-              ) : isOwnPost ? (
-                <p className="mt-4 text-xs text-amber-800">Only you can see this until it is approved for the public feed.</p>
-              ) : null}
-
-              {isPublished ? (
-                <CommentList
-                  post={post}
-                  user={user}
-                  draft={commentDrafts[post.id]}
-                  isSubmitting={commentSubmittingFor === post.id}
-                  onDraftChange={updateCommentDraft}
-                  onSubmitComment={handleSubmitComment}
-                  onReport={handleReport}
-                />
-              ) : null}
-            </article>
-          );
-        })}
+        {posts.map((post) => (
+          <FeedPostCard
+            key={post.id}
+            post={post}
+            user={user}
+            isOwnPost={Boolean(user?.id && post.authorId === user.id)}
+            commentsExpanded={Boolean(expandedComments[post.id])}
+            commentDraft={commentDrafts[post.id]}
+            isCommentSubmitting={commentSubmittingFor === post.id}
+            commentInputRef={(node) => setCommentInputRef(post.id, node)}
+            onReact={handleReaction}
+            onToggleComments={toggleComments}
+            onCommentDraftChange={updateCommentDraft}
+            onSubmitComment={handleSubmitComment}
+            onReport={handleReport}
+          />
+        ))}
       </section>
     </div>
   );

@@ -3,6 +3,7 @@ import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 export { isSupabaseConfigured };
 
 export const FEED_CATEGORIES = [
+  { value: "graduate_programme", label: "Graduate programme" },
   { value: "opportunity", label: "Opportunity" },
   { value: "scholarship", label: "Scholarship" },
   { value: "internship", label: "Internship" },
@@ -93,6 +94,7 @@ function normalizePost(post, { images = [], comments = [], reactions = [], viewe
     id: post.id,
     authorId: post.author_id,
     authorDisplayName: post.author_display_name || "Student",
+    isOfficial: Boolean(post.is_official),
     category: post.category || "general",
     title: post.title || "",
     body: post.body || "",
@@ -229,7 +231,7 @@ export async function fetchFeedPosts({ limit = 30 } = {}) {
 
   const viewer = await getCurrentUser(supabase).catch(() => null);
   let postsQuery = supabase.from("feed_posts").select(
-    "id,author_id,author_display_name,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
+    "id,author_id,author_display_name,is_official,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
   );
 
   if (viewer?.id) {
