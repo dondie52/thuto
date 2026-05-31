@@ -42,6 +42,7 @@ const corsHeaders = {
 };
 
 const FEED_CATEGORIES = new Set([
+  "graduate_programme",
   "opportunity",
   "scholarship",
   "internship",
@@ -178,6 +179,17 @@ async function requireAdmin(adminClient: ReturnType<typeof createClient>, userId
 
   if (error) throw new HttpError(error.message, 500);
   if (!data) throw new HttpError("Feed admin access is required.", 403);
+}
+
+async function isFeedAdmin(adminClient: ReturnType<typeof createClient>, userId: string) {
+  const { data, error } = await adminClient
+    .from("feed_admins")
+    .select("user_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) return false;
+  return Boolean(data);
 }
 
 async function enforceDailyLimit(
@@ -384,12 +396,14 @@ async function submitPost(
   });
   const status = statusForDecision(moderation.decision);
   const now = new Date().toISOString();
+  const official = await isFeedAdmin(adminClient, userId);
 
   const { data: post, error } = await adminClient
     .from("feed_posts")
     .insert({
       author_id: userId,
-      author_display_name: toDisplayName(user),
+      author_display_name: official ? "Thuto Admin" : toDisplayName(user),
+      is_official: official,
       category,
       title,
       body: postBody,
