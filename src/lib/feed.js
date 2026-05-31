@@ -150,10 +150,44 @@ async function requireCurrentUser(supabase) {
   return user;
 }
 
+async function getFeedAuthHeaders(supabase) {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) throw error;
+  const token = data?.session?.access_token;
+  if (!token) throw new Error("Sign in to use the feed.");
+  return { Authorization: `Bearer ${token}` };
+}
+
+async function parseFunctionInvokeError(error, data) {
+  if (data?.error) return new Error(String(data.error));
+
+  if (!error || typeof error !== "object") {
+    return new Error("Could not reach feed moderation. Check that feed-moderation is deployed.");
+  }
+
+  const context = error.context;
+  if (context && typeof context.json === "function") {
+    try {
+      const payload = await context.json();
+      if (payload?.error) return new Error(String(payload.error));
+    } catch {
+      /* fall through */
+    }
+  }
+
+  const message = String(error.message || "").trim();
+  if (/failed to send a request to the edge function/i.test(message)) {
+    return new Error("Feed posting is unavailable. Deploy the feed-moderation Edge Function in Supabase.");
+  }
+
+  return new Error(message || "Could not complete the feed request.");
+}
+
 async function invokeFeedModeration(body) {
   const supabase = assertSupabase();
-  const { data, error } = await supabase.functions.invoke("feed-moderation", { body });
-  if (error) throw error;
+  const headers = await getFeedAuthHeaders(supabase);
+  const { data, error } = await supabase.functions.invoke("feed-moderation", { body, headers });
+  if (error) throw await parseFunctionInvokeError(error, data);
   if (data?.error) throw new Error(data.error);
   return data;
 }
@@ -194,12 +228,17 @@ export async function fetchFeedPosts({ limit = 30 } = {}) {
   if (!supabase) return [];
 
   const viewer = await getCurrentUser(supabase).catch(() => null);
-  const { data: posts, error } = await supabase
-    .from("feed_posts")
-    .select(
-      "id,author_id,author_display_name,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
-    )
-    .eq("status", "published")
+  let postsQuery = supabase.from("feed_posts").select(
+    "id,author_id,author_display_name,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
+  );
+
+  if (viewer?.id) {
+    postsQuery = postsQuery.or(`status.eq.published,author_id.eq.${viewer.id}`);
+  } else {
+    postsQuery = postsQuery.eq("status", "published");
+  }
+
+  const { data: posts, error } = await postsQuery
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
     .limit(limit);
