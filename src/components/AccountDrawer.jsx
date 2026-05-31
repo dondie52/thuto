@@ -108,21 +108,21 @@ export default function AccountDrawer() {
   const [drawerError, setDrawerError] = useState("");
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
-  const { isLoading, isPremium, logout, supabaseConfigured, user } = useAuth();
+  const { isLoading, isPremium, logout, profile, supabaseConfigured, user } = useAuth();
 
   const isSignedIn = Boolean(user);
 
   const profileDisplayName = useMemo(() => {
     if (isLoading) return "Account";
     if (user) {
-      const fullName = user.user_metadata?.full_name?.trim();
+      const fullName = profile?.full_name?.trim() || user.user_metadata?.full_name?.trim();
       if (fullName) return fullName;
       const emailLocal = user.email?.split("@")[0]?.trim();
       if (emailLocal) return emailLocal;
       return "Student";
     }
     return "Sign in";
-  }, [isLoading, user]);
+  }, [isLoading, profile?.full_name, user]);
 
   const profileLinkTo = isSignedIn ? "/profile" : "/auth?mode=login";
 

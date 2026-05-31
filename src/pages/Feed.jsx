@@ -22,7 +22,7 @@ function publishMessage(status) {
 
 export default function Feed() {
   useDocumentTitle("Social Feed | Thuto");
-  const { user, supabaseConfigured, isLoading: isAuthLoading } = useAuth();
+  const { user, profile, supabaseConfigured, isLoading: isAuthLoading } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +85,13 @@ export default function Feed() {
 
   const canCompose = configured && !isAuthLoading;
   const canPublish = canCompose && Boolean(user);
+  const profileIncomplete =
+    Boolean(user) &&
+    !(
+      profile?.avatar_url ||
+      profile?.university_name ||
+      profile?.distinction
+    );
 
   async function handleSubmitPost(event) {
     event.preventDefault();
@@ -187,6 +194,21 @@ export default function Feed() {
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900">
           Feed needs Supabase environment variables, the scroll-feed migration, and the feed-moderation Edge Function
           before posting and live content work.
+        </div>
+      ) : null}
+
+      {configured && user && profileIncomplete ? (
+        <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
+          <p className="font-semibold">Complete your profile</p>
+          <p className="mt-1 text-brand-800/90">
+            Add a photo, university, and distinction so classmates recognise you on the feed.
+          </p>
+          <Link
+            to="/profile"
+            className="focus-ring mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+          >
+            Edit profile
+          </Link>
         </div>
       ) : null}
 

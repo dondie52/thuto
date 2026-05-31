@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import ProfileEditForm from "../components/ProfileEditForm.jsx";
 import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY } from "../lib/admissions.js";
 import { getBookmarkIds } from "../lib/bookmarks.js";
 import { useAuth } from "../lib/auth.jsx";
 import { syncFromCloud } from "../lib/cloudSync.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { formatAuthorUniversity } from "../lib/profile.js";
 import { formatPremiumUntil } from "../lib/premium.js";
 
 function readPredictorSummary() {
@@ -23,7 +25,7 @@ function readPredictorSummary() {
 
 export default function Profile() {
   useDocumentTitle("Profile | Thuto");
-  const { supabaseConfigured, user, profile, isPremium, refreshProfile } = useAuth();
+  const { supabaseConfigured, user, profile, isPremium, refreshProfile, saveProfile, isProfileLoading } = useAuth();
   const savedCount = getBookmarkIds().length;
   const predictor = readPredictorSummary();
   const isSignedIn = Boolean(user);
@@ -50,6 +52,61 @@ export default function Profile() {
             : "Sign in to save your pathway and sync your account across visits."}
         </p>
       </div>
+
+      {isSignedIn && supabaseConfigured ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm sm:p-5">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Public profile</p>
+              <h2 className="mt-1 font-display text-xl font-semibold text-brand-900">How you appear on the feed</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Add a photo, your university, and a short distinction so other students recognise you.
+              </p>
+            </div>
+            <Link
+              to="/feed"
+              className="rounded-xl border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+            >
+              Open feed
+            </Link>
+          </div>
+          {profile?.avatar_url || profile?.university_name || profile?.distinction ? (
+            <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl bg-brand-50/80 px-3 py-3 text-sm text-brand-900">
+              {profile.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt=""
+                  className="h-12 w-12 rounded-full object-cover ring-2 ring-white"
+                />
+              ) : null}
+              <div className="min-w-0">
+                <p className="font-semibold">{profile.full_name || user.email}</p>
+                {formatAuthorUniversity({
+                  universityName: profile.university_name,
+                  universityStatus: profile.university_status,
+                }) ? (
+                  <p className="text-xs text-brand-800/90">
+                    {formatAuthorUniversity({
+                      universityName: profile.university_name,
+                      universityStatus: profile.university_status,
+                    })}
+                  </p>
+                ) : null}
+                {profile.distinction ? (
+                  <p className="text-xs text-stone-600">{profile.distinction}</p>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
+          <div className="mt-4">
+            <ProfileEditForm
+              profile={profile}
+              onSave={saveProfile}
+              disabled={isProfileLoading}
+            />
+          </div>
+        </section>
+      ) : null}
 
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Account status</p>
