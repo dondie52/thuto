@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY } from "../lib/admissions.js";
 import { STORAGE_KEY as BOOKMARK_STORAGE_KEY } from "../lib/bookmarks.js";
 import { useAuth } from "../lib/auth.jsx";
+import { isCurrentUserFeedAdmin } from "../lib/feed.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 
 export default function Settings() {
   useDocumentTitle("General Settings | Thuto");
   const { supabaseConfigured, user } = useAuth();
   const [notice, setNotice] = useState("");
+  const [isFeedAdmin, setIsFeedAdmin] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    isCurrentUserFeedAdmin().then((admin) => {
+      if (!cancelled) setIsFeedAdmin(admin);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   function clearPredictor() {
     try {
@@ -72,6 +84,21 @@ export default function Settings() {
           </div>
         ) : null}
       </section>
+
+      {isFeedAdmin ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+          <h2 className="font-display text-xl font-semibold text-brand-900">Feed admin</h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">
+            Review pending posts, take down unsafe content, and restore approved feed items.
+          </p>
+          <Link
+            to="/admin/feed"
+            className="mt-4 inline-flex rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+          >
+            Open feed admin
+          </Link>
+        </section>
+      ) : null}
 
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <h2 className="font-display text-xl font-semibold text-brand-900">Local data</h2>

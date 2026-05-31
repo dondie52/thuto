@@ -51,6 +51,17 @@ const menuItems = [
 
 const exploreItems = [
   {
+    to: "/feed",
+    label: "Scroll Feed",
+    description: "Opportunities, questions, tips, and notices",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 7-7 11-7-11 7-7z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 10l2.5-2.5L14.5 10 12 13.5 9.5 10z" />
+      </svg>
+    ),
+  },
+  {
     to: "/compare",
     label: "Compare programmes",
     description: "Review up to three options side by side",
@@ -67,6 +78,16 @@ const exploreItems = [
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9v0M9 12v0M9 15v0M9 18v0" />
+      </svg>
+    ),
+  },
+  {
+    to: "/saved",
+    label: "Saved programmes",
+    description: "Your local shortlist on this device",
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-4-7 4V5z" />
       </svg>
     ),
   },

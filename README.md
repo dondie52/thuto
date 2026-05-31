@@ -107,6 +107,38 @@ The assistant uses a hybrid flow:
 - if Supabase, Gemini, or the network fails, the page answers with the bundled local assistant
 - browser speech recognition can fill the question box, and browser speech synthesis can read assistant replies aloud
 
+## Scroll Feed with AI moderation
+
+The `/feed` page is a signed-in community feed for student updates: opportunities, scholarships, internships,
+deadlines, study tips, events, notices, questions, stories, campus life, and general student posts.
+
+Safety model:
+
+- users must be signed in to post, comment, react, or report
+- posts can include text, a source link, and up to 4 images
+- posts and comments go through the `feed-moderation` Supabase Edge Function
+- Gemini auto-publishes clearly safe content, rejects clearly unsafe content, and sends uncertain content to admin review
+- admins can approve, reject, remove, or restore posts/comments at `/admin/feed`
+
+Setup:
+
+```bash
+supabase db push
+supabase secrets set GEMINI_API_KEY=your_gemini_key
+supabase secrets set GEMINI_MODEL=gemini-2.5-flash
+supabase functions deploy feed-moderation
+```
+
+Seed trusted admins manually after the user has signed up:
+
+```sql
+insert into feed_admins (user_id)
+values ('00000000-0000-0000-0000-000000000000');
+```
+
+The browser never receives provider keys or service-role privileges. If AI moderation is unavailable, content fails
+closed into `pending_review` instead of going live.
+
 ## Live university application dates
 
 Botswana universities do not expose a single public API for deadlines. Thuto can still load **fresh dates at runtime** from a JSON URL you control:

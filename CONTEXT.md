@@ -21,7 +21,7 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 ### App shell (`Layout`)
 
-- **Bottom navigation** (mobile): App, Predictor, Programmes, Compare, Saved, Universities.
+- **Bottom navigation** (mobile): Home, Predictor, Feed, Programmes, Ask. Saved programmes remains available outside the bottom nav.
 - **Legal / trust**: Disclaimer and Privacy routes.
 
 ### Home (`/app`)
@@ -49,6 +49,13 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 ### Saved programmes (`/saved`)
 
 - **Bookmarks** in **localStorage** (max **10**, LRU trim when over limit — see `src/lib/bookmarks.js`, `useBookmarks`).
+
+### Scroll Feed (`/feed`, `/admin/feed`)
+
+- Signed-in community feed for posts, images, comments, reactions, and reports.
+- Posts/comments are moderated by the Supabase Edge Function `feed-moderation`; safe content can auto-publish, uncertain content goes to admin review, and unsafe content is rejected.
+- Admin users are seeded in `feed_admins` and can approve, reject, remove, or restore content in `/admin/feed`.
+- Schema lives in `supabase/migrations/20260530120000_scroll_feed.sql`; client helpers live in `src/lib/feed.js`.
 
 ### Compare (`/compare`)
 
@@ -160,6 +167,8 @@ From **`.env.example`** (Vite `VITE_*` prefix):
 |------|----------------|
 | `/` | Landing |
 | `/app` | Home |
+| `/feed` | Moderated community scroll feed |
+| `/admin/feed` | Feed moderation panel for seeded admins |
 | `/fit-finder` | Fit Finder quiz + results |
 | `/predictor` | BGCSE predictor |
 | `/programmes` | Catalogue |

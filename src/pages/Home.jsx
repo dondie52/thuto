@@ -21,6 +21,11 @@ const cards = [
     body: "Match your grades and interests to programmes - strong picks, alternatives, and stretch ideas.",
   },
   {
+    to: "/feed",
+    title: "Scroll Feed",
+    body: "Browse useful student posts, opportunities, questions, tips, and notices after AI moderation.",
+  },
+  {
     to: "/programmes",
     title: "Programmes",
     body: "Browse courses, entry requirements, modules, and career ideas.",

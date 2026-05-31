@@ -31,6 +31,19 @@ export default function Privacy() {
       </section>
 
       <section className="space-y-3">
+        <h2 className="font-display text-lg font-semibold text-brand-900">Scroll Feed</h2>
+        <p>
+          If you use <Link to="/feed" className="font-medium text-brand-700 underline hover:text-brand-900">Scroll Feed</Link>
+          , posts, images, comments, reactions, reports, moderation status, and your account user id may be stored in
+          Supabase. Feed posts and comments are checked by server-side AI moderation before they appear publicly.
+        </p>
+        <p>
+          Admins can remove, restore, approve, or reject feed content. Do not post private personal information,
+          official-looking notices you cannot source, or anything you would not want reviewed by the Thuto team.
+        </p>
+      </section>
+
+      <section className="space-y-3">
         <h2 className="font-display text-lg font-semibold text-brand-900">Device storage</h2>
         <p>
           Bookmarks, compare selections, predictor inputs, and rate limits for the share form may be stored in your browser
