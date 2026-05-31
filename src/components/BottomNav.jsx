@@ -21,20 +21,22 @@ const links = [
     ),
   },
   {
+    to: "/feed",
+    label: "Feed",
+    center: true,
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 7-7 11-7-11 7-7z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 10l2.5-2.5L14.5 10 12 13.5 9.5 10z" />
+      </svg>
+    ),
+  },
+  {
     to: "/programmes",
     label: "Programmes",
     icon: (
       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-      </svg>
-    ),
-  },
-  {
-    to: "/saved",
-    label: "Saved",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-4-7 4V5z" />
       </svg>
     ),
   },
@@ -50,7 +52,13 @@ const links = [
   },
 ];
 
-function linkClass({ isActive }) {
+function linkClass({ isActive, center }) {
+  if (center) {
+    return [
+      "focus-ring -mt-8 flex h-20 w-20 justify-self-center flex-col items-center justify-center gap-1 rounded-full border-[6px] border-white px-1 py-2 text-[10px] font-bold uppercase leading-none shadow-[0_18px_42px_rgba(15,118,110,0.28)] transition-all duration-200",
+      isActive ? "bg-brand-700 text-white" : "bg-brand-600 text-white hover:bg-brand-700",
+    ].join(" ");
+  }
   return [
     "focus-ring flex min-h-[52px] min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[10px] font-semibold leading-none transition-all duration-200",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-stone-500 hover:bg-stone-100 hover:text-brand-800",
@@ -65,8 +73,8 @@ export default function BottomNav() {
     >
       <div className="mx-auto max-w-lg rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md">
         <div className="grid grid-cols-5 gap-1 px-1.5 py-1.5">
-          {links.map(({ to, label, end, icon }) => (
-            <NavLink key={to} to={to} end={end} className={linkClass}>
+          {links.map(({ to, label, end, icon, center }) => (
+            <NavLink key={to} to={to} end={end} className={(state) => linkClass({ ...state, center })}>
               {icon}
               <span className="max-w-full truncate whitespace-nowrap">{label}</span>
             </NavLink>

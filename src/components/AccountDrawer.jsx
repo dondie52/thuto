@@ -12,6 +12,12 @@ function EmojiIcon({ emoji, label }) {
 
 const primaryToolItems = [
   {
+    to: "/feed",
+    label: "Scroll Feed",
+    description: "Opportunities, questions, tips, and notices",
+    emoji: "◇",
+  },
+  {
     to: "/internships",
     label: "Internships",
     description: "Attachments and graduate programmes",

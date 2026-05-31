@@ -6,6 +6,7 @@ import BottomNav from "./BottomNav.jsx";
 const desktopLinks = [
   { to: "/app", label: "Home", end: true },
   { to: "/predictor", label: "Predictor" },
+  { to: "/feed", label: "Feed" },
   { to: "/programmes", label: "Programmes" },
   { to: "/compare", label: "Compare" },
   { to: "/saved", label: "Saved" },

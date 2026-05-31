@@ -8,6 +8,8 @@ const LandingLayout = lazy(() => import("./components/landing/LandingLayout.jsx"
 const Layout = lazy(() => import("./components/Layout.jsx"));
 const LandingPage = lazy(() => import("./pages/LandingPage.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
+const Feed = lazy(() => import("./pages/Feed.jsx"));
+const AdminFeed = lazy(() => import("./pages/AdminFeed.jsx"));
 const Predictor = lazy(() => import("./pages/Predictor.jsx"));
 const Programmes = lazy(() => import("./pages/Programmes.jsx"));
 const ProgrammeDetail = lazy(() => import("./pages/ProgrammeDetail.jsx"));
@@ -79,6 +81,8 @@ export default function App() {
           </Route>
           <Route element={<Layout />}>
             <Route path="/app" element={<Home />} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/admin/feed" element={<AdminFeed />} />
             <Route path="/assistant" element={<Assistant />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/fit-finder" element={<FitFinder />} />
