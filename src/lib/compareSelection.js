@@ -1,26 +1,32 @@
-/** sessionStorage key for up to 3 programme ids selected for compare */
+import { COMPARE_MAX_FREE } from "./premium.js";
+
+/** sessionStorage key for programme ids selected for compare */
 export const COMPARE_SELECTION_STORAGE_KEY = "thuto_compare_ids";
 
-export const COMPARE_SELECTION_MAX = 3;
+/** @deprecated Use getCompareMax(isPremium) from premium.js */
+export const COMPARE_SELECTION_MAX = COMPARE_MAX_FREE;
 
-/** @returns {string[]} */
-export function getCompareIds() {
+/**
+ * @param {number} [max]
+ * @returns {string[]}
+ */
+export function getCompareIds(max = COMPARE_MAX_FREE) {
   if (typeof window === "undefined") return [];
   try {
     const raw = sessionStorage.getItem(COMPARE_SELECTION_STORAGE_KEY);
     if (raw == null || raw === "") return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((id) => typeof id === "string" && id.trim() !== "").slice(0, COMPARE_SELECTION_MAX);
+    return parsed.filter((id) => typeof id === "string" && id.trim() !== "").slice(0, max);
   } catch {
     return [];
   }
 }
 
-/** @param {string[]} ids */
-export function setCompareIds(ids) {
+/** @param {string[]} ids @param {number} [max] */
+export function setCompareIds(ids, max = COMPARE_MAX_FREE) {
   if (typeof window === "undefined") return;
-  const next = ids.filter((id) => typeof id === "string" && id.trim() !== "").slice(0, COMPARE_SELECTION_MAX);
+  const next = ids.filter((id) => typeof id === "string" && id.trim() !== "").slice(0, max);
   if (next.length === 0) {
     sessionStorage.removeItem(COMPARE_SELECTION_STORAGE_KEY);
   } else {
@@ -28,16 +34,16 @@ export function setCompareIds(ids) {
   }
 }
 
-/** @returns {boolean | null} true if now selected, false if removed, null if at limit and not toggling off */
-export function toggleCompareId(id) {
+/** @param {string} id @param {number} [max] @returns {boolean | null} */
+export function toggleCompareId(id, max = COMPARE_MAX_FREE) {
   if (typeof id !== "string" || id.trim() === "") return null;
-  const cur = getCompareIds();
+  const cur = getCompareIds(max);
   if (cur.includes(id)) {
-    setCompareIds(cur.filter((x) => x !== id));
+    setCompareIds(cur.filter((x) => x !== id), max);
     return false;
   }
-  if (cur.length >= COMPARE_SELECTION_MAX) return null;
-  setCompareIds([...cur, id]);
+  if (cur.length >= max) return null;
+  setCompareIds([...cur, id], max);
   return true;
 }
 
@@ -46,8 +52,9 @@ export function clearCompareIds() {
   sessionStorage.removeItem(COMPARE_SELECTION_STORAGE_KEY);
 }
 
-export function compareSelectionHref(ids) {
-  const slice = ids.slice(0, COMPARE_SELECTION_MAX);
+/** @param {string[]} ids @param {number} [max] */
+export function compareSelectionHref(ids, max = COMPARE_MAX_FREE) {
+  const slice = ids.slice(0, max);
   if (slice.length < 2) return null;
   return `/compare?ids=${encodeURIComponent(slice.join(","))}`;
 }

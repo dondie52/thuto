@@ -2,105 +2,59 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
 
-const menuItems = [
+function EmojiIcon({ emoji, label }) {
+  return (
+    <span className="text-xl leading-none" role="img" aria-label={label}>
+      {emoji}
+    </span>
+  );
+}
+
+const primaryToolItems = [
   {
-    to: "/profile",
-    label: "Profile",
-    description: "Your saved results and preferences",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20 21a8 8 0 10-16 0" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
-      </svg>
-    ),
+    to: "/feed",
+    label: "Scroll Feed",
+    description: "Opportunities, questions, tips, and notices",
+    emoji: "◇",
   },
   {
-    to: "/sponsorships",
-    label: "Sponsorships",
-    description: "Funding routes and sponsored options",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16v10H4z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V5h8v2M8 17v2h8v-2M12 10v4M10 12h4" />
-      </svg>
-    ),
+    to: "/internships",
+    label: "Internships",
+    description: "Attachments and graduate programmes",
+    emoji: "💼",
+  },
+  {
+    to: "/saved",
+    label: "Saved Programmes",
+    description: "Your shortlisted options",
+    emoji: "🤍",
+  },
+  {
+    to: "/compare",
+    label: "Compare Programmes",
+    description: "Review up to three options side by side",
+    emoji: "⚖️",
+  },
+];
+
+const moreToolItems = [
+  {
+    to: "/fit-finder",
+    label: "Fit Finder",
+    description: "Discover programmes suited to you",
+    emoji: "🔍",
   },
   {
     to: "/settings",
     label: "General Settings",
     description: "App preferences and data controls",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19.4 15a1.8 1.8 0 00.36 1.98l.05.05-2.12 2.12-.05-.05a1.8 1.8 0 00-1.98-.36 1.8 1.8 0 00-1.1 1.66V20.5h-3v-.1a1.8 1.8 0 00-1.1-1.66 1.8 1.8 0 00-1.98.36l-.05.05-2.12-2.12.05-.05A1.8 1.8 0 004.6 15a1.8 1.8 0 00-1.66-1.1H2.8v-3h.14A1.8 1.8 0 004.6 9a1.8 1.8 0 00-.36-1.98l-.05-.05 2.12-2.12.05.05A1.8 1.8 0 008.34 5.26a1.8 1.8 0 001.1-1.66V3.5h3v.1a1.8 1.8 0 001.1 1.66 1.8 1.8 0 001.98-.36l.05-.05 2.12 2.12-.05.05A1.8 1.8 0 0019.4 9a1.8 1.8 0 001.66 1.9h.14v3h-.14A1.8 1.8 0 0019.4 15z" />
-      </svg>
-    ),
+    emoji: "⚙️",
   },
   {
     to: "/support",
     label: "Support and Feedback",
     description: "Report a problem or share ideas",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5A3.5 3.5 0 017.5 2h9A3.5 3.5 0 0120 5.5v6A3.5 3.5 0 0116.5 15H10l-4.5 4v-4A3.5 3.5 0 014 11.5v-6z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 7.5h6M9 11h3.5" />
-      </svg>
-    ),
-  },
-];
-
-const exploreItems = [
-  {
-    to: "/feed",
-    label: "Scroll Feed",
-    description: "Opportunities, questions, tips, and notices",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 7-7 11-7-11 7-7z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 10l2.5-2.5L14.5 10 12 13.5 9.5 10z" />
-      </svg>
-    ),
-  },
-  {
-    to: "/compare",
-    label: "Compare programmes",
-    description: "Review up to three options side by side",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H5v14h4V5zm10 0h-4v14h4V5z" />
-      </svg>
-    ),
-  },
-  {
-    to: "/universities",
-    label: "Universities",
-    description: "Institutions, locations, and application timing",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9v0M9 12v0M9 15v0M9 18v0" />
-      </svg>
-    ),
-  },
-  {
-    to: "/saved",
-    label: "Saved programmes",
-    description: "Your local shortlist on this device",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-4-7 4V5z" />
-      </svg>
-    ),
-  },
-  {
-    to: "/fit-finder",
-    label: "Fit Finder",
-    description: "Rank programmes from grades and preferences",
-    icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 12.5 9 16l10-10" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 20h16M4 4h9" />
-      </svg>
-    ),
+    emoji: "💬",
   },
 ];
 
@@ -122,13 +76,27 @@ const focusableSelector = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(", ");
 
+function DrawerNavItem({ to, label, description, emoji }) {
+  return (
+    <NavLink to={to} className={itemClass}>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
+        <EmojiIcon emoji={emoji} label={label} />
+      </span>
+      <span className="min-w-0">
+        <span className="block break-words text-sm font-semibold">{label}</span>
+        <span className="block truncate text-xs text-stone-500">{description}</span>
+      </span>
+    </NavLink>
+  );
+}
+
 export default function AccountDrawer() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [drawerError, setDrawerError] = useState("");
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
-  const { isLoading, logout, supabaseConfigured, user } = useAuth();
+  const { isLoading, isPremium, logout, supabaseConfigured, user } = useAuth();
 
   const isSignedIn = Boolean(user);
 
@@ -148,7 +116,7 @@ export default function AccountDrawer() {
 
   useEffect(() => {
     setIsOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -241,73 +209,70 @@ export default function AccountDrawer() {
             aria-label="Close menu"
             tabIndex={-1}
           />
-          <aside className="fixed inset-0 z-10 flex h-dvh w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:w-[min(22rem,92vw)] sm:border-l sm:border-stone-200">
-            <div className="flex items-center justify-between gap-3 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
-              <Link
-                to={profileLinkTo}
-                className="focus-ring min-w-0 flex-1 truncate font-display text-lg font-semibold text-brand-900 transition hover:text-brand-700"
-              >
-                {profileDisplayName}
-              </Link>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="focus-ring inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-600 transition hover:bg-stone-50 hover:text-brand-900"
-                aria-label="Close menu"
-              >
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
-                </svg>
-              </button>
+          <aside className="fixed inset-0 z-10 flex h-dvh min-h-0 w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:left-auto sm:right-0 sm:w-[min(24rem,92vw)] sm:border-l sm:border-stone-200">
+            <div className="shrink-0 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
+              <div className="flex items-center justify-between gap-3">
+                <Link
+                  to={profileLinkTo}
+                  className="focus-ring min-w-0 flex-1 truncate font-display text-lg font-semibold text-brand-900 transition hover:text-brand-700"
+                >
+                  {profileDisplayName}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="focus-ring inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-600 transition hover:bg-stone-50 hover:text-brand-900"
+                  aria-label="Close menu"
+                >
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-4 py-4">
-              <nav className="space-y-1" aria-label="Account">
-                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">Account</p>
-                {menuItems.map(({ to, label, description, icon }) => (
-                  <NavLink key={to} to={to} className={itemClass}>
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
-                      {icon}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block break-words text-sm font-semibold">{label}</span>
-                      <span className="block truncate text-xs text-stone-500">{description}</span>
-                    </span>
-                  </NavLink>
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+              <nav className="space-y-1" aria-label="Tools">
+                {primaryToolItems.map((item) => (
+                  <DrawerNavItem key={item.to} {...item} />
                 ))}
               </nav>
 
-              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-3 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-wide text-amber-800">Upgrade</p>
-                <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Premium</p>
+              <div
+                className={`mt-4 rounded-2xl border p-3 shadow-sm ${
+                  isPremium ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"
+                }`}
+              >
+                <p
+                  className={`text-xs font-semibold uppercase tracking-wide ${
+                    isPremium ? "text-emerald-800" : "text-amber-800"
+                  }`}
+                >
+                  {isPremium ? "Pro active" : "Upgrade"}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Pro</p>
                 <p className="mt-1 text-xs leading-relaxed text-stone-600">
-                  Unlock deeper shortlist tracking, alerts, and richer admissions guidance when premium is ready.
+                  {isPremium
+                    ? "PDF downloads, WhatsApp support, and unlimited tools are unlocked."
+                    : "Download programme breakdowns, get WhatsApp support, and unlock unlimited tools to finalise your applications."}
                 </p>
                 <Link
-                  to="/upgrade"
-                  className="focus-ring mt-3 inline-flex min-h-[40px] items-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
+                  to={isPremium ? "/settings" : "/upgrade"}
+                  className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
                 >
-                  Upgrade to premium
+                  {isPremium ? "Manage plan" : "Upgrade to Pro — P59"}
                 </Link>
               </div>
 
               <nav className="mt-4 space-y-1" aria-label="More tools">
                 <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">More tools</p>
-                {exploreItems.map(({ to, label, description, icon }) => (
-                  <NavLink key={to} to={to} className={itemClass}>
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
-                      {icon}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block break-words text-sm font-semibold">{label}</span>
-                      <span className="block truncate text-xs text-stone-500">{description}</span>
-                    </span>
-                  </NavLink>
+                {moreToolItems.map((item) => (
+                  <DrawerNavItem key={item.to} {...item} />
                 ))}
               </nav>
             </div>
 
-            <div className="border-t border-stone-200 bg-white/70 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
+            <div className="shrink-0 border-t border-stone-200 bg-white/70 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
               {!supabaseConfigured ? (
                 <p className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
                   Account login is not configured yet. You can still browse programmes on this device.
@@ -330,18 +295,18 @@ export default function AccountDrawer() {
                 </button>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
-                    <Link
-                      to="/auth?mode=signup"
-                      className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl bg-brand-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
-                    >
-                      Sign up
-                    </Link>
-                    <Link
-                      to="/auth?mode=login"
-                      className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50"
-                    >
-                      Log in
-                    </Link>
+                  <Link
+                    to="/auth?mode=signup"
+                    className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl bg-brand-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+                  >
+                    Sign up
+                  </Link>
+                  <Link
+                    to="/auth?mode=login"
+                    className="focus-ring inline-flex min-h-[42px] items-center justify-center rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50"
+                  >
+                    Log in
+                  </Link>
                 </div>
               )}
             </div>

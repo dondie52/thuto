@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen.jsx";
 import { useRouteSeo } from "./hooks/useRouteSeo.js";
 import { AuthProvider } from "./lib/auth.jsx";
@@ -26,10 +26,12 @@ const Profile = lazy(() => import("./pages/Profile.jsx"));
 const Privacy = lazy(() => import("./pages/Privacy.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Sponsorships = lazy(() => import("./pages/Sponsorships.jsx"));
+const Internships = lazy(() => import("./pages/Internships.jsx"));
 const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
+const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
+const UpgradeCancel = lazy(() => import("./pages/UpgradeCancel.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
-const AuthPage = lazy(() => import("./pages/AuthPage.jsx"));
 
 const splashEnterMs = 520;
 const splashExitMs = 180;
@@ -72,8 +74,8 @@ export default function App() {
     <AuthProvider>
       <Suspense fallback={<PageFallback />}>
         <Routes>
-          <Route path="/login" element={<AuthPage mode="login" />} />
-          <Route path="/signup" element={<AuthPage mode="signup" />} />
+          <Route path="/login" element={<Navigate to="/auth?mode=login" replace />} />
+          <Route path="/signup" element={<Navigate to="/auth?mode=signup" replace />} />
           <Route element={<LandingLayout />}>
             <Route path="/" element={<LandingPage />} />
           </Route>
@@ -95,6 +97,7 @@ export default function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/share" element={<ShareAdmissionResult />} />
             <Route path="/sponsorships" element={<Sponsorships />} />
+            <Route path="/internships" element={<Internships />} />
             <Route path="/support" element={<Support />} />
             <Route path="/upgrade" element={<Upgrade />} />
             <Route path="/disclaimer" element={<Disclaimer />} />

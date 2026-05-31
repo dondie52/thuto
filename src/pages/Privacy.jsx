@@ -52,10 +52,26 @@ export default function Privacy() {
       </section>
 
       <section className="space-y-3">
+        <h2 className="font-display text-lg font-semibold text-brand-900">Thuto Premium and billing</h2>
+        <p>
+          If you subscribe to{" "}
+          <Link to="/upgrade" className="font-medium text-brand-700 underline hover:text-brand-900">
+            Thuto Premium
+          </Link>
+          , payment is processed by Stripe. We store your subscription status in your Supabase profile (plan type and
+          renewal date). We do not store full card numbers. Manage or cancel via the billing portal linked from Settings.
+        </p>
+        <p>
+          Premium may sync saved programmes and predictor snapshots to your account. Core eligibility browsing remains
+          available without a paid plan.
+        </p>
+      </section>
+
+      <section className="space-y-3">
         <h2 className="font-display text-lg font-semibold text-brand-900">Third parties</h2>
         <p>
-          Universities you open in a new tab set their own policies. Thuto does not process university applications or
-          payments on your behalf.
+          Universities you open in a new tab set their own policies. Thuto does not process university application or
+          tuition fees on your behalf — only optional Thuto Premium subscriptions for app features.
         </p>
       </section>
 

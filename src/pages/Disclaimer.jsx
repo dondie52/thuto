@@ -18,8 +18,15 @@ export default function Disclaimer() {
         any fees.
       </p>
       <p>
-        <strong className="font-semibold text-slate-900">Thuto does not process applications or payments.</strong> We do not
-        transmit application forms to universities on your behalf and do not collect application fees.
+        <strong className="font-semibold text-slate-900">
+          Thuto does not process university applications or tuition fees.
+        </strong>{" "}
+        We do not transmit application forms to universities on your behalf and do not collect institution application
+        fees. Optional{" "}
+        <Link to="/upgrade" className="font-semibold text-brand-800 underline hover:text-brand-950">
+          Thuto Premium
+        </Link>{" "}
+        subscriptions are billed through Stripe for in-app features (sync, alerts, extended compare, and AI limits).
       </p>
       <p>
         Thuto may use sample or bundled data in development; where live feeds are configured, treat them as convenience only

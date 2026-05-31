@@ -3,8 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { evaluateProgramme, readPredictorSession, SUBJECT_FIELDS } from "../lib/admissions.js";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
 import { compareSelectionHref, getCompareIds, setCompareIds } from "../lib/compareSelection.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import { getCompareMax } from "../lib/premium.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
@@ -284,24 +286,26 @@ function CompareIntro({ children }) {
 
 export default function CompareProgrammes() {
   useDocumentTitle("Compare programmes | Thuto");
+  const { isPremium } = useAuth();
+  const compareMax = getCompareMax(isPremium);
   const [searchParams, setSearchParams] = useSearchParams();
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [error, setError] = useState(null);
-  const [storedCompareIds, setStoredCompareIds] = useState(() => getCompareIds());
+  const [storedCompareIds, setStoredCompareIds] = useState(() => getCompareIds(compareMax));
 
   const rawIdsParam = searchParams.get("ids");
   const hasIdsParam = rawIdsParam != null && rawIdsParam.trim() !== "";
   const requestedIds = useMemo(() => parseIdsParam(rawIdsParam), [rawIdsParam]);
   const effectiveIds = hasIdsParam ? requestedIds : storedCompareIds;
-  const [chosenCompareIds, setChosenCompareIds] = useState(() => effectiveIds.slice(0, 3));
+  const [chosenCompareIds, setChosenCompareIds] = useState(() => effectiveIds.slice(0, compareMax));
 
   useEffect(() => {
     if (hasIdsParam) return;
-    const href = compareSelectionHref(storedCompareIds);
+    const href = compareSelectionHref(storedCompareIds, compareMax);
     if (!href) return;
     const query = href.split("?")[1] || "";
     setSearchParams(new URLSearchParams(query), { replace: true });
-  }, [hasIdsParam, setSearchParams, storedCompareIds]);
+  }, [compareMax, hasIdsParam, setSearchParams, storedCompareIds]);
 
   useEffect(() => {
     let cancelled = false;

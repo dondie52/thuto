@@ -34,6 +34,7 @@ export const UNIVERSITY_LOGO_BY_ID = {
   "awil-college": "university-logos/awil-college.jpeg",
   "elsimate-institute": "university-logos/elsimate-institute.jpeg",
   "nampol-college-of-education": "university-logos/nampol-college-of-education.jpeg",
+  "kanye-sda-nursing": "university-logos/kanye-sda-nursing.svg",
 };
 
 export function deriveUniversityInitials(university) {

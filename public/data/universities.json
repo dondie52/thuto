@@ -1058,17 +1058,33 @@
   {
     "id": "kanye-sda-nursing",
     "name": "Kanye Seventh Day Adventist College of Nursing",
-    "location": "Kanye",
-    "description": "Tertiary provider in Botswana. Verify programme details with the institution.",
-    "website": null,
+    "location": "Kanye, Southern District, Botswana",
+    "description": "Private nursing college in Kanye offering NCQF-aligned programmes in nursing and public health, including BSc Nursing, BSc Public Health, Diploma in General Nursing, and Certificate V in Healthcare Assistance. The college has publicly shared a P100 application registration fee—confirm the current amount and payment details with admissions. Commonly requested when applying: certified national ID, result slip, and two traceable references. Applications are typically submitted at the college; check official channels for postal options or intake announcements.",
+    "website": "https://www.facebook.com/people/Kanye-Seventh-Day-Adventist-College-of-Nursing/100090482242245/",
     "phone": null,
     "applicationOpen": null,
     "applicationClose": null,
     "academicYearStart": null,
-    "applyUrl": null,
+    "applyUrl": "https://drive.google.com/file/d/1VEjEztNV69FgwSjLFsQYZ0AQCOAX4bhF/view?usp=sharing",
     "featured": false,
     "sponsorshipTier": "standard",
-    "resources": []
+    "logo": "university-logos/kanye-sda-nursing.svg",
+    "resources": [
+      {
+        "title": "Application form",
+        "category": "How to apply",
+        "url": "https://drive.google.com/file/d/1VEjEztNV69FgwSjLFsQYZ0AQCOAX4bhF/view?usp=sharing",
+        "format": "PDF",
+        "sourceLabel": "Kanye Seventh Day Adventist College of Nursing"
+      },
+      {
+        "title": "Official Facebook page",
+        "category": "Admissions page",
+        "url": "https://www.facebook.com/people/Kanye-Seventh-Day-Adventist-College-of-Nursing/100090482242245/",
+        "format": "Web page",
+        "sourceLabel": "Kanye Seventh Day Adventist College of Nursing"
+      }
+    ]
   },
   {
     "id": "bosa-bosele",

@@ -1,15 +1,59 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
+import { isPremiumActive } from "./premium.js";
 
 const LEGACY_ACCOUNT_MODE_KEY = "thuto-account-mode";
+
+/** @typedef {Object} Profile
+ * @property {string} id
+ * @property {string | null} full_name
+ * @property {string | null} stripe_customer_id
+ * @property {string} payment_provider
+ * @property {'free' | 'active' | 'past_due' | 'canceled'} premium_status
+ * @property {'monthly' | 'annual' | 'season_pass' | null} premium_plan
+ * @property {string | null} premium_until
+ */
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured());
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
   const [authError, setAuthError] = useState("");
   const supabaseConfigured = isSupabaseConfigured();
+
+  const fetchProfile = useCallback(async (userId) => {
+    const supabase = getSupabase();
+    if (!supabase || !userId) {
+      setProfile(null);
+      return null;
+    }
+    setIsProfileLoading(true);
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, full_name, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until")
+      .eq("id", userId)
+      .maybeSingle();
+    setIsProfileLoading(false);
+    if (error) {
+      console.warn("Profile fetch failed:", error.message);
+      setProfile(null);
+      return null;
+    }
+    setProfile(data || null);
+    return data || null;
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    const userId = session?.user?.id;
+    if (!userId) {
+      setProfile(null);
+      return null;
+    }
+    return fetchProfile(userId);
+  }, [fetchProfile, session?.user?.id]);
 
   useEffect(() => {
     try {
@@ -38,7 +82,10 @@ export function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      if (!nextSession) setAuthError("");
+      if (!nextSession) {
+        setProfile(null);
+        setAuthError("");
+      }
     });
 
     return () => {
@@ -46,6 +93,15 @@ export function AuthProvider({ children }) {
       subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const userId = session?.user?.id;
+    if (!userId) {
+      setProfile(null);
+      return;
+    }
+    fetchProfile(userId);
+  }, [session?.user?.id, fetchProfile]);
 
   async function signUp({ email, password, fullName }) {
     const supabase = getSupabase();
@@ -98,20 +154,27 @@ export function AuthProvider({ children }) {
       }
     }
     setSession(null);
+    setProfile(null);
   }
+
+  const isPremium = useMemo(() => isPremiumActive(profile), [profile]);
 
   const value = useMemo(
     () => ({
       authError,
       isLoading,
+      isProfileLoading,
       logout,
+      profile,
+      refreshProfile,
       session,
       signIn,
       signUp,
       supabaseConfigured,
       user: session?.user || null,
+      isPremium,
     }),
-    [authError, isLoading, session, supabaseConfigured],
+    [authError, isLoading, isProfileLoading, profile, refreshProfile, session, supabaseConfigured, isPremium],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

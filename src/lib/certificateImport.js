@@ -16,7 +16,68 @@ const GRADE_ALIASES = {
 
 const VALID_GRADES = new Set(["A*", "A", "B", "C", "D", "E", "F", "G", "U"]);
 const MIN_READY_IMPORT_ROWS = 6;
+const MIN_AUTO_IMPORT_ROWS = 2;
 const MIN_PDF_TEXT_CHARS = 50;
+const MIN_SUBJECT_LABEL_LENGTH = 4;
+
+const CERTIFICATE_POSITIVE_SIGNALS = [
+  "bgcse",
+  "igcse",
+  "bec",
+  "certificate",
+  "statement of results",
+  "examination",
+  "exam results",
+  "candidate",
+  "cambridge",
+  "pearson",
+  "grade",
+  "subject",
+  "botswana examinations",
+  "syllabus",
+  "principal",
+  "provisional",
+];
+
+const CERTIFICATE_NEGATIVE_SIGNALS = [
+  "receipt",
+  "invoice",
+  "payment",
+  "vat",
+  "total due",
+  "merchant",
+  "transaction",
+  "subtotal",
+  "amount paid",
+  "billing",
+  "order number",
+  "qty",
+  "quantity",
+  "unit price",
+];
+
+const HEADER_BLOCKLIST = new Set([
+  "receipt",
+  "details",
+  "total",
+  "invoice",
+  "payment",
+  "subtotal",
+  "amount",
+  "date",
+  "qty",
+  "quantity",
+  "price",
+  "paid",
+  "balance",
+  "merchant",
+  "transaction",
+  "customer",
+  "item",
+]);
+
+const WRONG_DOCUMENT_WARNING =
+  "This file does not look like a BGCSE or IGCSE results certificate. Upload your exam results slip, or add grades manually.";
 
 const OCR_OPTIONS = {
   tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789*&-/.:() ",
@@ -73,24 +134,51 @@ const SUBJECT_LOOKUPS = BGCSE_SUBJECTS.map((subjectMeta) => ({
   tokens: [subjectMeta.label, ...subjectMeta.aliases].map(normalizeForOcr),
 }));
 
-function guessSubjectId(rawLabel) {
-  const clean = normalizeForOcr(rawLabel);
-  if (!clean) return "";
+function isHeaderLikeLabel(clean) {
+  if (!clean) return true;
+  if (HEADER_BLOCKLIST.has(clean)) return true;
+  const words = clean.split(" ").filter(Boolean);
+  if (!words.length) return true;
+  return words.every((word) => HEADER_BLOCKLIST.has(word));
+}
 
-  for (const subjectMeta of SUBJECT_LOOKUPS) {
-    if (subjectMeta.tokens.includes(clean)) return subjectMeta.id;
+/**
+ * @param {string} rawLabel
+ * @returns {{ subjectId: string, confidence: "exact" | "alias" | "partial" | "fuzzy" | "" }}
+ */
+export function guessSubjectMatch(rawLabel) {
+  const clean = normalizeForOcr(rawLabel);
+  if (!clean || isHeaderLikeLabel(clean)) {
+    return { subjectId: "", confidence: "" };
   }
 
   for (const subjectMeta of SUBJECT_LOOKUPS) {
-    if (subjectMeta.tokens.some((token) => token.includes(clean) || clean.includes(token))) {
-      return subjectMeta.id;
+    if (subjectMeta.tokens.includes(clean)) {
+      const isPrimaryLabel = normalizeForOcr(subjectMeta.label) === clean;
+      return { subjectId: subjectMeta.id, confidence: isPrimaryLabel ? "exact" : "alias" };
     }
+  }
+
+  if (clean.length >= 6) {
+    for (const subjectMeta of SUBJECT_LOOKUPS) {
+      for (const token of subjectMeta.tokens) {
+        if (token.length < 6) continue;
+        if (token.includes(clean) || clean.includes(token)) {
+          return { subjectId: subjectMeta.id, confidence: "partial" };
+        }
+      }
+    }
+  }
+
+  if (clean.length < MIN_SUBJECT_LABEL_LENGTH) {
+    return { subjectId: "", confidence: "" };
   }
 
   let bestId = "";
   let bestDistance = Number.POSITIVE_INFINITY;
   for (const subjectMeta of SUBJECT_LOOKUPS) {
     for (const token of subjectMeta.tokens) {
+      if (token.length < MIN_SUBJECT_LABEL_LENGTH) continue;
       const distance = levenshtein(clean, token);
       const threshold = Math.max(2, Math.floor(token.length * 0.22));
       if (distance <= threshold && distance < bestDistance) {
@@ -99,7 +187,49 @@ function guessSubjectId(rawLabel) {
       }
     }
   }
-  return bestId;
+  if (bestId) return { subjectId: bestId, confidence: "fuzzy" };
+  return { subjectId: "", confidence: "" };
+}
+
+/** @param {string} rawLabel */
+function guessSubjectId(rawLabel) {
+  return guessSubjectMatch(rawLabel).subjectId;
+}
+
+/**
+ * @param {string} text
+ * @returns {{ looksLikeCertificate: boolean, score: number, warning?: string, positive: number, negative: number }}
+ */
+export function assessImportedDocument(text) {
+  const normalized = normalize(text);
+  if (!normalized) {
+    return { looksLikeCertificate: false, score: 0, warning: WRONG_DOCUMENT_WARNING, positive: 0, negative: 0 };
+  }
+
+  let positive = 0;
+  let negative = 0;
+  for (const signal of CERTIFICATE_POSITIVE_SIGNALS) {
+    if (normalized.includes(signal)) positive += 1;
+  }
+  for (const signal of CERTIFICATE_NEGATIVE_SIGNALS) {
+    if (normalized.includes(signal)) negative += 1;
+  }
+
+  const score = positive - negative * 2;
+  const looksLikeCertificate =
+    positive > 0 && negative <= positive && score >= 1 && !(negative >= 2 && positive === 0);
+
+  return {
+    looksLikeCertificate,
+    score,
+    warning: looksLikeCertificate ? undefined : WRONG_DOCUMENT_WARNING,
+    positive,
+    negative,
+  };
+}
+
+function confidenceAllowsAutoRow(confidence) {
+  return confidence === "exact" || confidence === "alias" || confidence === "partial" || confidence === "fuzzy";
 }
 
 function normalizeGrade(rawGrade) {
@@ -152,7 +282,8 @@ function cleanOcrLine(line) {
     .trim();
 }
 
-function parseRowsFromText(text) {
+/** @param {string} text */
+export function parseRowsFromText(text) {
   const lines = String(text || "")
     .split(/\r?\n/)
     .map(cleanOcrLine)
@@ -166,9 +297,12 @@ function parseRowsFromText(text) {
     seen.add(lower);
 
     const { label, grade } = splitLabelAndGrade(line);
+    if (!grade || !VALID_GRADES.has(grade)) continue;
+
     const sourceLabel = cleanOcrLine(label);
-    const subjectId = guessSubjectId(sourceLabel);
-    if (!subjectId && !grade) continue;
+    const { subjectId, confidence } = guessSubjectMatch(sourceLabel);
+    if (!subjectId || !confidenceAllowsAutoRow(confidence)) continue;
+
     rows.push({
       key: makeKey(),
       subjectId,
@@ -330,13 +464,31 @@ export function reviewIssueLabel(type) {
   return "Check this row";
 }
 
-export function buildImportReview(rows, sourceMeta = {}, ocrText = "") {
+export function buildImportReview(rows, sourceMeta = {}, ocrText = "", extra = {}) {
   return {
     rows,
     issues: createIssues(rows),
     sourceMeta,
     ocrText,
+    documentWarning: extra.documentWarning || "",
   };
+}
+
+function finalizeImportReview(ocrText, sourceMeta) {
+  const assessment = assessImportedDocument(ocrText);
+  if (!assessment.looksLikeCertificate) {
+    return buildImportReview([], sourceMeta, ocrText, { documentWarning: assessment.warning || WRONG_DOCUMENT_WARNING });
+  }
+
+  const rows = parseRowsFromText(ocrText);
+  if (countReadyRows(rows) < MIN_AUTO_IMPORT_ROWS) {
+    return buildImportReview([], sourceMeta, ocrText, {
+      documentWarning:
+        "Thuto could not find enough clear subject and grade lines. Try a clearer certificate photo, or add rows manually.",
+    });
+  }
+
+  return buildImportReview(rows, sourceMeta, ocrText);
 }
 
 export function updateReviewRows(rows) {
@@ -355,11 +507,11 @@ export async function importCertificateFile(file, onProgress) {
   if (isPdf) {
     const { text, pagesNeedingOcr, pageCount } = await extractPdfText(file, onProgress);
     let ocrText = text;
-    let rows = parseRowsFromText(ocrText);
+    const sourceMeta = { kind: "pdf", pageCount, fileName: file.name };
 
-    if (hasEnoughReadyRows(rows)) {
+    if (hasEnoughReadyRows(parseRowsFromText(ocrText))) {
       if (typeof onProgress === "function") onProgress({ status: "Found subjects, preparing review...", progress: 1 });
-      return buildImportReview(rows, { kind: "pdf", pageCount, fileName: file.name }, ocrText);
+      return finalizeImportReview(ocrText, sourceMeta);
     }
 
     for (let index = 0; index < pagesNeedingOcr.length; index += 1) {
@@ -380,17 +532,15 @@ export async function importCertificateFile(file, onProgress) {
         });
       });
       ocrText = [ocrText, nextText].filter(Boolean).join("\n");
-      rows = parseRowsFromText(ocrText);
-      if (hasEnoughReadyRows(rows)) break;
+      if (hasEnoughReadyRows(parseRowsFromText(ocrText))) break;
     }
 
-    if (typeof onProgress === "function") onProgress({ status: "Found subjects, preparing review...", progress: 1 });
-    return buildImportReview(rows, { kind: "pdf", pageCount, fileName: file.name }, ocrText);
+    if (typeof onProgress === "function") onProgress({ status: "Preparing review...", progress: 1 });
+    return finalizeImportReview(ocrText, sourceMeta);
   }
 
   const previewUrl = URL.createObjectURL(file);
   const canvas = await preprocessImage(file);
   const ocrText = await recognizeCanvas(canvas, onProgress);
-  const rows = parseRowsFromText(ocrText);
-  return buildImportReview(rows, { kind: "image", fileName: file.name, previewUrl }, ocrText);
+  return finalizeImportReview(ocrText, { kind: "image", fileName: file.name, previewUrl });
 }

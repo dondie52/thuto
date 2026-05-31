@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "../lib/auth.jsx";
 import {
   COMPARE_SELECTION_STORAGE_KEY,
-  COMPARE_SELECTION_MAX,
   getCompareIds,
   toggleCompareId as toggleCompareIdStorage,
   clearCompareIds as clearCompareIdsStorage,
 } from "../lib/compareSelection.js";
+import { getCompareMax } from "../lib/premium.js";
 
 const CHANGE_EVENT = "thuto-compare-selection";
 
@@ -26,11 +27,17 @@ function dispatchChange() {
  * }}
  */
 export function useCompareSelection() {
-  const [ids, setIds] = useState(() => getCompareIds());
+  const { isPremium } = useAuth();
+  const max = getCompareMax(isPremium);
+  const [ids, setIds] = useState(() => getCompareIds(max));
 
   const refresh = useCallback(() => {
-    setIds(getCompareIds());
-  }, []);
+    setIds(getCompareIds(max));
+  }, [max]);
+
+  useEffect(() => {
+    refresh();
+  }, [max, refresh]);
 
   useEffect(() => {
     const onChange = () => refresh();
@@ -45,12 +52,15 @@ export function useCompareSelection() {
     };
   }, [refresh]);
 
-  const toggle = useCallback((id) => {
-    const result = toggleCompareIdStorage(id);
-    refresh();
-    dispatchChange();
-    return result;
-  }, [refresh]);
+  const toggle = useCallback(
+    (id) => {
+      const result = toggleCompareIdStorage(id, max);
+      refresh();
+      dispatchChange();
+      return result;
+    },
+    [max, refresh],
+  );
 
   const clear = useCallback(() => {
     clearCompareIdsStorage();
@@ -60,7 +70,7 @@ export function useCompareSelection() {
 
   const isSelected = useCallback((id) => ids.includes(id), [ids]);
 
-  const canAdd = ids.length < COMPARE_SELECTION_MAX;
+  const canAdd = ids.length < max;
 
-  return { ids, toggle, clear, isSelected, canAdd, max: COMPARE_SELECTION_MAX };
+  return { ids, toggle, clear, isSelected, canAdd, max };
 }

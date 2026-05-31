@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
 import {
   buildGeminiAssistantContext,
   buildLocalAssistantReply,
@@ -11,6 +12,7 @@ import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { scrollElementIntoView } from "../lib/motion.js";
+import { getAssistantUsageToday } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
 const STARTER_QUESTIONS = [
@@ -86,6 +88,7 @@ function normalizeAssistantPayload(data) {
 
 export default function Assistant() {
   useDocumentTitle("Ask Thuto | Thuto");
+  const { isPremium } = useAuth();
   const [question, setQuestion] = useState("");
   const [programmes, setProgrammes] = useState([]);
   const [universities, setUniversities] = useState([]);
@@ -316,6 +319,21 @@ export default function Assistant() {
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
           Ask about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.
         </p>
+        {canUseGemini ? (
+          <p className="mt-2 text-xs text-slate-500">
+            AI questions today: {getAssistantUsageToday(isPremium).count} / {getAssistantUsageToday(isPremium).limit}
+            {!isPremium ? (
+              <>
+                {" "}
+                ·{" "}
+                <Link to="/upgrade" className="font-semibold text-brand-700 underline">
+                  Pro
+                </Link>{" "}
+                raises the daily limit
+              </>
+            ) : null}
+          </p>
+        ) : null}
       </header>
 
       <section className="rounded-2xl border border-brand-200 bg-white shadow-sm">

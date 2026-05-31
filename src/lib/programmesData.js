@@ -1,8 +1,17 @@
 const PROGRAMMES_PATH = `${import.meta.env.BASE_URL}data/programmes.json`;
 
+/** @param {string} path */
+function withCacheBuster(path, cacheBuster) {
+  if (cacheBuster == null || cacheBuster === "") return path;
+  const sep = path.includes("?") ? "&" : "?";
+  return `${path}${sep}d=${encodeURIComponent(String(cacheBuster))}`;
+}
+
+/** @param {{ signal?: AbortSignal, cacheBuster?: string }} [options] */
 export async function fetchProgrammes(options = {}) {
-  const { signal } = options;
-  const response = await fetch(PROGRAMMES_PATH, { signal, cache: "no-store" });
+  const { signal, cacheBuster } = options;
+  const url = withCacheBuster(PROGRAMMES_PATH, cacheBuster);
+  const response = await fetch(url, { signal, cache: "no-store" });
   if (!response.ok) throw new Error("Could not load programmes");
   const data = await response.json();
   return Array.isArray(data) ? data : [];

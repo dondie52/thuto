@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { safeInternalPath } from "../lib/urlSafety.js";
 
 function cleanMode(value) {
   return value === "login" ? "login" : "signup";
@@ -11,6 +12,7 @@ export default function Auth() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const mode = cleanMode(searchParams.get("mode"));
+  const nextPath = safeInternalPath(searchParams.get("next")) || "/app";
   const { signIn, signUp, supabaseConfigured, user } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -45,11 +47,11 @@ export default function Auth() {
     try {
       if (mode === "login") {
         await signIn({ email, password });
-        navigate("/app");
+        navigate(nextPath);
       } else {
         const data = await signUp({ email, password, fullName });
         if (data?.session) {
-          navigate("/app");
+          navigate(nextPath);
         } else {
           setMessage("Check your email to finish setting up your Thuto account.");
         }
