@@ -157,7 +157,7 @@ function CommentList({ post, user, draft, isSubmitting, onDraftChange, onSubmitC
 }
 
 export default function Feed() {
-  useDocumentTitle("Scroll Feed | Thuto");
+  useDocumentTitle("Social Feed | Thuto");
   const { user, supabaseConfigured } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
   const [posts, setPosts] = useState([]);
@@ -287,11 +287,9 @@ export default function Feed() {
     <div className="space-y-6">
       <section className="relative overflow-hidden rounded-[2rem] border border-brand-700/20 bg-gradient-to-br from-[#0c5f58] via-brand-700 to-[#102f2b] p-5 text-white shadow-card sm:p-7">
         <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-teal-200/20 blur-3xl" />
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-100">Scroll Feed</p>
-        <h1 className="mt-3 font-display text-3xl font-bold tracking-tight">Useful student updates, kept clean.</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-teal-50/90">
-          Share opportunities, campus stories, questions, notices, study tips, and deadlines. AI checks posts first,
-          then admins can take down anything that should not be here.
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-100">Social Feed</p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-teal-50/90 sm:text-base">
+          Share opportunities, campus stories, questions, study tips and deadlines.
         </p>
       </section>
 
@@ -305,10 +303,7 @@ export default function Feed() {
       <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="font-display text-xl font-semibold text-brand-900">Post something useful</h2>
-            <p className="mt-1 text-sm leading-relaxed text-stone-600">
-              Broad social is allowed, but it must still be student-relevant and safe.
-            </p>
+            <h2 className="font-display text-xl font-semibold text-brand-900">Add a post</h2>
           </div>
           {!user ? (
             <Link
