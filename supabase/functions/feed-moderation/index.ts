@@ -112,6 +112,50 @@ function toDisplayName(user: Record<string, unknown>) {
   return cleanText(local || "Student", 80);
 }
 
+type AuthorSnapshot = {
+  displayName: string;
+  avatarUrl: string | null;
+  universityName: string | null;
+  universityStatus: string | null;
+  distinction: string | null;
+};
+
+async function getAuthorSnapshot(
+  adminClient: ReturnType<typeof createClient>,
+  user: Record<string, unknown>,
+): Promise<AuthorSnapshot> {
+  const userId = String(user.id || "");
+  const { data: profile } = await adminClient
+    .from("profiles")
+    .select("full_name, avatar_url, university_name, university_status, distinction")
+    .eq("id", userId)
+    .maybeSingle();
+
+  const profileName = cleanText(profile?.full_name, 80);
+  const displayName = profileName || toDisplayName(user);
+
+  return {
+    displayName,
+    avatarUrl: cleanText(profile?.avatar_url, 1000) || null,
+    universityName: cleanText(profile?.university_name, 120) || null,
+    universityStatus:
+      profile?.university_status === "studying" || profile?.university_status === "aspiring"
+        ? profile.university_status
+        : null,
+    distinction: cleanText(profile?.distinction, 120) || null,
+  };
+}
+
+function authorSnapshotFields(snapshot: AuthorSnapshot) {
+  return {
+    author_display_name: snapshot.displayName,
+    author_avatar_url: snapshot.avatarUrl,
+    author_university_name: snapshot.universityName,
+    author_university_status: snapshot.universityStatus,
+    author_distinction: snapshot.distinction,
+  };
+}
+
 function base64FromArrayBuffer(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
   const chunkSize = 0x8000;
@@ -397,12 +441,24 @@ async function submitPost(
   const status = statusForDecision(moderation.decision);
   const now = new Date().toISOString();
   const official = await isFeedAdmin(adminClient, userId);
+  const author = official
+    ? {
+        displayName: "Thuto Admin",
+        avatarUrl: null,
+        universityName: null,
+        universityStatus: null,
+        distinction: null,
+      }
+    : await getAuthorSnapshot(adminClient, user);
 
   const { data: post, error } = await adminClient
     .from("feed_posts")
     .insert({
       author_id: userId,
-      author_display_name: official ? "Thuto Admin" : toDisplayName(user),
+      ...authorSnapshotFields({
+        ...author,
+        displayName: official ? "Thuto Admin" : author.displayName,
+      }),
       is_official: official,
       category,
       title,
@@ -468,13 +524,14 @@ async function submitComment(
   });
   const status = statusForDecision(moderation.decision);
   const now = new Date().toISOString();
+  const author = await getAuthorSnapshot(adminClient, user);
 
   const { data: comment, error } = await adminClient
     .from("feed_comments")
     .insert({
       post_id: postId,
       author_id: userId,
-      author_display_name: toDisplayName(user),
+      ...authorSnapshotFields(author),
       body: commentBody,
       status,
       moderation_decision: moderation.decision,

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { categoryLabel, FEED_STATUS_LABELS } from "../lib/feed.js";
+import { formatAuthorUniversity } from "../lib/profile.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const OFFICIAL_DISPLAY_NAME = "Thuto Admin";
@@ -66,12 +67,21 @@ function IconComment({ className = "h-4 w-4" }) {
   );
 }
 
-function PostAvatar({ isOfficial, displayName }) {
+function PostAvatar({ isOfficial, displayName, avatarUrl }) {
   if (isOfficial) {
     return (
       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-800 text-lg font-bold text-white ring-2 ring-white">
         T
       </div>
+    );
+  }
+  if (avatarUrl) {
+    return (
+      <img
+        src={avatarUrl}
+        alt=""
+        className="h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-white"
+      />
     );
   }
   return (
@@ -80,6 +90,21 @@ function PostAvatar({ isOfficial, displayName }) {
       aria-hidden
     >
       {avatarInitial(displayName)}
+    </div>
+  );
+}
+
+function AuthorMetaLine({ universityName, universityStatus, distinction, timeLabel, isOfficial }) {
+  const universityLine = formatAuthorUniversity({ universityName, universityStatus });
+  const parts = [];
+  if (isOfficial && timeLabel) parts.push(`Official • ${timeLabel}`);
+  else if (timeLabel) parts.push(timeLabel);
+  if (universityLine) parts.push(universityLine);
+
+  return (
+    <div className="mt-0.5 space-y-0.5">
+      {parts.length ? <p className="text-xs text-stone-500">{parts.join(" • ")}</p> : null}
+      {distinction ? <p className="text-xs font-medium text-brand-800/90">{distinction}</p> : null}
     </div>
   );
 }
@@ -99,24 +124,53 @@ function OfficialBadge() {
   );
 }
 
-function FeaturedImage({ images }) {
-  const primary = images?.[0];
-  if (!primary?.publicUrl) return null;
+function PostImages({ images }) {
+  const visible = (images || []).filter((image) => image?.publicUrl);
+  if (!visible.length) return null;
+
+  if (visible.length === 1) {
+    const primary = visible[0];
+    return (
+      <a
+        href={primary.publicUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 block overflow-hidden rounded-2xl border border-stone-200 bg-stone-100"
+      >
+        <img
+          src={primary.publicUrl}
+          alt={primary.altText || "Post image"}
+          className="aspect-[16/10] w-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    );
+  }
+
   return (
-    <a
-      href={primary.publicUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-4 block overflow-hidden rounded-2xl border border-stone-200 bg-stone-100"
-    >
-      <img
-        src={primary.publicUrl}
-        alt={primary.altText || "Post image"}
-        className="aspect-[16/10] w-full object-cover"
-        loading="lazy"
-        decoding="async"
-      />
-    </a>
+    <div className={`mt-4 grid gap-2 ${visible.length >= 3 ? "grid-cols-2" : "grid-cols-2"}`}>
+      {visible.map((image, index) => (
+        <a
+          key={image.id || image.publicUrl}
+          href={image.publicUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={[
+            "block overflow-hidden rounded-2xl border border-stone-200 bg-stone-100",
+            visible.length === 3 && index === 0 ? "col-span-2" : "",
+          ].join(" ")}
+        >
+          <img
+            src={image.publicUrl}
+            alt={image.altText || "Post image"}
+            className="aspect-[16/10] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+      ))}
+    </div>
   );
 }
 
@@ -150,6 +204,9 @@ function CommentSection({
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-brand-900">{comment.authorDisplayName}</p>
+                  {comment.authorDistinction ? (
+                    <p className="text-[11px] font-medium text-brand-800/80">{comment.authorDistinction}</p>
+                  ) : null}
                   <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-stone-700">{comment.body}</p>
                   <p className="mt-1 text-[11px] text-stone-400">
                     {formatRelativeTime(comment.publishedAt || comment.createdAt)}
@@ -237,7 +294,6 @@ export default function FeedPostCard({
   const isOfficial = Boolean(post.isOfficial);
   const displayName = isOfficial ? OFFICIAL_DISPLAY_NAME : post.authorDisplayName;
   const timeLabel = formatRelativeTime(post.publishedAt || post.createdAt);
-  const metaLine = isOfficial && timeLabel ? `Official • ${timeLabel}` : timeLabel;
   const likeCount = post.reactionCounts?.like || 0;
   const commentCount = post.comments?.length || 0;
   const liked = post.viewerReaction === "like";
@@ -250,7 +306,7 @@ export default function FeedPostCard({
       ].join(" ")}
     >
       <header className="flex items-start gap-3">
-        <PostAvatar isOfficial={isOfficial} displayName={displayName} />
+        <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
@@ -263,7 +319,13 @@ export default function FeedPostCard({
                   </span>
                 ) : null}
               </div>
-              {metaLine ? <p className="mt-0.5 text-xs text-stone-500">{metaLine}</p> : null}
+              <AuthorMetaLine
+                universityName={post.authorUniversityName}
+                universityStatus={post.authorUniversityStatus}
+                distinction={post.authorDistinction}
+                timeLabel={timeLabel}
+                isOfficial={isOfficial}
+              />
             </div>
             <span className="shrink-0 rounded-full bg-brand-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-800 ring-1 ring-brand-100">
               {categoryBadgeText(post.category)}
@@ -299,7 +361,7 @@ export default function FeedPostCard({
         </a>
       ) : null}
 
-      <FeaturedImage images={post.images} />
+      <PostImages images={post.images} />
 
       {isPublished ? (
         <div className="mt-4 grid grid-cols-3 gap-2">
