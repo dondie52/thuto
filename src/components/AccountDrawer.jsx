@@ -272,7 +272,7 @@ export default function AccountDrawer() {
                   to={isPremium ? "/settings" : "/upgrade"}
                   className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
                 >
-                  {isPremium ? "Manage plan" : "Upgrade to Pro — P59"}
+                  {isPremium ? "Manage plan" : "Upgrade to Pro"}
                 </Link>
               </div>
 
