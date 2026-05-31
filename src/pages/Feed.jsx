@@ -6,6 +6,7 @@ import { safeExternalUrl } from "../lib/urlSafety.js";
 import {
   FEED_CATEGORIES,
   FEED_REACTIONS,
+  FEED_STATUS_LABELS,
   categoryLabel,
   fetchFeedPosts,
   isSupabaseConfigured,
@@ -28,9 +29,14 @@ function formatDate(value) {
 }
 
 function publishMessage(status) {
-  if (status === "published") return "Posted live. AI approved it for the feed.";
+  if (status === "published") return "Posted live. Your update is on the feed.";
   if (status === "rejected") return "Not published. AI rejected it for safety or relevance.";
-  return "Sent to admin review. It will stay hidden until approved.";
+  if (status === "pending_ai") return "Submitted. AI moderation is still processing your post.";
+  return "Submitted for admin review. You can see it below while it waits for approval.";
+}
+
+function postStatusLabel(status) {
+  return FEED_STATUS_LABELS[status] || status;
 }
 
 function FeedImages({ images }) {
@@ -157,8 +163,8 @@ function CommentList({ post, user, draft, isSubmitting, onDraftChange, onSubmitC
 }
 
 export default function Feed() {
-  useDocumentTitle("Scroll Feed | Thuto");
-  const { user, supabaseConfigured } = useAuth();
+  useDocumentTitle("Social Feed | Thuto");
+  const { user, supabaseConfigured, isLoading: isAuthLoading } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -200,8 +206,15 @@ export default function Feed() {
     setCommentDrafts((current) => ({ ...current, [postId]: value }));
   }
 
+  const canCompose = configured && !isAuthLoading;
+  const canPublish = canCompose && Boolean(user);
+
   async function handleSubmitPost(event) {
     event.preventDefault();
+    if (!configured) {
+      setError("Feed posting is not set up on this build yet.");
+      return;
+    }
     if (!user) {
       setNotice("Log in before posting to the feed.");
       return;
@@ -287,11 +300,9 @@ export default function Feed() {
     <div className="space-y-6">
       <section className="relative overflow-hidden rounded-[2rem] border border-brand-700/20 bg-gradient-to-br from-[#0c5f58] via-brand-700 to-[#102f2b] p-5 text-white shadow-card sm:p-7">
         <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-teal-200/20 blur-3xl" />
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-100">Scroll Feed</p>
-        <h1 className="mt-3 font-display text-3xl font-bold tracking-tight">Useful student updates, kept clean.</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-teal-50/90">
-          Share opportunities, campus stories, questions, notices, study tips, and deadlines. AI checks posts first,
-          then admins can take down anything that should not be here.
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-100">Social Feed</p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-teal-50/90 sm:text-base">
+          Share opportunities, campus stories, questions, study tips and deadlines.
         </p>
       </section>
 
@@ -302,22 +313,26 @@ export default function Feed() {
         </div>
       ) : null}
 
+      {configured && !isAuthLoading && !user ? (
+        <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
+          <p className="font-semibold">Sign in to publish</p>
+          <p className="mt-1 text-brand-800/90">
+            You can draft a post below, then log in to submit it to the feed.
+          </p>
+          <Link
+            to="/auth?mode=login"
+            className="focus-ring mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+          >
+            Log in to post
+          </Link>
+        </div>
+      ) : null}
+
       <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="font-display text-xl font-semibold text-brand-900">Post something useful</h2>
-            <p className="mt-1 text-sm leading-relaxed text-stone-600">
-              Broad social is allowed, but it must still be student-relevant and safe.
-            </p>
+            <h2 className="font-display text-xl font-semibold text-brand-900">Add a post</h2>
           </div>
-          {!user ? (
-            <Link
-              to="/auth?mode=login"
-              className="focus-ring rounded-xl border border-brand-200 bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-100"
-            >
-              Log in to post
-            </Link>
-          ) : null}
         </div>
 
         <form className="mt-4 space-y-3" onSubmit={handleSubmitPost}>
@@ -327,7 +342,7 @@ export default function Feed() {
               <select
                 value={form.category}
                 onChange={(event) => updateForm({ category: event.target.value })}
-                disabled={!configured || !user || isPosting}
+                disabled={!canCompose || isPosting}
                 className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
               >
                 {FEED_CATEGORIES.map((category) => (
@@ -343,7 +358,7 @@ export default function Feed() {
                 value={form.title}
                 onChange={(event) => updateForm({ title: event.target.value })}
                 maxLength={120}
-                disabled={!configured || !user || isPosting}
+                disabled={!canCompose || isPosting}
                 placeholder="Example: BDF scholarship notice"
                 className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
               />
@@ -358,7 +373,7 @@ export default function Feed() {
               maxLength={2400}
               rows={5}
               required
-              disabled={!configured || !user || isPosting}
+              disabled={!canCompose || isPosting}
               placeholder="Write the update, question, opportunity, or useful notice..."
               className="mt-1 w-full rounded-2xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
             />
@@ -370,7 +385,7 @@ export default function Feed() {
               <input
                 value={form.linkUrl}
                 onChange={(event) => updateForm({ linkUrl: event.target.value })}
-                disabled={!configured || !user || isPosting}
+                disabled={!canCompose || isPosting}
                 placeholder="https://..."
                 className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
               />
@@ -382,7 +397,7 @@ export default function Feed() {
                 type="file"
                 accept="image/*"
                 multiple
-                disabled={!configured || !user || isPosting}
+                disabled={!canCompose || isPosting}
                 onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
                 className="mt-1 block w-full text-sm text-stone-600 file:mr-3 file:rounded-xl file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-brand-800 hover:file:bg-brand-100 disabled:opacity-60"
               />
@@ -395,26 +410,26 @@ export default function Feed() {
             </p>
           ) : null}
 
+          {notice ? (
+            <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900" role="status">
+              {notice}
+            </p>
+          ) : null}
+          {error ? (
+            <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+              {error}
+            </p>
+          ) : null}
+
           <button
             type="submit"
-            disabled={!configured || !user || isPosting || !form.body.trim()}
+            disabled={!canPublish || isPosting || !form.body.trim()}
             className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isPosting ? "Checking with AI..." : "Submit to feed"}
+            {isPosting ? "Submitting..." : user ? "Post to feed" : "Log in to post"}
           </button>
         </form>
       </section>
-
-      {notice ? (
-        <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900" role="status">
-          {notice}
-        </p>
-      ) : null}
-      {error ? (
-        <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
-          {error}
-        </p>
-      ) : null}
 
       <section className="space-y-4">
         <div className="flex items-center justify-between gap-3">
@@ -436,20 +451,37 @@ export default function Feed() {
 
         {!isLoading && !posts.length ? (
           <div className="rounded-3xl border border-dashed border-brand-200 bg-brand-50/60 p-8 text-center">
-            <p className="font-display text-xl font-semibold text-brand-900">No live posts yet</p>
-            <p className="mt-2 text-sm text-stone-600">The first safe, approved update will appear here.</p>
+            <p className="font-display text-xl font-semibold text-brand-900">No posts yet</p>
+            <p className="mt-2 text-sm text-stone-600">
+              {user ? "Be the first to share an update, or check back after you submit one for review." : "Sign in and post the first student update."}
+            </p>
           </div>
         ) : null}
 
         {posts.map((post) => {
           const linkUrl = safeExternalUrl(post.linkUrl);
+          const isPublished = post.status === "published";
+          const isOwnPost = user?.id && post.authorId === user.id;
           return (
-            <article key={post.id} className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm sm:p-5">
+            <article
+              key={post.id}
+              className={[
+                "rounded-3xl border bg-white p-4 shadow-sm sm:p-5",
+                isPublished ? "border-brand-100" : "border-amber-200 bg-amber-50/30",
+              ].join(" ")}
+            >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
-                    {categoryLabel(post.category)}
-                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+                      {categoryLabel(post.category)}
+                    </span>
+                    {!isPublished && isOwnPost ? (
+                      <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
+                        {postStatusLabel(post.status)}
+                      </span>
+                    ) : null}
+                  </div>
                   <p className="mt-3 text-sm font-semibold text-brand-950">{post.authorDisplayName}</p>
                   <p className="mt-0.5 text-xs text-stone-500">{formatDate(post.publishedAt || post.createdAt)}</p>
                 </div>
@@ -462,6 +494,11 @@ export default function Feed() {
 
               {post.title ? <h3 className="mt-4 font-display text-xl font-semibold text-brand-950">{post.title}</h3> : null}
               <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-stone-700">{post.body}</p>
+              {!isPublished && isOwnPost && post.moderationReason ? (
+                <p className="mt-3 rounded-xl bg-white/80 px-3 py-2 text-xs leading-relaxed text-amber-900">
+                  {post.moderationReason}
+                </p>
+              ) : null}
 
               {linkUrl ? (
                 <a
@@ -476,19 +513,25 @@ export default function Feed() {
 
               <FeedImages images={post.images} />
 
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <ReactionBar post={post} disabled={!user} onReact={handleReaction} />
-              </div>
+              {isPublished ? (
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                  <ReactionBar post={post} disabled={!user} onReact={handleReaction} />
+                </div>
+              ) : isOwnPost ? (
+                <p className="mt-4 text-xs text-amber-800">Only you can see this until it is approved for the public feed.</p>
+              ) : null}
 
-              <CommentList
-                post={post}
-                user={user}
-                draft={commentDrafts[post.id]}
-                isSubmitting={commentSubmittingFor === post.id}
-                onDraftChange={updateCommentDraft}
-                onSubmitComment={handleSubmitComment}
-                onReport={handleReport}
-              />
+              {isPublished ? (
+                <CommentList
+                  post={post}
+                  user={user}
+                  draft={commentDrafts[post.id]}
+                  isSubmitting={commentSubmittingFor === post.id}
+                  onDraftChange={updateCommentDraft}
+                  onSubmitComment={handleSubmitComment}
+                  onReport={handleReport}
+                />
+              ) : null}
             </article>
           );
         })}

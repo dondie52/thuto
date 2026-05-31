@@ -12,10 +12,22 @@ function EmojiIcon({ emoji, label }) {
 
 const primaryToolItems = [
   {
-    to: "/feed",
-    label: "Scroll Feed",
-    description: "Opportunities, questions, tips, and notices",
-    emoji: "◇",
+    to: "/profile",
+    label: "Profile",
+    description: "Your account, shortlist, and predictor summary",
+    emoji: "👤",
+  },
+  {
+    to: "/universities",
+    label: "Universities",
+    description: "Institutions, locations, and application windows",
+    emoji: "🏛️",
+  },
+  {
+    to: "/sponsorships",
+    label: "Sponsorships",
+    description: "Government sponsorship, private funding, and grants",
+    emoji: "💰",
   },
   {
     to: "/internships",
@@ -112,7 +124,7 @@ export default function AccountDrawer() {
     return "Sign in";
   }, [isLoading, user]);
 
-  const profileLinkTo = isSignedIn ? "/settings" : "/auth?mode=login";
+  const profileLinkTo = isSignedIn ? "/profile" : "/auth?mode=login";
 
   useEffect(() => {
     setIsOpen(false);
