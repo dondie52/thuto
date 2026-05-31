@@ -17,7 +17,7 @@ export default function SplashScreen({ exiting = false }) {
         <img
           src={thutoLogoSrc}
           alt="Thuto"
-          className="splash-logo relative h-48 w-48 rounded-[3.25rem] object-contain drop-shadow-[0_28px_55px_rgba(15,118,110,0.28)] sm:h-56 sm:w-56"
+          className="splash-logo relative h-48 w-48 object-contain drop-shadow-[0_28px_55px_rgba(15,118,110,0.28)] sm:h-56 sm:w-56"
           width="224"
           height="224"
           decoding="async"

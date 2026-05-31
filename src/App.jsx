@@ -46,9 +46,16 @@ function PageFallback() {
   );
 }
 
+function shouldShowBrandedSplash() {
+  if (typeof window === "undefined") return false;
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if (isStandalone) return true;
+  return window.sessionStorage.getItem("thuto:splash-seen") !== "1";
+}
+
 function getInitialSplashPhase() {
-  if (typeof window === "undefined") return "hidden";
-  return window.sessionStorage.getItem("thuto:splash-seen") === "1" ? "hidden" : "enter";
+  return shouldShowBrandedSplash() ? "enter" : "hidden";
 }
 
 export default function App() {
@@ -57,7 +64,9 @@ export default function App() {
 
   useEffect(() => {
     if (splashPhase === "hidden") return undefined;
-    window.sessionStorage.setItem("thuto:splash-seen", "1");
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    if (!isStandalone) window.sessionStorage.setItem("thuto:splash-seen", "1");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const enterMs = prefersReducedMotion ? 120 : splashEnterMs;
     const exitMs = prefersReducedMotion ? 60 : splashExitMs;
