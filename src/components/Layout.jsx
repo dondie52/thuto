@@ -25,7 +25,7 @@ function navLinkClass({ isActive }) {
 
 export default function Layout() {
   return (
-    <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:pb-6">
+    <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
         <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-5xl">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
