@@ -10,7 +10,6 @@ import { useBookmarks } from "../hooks/useBookmarks.js";
 import { useCompareSelection } from "../hooks/useCompareSelection.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
-import ProgrammeCommunityStats from "../components/ProgrammeCommunityStats.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { fetchProgrammes } from "../lib/programmesData.js";
@@ -207,8 +206,6 @@ export default function ProgrammeDetail() {
         </dl>
         </div>
       </header>
-
-      <ProgrammeCommunityStats programmeId={programme.id} />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Smart programme guide</h2>
