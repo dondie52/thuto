@@ -288,8 +288,7 @@ function GovernmentSponsorshipPanel() {
             </ol>
           </div>
         </div>
-            </section>
-          ) : null}
+      </section>
 
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
         <p className="text-sm font-semibold text-stone-900">Verify before you rely on this page</p>
