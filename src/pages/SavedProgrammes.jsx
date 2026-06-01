@@ -51,9 +51,12 @@ export default function SavedProgrammes() {
     <div className={`space-y-6 ${compareIds.length > 0 ? "pb-28 sm:pb-8" : ""}`}>
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Saved programmes</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Shortlist up to 10 programmes. They stay on this device only (localStorage). Tick programmes to build a
-          compare list (up to 3), or use the quick compare shortcut below.
+        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          Shortlist up to 3 programmes on the free tier.{" "}
+          <Link to="/upgrade" className="font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950">
+            Upgrade to Thuto Pro
+          </Link>{" "}
+          to unlock unlimited saved choices and cloud syncing. Tick saved programmes to build a compare list (up to 3).
         </p>
       </div>
 
