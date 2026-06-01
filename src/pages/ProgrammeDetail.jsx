@@ -41,7 +41,7 @@ export default function ProgrammeDetail() {
   const programmesListHref = `/programmes${location.state?.fromProgrammes ?? ""}`;
   const [programme, setProgramme] = useState(null);
   const [allProgrammes, setAllProgrammes] = useState([]);
-  const [universityLocation, setUniversityLocation] = useState(null);
+  const [university, setUniversity] = useState(null);
   const [error, setError] = useState(null);
   const { toggle, isBookmarked } = useBookmarks();
   const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
@@ -58,8 +58,8 @@ export default function ProgrammeDetail() {
           return;
         }
         setProgramme(found);
-        const university = universities.find((u) => programmeBelongsToUniversity(found, u));
-        setUniversityLocation(university?.location ?? null);
+        const matchedUniversity = universities.find((u) => programmeBelongsToUniversity(found, u));
+        setUniversity(matchedUniversity ?? null);
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
@@ -120,7 +120,9 @@ export default function ProgrammeDetail() {
     officialHref;
 
   const admissionListed = programmeHasAdmissionPoints(programme);
-  const campusLocation = getProgrammeCampusLocation(programme, universityLocation);
+  const campusLocation = getProgrammeCampusLocation(programme, university?.location ?? null);
+  const isDtefSponsored =
+    programme.sponsorshipTier === "core" || university?.sponsorshipTier === "core";
   const aboutSummary = getProgrammeAboutSummary(programme);
   const interests = getProgrammeInterests(programme);
   const careers = getProgrammeCareers(programme);
@@ -154,55 +156,120 @@ export default function ProgrammeDetail() {
         <div className="p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-end">
             <div className="flex shrink-0 flex-wrap items-start gap-2 sm:ml-auto">
-            <ProgrammeBookmarkButton
-              programmeId={programme.id}
-              programmeName={programme.name}
-              pressed={isBookmarked(programme.id)}
-              onToggle={() => toggle(programme.id)}
-            />
-            <button
-              type="button"
-              disabled={compareToggleDisabled}
-              onClick={() => toggleCompare(programme.id)}
-              className={[
-                "rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
-                inCompare
-                  ? "border-brand-600 bg-brand-100 text-brand-900"
-                  : "border-brand-200 bg-white text-brand-800 hover:bg-brand-50",
-                compareToggleDisabled && "cursor-not-allowed opacity-50",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              title={compareToggleDisabled ? "Compare allows at most 3 programmes" : undefined}
-            >
-              {inCompare ? "In compare" : "Add to compare"}
-            </button>
-            {eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
+              <ProgrammeBookmarkButton
+                programmeId={programme.id}
+                programmeName={programme.name}
+                pressed={isBookmarked(programme.id)}
+                onToggle={() => toggle(programme.id)}
+              />
+              <button
+                type="button"
+                disabled={compareToggleDisabled}
+                onClick={() => toggleCompare(programme.id)}
+                className={[
+                  "rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
+                  inCompare
+                    ? "border-brand-600 bg-brand-100 text-brand-900"
+                    : "border-brand-200 bg-white text-brand-800 hover:bg-brand-50",
+                  compareToggleDisabled && "cursor-not-allowed opacity-50",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                title={compareToggleDisabled ? "Compare allows at most 3 programmes" : undefined}
+              >
+                {inCompare ? "In compare" : "Add to compare"}
+              </button>
+              {eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
             </div>
           </div>
-        {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
-        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
-          <div>
-            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Duration</dt>
-            <dd className="font-medium text-brand-900">{programme.duration ?? "Confirm with institution"}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Minimum points</dt>
-            <dd className="font-medium text-brand-900">
-              {admissionListed ? `${programme.minPoints} (best six)` : "Not listed - confirm with the institution"}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Campus location</dt>
-            <dd className="font-medium text-brand-900">{campusLocation}</dd>
-          </div>
-        </dl>
-        <section className="mt-5 border-t border-brand-100 pt-4">
-          <h2 className="font-display text-base font-semibold text-brand-900">About this programme</h2>
-          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-700">{aboutSummary}</p>
-        </section>
+          {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
+          <section className="mt-4">
+            <h2 className="font-display text-base font-semibold text-brand-900">About this programme</h2>
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-700">{aboutSummary}</p>
+          </section>
+          <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Duration</dt>
+              <dd className="font-medium text-brand-900">{programme.duration ?? "Confirm with institution"}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Minimum points</dt>
+              <dd className="font-medium text-brand-900">
+                {admissionListed ? `${programme.minPoints} (best six)` : "Not listed - confirm with the institution"}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Campus location</dt>
+              <dd className="font-medium text-brand-900">{campusLocation}</dd>
+            </div>
+          </dl>
         </div>
       </header>
+
+      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+        <h2 className="font-display text-lg font-semibold text-brand-900">Application</h2>
+        {hasApplicationBlock ? (
+          <>
+            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              {programme.applicationDeadline ? (
+                <li>
+                  <span className="font-medium text-slate-800">Deadline: </span>
+                  {formatApplicationDeadline(programme.applicationDeadline)}
+                </li>
+              ) : null}
+            </ul>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {applyHref ? (
+                <a
+                  href={applyHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+                >
+                  Apply / admissions
+                </a>
+              ) : null}
+              {officialHref ? (
+                <a
+                  href={officialHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex rounded-xl border border-brand-300 bg-white px-4 py-2 text-sm font-semibold text-brand-800 shadow-sm hover:bg-brand-50"
+                >
+                  Official programme page
+                </a>
+              ) : null}
+            </div>
+            <p className="mt-3 text-xs text-slate-500">
+              Verify dates and requirements on the institution&apos;s site before you apply.
+            </p>
+          </>
+        ) : (
+          <p className="mt-2 text-sm text-slate-600">
+            Application links and deadlines are not listed in Thuto yet. Check the institution&apos;s admissions office
+            or official website.
+          </p>
+        )}
+      </section>
+
+      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+        <h2 className="font-display text-lg font-semibold text-brand-900">Entry requirements</h2>
+        <ul className="mt-3 list-inside list-disc text-sm text-slate-700">
+          {Object.entries(reqs).map(([key, grade]) => (
+            <li key={key}>
+              <span className="font-medium">{REQ_LABEL[key] ?? key.replace(/([A-Z])/g, " $1").trim()}</span>: at least{" "}
+              {grade}
+            </li>
+          ))}
+        </ul>
+        {!Object.keys(reqs).length && (
+          <p className="text-sm text-slate-500">
+            {admissionListed
+              ? "No subject-specific requirements listed in Thuto for this programme."
+              : "Subject-specific grade requirements are not listed in Thuto yet - check the prospectus or admissions office."}
+          </p>
+        )}
+      </section>
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Smart programme guide</h2>
@@ -236,75 +303,46 @@ export default function ProgrammeDetail() {
         </div>
       </section>
 
-      {hasApplicationBlock ? (
-        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Application</h2>
-          <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            {programme.applicationDeadline ? (
-              <li>
-                <span className="font-medium text-slate-800">Deadline: </span>
-                {formatApplicationDeadline(programme.applicationDeadline)}
-              </li>
-            ) : null}
-          </ul>
-          <div className="mt-4 flex flex-wrap gap-3">
-            {applyHref ? (
-              <a
-                href={applyHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
-              >
-                Apply / admissions
-              </a>
-            ) : null}
-            {officialHref ? (
-              <a
-                href={officialHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex rounded-xl border border-brand-300 bg-white px-4 py-2 text-sm font-semibold text-brand-800 shadow-sm hover:bg-brand-50"
-              >
-                Official programme page
-              </a>
-            ) : null}
-          </div>
-          <p className="mt-3 text-xs text-slate-500">Verify dates and requirements on the institution&apos;s site before you apply.</p>
-        </section>
-      ) : null}
-
-      {hasFees ? (
-        <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Tuition (approximate)</h2>
+      <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 shadow-sm">
+        <div className="flex flex-wrap items-center gap-2">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Fee &amp; funding</h2>
+          {isDtefSponsored ? (
+            <span
+              className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-950"
+              title="This programme or institution is on Thuto's DTEF sponsorship list — confirm eligibility with DTEF"
+            >
+              <span className="size-1.5 rounded-full bg-emerald-600" aria-hidden />
+              DTEF Sponsored
+            </span>
+          ) : null}
+        </div>
+        {hasFees ? (
           <p className="mt-2 text-sm text-slate-700">
-            From approximately{" "}
+            <span className="font-medium text-slate-800">Estimated fees: </span>
+            from approximately{" "}
             <strong>
               {fees.currency} {fees.domestic.toLocaleString()}
             </strong>
-            {fees.per ? ` per ${fees.per}` : ""} (domestic). Figures are indicative - always confirm with the
+            {fees.per ? ` per ${fees.per}` : ""} (domestic). Figures are indicative — always confirm with the
             institution.
           </p>
-          {fees.note ? <p className="mt-2 text-sm text-amber-950/90">{fees.note}</p> : null}
-        </section>
-      ) : null}
-
-      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Entry requirements (grades)</h2>
-        <ul className="mt-3 list-inside list-disc text-sm text-slate-700">
-          {Object.entries(reqs).map(([key, grade]) => (
-            <li key={key}>
-              <span className="font-medium">{REQ_LABEL[key] ?? key.replace(/([A-Z])/g, " $1").trim()}</span>: at least{" "}
-              {grade}
-            </li>
-          ))}
-        </ul>
-        {!Object.keys(reqs).length && (
-          <p className="text-sm text-slate-500">
-            {admissionListed
-              ? "No subject-specific requirements listed in Thuto for this programme."
-              : "Subject-specific grade requirements are not listed in Thuto yet - check the prospectus or admissions office."}
+        ) : (
+          <p className="mt-2 text-sm text-slate-700">
+            <span className="font-medium text-slate-800">Estimated fees: </span>
+            not listed in Thuto yet. Check the institution&apos;s fee schedule or prospectus.
           </p>
         )}
+        {fees?.note ? <p className="mt-2 text-sm text-amber-950/90">{fees.note}</p> : null}
+        {isDtefSponsored ? (
+          <p className="mt-3 text-sm text-emerald-950/90">
+            Listed as eligible for government tertiary sponsorship through DTEF. Final eligibility depends on DTEF rules,
+            your results, and available places — confirm on the{" "}
+            <Link to="/sponsorships" className="font-medium text-emerald-900 underline hover:text-emerald-950">
+              sponsorship guide
+            </Link>
+            .
+          </p>
+        ) : null}
       </section>
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
