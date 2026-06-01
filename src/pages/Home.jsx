@@ -107,8 +107,6 @@ function mergeFeaturedWithLocal(pool, calendarDayKey, aiOrder) {
 export default function Home() {
   useDocumentTitle("Thuto - Your Botswana University Companion");
   const [urgentUnis, setUrgentUnis] = useState([]);
-  /** @type {'remote' | 'bundled' | null} */
-  const [uniDataSource, setUniDataSource] = useState(null);
   const [calendarDayKey, setCalendarDayKey] = useState(() => localCalendarDateKey());
   const fallbackFunding = fundingSpotlightForDay(calendarDayKey);
   /** @type {Array<{ id: string, name: string, university?: string, minPoints?: number | null, teaser?: string }>} */
@@ -140,9 +138,8 @@ export default function Home() {
     let cancelled = false;
     const ac = new AbortController();
     fetchUniversities({ signal: ac.signal })
-      .then(({ list, source }) => {
+      .then(({ list }) => {
         if (cancelled) return;
-        setUniDataSource(source);
         const urgent = list
           .filter((u) => u.applicationClose && isDeadlineWithinDays(u.applicationClose, 30))
           .map((u) => ({
@@ -154,10 +151,7 @@ export default function Home() {
         setUrgentUnis(urgent);
       })
       .catch(() => {
-        if (!cancelled) {
-          setUrgentUnis([]);
-          setUniDataSource(null);
-        }
+        if (!cancelled) setUrgentUnis([]);
       });
     return () => {
       cancelled = true;
@@ -248,9 +242,8 @@ export default function Home() {
         >
           <p className="font-display text-sm font-semibold text-amber-950">Application deadlines soon</p>
           <p className="mt-1 text-xs leading-relaxed text-amber-950/85">
-            {uniDataSource === "remote"
-              ? "One or more institutions have an application close date within the next 30 days. Dates are loaded from the live Thuto data feed - still confirm on each university’s official site."
-              : "One or more institutions have an application close date within the next 30 days (bundled sample dates in Thuto until a live feed URL is configured)."}
+            One or more institutions have an application close date within the next 30 days. Confirm dates on each
+            university’s official site.
           </p>
           <ul className="mt-3 space-y-2 text-sm">
             {urgentUnis.map((u) => (
@@ -291,11 +284,11 @@ export default function Home() {
         />
         <p className="relative text-xs font-semibold uppercase tracking-[0.2em] text-brand-200">Thuto · BUC</p>
         <h1 className="relative mt-3 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
-          Check what your BGCSE results may qualify you for
+          Check what your BGCSE results qualify you for
         </h1>
         <p className="relative mt-3 max-w-xl text-sm leading-relaxed text-brand-100/95">
-          Start with your grades, get indicative programme matches, and use the result to build a shortlist before you
-          confirm details with each institution.
+          Enter your grades to get instant, indicative programme matches. Build a personalized shortlist and check entry
+          requirements before you apply.
         </p>
         <Link
           to="/predictor"
