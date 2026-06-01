@@ -59,7 +59,7 @@ export const DTEF_CARD_BACKGROUND = "sponsorship/dtef-card-background.jpg";
 export const WEEKLY_FUNDING_SPOTLIGHTS = [
   {
     title: "Government sponsorship",
-    body: "Public sponsorship often runs on its own calendar. Line up documents and deadlines alongside your admission plan.",
+    body: "Government sponsorship applications operate on unique timelines. Track requirements and organize your official documents alongside your university admission plan.",
     to: "/sponsorships",
     cta: "Funding routes",
     cardBackground: DTEF_CARD_BACKGROUND,

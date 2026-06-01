@@ -367,7 +367,7 @@ export default function Home() {
         <p className="mt-1 text-xs leading-relaxed text-stone-500">
           {geminiScholarship
             ? "Generated with Google Gemini (and search when available). Verify every detail on official sites—models can be wrong or out of date."
-            : "A funding topic to explore, chosen for this calendar day. Thuto does not process awards—always confirm on official funder and university notices."}
+            : "A featured funding opportunity highlighted daily. Please note that Thuto provides informational guides only, always verify deadlines and terms on the official sponsor's portal."}
         </p>
         <article
           className={`mt-3 overflow-hidden rounded-2xl border shadow-card sm:p-5 ${
