@@ -154,27 +154,7 @@ export default function ProgrammeDetail() {
           </p>
         </ProgrammeThemeHero>
         <div className="p-5">
-          <section>
-            <h2 className="font-display text-base font-semibold text-brand-900">About this programme</h2>
-            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-700">{aboutSummary}</p>
-          </section>
-          <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
-            <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Duration</dt>
-              <dd className="font-medium text-brand-900">{programme.duration ?? "Confirm with institution"}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Minimum points</dt>
-              <dd className="font-medium text-brand-900">
-                {admissionListed ? `${programme.minPoints} (best six)` : "Not listed - confirm with the institution"}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Campus location</dt>
-              <dd className="font-medium text-brand-900">{campusLocation}</dd>
-            </div>
-          </dl>
-          <div className="mt-4 flex flex-col gap-3 border-t border-brand-100 pt-4 sm:flex-row sm:items-start sm:justify-end">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-end">
             <div className="flex shrink-0 flex-wrap items-start gap-2 sm:ml-auto">
               <ProgrammeBookmarkButton
                 programmeId={programme.id}
@@ -203,6 +183,26 @@ export default function ProgrammeDetail() {
             </div>
           </div>
           {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
+          <section className="mt-4">
+            <h2 className="font-display text-base font-semibold text-brand-900">About this programme</h2>
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-700">{aboutSummary}</p>
+          </section>
+          <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Duration</dt>
+              <dd className="font-medium text-brand-900">{programme.duration ?? "Confirm with institution"}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Minimum points</dt>
+              <dd className="font-medium text-brand-900">
+                {admissionListed ? `${programme.minPoints} (best six)` : "Not listed - confirm with the institution"}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Campus location</dt>
+              <dd className="font-medium text-brand-900">{campusLocation}</dd>
+            </div>
+          </dl>
         </div>
       </header>
 
