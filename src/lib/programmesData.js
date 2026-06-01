@@ -40,7 +40,8 @@ const UNIVERSITY_ALIASES = {
   gips: ["Gaborone Institute of Professional Studies", "GIPS"],
   bocodol: ["Botswana College of Distance and Open Learning", "BOCODOL"],
   "botswana-accountancy-training": ["Botswana Institute of Chartered Accountants Training Centre"],
-  "chobe-brigade": ["Chobe Vocational Training Centre"],
+  "chobe-brigade": ["Chobe Brigade", "Chobe Vocational Training Centre"],
+  krda: ["KRDA (Kweneng Rural Development Association)", "KRDA", "Kweneng Rural Development Association"],
   kgale: ["Kgale College"],
   bohss: ["Botswana Harvard Health Sciences"],
   idm: [

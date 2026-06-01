@@ -277,13 +277,13 @@
     "id": "abm",
     "name": "ABM University College",
     "location": "Gaborone",
-    "description": "University college known for health sciences, education, and business-related programmes, combining academic study with workplace preparation.",
+    "description": "University college known for health sciences, education, and business-related programmes, combining academic study with workplace preparation. DTVET August 2026 guide contact: P.O. Box 16, Mahalapye; Tel +267 471 0256. Listed 12-month programme: Clothing Design & Technology.",
     "website": "https://www.abm.ac.bw/",
     "phone": "+267 395 9966",
-    "applicationOpen": "2026-03-01",
-    "applicationClose": "2026-06-30",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.abm.ac.bw/",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "featured": false,
     "sponsorshipTier": "standard",
     "logo": "university-logos/abm.jpg",
@@ -301,6 +301,13 @@
         "url": "https://www.abm.ac.bw/admissions",
         "format": "Web page",
         "sourceLabel": "ABM University College"
+      },
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
       }
     ]
   },
@@ -650,17 +657,27 @@
   },
   {
     "id": "chobe-brigade",
-    "name": "Chobe Vocational Training Centre",
+    "name": "Chobe Brigade",
     "location": "Kasane",
-    "description": "Vocational and technical institution focusing on tourism, hospitality, and trade programmes.",
-    "website": "https://www.gov.bw/",
-    "phone": "+267 625 0325",
-    "applicationOpen": "2026-03-01",
-    "applicationClose": "2026-06-15",
-    "academicYearStart": "2026-07",
-    "applyUrl": "https://www.gov.bw/",
+    "description": "Chobe Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 42, Kasane.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 625 0349",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "logo": "university-logos/botswana-coat-of-arms.png"
   },
   {
     "id": "kgale",
@@ -1363,16 +1380,25 @@
     "id": "palapye-technical-college",
     "name": "Palapye Technical College",
     "location": "Palapye",
-    "description": "Tertiary provider in Botswana. Verify programme details with the institution.",
-    "website": null,
-    "phone": null,
+    "description": "Palapye Technical College is listed in the DTVET August 2026 intake guide with 12-month TVET programmes including Electrical Installation & Maintenance, Painting & Decorating, Maintenance Fitting, Carpentry & Joinery, Plumbing & Pipefitting, Bricklaying & Plastering, Automotive Engineering, Welding & Fabrication. Postal address: P/Bag 0046, Palapye.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 492 0576",
     "applicationOpen": null,
-    "applicationClose": null,
-    "academicYearStart": null,
-    "applyUrl": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "featured": false,
     "sponsorshipTier": "standard",
-    "resources": []
+    "logo": "university-logos/palapye-technical-college.jpeg",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ]
   },
   {
     "id": "assembly-bible-college",
@@ -1469,31 +1495,24 @@
     "id": "jwaneng-technical-college",
     "name": "Jwaneng Technical College",
     "location": "Jwaneng",
-    "description": "Tertiary provider in Botswana. Verify programme details with the institution.",
-    "website": null,
-    "phone": null,
+    "description": "Jwaneng Technical College is listed in the DTVET August 2026 intake guide with 12-month TVET programmes including Electrical Installation & Maintenance, Painting & Decorating, Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 009, Jwaneng.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 588 0685",
     "applicationOpen": null,
-    "applicationClose": null,
-    "academicYearStart": null,
-    "applyUrl": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "featured": false,
     "sponsorshipTier": "standard",
-    "resources": []
-  },
-  {
-    "id": "botswana-brigades",
-    "name": "Botswana Brigades",
-    "location": "Botswana",
-    "description": "Tertiary provider in Botswana. Verify programme details with the institution.",
-    "website": null,
-    "phone": null,
-    "applicationOpen": null,
-    "applicationClose": null,
-    "academicYearStart": null,
-    "applyUrl": null,
-    "featured": false,
-    "sponsorshipTier": "standard",
-    "resources": []
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ]
   },
   {
     "id": "africa-insurance-training-institute",
@@ -1584,5 +1603,795 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "logo": "university-logos/nampol-college-of-education.jpeg"
+  },
+  {
+    "id": "barolong-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Barolong Brigade",
+    "location": "Pitsane",
+    "description": "Barolong Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Livestock Farming & Management, Clothing Design & Technology. Postal address: P/Bag 26, Pitsane.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 548 6275",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "bobonong-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Bobonong Brigade / Brigade Centre",
+    "location": "Bobonong",
+    "description": "Bobonong Brigade / Brigade Centre is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 0022, Bobonong.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 261 9237",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "boteti-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Boteti Brigade",
+    "location": "Letlhakane",
+    "description": "Boteti Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Borehole Mechanics & Water Management. Postal address: P.O. Box 231, Letlhakane.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 297 8221",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "ghanzi-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Ghanzi Brigade",
+    "location": "Ghanzi",
+    "description": "Ghanzi Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Livestock Farming & Management, Electrical Installation & Maintenance, Bricklaying & Plastering, Automotive Engineering. Postal address: P.O. Box 387, Ghanzi.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 659 6347",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "gweta-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Gweta Brigade",
+    "location": "Gweta",
+    "description": "Gweta Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 003, Gweta.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 621 2214",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "kang-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Kang Brigade",
+    "location": "Kang",
+    "description": "Kang Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering, Auto Mechanics, Welding & Fabrication. Postal address: P.O. Box 3, Kang.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 651 7009",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "kanye-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Kanye Brigade",
+    "location": "Kanye",
+    "description": "Kanye Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Electrical Installation & Maintenance, Refrigeration, Ventilation & Air Conditioning, Automotive Engineering. Postal address: P/Bag 28, Kanye.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 548 0080",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "kgatleng-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Kgatleng Brigade",
+    "location": "Mochudi",
+    "description": "Kgatleng Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Plumbing & Pipefitting, Welding & Fabrication. Postal address: P.O. Box 208, Mochudi.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 577 7356",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "krda",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "KRDA (Kweneng Rural Development Association)",
+    "location": "Molepolole",
+    "description": "KRDA (Kweneng Rural Development Association) is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering, Auto Body Repair. Postal address: P/Bag 7, Molepolole.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 590 6140",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "kweneng-bophirima-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Kweneng Bophirima Brigade",
+    "location": "Takatokwane",
+    "description": "Kweneng Bophirima Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 001, Takatokwane.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 596 0058",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "lobatse-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Lobatse Brigade",
+    "location": "Lobatse",
+    "description": "Lobatse Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering. Postal address: P/Bag 42, Lobatse.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 533 0484",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "madiba-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Madiba Brigade",
+    "location": "Mahalapye",
+    "description": "Madiba Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Electrical Installation & Maintenance, Carpentry & Joinery, Plumbing & Pipefitting, Bricklaying & Plastering. Postal address: P/Bag 17, Mahalapye.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 471 0285",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "mahalapye-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Mahalapye Brigade",
+    "location": "Mahalapye",
+    "description": "Mahalapye Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Clothing Design & Technology. Postal address: P.O. Box 16, Mahalapye.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 471 0256",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "marapong-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Marapong Brigade",
+    "location": "Marapong",
+    "description": "Marapong Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Clothing Design & Technology. Postal address: P/Bag M2, Marapong.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 298 1411",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "marobela-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Marobela Brigade",
+    "location": "Marobela",
+    "description": "Marobela Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Automotive Engineering. Postal address: P/Bag S4, Marobela.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 298 1385",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "matsheng-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Matsheng Brigade",
+    "location": "Lehututu",
+    "description": "Matsheng Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Bricklaying & Plastering, Automotive Engineering. Postal address: P.O. Box 12, Lehututu.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 651 1053",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "maun-technical-college",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Maun Technical College",
+    "location": "Maun",
+    "description": "Maun Technical College is listed in the DTVET August 2026 intake guide with 12-month TVET programmes including Electrical Installation & Maintenance, Clothing Design & Technology, Painting & Decorating, Hospitality Operations, Maintenance Fitting, Carpentry & Joinery, Plumbing & Pipefitting, Bricklaying & Plastering, Electronics, Travel & Tourism, Auto Mechanics, Automotive Engineering, Auto Body Repair, Welding & Fabrication. Postal address: P/Bag 073, Maun.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 686 0518",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+  },
+  {
+    "id": "mosetse-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Mosetse Brigade",
+    "location": "Dukwi",
+    "description": "Mosetse Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag D3, Dukwi.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 297 7229",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "moshupa-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Moshupa Brigade",
+    "location": "Moshupa",
+    "description": "Moshupa Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Clothing Design & Technology, Bricklaying & Plastering. Postal address: P.O. Box 950, Moshupa.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 544 9186",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "ngethu-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Ngethu Brigade",
+    "location": "Gumare",
+    "description": "Ngethu Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Welding & Fabrication. Postal address: P/Bag 004, Gumare.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 687 4127",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "nswazwi-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Nswazwi Brigade",
+    "location": "Francistown",
+    "description": "Nswazwi Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Painting & Decorating, Bricklaying & Plastering. Postal address: P/Bag F312, Francistown.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 298 2212",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "okavango-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Okavango Brigade / Brigade Centre",
+    "location": "Shakawe",
+    "description": "Okavango Brigade / Brigade Centre is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 14, Shakawe.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 687 5034",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "selebi-phikwe-technical-college",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Selebi Phikwe Technical College",
+    "location": "Selebi-Phikwe",
+    "description": "Selebi Phikwe Technical College is listed in the DTVET August 2026 intake guide with 12-month TVET programmes including Electrical Installation & Maintenance, Clothing Design & Technology, Painting & Decorating, Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 0062, S/Phikwe.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 261 0045",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+  },
+  {
+    "id": "serowe-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Serowe Brigade",
+    "location": "Serowe",
+    "description": "Serowe Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Livestock Farming & Management, Carpentry & Joinery, Maintenance Fitting, Bricklaying & Plastering, Auto Mechanics, Automotive Engineering, Welding & Fabrication. Postal address: P.O. Box 121, Serowe.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 463 0415",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "shashe-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Shashe Brigade",
+    "location": "Tonota",
+    "description": "Shashe Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Welding & Fabrication. Postal address: P/Bag 84, Tonota.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 248 4227",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "shoshong-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Shoshong Brigade",
+    "location": "Shoshong",
+    "description": "Shoshong Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Bricklaying & Plastering. Postal address: P/Bag 12, Shoshong.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 476 9238",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "tlokweng-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Tlokweng Brigade",
+    "location": "Tlokweng",
+    "description": "Tlokweng Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Clothing Design & Technology, Carpentry & Joinery, Hospitality Operations. Postal address: P/Bag T021, Tlokweng.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 392 8332",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "kgalagadi-south-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Kgalagadi South Brigade",
+    "location": "Tsabong",
+    "description": "Kgalagadi South Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Livestock Farming & Management, Bricklaying & Plastering. Postal address: P.O. Box 220, Tsabong.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 653 0121",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "tshwaragano-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Tshwaragano Brigade",
+    "location": "Gabane",
+    "description": "Tshwaragano Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Clothing Design & Technology. Postal address: P.O. Box 181, Gabane.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 394 7058",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "tswelelopele-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Tswelelopele Brigade",
+    "location": "Ramotswa",
+    "description": "Tswelelopele Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Auto Mechanics, Automotive Engineering. Postal address: P.O. Box V99, Ramotswa.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 539 0226",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "tswapong-bokone-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Tswapong Bokone Brigade",
+    "location": "Lerala",
+    "description": "Tswapong Bokone Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering. Postal address: P/Bag 003, Lerala.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 495 4021",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "tutume-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Tutume Brigade / Brigade Centre",
+    "location": "Tutume",
+    "description": "Tutume Brigade / Brigade Centre is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 008, Tutume.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 298 7223",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "zwenshambe-brigade",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Vocational Education Training",
+        "category": "Admissions page",
+        "url": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+        "format": "Web page",
+        "sourceLabel": "Government of Botswana"
+      }
+    ],
+    "name": "Zwenshambe Brigade",
+    "location": "Masunga",
+    "description": "Zwenshambe Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 10, Masunga.",
+    "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "phone": "+267 248 9230",
+    "applicationOpen": null,
+    "applicationClose": "2026-07-10",
+    "academicYearStart": "2026-08",
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "logo": "university-logos/botswana-coat-of-arms.png"
   }
 ]
