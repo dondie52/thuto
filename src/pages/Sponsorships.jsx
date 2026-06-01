@@ -1,7 +1,14 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import OpportunityPostsFeed from "../components/OpportunityPostsFeed.jsx";
 import { OPPORTUNITY_CATEGORY } from "../lib/opportunityPosts.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+
+const FUNDING_ROUTE = {
+  GOVERNMENT: "government",
+  INSTITUTION: "institution",
+  PRIVATE: "private",
+};
 
 const DTEF_PORTAL = "https://tef.gov.bw";
 const assetBase = import.meta.env.BASE_URL;
@@ -53,16 +60,19 @@ function IconExternal({ className = "h-4 w-4" }) {
 
 const fundingRoutes = [
   {
+    id: FUNDING_ROUTE.GOVERNMENT,
     title: "Government sponsorship",
     body: "Track public application windows, required documents, and step-by-step guides for the DTEF online portal.",
     Icon: IconGovBuilding,
   },
   {
+    id: FUNDING_ROUTE.INSTITUTION,
     title: "Institution scholarships",
     body: "Explore university-funded scholarships, merit-based tuition support, and programme-specific funding notices.",
     Icon: IconCampus,
   },
   {
+    id: FUNDING_ROUTE.PRIVATE,
     title: "Private company scholarships",
     body: "Find private corporate bursaries, workplace sponsorships, and industry-funded training grants.",
     Icon: IconBriefcase,
@@ -130,6 +140,18 @@ const dtefApplicationSteps = [
 
 export default function Sponsorships() {
   useDocumentTitle("Sponsorships | Thuto");
+  const [activeRoute, setActiveRoute] = useState(null);
+  const detailRef = useRef(null);
+
+  useEffect(() => {
+    if (activeRoute && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [activeRoute]);
+
+  const handleRouteSelect = (routeId) => {
+    setActiveRoute((current) => (current === routeId ? null : routeId));
+  };
 
   return (
     <div className="space-y-6">
@@ -161,47 +183,92 @@ export default function Sponsorships() {
         </div>
       </div>
 
-      <section className="grid gap-3 sm:grid-cols-3">
-        {fundingRoutes.map(({ title, body, Icon }) => (
-          <article
-            key={title}
-            className="flex flex-col rounded-2xl border border-brand-100 bg-white p-4 shadow-sm transition hover:border-brand-200 hover:shadow-md"
-          >
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
-              <Icon className="h-6 w-6" />
-            </span>
-            <h2 className="mt-3 font-display text-lg font-semibold text-brand-900">{title}</h2>
-            <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{body}</p>
-          </article>
-        ))}
+      <section className="grid gap-3 sm:grid-cols-3" aria-label="Funding routes">
+        {fundingRoutes.map(({ id, title, body, Icon }) => {
+          const isSelected = activeRoute === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => handleRouteSelect(id)}
+              aria-expanded={isSelected}
+              aria-controls={`funding-route-${id}`}
+              className={`focus-ring flex flex-col rounded-2xl border bg-white p-4 text-left shadow-sm transition hover:border-brand-200 hover:shadow-md ${
+                isSelected ? "border-brand-400 ring-2 ring-brand-200" : "border-brand-100"
+              }`}
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
+                <Icon className="h-6 w-6" />
+              </span>
+              <h2 className="mt-3 font-display text-lg font-semibold text-brand-900">{title}</h2>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{body}</p>
+              <p className="mt-3 text-xs font-semibold text-brand-700">{isSelected ? "Hide details" : "View details"}</p>
+            </button>
+          );
+        })}
       </section>
 
-      <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm" aria-labelledby="private-sponsorship-heading">
-        <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800/95 to-[#1a4d48] px-4 py-4 text-white sm:px-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">Private &amp; sector</p>
-          <h2 id="private-sponsorship-heading" className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
-            Private sponsorship updates
-          </h2>
-          <p className="mt-1 text-sm text-brand-100/95">
-            BDF, employers, and other private sponsors—summaries from their official posts. No in-app applications.
-          </p>
-        </div>
-        <div className="p-4 sm:p-6">
-          <OpportunityPostsFeed
-            category={OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP}
-            emptyTitle="No private sponsorship posts yet"
-            emptyBody="When a sponsor like BDF publishes a window, add it in Supabase and it will appear here."
-          />
-          <p className="mt-4 text-sm text-slate-600">
-            Looking for internship openings?{" "}
-            <Link to="/internships" className="font-semibold text-brand-800 underline">
-              See internships
-            </Link>
-          </p>
-        </div>
-      </section>
+      {activeRoute ? (
+        <div ref={detailRef} className="space-y-6">
+          {activeRoute === FUNDING_ROUTE.PRIVATE ? (
+            <section
+              id={`funding-route-${FUNDING_ROUTE.PRIVATE}`}
+              className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm"
+              aria-labelledby="private-sponsorship-heading"
+            >
+              <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800/95 to-[#1a4d48] px-4 py-4 text-white sm:px-6">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">Private &amp; sector</p>
+                <h2 id="private-sponsorship-heading" className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
+                  Private sponsorship updates
+                </h2>
+                <p className="mt-1 text-sm text-brand-100/95">
+                  BDF, employers, and other private sponsors—summaries from their official posts. No in-app applications.
+                </p>
+              </div>
+              <div className="p-4 sm:p-6">
+                <OpportunityPostsFeed
+                  category={OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP}
+                  emptyTitle="No private sponsorship posts yet"
+                  emptyBody="When a sponsor like BDF publishes a window, add it in Supabase and it will appear here."
+                />
+                <p className="mt-4 text-sm text-slate-600">
+                  Looking for internship openings?{" "}
+                  <Link to="/internships" className="font-semibold text-brand-800 underline">
+                    See internships
+                  </Link>
+                </p>
+              </div>
+            </section>
+          ) : null}
 
-      <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
+          {activeRoute === FUNDING_ROUTE.INSTITUTION ? (
+            <section
+              id={`funding-route-${FUNDING_ROUTE.INSTITUTION}`}
+              className="overflow-hidden rounded-2xl border border-brand-200 bg-white p-4 shadow-sm sm:p-6"
+              aria-labelledby="institution-sponsorship-heading"
+            >
+              <h2 id="institution-sponsorship-heading" className="font-display text-xl font-semibold text-brand-900">
+                Institution scholarships
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                Merit awards, faculty bursaries, and programme-specific funding are usually published on each
+                university&apos;s website or notice board. Open a university profile to review deadlines, contacts, and
+                application links in one place.
+              </p>
+              <Link
+                to="/universities"
+                className="focus-ring mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
+              >
+                Browse universities
+              </Link>
+            </section>
+          ) : null}
+
+          {activeRoute === FUNDING_ROUTE.GOVERNMENT ? (
+            <section
+              id={`funding-route-${FUNDING_ROUTE.GOVERNMENT}`}
+              className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm"
+            >
         <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800 to-[#0d4a45] px-4 py-4 text-white sm:px-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">Botswana · DTEF</p>
           <h2 className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
@@ -289,21 +356,27 @@ export default function Sponsorships() {
             </ol>
           </div>
         </div>
-      </section>
+            </section>
+          ) : null}
 
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-        <p className="text-sm font-semibold text-stone-900">Verify before you rely on this page</p>
-        <p className="mt-1 text-sm leading-relaxed text-stone-700">
-          Sponsorship rules change. Cross-check every detail with official DTEF notices, the live portal, or the call
-          centre numbers above.
-        </p>
-        <Link to="/universities" className="mt-3 inline-flex text-sm font-semibold text-brand-800 underline">
-          Check university profiles
-        </Link>
-      </div>
+          {activeRoute === FUNDING_ROUTE.GOVERNMENT ? (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <p className="text-sm font-semibold text-stone-900">Verify before you rely on this page</p>
+              <p className="mt-1 text-sm leading-relaxed text-stone-700">
+                Sponsorship rules change. Cross-check every detail with official DTEF notices, the live portal, or the
+                call centre numbers above.
+              </p>
+              <Link to="/universities" className="mt-3 inline-flex text-sm font-semibold text-brand-800 underline">
+                Check university profiles
+              </Link>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       <p className="text-center text-sm leading-relaxed text-slate-500">
-        Thuto does not submit applications to funders—use the official portals and call centres above.
+        Thuto does not submit applications to funders—always apply through the official portals and contacts listed for
+        each route.
       </p>
     </div>
   );
