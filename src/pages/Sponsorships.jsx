@@ -54,17 +54,17 @@ function IconExternal({ className = "h-4 w-4" }) {
 const fundingRoutes = [
   {
     title: "Government sponsorship",
-    body: "Public windows and required documents for national sponsorship schemes, including the DTEF online portal for new students.",
+    body: "Track public application windows, required documents, and step-by-step guides for the DTEF online portal.",
     Icon: IconGovBuilding,
   },
   {
     title: "Institution scholarships",
-    body: "Keep an eye on university-funded awards, merit support, and programme-specific funding notices.",
+    body: "Explore university-funded scholarships, merit-based tuition support, and programme-specific funding notices.",
     Icon: IconCampus,
   },
   {
-    title: "Private and employer support",
-    body: "Plan for bursaries, workplace support, and sector-linked funding where a programme connects to a sponsor.",
+    title: "Private company scholarships",
+    body: "Find private corporate bursaries, workplace sponsorships, and industry-funded training grants.",
     Icon: IconBriefcase,
   },
 ];
