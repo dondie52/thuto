@@ -103,6 +103,90 @@ function clampScore(value: unknown) {
   return Math.max(0, Math.min(1, number));
 }
 
+function cleanDecisionText(value: unknown) {
+  return cleanText(value, 80).toLowerCase().replace(/[^a-z_ -]/g, "").replace(/\s+/g, "_");
+}
+
+function normalizeModerationDecision(parsed: Record<string, unknown> | null): ModerationDecision {
+  const candidates = [
+    parsed?.decision,
+    parsed?.verdict,
+    parsed?.status,
+    parsed?.action,
+    parsed?.result,
+  ].map(cleanDecisionText);
+
+  if (
+    candidates.some((decision) =>
+      [
+        "publish",
+        "published",
+        "approve",
+        "approved",
+        "allow",
+        "allowed",
+        "safe",
+        "fine",
+        "ok",
+        "okay",
+        "accept",
+        "accepted",
+        "pass",
+        "passed",
+      ].includes(decision),
+    )
+  ) {
+    return "publish";
+  }
+
+  if (
+    candidates.some((decision) =>
+      [
+        "reject",
+        "rejected",
+        "deny",
+        "denied",
+        "block",
+        "blocked",
+        "unsafe",
+        "remove",
+        "removed",
+        "fail",
+        "failed",
+      ].includes(decision),
+    )
+  ) {
+    return "reject";
+  }
+
+  if (
+    candidates.some((decision) =>
+      [
+        "review",
+        "needs_review",
+        "pending_review",
+        "manual_review",
+        "admin_review",
+        "uncertain",
+        "unsure",
+        "borderline",
+      ].includes(decision),
+    )
+  ) {
+    return "review";
+  }
+
+  if (parsed?.safe === true || parsed?.is_safe === true || parsed?.allowed === true || parsed?.approved === true) {
+    return "publish";
+  }
+
+  if (parsed?.safe === false || parsed?.is_safe === false || parsed?.allowed === false || parsed?.approved === false) {
+    return "reject";
+  }
+
+  return "review";
+}
+
 function toDisplayName(user: Record<string, unknown>) {
   const metadata = (user.user_metadata || {}) as Record<string, unknown>;
   const fullName = cleanText(metadata.full_name, 80);
@@ -380,9 +464,7 @@ Return only JSON:
       .join("\n")
       .trim() || "";
   const parsed = extractJson(text) as Record<string, unknown> | null;
-  const rawDecision = cleanText(parsed?.decision, 20);
-  const decision: ModerationDecision =
-    rawDecision === "publish" || rawDecision === "reject" || rawDecision === "review" ? rawDecision : "review";
+  const decision = normalizeModerationDecision(parsed);
   const categories = Array.isArray(parsed?.categories)
     ? parsed.categories.map((item) => cleanText(item, 40)).filter(Boolean).slice(0, 8)
     : [];
