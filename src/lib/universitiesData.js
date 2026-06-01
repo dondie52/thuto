@@ -14,6 +14,125 @@ const BUNDLED_PATH = `${import.meta.env.BASE_URL}data/universities.json`;
 /** @type {string} */
 const REMOTE_URL = (import.meta.env.VITE_UNIVERSITIES_REMOTE_URL || "").trim();
 
+export const UNIVERSITY_CATEGORY_ORDER = [
+  "universities",
+  "technical-colleges",
+  "specialised-academics",
+  "brigades",
+];
+
+export const UNIVERSITY_CATEGORY_META = {
+  universities: {
+    label: "Universities",
+    description: "Institutions with broader degree and diploma pathways, including the major universities and university colleges.",
+  },
+  "technical-colleges": {
+    label: "Technical Colleges",
+    description: "Technical and vocational colleges focused on diplomas, certificates, and NCC-style pathways.",
+  },
+  "specialised-academics": {
+    label: "Specialised Academics",
+    description: "Single-industry institutions such as colleges of education, health and nursing schools, culinary academies, and focused professional institutes.",
+  },
+  brigades: {
+    label: "Brigades",
+    description: "Brigade and brigade-style vocational training institutions.",
+  },
+};
+
+const UNIVERSITY_CATEGORY_BY_ID = {
+  ub: "universities",
+  biust: "universities",
+  bac: "universities",
+  botho: "universities",
+  "ba-isago": "universities",
+  abm: "universities",
+  limkokwing: "universities",
+  bou: "universities",
+  boitekanelo: "universities",
+  "new-era": "universities",
+  gips: "universities",
+  bocodol: "universities",
+  kgale: "universities",
+  isbs: "universities",
+  idm: "universities",
+  guc: "universities",
+  buan: "universities",
+  "logan-business-college": "universities",
+  "mega-size-college": "universities",
+  "homeland-college": "universities",
+  "gaborone-commercial-college": "universities",
+  tebelopele: "universities",
+  "byte-size-college": "universities",
+  "awil-college": "universities",
+  gtc: "technical-colleges",
+  bcet: "technical-colleges",
+  fctve: "technical-colleges",
+  oodi: "technical-colleges",
+  realic: "technical-colleges",
+  "palapye-technical-college": "technical-colleges",
+  "jwaneng-technical-college": "technical-colleges",
+  "botswana-accountancy-training": "specialised-academics",
+  bohss: "specialised-academics",
+  "fire-college": "specialised-academics",
+  lcibs: "specialised-academics",
+  ihs: "specialised-academics",
+  "pillar-of-success": "specialised-academics",
+  "kanye-sda-nursing": "specialised-academics",
+  "bosa-bosele": "specialised-academics",
+  "tlokweng-coe": "specialised-academics",
+  "serowe-coe": "specialised-academics",
+  "molepolole-coe": "specialised-academics",
+  "roads-training-centre": "specialised-academics",
+  "dawn-training": "specialised-academics",
+  "cep-training": "specialised-academics",
+  learneasy: "specialised-academics",
+  stargems: "specialised-academics",
+  gcca: "specialised-academics",
+  "insurance-training-institute": "specialised-academics",
+  crackit: "specialised-academics",
+  "assembly-bible-college": "specialised-academics",
+  bibf: "specialised-academics",
+  "tonota-coe": "specialised-academics",
+  "bamalete-nursing": "specialised-academics",
+  aafm: "specialised-academics",
+  "africa-insurance-training-institute": "specialised-academics",
+  "delta-training-academy": "specialised-academics",
+  "naledi-training-institute": "specialised-academics",
+  "elsimate-institute": "specialised-academics",
+  "nampol-college-of-education": "specialised-academics",
+  "chobe-brigade": "brigades",
+  krda: "brigades",
+};
+
+/**
+ * @param {Record<string, unknown>} university
+ * @returns {'universities' | 'technical-colleges' | 'specialised-academics' | 'brigades'}
+ */
+export function categorizeUniversity(university) {
+  const mapped = UNIVERSITY_CATEGORY_BY_ID[university.id];
+  if (mapped) return mapped;
+
+  const name = String(university.name || "").toLowerCase();
+  if (name.includes("brigade")) return "brigades";
+  if (name.includes("technical")) return "technical-colleges";
+  if (name.includes("university")) return "universities";
+  return "specialised-academics";
+}
+
+/**
+ * @param {Record<string, unknown>[]} universities
+ * @returns {{ key: 'universities' | 'technical-colleges' | 'specialised-academics' | 'brigades', label: string, description: string, items: Record<string, unknown>[] }[]}
+ */
+export function groupUniversitiesByCategory(universities) {
+  return UNIVERSITY_CATEGORY_ORDER.map((key) => ({
+    key,
+    label: UNIVERSITY_CATEGORY_META[key].label,
+    description: UNIVERSITY_CATEGORY_META[key].description,
+    items: universities.filter((university) => categorizeUniversity(university) === key),
+  }));
+}
+
 /**
  * @param {object[]} base
  * @param {object[]} overlays
