@@ -105,6 +105,7 @@ function main() {
 
   console.error("validate-institutions-55: OK");
   console.error("Tip: run node scripts/validate-university-resources.mjs for resources[] checks");
+  console.error("Tip: run node scripts/validate-university-logos.mjs for logo coverage checks");
 }
 
 main();

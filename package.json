@@ -17,6 +17,7 @@
     "preview": "vite preview",
     "merge-institutions-55": "node scripts/merge-institutions-55.mjs",
     "validate-data": "node scripts/validate-institutions-55.mjs",
+    "validate-university-logos": "node scripts/validate-university-logos.mjs",
     "test:certificate-import": "node scripts/test-certificate-import.mjs",
     "test:programme-branding": "node scripts/test-programme-branding.mjs",
     "merge-ub-admissions": "node scripts/merge-ub-admissions-2026.mjs",

@@ -569,6 +569,7 @@
     "applyUrl": "https://www.gips.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/gips.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -629,6 +630,7 @@
     "applyUrl": "https://www.bica.org.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/botswana-accountancy-training.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -701,6 +703,7 @@
     "applyUrl": "https://www.isbs.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/isbs.png",
     "resources": [
       {
         "title": "Official website",
@@ -742,6 +745,7 @@
     "applyUrl": "https://www.idmbls.com/bw",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/idm.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -776,6 +780,7 @@
     "applyUrl": "https://firecollege.co.bw/qualifications-form/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/fire-college.png",
     "resources": [
       {
         "title": "Official website",
@@ -824,6 +829,7 @@
     "applyUrl": "https://lcibs.ac.bw/apply/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/lcibs.png",
     "resources": [
       {
         "title": "Official website",
@@ -901,6 +907,7 @@
     "applyUrl": "https://www.guc.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/guc.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -950,6 +957,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/oodi.jpeg",
     "resources": []
   },
   {
@@ -1038,6 +1046,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/logan-business-college.png",
     "resources": []
   },
   {
@@ -1114,6 +1123,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/tlokweng-coe.jpeg",
     "resources": []
   },
   {
@@ -1129,6 +1139,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/serowe-coe.jpeg",
     "resources": []
   },
   {
@@ -1144,6 +1155,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/molepolole-coe.jpeg",
     "resources": []
   },
   {
@@ -1189,6 +1201,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/cep-training.jpeg",
     "resources": []
   },
   {
@@ -1249,6 +1262,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/gcca.jpeg",
     "resources": []
   },
   {
@@ -1264,6 +1278,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/gaborone-commercial-college.png",
     "resources": []
   },
   {
@@ -1279,6 +1294,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/tebelopele.jpeg",
     "resources": []
   },
   {
@@ -1309,6 +1325,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/insurance-training-institute.jpeg",
     "resources": []
   },
   {
@@ -1324,6 +1341,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/realic.jpeg",
     "resources": []
   },
   {
@@ -1384,6 +1402,7 @@
     "applyUrl": "https://www.bibf.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/bibf.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -1504,6 +1523,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/awil-college.jpeg",
     "resources": []
   },
   {
