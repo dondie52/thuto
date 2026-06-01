@@ -355,6 +355,7 @@
     "applyUrl": "https://www.gtc.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/gtc.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -867,6 +868,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/bcet.jpeg",
     "resources": []
   },
   {
@@ -895,6 +897,7 @@
     "applyUrl": "https://www.moh.gov.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/ihs.jpeg",
     "resources": []
   },
   {
@@ -942,6 +945,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/pillar-of-success.jpeg",
     "resources": []
   },
   {
@@ -1062,6 +1066,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/mega-size-college.jpeg",
     "resources": []
   },
   {
@@ -1108,6 +1113,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/bosa-bosele.jpeg",
     "resources": []
   },
   {
@@ -1171,6 +1177,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/roads-training-centre.jpeg",
     "resources": []
   },
   {
@@ -1186,6 +1193,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/dawn-training.jpeg",
     "resources": []
   },
   {
@@ -1217,6 +1225,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/learneasy.jpeg",
     "resources": []
   },
   {
@@ -1232,6 +1241,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/stargems.jpeg",
     "resources": []
   },
   {
@@ -1247,6 +1257,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/homeland-college.jpeg",
     "resources": []
   },
   {
@@ -1310,6 +1321,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/byte-size-college.jpeg",
     "resources": []
   },
   {
@@ -1357,6 +1369,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/crackit.jpeg",
     "resources": []
   },
   {
@@ -1372,6 +1385,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/palapye-technical-college.jpeg",
     "resources": []
   },
   {
@@ -1433,6 +1447,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/tonota-coe.jpeg",
     "resources": []
   },
   {
@@ -1463,6 +1478,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/aafm.jpeg",
     "resources": []
   },
   {
@@ -1508,6 +1524,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/africa-insurance-training-institute.jpeg",
     "resources": []
   },
   {
@@ -1539,6 +1556,7 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
+    "logo": "university-logos/delta-training-academy.jpeg",
     "resources": []
   },
   {
