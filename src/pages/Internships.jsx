@@ -17,9 +17,8 @@ export default function Internships() {
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Internships</p>
           <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">Latest openings</h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
-            Short updates copied from official pages and social posts—employers, ministries, and private
-            organisations. Thuto does not accept applications here; follow each post to apply on the
-            original channel.
+            Discover current internship opportunities across government ministries, private organizations and
+            local employers.
           </p>
         </div>
       </div>
@@ -48,6 +47,10 @@ export default function Internships() {
           Private sponsorship posts
         </Link>
       </div>
+
+      <p className="text-center text-sm leading-relaxed text-slate-500">
+        Thuto does not accept applications here, follow each post instructions to apply on original channels.
+      </p>
     </div>
   );
 }
