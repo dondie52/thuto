@@ -97,13 +97,13 @@ function PostAvatar({ isOfficial, displayName, avatarUrl }) {
 function AuthorMetaLine({ universityName, universityStatus, distinction, timeLabel, isOfficial }) {
   const universityLine = formatAuthorUniversity({ universityName, universityStatus });
   const parts = [];
-  if (isOfficial && timeLabel) parts.push(`Official • ${timeLabel}`);
+  if (isOfficial && timeLabel) parts.push(`Official - ${timeLabel}`);
   else if (timeLabel) parts.push(timeLabel);
   if (universityLine) parts.push(universityLine);
 
   return (
     <div className="mt-0.5 space-y-0.5">
-      {parts.length ? <p className="text-xs text-stone-500">{parts.join(" • ")}</p> : null}
+      {parts.length ? <p className="text-xs text-stone-500">{parts.join(" - ")}</p> : null}
       {distinction ? <p className="text-xs font-medium text-brand-800/90">{distinction}</p> : null}
     </div>
   );
@@ -301,7 +301,7 @@ export default function FeedPostCard({
   return (
     <article
       className={[
-        "rounded-2xl border bg-white p-4 shadow-sm sm:p-5",
+        "rounded-2xl border bg-white p-4 shadow-card transition-shadow hover:shadow-card-hover sm:p-5",
         isPublished ? "border-stone-200" : "border-amber-200 bg-amber-50/30",
       ].join(" ")}
     >
@@ -338,9 +338,9 @@ export default function FeedPostCard({
       </header>
 
       {post.title ? (
-        <h4 className="mt-4 font-display text-lg font-semibold leading-snug text-stone-900">{post.title}</h4>
+        <h4 className="mt-4 text-lg font-bold leading-snug text-stone-950">{post.title}</h4>
       ) : null}
-      <p className={`whitespace-pre-line text-sm leading-relaxed text-stone-700 ${post.title ? "mt-2" : "mt-4"}`}>
+      <p className={`whitespace-pre-line text-[15px] leading-relaxed text-stone-700 ${post.title ? "mt-2" : "mt-4"}`}>
         {post.body}
       </p>
 
@@ -364,7 +364,7 @@ export default function FeedPostCard({
       <PostImages images={post.images} />
 
       {isPublished ? (
-        <div className="mt-4 grid grid-cols-3 gap-2">
+        <div className="mt-4 grid grid-cols-3 gap-2 border-t border-stone-100 pt-3">
           <button
             type="button"
             disabled={!user}

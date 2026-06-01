@@ -181,12 +181,23 @@ export default function Feed() {
   }
 
   return (
-    <div className="space-y-6">
-      <section className="relative overflow-hidden rounded-[2rem] border border-brand-700/20 bg-gradient-to-br from-[#0c5f58] via-brand-700 to-[#102f2b] p-5 text-white shadow-card sm:p-7">
-        <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-teal-200/20 blur-3xl" />
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-100">Social Feed</p>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-teal-50/90 sm:text-base">
-          Share opportunities, campus stories, questions, study tips and deadlines.
+    <div className="space-y-5">
+      <section className="rounded-2xl border border-brand-100 bg-[var(--thuto-surface-elevated)] p-4 shadow-card sm:p-5">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Social Feed</p>
+            <h1 className="mt-1 font-display text-2xl font-semibold text-brand-900">Campus updates</h1>
+          </div>
+          <button
+            type="button"
+            onClick={loadFeed}
+            className="focus-ring inline-flex min-h-10 items-center justify-center rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+          >
+            Refresh
+          </button>
+        </div>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600">
+          Share opportunities, campus stories, questions, study tips, and deadlines.
         </p>
       </section>
 
@@ -227,22 +238,23 @@ export default function Feed() {
         </div>
       ) : null}
 
-      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className="rounded-2xl border border-brand-100 bg-white p-4 shadow-card sm:p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="font-display text-xl font-semibold text-brand-900">Add a post</h2>
+            <h2 className="text-base font-bold text-brand-900">Add a post</h2>
+            <p className="mt-1 text-sm text-stone-500">Keep it useful for applicants and students.</p>
           </div>
         </div>
 
         <form className="mt-4 space-y-3" onSubmit={handleSubmitPost}>
-          <div className="grid gap-3 sm:grid-cols-[11rem_1fr]">
+          <div className="grid gap-3 sm:grid-cols-[12rem_1fr]">
             <label className="block">
               <span className="text-xs font-semibold text-stone-600">Category</span>
               <select
                 value={form.category}
                 onChange={(event) => updateForm({ category: event.target.value })}
                 disabled={!canCompose || isPosting}
-                className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
               >
                 {FEED_CATEGORIES.map((category) => (
                   <option key={category.value} value={category.value}>
@@ -259,7 +271,7 @@ export default function Feed() {
                 maxLength={120}
                 disabled={!canCompose || isPosting}
                 placeholder="Example: BDF scholarship notice"
-                className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
               />
             </label>
           </div>
@@ -274,7 +286,7 @@ export default function Feed() {
               required
               disabled={!canCompose || isPosting}
               placeholder="Write the update, question, opportunity, or useful notice..."
-              className="mt-1 w-full rounded-2xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+              className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
             />
           </label>
 
@@ -286,7 +298,7 @@ export default function Feed() {
                 onChange={(event) => updateForm({ linkUrl: event.target.value })}
                 disabled={!canCompose || isPosting}
                 placeholder="https://..."
-                className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
               />
             </label>
             <label className="block">
@@ -323,7 +335,7 @@ export default function Feed() {
           <button
             type="submit"
             disabled={!canPublish || isPosting || !form.body.trim()}
-            className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+            className="focus-ring inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
           >
             {isPosting ? "Submitting..." : user ? "Post to feed" : "Log in to post"}
           </button>
@@ -333,13 +345,9 @@ export default function Feed() {
       <section className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-display text-xl font-semibold text-brand-900">Latest posts</h2>
-          <button
-            type="button"
-            onClick={loadFeed}
-            className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
-          >
-            Refresh
-          </button>
+          <span className="rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-semibold text-stone-500">
+            {posts.length} {posts.length === 1 ? "post" : "posts"}
+          </span>
         </div>
 
         {isLoading ? (
