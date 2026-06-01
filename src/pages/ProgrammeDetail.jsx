@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import {
   evaluateProgramme,
@@ -183,10 +183,7 @@ export default function ProgrammeDetail() {
             </div>
           </div>
           {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
-          <section className="mt-4">
-            <h2 className="font-display text-base font-semibold text-brand-900">About this programme</h2>
-            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-700">{aboutSummary}</p>
-          </section>
+          <ProgrammeAboutSummary summary={aboutSummary} programmeId={programme.id} />
           <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
             <div>
               <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Duration</dt>
@@ -387,6 +384,58 @@ export default function ProgrammeDetail() {
 
       {compareIds.length > 0 ? <CompareSelectionBar ids={compareIds} onClear={clearCompare} /> : null}
     </article>
+  );
+}
+
+function ProgrammeAboutSummary({ summary, programmeId }) {
+  const [expanded, setExpanded] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const paragraphRef = useRef(null);
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [programmeId]);
+
+  useEffect(() => {
+    const el = paragraphRef.current;
+    if (!el || expanded) return;
+
+    const measure = () => {
+      setIsTruncated(el.scrollHeight > el.clientHeight + 1);
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [summary, expanded, programmeId]);
+
+  const showToggle = isTruncated || expanded;
+
+  return (
+    <section className="mt-4">
+      <h2 className="font-display text-base font-semibold text-brand-900">About this programme</h2>
+      <p
+        ref={paragraphRef}
+        className={[
+          "mt-2 text-sm leading-relaxed text-slate-700",
+          !expanded && "line-clamp-3",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {summary}
+      </p>
+      {showToggle ? (
+        <button
+          type="button"
+          onClick={() => setExpanded((open) => !open)}
+          className="mt-1 text-sm font-semibold text-brand-700 hover:text-brand-900 hover:underline"
+          aria-expanded={expanded}
+        >
+          {expanded ? "Show less" : "Read more"}
+        </button>
+      ) : null}
+    </section>
   );
 }
 
