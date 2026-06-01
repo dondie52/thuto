@@ -143,8 +143,7 @@ export default function Sponsorships() {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Sponsorships</p>
             <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">Funding routes</h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
-              A first home for sponsorship notes, deadlines, and funding paths linked to Botswana study options. Thuto
-              does not submit applications to funders—use the official portals and call centres below.
+              Find funding, check deadlines, apply through official portals.
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-3 rounded-2xl border border-brand-100 bg-white/90 px-4 py-3 shadow-sm ring-1 ring-brand-900/5">
@@ -157,7 +156,6 @@ export default function Sponsorships() {
             />
             <div className="min-w-0 text-xs leading-snug text-slate-600">
               <p className="font-semibold text-brand-900">Online Tertiary Education Sponsorship</p>
-              <p className="mt-1">Illustrative mark only—not an official Government of Botswana crest.</p>
             </div>
           </div>
         </div>
@@ -303,6 +301,10 @@ export default function Sponsorships() {
           Check university profiles
         </Link>
       </div>
+
+      <p className="text-center text-sm leading-relaxed text-slate-500">
+        Thuto does not submit applications to funders—use the official portals and call centres above.
+      </p>
     </div>
   );
 }
