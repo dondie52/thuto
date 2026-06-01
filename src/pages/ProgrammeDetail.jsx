@@ -12,8 +12,11 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
-import { fetchProgrammes } from "../lib/programmesData.js";
+import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
+import { fetchUniversities } from "../lib/universitiesData.js";
 import {
+  getProgrammeAboutSummary,
+  getProgrammeCampusLocation,
   getProgrammeCareers,
   getProgrammeInterests,
   getProgrammeRelatedSubjects,
@@ -38,19 +41,25 @@ export default function ProgrammeDetail() {
   const programmesListHref = `/programmes${location.state?.fromProgrammes ?? ""}`;
   const [programme, setProgramme] = useState(null);
   const [allProgrammes, setAllProgrammes] = useState([]);
+  const [universityLocation, setUniversityLocation] = useState(null);
   const [error, setError] = useState(null);
   const { toggle, isBookmarked } = useBookmarks();
   const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
 
   useEffect(() => {
     let cancelled = false;
-    fetchProgrammes()
-      .then((data) => {
+    Promise.all([fetchProgrammes(), fetchUniversities()])
+      .then(([programmes, { list: universities }]) => {
         if (cancelled) return;
-        setAllProgrammes(data);
-        const found = data.find((p) => p.id === id);
-        if (!found) setError("Programme not found.");
-        else setProgramme(found);
+        setAllProgrammes(programmes);
+        const found = programmes.find((p) => p.id === id);
+        if (!found) {
+          setError("Programme not found.");
+          return;
+        }
+        setProgramme(found);
+        const university = universities.find((u) => programmeBelongsToUniversity(found, u));
+        setUniversityLocation(university?.location ?? null);
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
@@ -111,7 +120,8 @@ export default function ProgrammeDetail() {
     officialHref;
 
   const admissionListed = programmeHasAdmissionPoints(programme);
-  const profileCompleteness = programme.profileCompleteness ?? (programme.modules?.length && programme.careers?.length ? "full" : "partial");
+  const campusLocation = getProgrammeCampusLocation(programme, universityLocation);
+  const aboutSummary = getProgrammeAboutSummary(programme);
   const interests = getProgrammeInterests(programme);
   const careers = getProgrammeCareers(programme);
   const relatedSubjects = getProgrammeRelatedSubjects(programme);
@@ -170,28 +180,11 @@ export default function ProgrammeDetail() {
             {eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
             </div>
           </div>
-        {eligibility?.reason && <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p>}
-        {predictorSnap.total != null && predictorSnap.grades == null && (
-          <p className="mt-3 text-sm text-slate-600">
-            Use the{" "}
-            <Link to="/predictor" className="font-medium text-brand-700 underline hover:text-brand-900">
-              predictor
-            </Link>{" "}
-            with your subjects saved to see grade requirements compared to your results.
-          </p>
-        )}
-        {predictorSnap.total == null && (
-          <p className="mt-3 text-sm text-slate-600">
-            <Link to="/predictor" className="font-medium text-brand-700 underline hover:text-brand-900">
-              Run the admission predictor
-            </Link>{" "}
-            to compare your best-six points and grades with this programme.
-          </p>
-        )}
-        <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
+        {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
+        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
           <div>
             <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Duration</dt>
-            <dd className="font-medium text-brand-900">{programme.duration}</dd>
+            <dd className="font-medium text-brand-900">{programme.duration ?? "Confirm with institution"}</dd>
           </div>
           <div>
             <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Minimum points</dt>
@@ -200,10 +193,14 @@ export default function ProgrammeDetail() {
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Profile quality</dt>
-            <dd className="font-medium text-brand-900">{profileCompleteness === "full" ? "Full profile" : "Partial profile"}</dd>
+            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Campus location</dt>
+            <dd className="font-medium text-brand-900">{campusLocation}</dd>
           </div>
         </dl>
+        <section className="mt-5 border-t border-brand-100 pt-4">
+          <h2 className="font-display text-base font-semibold text-brand-900">About this programme</h2>
+          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-700">{aboutSummary}</p>
+        </section>
         </div>
       </header>
 
@@ -238,18 +235,6 @@ export default function ProgrammeDetail() {
           ) : null}
         </div>
       </section>
-
-      {programme.description ? (
-        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">About this programme</h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-700">{programme.description}</p>
-        </section>
-      ) : (
-        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">About this programme</h2>
-          <p className="mt-3 text-sm text-slate-500">Profile overview is coming soon for this programme.</p>
-        </section>
-      )}
 
       {hasApplicationBlock ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
