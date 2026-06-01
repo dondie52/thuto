@@ -62,11 +62,11 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   "mega-size-college": "universities",
   "homeland-college": "universities",
   "gaborone-commercial-college": "universities",
-  tebelopele: "universities",
+  tebelopele: "specialised-academics",
   "byte-size-college": "universities",
   "awil-college": "universities",
   gtc: "technical-colleges",
-  bcet: "technical-colleges",
+  bcet: "specialised-academics",
   fctve: "technical-colleges",
   oodi: "technical-colleges",
   realic: "technical-colleges",
@@ -101,8 +101,10 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   "naledi-training-institute": "specialised-academics",
   "elsimate-institute": "specialised-academics",
   "nampol-college-of-education": "specialised-academics",
-  "chobe-brigade": "brigades",
+  "chobe-brigade": "technical-colleges",
+  "inchrist-bible-institute-university": "specialised-academics",
   krda: "brigades",
+  "real-bible-school": "specialised-academics",
 };
 
 /**
