@@ -326,25 +326,6 @@ export default function ProgrammeDetail() {
       </section>
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Modules by semester</h2>
-        <ul className="mt-3 space-y-4">
-          {(programme.modules || []).map((block) => (
-            <li key={block.semester}>
-              <p className="text-sm font-semibold text-brand-800">Semester {block.semester}</p>
-              <ul className="mt-1 list-inside list-disc text-sm text-slate-700">
-                {(block.modules || []).map((m) => (
-                  <li key={m}>{m}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-        {!(programme.modules || []).length && (
-          <p className="text-sm text-slate-500">Module sample is coming soon. Check the official page in the meantime.</p>
-        )}
-      </section>
-
-      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Career prospects</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {careers.map((c) => (
