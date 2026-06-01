@@ -1,7 +1,9 @@
 /**
- * Resolves contextual cover imagery for programmes by keyword, field, or explicit override.
- * Assets live under public/programme-themes/ (bundled for offline PWA use).
+ * Resolves contextual cover imagery for programmes by explicit override,
+ * institution campus photo, or field theme fallback.
  */
+
+import { resolveUniversityCampusPhoto } from "./universityBranding.js";
 
 const THEME_DIR = "programme-themes";
 
@@ -143,7 +145,7 @@ export function resolveProgrammeThemeUrl(path) {
   const trimmed = String(path).trim();
   if (!trimmed) return "";
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  const base = import.meta.env.BASE_URL || "/";
+  const base = import.meta.env?.BASE_URL || "/";
   const normalizedBase = base.endsWith("/") ? base : `${base}/`;
   const normalizedPath = trimmed.replace(/^\//, "");
   return `${normalizedBase}${normalizedPath}`;
@@ -156,10 +158,19 @@ export function resolveProgrammeThemeUrl(path) {
 export function resolveProgrammeVisual(programme) {
   const themeKey = resolveProgrammeThemeKey(programme);
   const explicitCover = programme?.coverImage || programme?.heroImage;
+  const campusPhoto = explicitCover ? null : resolveUniversityCampusPhoto(programme);
   const imagePath = explicitCover
     ? String(explicitCover).trim()
-    : PROGRAMME_THEME_IMAGES[themeKey] || PROGRAMME_THEME_IMAGES["default-bw"];
+    : campusPhoto?.imagePath || PROGRAMME_THEME_IMAGES[themeKey] || PROGRAMME_THEME_IMAGES["default-bw"];
   const imageUrl = resolveProgrammeThemeUrl(imagePath);
-  const label = THEME_LABELS[themeKey] || THEME_LABELS["default-bw"];
-  return { themeKey, imagePath, imageUrl, label };
+  const label = explicitCover
+    ? THEME_LABELS[themeKey] || THEME_LABELS["default-bw"]
+    : campusPhoto?.label || THEME_LABELS[themeKey] || THEME_LABELS["default-bw"];
+  return {
+    themeKey,
+    imagePath,
+    imageUrl,
+    label,
+    visualSource: explicitCover ? "programme" : campusPhoto ? "institution" : "theme",
+  };
 }

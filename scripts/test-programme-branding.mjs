@@ -1,4 +1,5 @@
 import {
+  resolveProgrammeVisual,
   resolveProgrammeThemeKey,
   themeKeyFromField,
 } from "../src/lib/programmeBranding.js";
@@ -51,6 +52,59 @@ assert(
   resolveProgrammeThemeKey({ name: "Unknown Programme", field: "Mystery Field" }) === "default-bw",
   "unknown field falls back to default-bw"
 );
+
+const ubVisual = resolveProgrammeVisual({
+  name: "BSc Computer Science",
+  field: "Technology",
+  university: "University of Botswana",
+  universityShort: "UB",
+});
+assert(ubVisual.visualSource === "institution", "UB programme uses institution campus photo");
+assert(ubVisual.imagePath === "university-campuses/ub.jpg", "UB programme resolves campus image path");
+assert(ubVisual.label === "University of Botswana campus", "UB programme uses campus alt label");
+
+const baIsagoVisual = resolveProgrammeVisual({
+  name: "Bachelor of Commerce in Accounting",
+  field: "Business",
+  university: "BA ISAGO University",
+  universityShort: "BA ISAGO",
+});
+assert(baIsagoVisual.visualSource === "institution", "BA ISAGO programme uses institution campus photo");
+assert(baIsagoVisual.imagePath === "university-campuses/ba-isago.jpg", "BA ISAGO programme resolves campus image path");
+
+const biustVisual = resolveProgrammeVisual({
+  name: "BSc Data Science",
+  field: "Technology",
+  university: "BIUST",
+});
+assert(biustVisual.visualSource === "institution", "BIUST programme uses institution photo");
+assert(biustVisual.imagePath === "university-campuses/biust.jpg", "BIUST programme resolves campus image path");
+
+const buanVisual = resolveProgrammeVisual({
+  name: "Bachelor of Science in Agriculture",
+  field: "Agriculture",
+  university: "Botswana University of Agriculture and Natural Resources",
+  universityShort: "BUAN",
+});
+assert(buanVisual.visualSource === "institution", "BUAN programme uses institution photo");
+assert(buanVisual.imagePath === "university-campuses/buan.jpg", "BUAN programme resolves campus image path");
+
+const fallbackVisual = resolveProgrammeVisual({
+  name: "Unknown Programme",
+  field: "Business",
+  university: "Unknown Institution",
+});
+assert(fallbackVisual.visualSource === "theme", "unknown institution keeps theme fallback");
+assert(fallbackVisual.imagePath === "programme-themes/business.jpg", "unknown institution falls back to field theme");
+
+const explicitVisual = resolveProgrammeVisual({
+  name: "Custom Programme",
+  field: "Business",
+  university: "University of Botswana",
+  coverImage: "custom/photo.jpg",
+});
+assert(explicitVisual.visualSource === "programme", "explicit cover image has priority");
+assert(explicitVisual.imagePath === "custom/photo.jpg", "explicit cover path is preserved");
 
 if (process.exitCode) {
   process.exit(process.exitCode);
