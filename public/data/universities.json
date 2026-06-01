@@ -658,9 +658,9 @@
   },
   {
     "id": "chobe-brigade",
-    "name": "Chobe Brigade",
+    "name": "Chobe Vocational Training Centre",
     "location": "Kasane",
-    "description": "Chobe Brigade is listed in the DTVET August 2026 intake guide. This centre offers 12-month TVET programmes including Carpentry & Joinery, Bricklaying & Plastering, Automotive Engineering. Postal address: P/Bag 42, Kasane.",
+    "description": "Chobe Vocational Training Centre is listed in the DTVET August 2026 intake guide as a technical college-level TVET provider. This centre offers 12-month programmes including Carpentry & Joinery, Bricklaying & Plastering, and Automotive Engineering. Postal address: P/Bag 42, Kasane.",
     "website": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "phone": "+267 625 0349",
     "applicationOpen": null,
@@ -2410,5 +2410,35 @@
     "academicYearStart": "2026-08",
     "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "logo": "university-logos/botswana-coat-of-arms.png"
+  },
+  {
+    "id": "inchrist-bible-institute-university",
+    "name": "InChrist Bible Institute University",
+    "location": "Botswana",
+    "description": "Specialised faith-based tertiary provider in Botswana. Verify programme details, accreditation status, and application dates directly with the institution.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "real-bible-school",
+    "name": "Real Bible School",
+    "location": "Botswana",
+    "description": "Specialised faith-based training provider in Botswana. Verify programme details, accreditation status, and application dates directly with the institution.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
   }
 ]
