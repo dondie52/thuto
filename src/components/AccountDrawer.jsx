@@ -2,77 +2,44 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
 
-function EmojiIcon({ emoji, label }) {
+function ToolIcon({ name }) {
+  const icons = {
+    profile: <path strokeLinecap="round" strokeLinejoin="round" d="M12 12a4 4 0 100-8 4 4 0 000 8zM4.5 21a7.5 7.5 0 0115 0" />,
+    universities: <path strokeLinecap="round" strokeLinejoin="round" d="M4 10l8-5 8 5M5.5 10h13M7 10v8M12 10v8M17 10v8M4.5 18h15M3.5 21h17" />,
+    sponsorships: <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M16 7.5a3.5 3.5 0 00-3.5-2H10a3 3 0 000 6h4a3 3 0 010 6h-2.5a3.5 3.5 0 01-3.5-2" />,
+    internships: <path strokeLinecap="round" strokeLinejoin="round" d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7M5 8h14v10.5A1.5 1.5 0 0117.5 20h-11A1.5 1.5 0 015 18.5V8zM5 12h14" />,
+    saved: <path strokeLinecap="round" strokeLinejoin="round" d="M6 4.75A2.75 2.75 0 018.75 2h6.5A2.75 2.75 0 0118 4.75V21l-6-3.5L6 21V4.75z" />,
+    compare: <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16M17 4v16M4 8h6M14 8h6M5 8l2 5 2-5M15 8l2 5 2-5" />,
+    fit: <path strokeLinecap="round" strokeLinejoin="round" d="M10.75 18.5a7.75 7.75 0 117.75-7.75 7.75 7.75 0 01-7.75 7.75zM16.5 16.5L21 21M8.5 10.75l1.5 1.5 3.25-3.5" />,
+    settings: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25A3.75 3.75 0 1112 15.75 3.75 3.75 0 0112 8.25zM19 12a7.2 7.2 0 00-.08-1l2-1.55-2-3.46-2.35.94a7.65 7.65 0 00-1.73-1L14.5 3h-5l-.34 2.93a7.65 7.65 0 00-1.73 1L5.08 5.99l-2 3.46 2 1.55a7.2 7.2 0 000 2l-2 1.55 2 3.46 2.35-.94a7.65 7.65 0 001.73 1L9.5 21h5l.34-2.93a7.65 7.65 0 001.73-1l2.35.94 2-3.46-2-1.55c.05-.33.08-.66.08-1z" />,
+    support: <path strokeLinecap="round" strokeLinejoin="round" d="M5 5.5A3.5 3.5 0 018.5 2h7A3.5 3.5 0 0119 5.5v5A3.5 3.5 0 0115.5 14H11l-5 5v-5.25A3.5 3.5 0 015 10.5v-5zM9 7h6M9 10h4" />,
+  };
+
   return (
-    <span className="text-xl leading-none" role="img" aria-label={label}>
-      {emoji}
-    </span>
+    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      {icons[name]}
+    </svg>
   );
 }
 
 const primaryToolItems = [
-  {
-    to: "/profile",
-    label: "Profile",
-    description: "Your account, shortlist, and predictor summary",
-    emoji: "👤",
-  },
-  {
-    to: "/universities",
-    label: "Universities",
-    description: "Institutions, locations, and application windows",
-    emoji: "🏛️",
-  },
-  {
-    to: "/sponsorships",
-    label: "Sponsorships",
-    description: "Government sponsorship, private funding, and grants",
-    emoji: "💰",
-  },
-  {
-    to: "/internships",
-    label: "Internships",
-    description: "Attachments and graduate programmes",
-    emoji: "💼",
-  },
-  {
-    to: "/saved",
-    label: "Saved Programmes",
-    description: "Your shortlisted options",
-    emoji: "🤍",
-  },
-  {
-    to: "/compare",
-    label: "Compare Programmes",
-    description: "Review up to three options side by side",
-    emoji: "⚖️",
-  },
+  { to: "/profile", label: "Profile", description: "Your account, shortlist, and predictor summary", icon: "profile" },
+  { to: "/universities", label: "Universities", description: "Institutions, locations, and application windows", icon: "universities" },
+  { to: "/sponsorships", label: "Sponsorships", description: "Government sponsorship, private funding, and grants", icon: "sponsorships" },
+  { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },
+  { to: "/saved", label: "Saved Programmes", description: "Your shortlisted options", icon: "saved" },
+  { to: "/compare", label: "Compare Programmes", description: "Review up to three options side by side", icon: "compare" },
 ];
 
 const moreToolItems = [
-  {
-    to: "/fit-finder",
-    label: "Fit Finder",
-    description: "Discover programmes suited to you",
-    emoji: "🔍",
-  },
-  {
-    to: "/settings",
-    label: "General Settings",
-    description: "App preferences and data controls",
-    emoji: "⚙️",
-  },
-  {
-    to: "/support",
-    label: "Support and Feedback",
-    description: "Report a problem or share ideas",
-    emoji: "💬",
-  },
+  { to: "/fit-finder", label: "Fit Finder", description: "Discover programmes suited to you", icon: "fit" },
+  { to: "/settings", label: "General Settings", description: "App preferences and data controls", icon: "settings" },
+  { to: "/support", label: "Support and Feedback", description: "Report a problem or share ideas", icon: "support" },
 ];
 
 function itemClass({ isActive }) {
   return [
-    "focus-ring flex items-center gap-3 rounded-2xl border px-3 py-3 text-left transition",
+    "focus-ring flex items-center gap-3 rounded-xl border px-3 py-3 text-left transition",
     isActive
       ? "border-brand-200 bg-brand-50 text-brand-900 shadow-sm"
       : "border-transparent text-stone-700 hover:border-stone-200 hover:bg-white",
@@ -88,15 +55,15 @@ const focusableSelector = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(", ");
 
-function DrawerNavItem({ to, label, description, emoji }) {
+function DrawerNavItem({ to, label, description, icon }) {
   return (
     <NavLink to={to} className={itemClass}>
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-800">
-        <EmojiIcon emoji={emoji} label={label} />
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-800">
+        <ToolIcon name={icon} />
       </span>
-      <span className="min-w-0">
+      <span className="min-w-0 flex-1">
         <span className="block break-words text-sm font-semibold">{label}</span>
-        <span className="block truncate text-xs text-stone-500">{description}</span>
+        <span className="line-clamp-1 block text-xs text-stone-500">{description}</span>
       </span>
     </NavLink>
   );
@@ -196,7 +163,7 @@ export default function AccountDrawer() {
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
-        className="focus-ring relative z-40 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-brand-200 bg-brand-50 text-brand-900 shadow-md transition hover:border-brand-300 hover:bg-brand-100 hover:shadow-lg"
+        className="focus-ring relative z-40 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-brand-50 text-brand-900 shadow-sm transition hover:border-brand-300 hover:bg-brand-100"
         aria-label="Open menu"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
@@ -221,7 +188,7 @@ export default function AccountDrawer() {
             aria-label="Close menu"
             tabIndex={-1}
           />
-          <aside className="fixed inset-0 z-10 flex h-dvh min-h-0 w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:left-auto sm:right-0 sm:w-[min(24rem,92vw)] sm:border-l sm:border-stone-200">
+          <aside className="fixed inset-0 z-10 flex h-dvh min-h-0 w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:left-auto sm:right-0 sm:w-[min(26rem,92vw)] sm:border-l sm:border-stone-200">
             <div className="shrink-0 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
               <div className="flex items-center justify-between gap-3">
                 <Link
@@ -270,7 +237,7 @@ export default function AccountDrawer() {
                 </p>
                 <Link
                   to={isPremium ? "/settings" : "/upgrade"}
-                  className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-full bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
+                  className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-xl bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
                 >
                   {isPremium ? "Manage plan" : "Upgrade to Pro"}
                 </Link>
