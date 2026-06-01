@@ -309,9 +309,8 @@ export default function Home() {
             </h2>
             <p className="mt-1 text-xs leading-relaxed text-stone-500">
               {programmeSpotlightSource === "gemini"
-                ? "Picks are chosen for you by Thuto’s Gemini integration using real programme ids from this app, refreshed each calendar day (cached for this session)."
-                : "Three picks refresh every day at local midnight and reload the programme list from the server so you see the latest directory."}{" "}
-              Indicative only—subject rules and institution notices still apply.
+                ? "Picks are chosen for you by Thuto’s Gemini integration using real programme ids from this app, refreshed each calendar day (cached for this session). Please check individual programme cards for full prerequisite rules and entry notices."
+                : "Three featured courses selected daily from our live university database. Please check individual programme cards for full prerequisite rules and entry notices."}
             </p>
           </div>
           <Link
