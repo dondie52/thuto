@@ -68,7 +68,7 @@ function localReplyToMessage(reply, source = "local") {
   });
   return createMessage("assistant", [reply.answer, ...itemLines].filter(Boolean).join("\n\n"), {
     source,
-    suggestions: reply.suggestions || [],
+    suggestions: (reply.suggestions || []).slice(0, 2),
     references: (reply.items || [])
       .filter((item) => item.href)
       .map((item) => ({ title: item.heading, href: item.href, external: item.external })),
