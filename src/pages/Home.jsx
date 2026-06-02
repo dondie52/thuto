@@ -15,6 +15,7 @@ import {
   programmeEligibleForSpotlight,
 } from "../lib/weeklyHomeSpotlight.js";
 import { fetchGeminiHomeSpotlight, isHomeSpotlightAiEnabled } from "../lib/fetchHomeSpotlight.js";
+import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
@@ -109,8 +110,6 @@ export default function Home() {
   useDocumentTitle("Thuto - Your Botswana University Companion");
   const { content } = usePageContent("home", PAGE_CONTENT_DEFAULTS.home);
   const [urgentUnis, setUrgentUnis] = useState([]);
-  /** @type {'remote' | 'bundled' | null} */
-  const [uniDataSource, setUniDataSource] = useState(null);
   const [calendarDayKey, setCalendarDayKey] = useState(() => localCalendarDateKey());
   const fallbackFunding = fundingSpotlightForDay(calendarDayKey);
   /** @type {Array<{ id: string, name: string, university?: string, minPoints?: number | null, teaser?: string }>} */
@@ -142,9 +141,8 @@ export default function Home() {
     let cancelled = false;
     const ac = new AbortController();
     fetchUniversities({ signal: ac.signal })
-      .then(({ list, source }) => {
+      .then(({ list }) => {
         if (cancelled) return;
-        setUniDataSource(source);
         const urgent = list
           .filter((u) => u.applicationClose && isDeadlineWithinDays(u.applicationClose, 30))
           .map((u) => ({
@@ -156,10 +154,7 @@ export default function Home() {
         setUrgentUnis(urgent);
       })
       .catch(() => {
-        if (!cancelled) {
-          setUrgentUnis([]);
-          setUniDataSource(null);
-        }
+        if (!cancelled) setUrgentUnis([]);
       });
     return () => {
       cancelled = true;
@@ -236,6 +231,10 @@ export default function Home() {
   }, [calendarDayKey]);
 
   const scholarshipOfficial = geminiScholarship ? safeExternalUrl(geminiScholarship.officialLink) : "";
+  const sponsorshipCardBackground =
+    !geminiScholarship && fallbackFunding.cardBackground
+      ? resolveProgrammeThemeUrl(fallbackFunding.cardBackground)
+      : "";
 
   return (
     <div className="space-y-10">
@@ -246,9 +245,8 @@ export default function Home() {
         >
           <p className="font-display text-sm font-semibold text-amber-950">Application deadlines soon</p>
           <p className="mt-1 text-xs leading-relaxed text-amber-950/85">
-            {uniDataSource === "remote"
-              ? "One or more institutions have an application close date within the next 30 days. Dates are loaded from the live Thuto data feed - still confirm on each university’s official site."
-              : "One or more institutions have an application close date within the next 30 days (bundled sample dates in Thuto until a live feed URL is configured)."}
+            One or more institutions have an application close date within the next 30 days. Confirm dates on each
+            university’s official site.
           </p>
           <ul className="mt-3 space-y-2 text-sm">
             {urgentUnis.map((u) => (
@@ -373,33 +371,54 @@ export default function Home() {
             ? "Generated with Google Gemini (and search when available). Verify every detail on official sites—models can be wrong or out of date."
             : "A funding topic to explore, chosen for this calendar day. Thuto does not process awards—always confirm on official funder and university notices."}
         </p>
-        <article className="mt-3 rounded-2xl border border-brand-100 bg-gradient-to-br from-white to-brand-50/40 p-4 shadow-card sm:p-5">
-          <h3 className="font-display text-lg font-semibold text-brand-900">
-            {geminiScholarship ? geminiScholarship.title : fallbackFunding.title}
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-stone-600">
-            {geminiScholarship ? geminiScholarship.body : fallbackFunding.body}
-          </p>
-          {geminiScholarship?.groundingNote ? (
-            <p className="mt-2 text-xs leading-relaxed text-stone-500">{geminiScholarship.groundingNote}</p>
+        <article
+          className={`mt-3 overflow-hidden rounded-2xl border shadow-card sm:p-5 ${
+            sponsorshipCardBackground
+              ? "relative border-brand-200/90 p-4"
+              : "border-brand-100 bg-gradient-to-br from-white to-brand-50/40 p-4"
+          }`}
+        >
+          {sponsorshipCardBackground ? (
+            <>
+              <div
+                className="pointer-events-none absolute inset-0 bg-cover bg-[center_42%] sm:bg-[65%_center]"
+                style={{ backgroundImage: `url("${sponsorshipCardBackground}")` }}
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/94 via-white/90 to-brand-50/82 sm:bg-[linear-gradient(105deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.9)_42%,rgba(240,253,250,0.72)_100%)]"
+                aria-hidden
+              />
+            </>
           ) : null}
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <Link
-              to={geminiScholarship ? "/sponsorships" : fallbackFunding.to}
-              className="focus-ring inline-flex min-h-10 items-center rounded-full bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
-            >
-              {geminiScholarship ? "Funding routes in Thuto" : fallbackFunding.cta}
-            </Link>
-            {scholarshipOfficial ? (
-              <a
-                href={scholarshipOfficial}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="focus-ring text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
-              >
-                Official link (new tab)
-              </a>
+          <div className={sponsorshipCardBackground ? "relative" : undefined}>
+            <h3 className="font-display text-lg font-semibold text-brand-900">
+              {geminiScholarship ? geminiScholarship.title : fallbackFunding.title}
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-stone-600">
+              {geminiScholarship ? geminiScholarship.body : fallbackFunding.body}
+            </p>
+            {geminiScholarship?.groundingNote ? (
+              <p className="mt-2 text-xs leading-relaxed text-stone-500">{geminiScholarship.groundingNote}</p>
             ) : null}
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Link
+                to={geminiScholarship ? "/sponsorships" : fallbackFunding.to}
+                className="focus-ring inline-flex min-h-10 items-center rounded-full bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
+              >
+                {geminiScholarship ? "Funding routes in Thuto" : fallbackFunding.cta}
+              </Link>
+              {scholarshipOfficial ? (
+                <a
+                  href={scholarshipOfficial}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="focus-ring text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
+                >
+                  Official link (new tab)
+                </a>
+              ) : null}
+            </div>
           </div>
         </article>
       </section>

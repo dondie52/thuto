@@ -1,5 +1,72 @@
 import { SUBJECT_FIELDS, programmeHasAdmissionPoints } from "./admissions.js";
 
+const GENERIC_DESCRIPTION_PATTERNS = [
+  /^Programme at .+ Confirm entry requirements/i,
+  /^Programme at .+ Admission points are taken/i,
+  /^Programme at .+ Entry requirements are based/i,
+  /^Programme at .+ Teaching is blended/i,
+  /^From BCET \d/i,
+];
+
+export function isGenericProgrammeDescription(description) {
+  const text = String(description || "").trim();
+  if (!text) return true;
+  return GENERIC_DESCRIPTION_PATTERNS.some((pattern) => pattern.test(text));
+}
+
+/** Campus or main study location; falls back to the institution's primary location. */
+export function getProgrammeCampusLocation(programme, universityLocation) {
+  const campus = String(programme?.campus || "").trim();
+  if (campus) return campus;
+
+  const studyMode = String(programme?.studyMode || "").toLowerCase();
+  if (studyMode.includes("distance") || studyMode.includes("open") || studyMode.includes("online")) {
+    return "Distance / online";
+  }
+
+  const location = String(universityLocation || "").trim();
+  if (location) return location;
+
+  return "Confirm with institution";
+}
+
+/** Short programme overview (~3 lines) for the detail header; uses curated copy when available. */
+export function getProgrammeAboutSummary(programme) {
+  const curated = String(programme?.description || "").trim();
+  if (curated && !isGenericProgrammeDescription(curated)) {
+    return curated;
+  }
+
+  const name = programme?.name || "This programme";
+  const university = programme?.university || "the institution";
+  const field = programme?.field;
+  const duration = programme?.duration;
+  const careers = getProgrammeCareers(programme);
+  const lines = [];
+
+  lines.push(
+    field
+      ? `${name} at ${university} is a ${field.toLowerCase()} qualification.`
+      : `${name} is offered at ${university}.`,
+  );
+
+  if (duration) {
+    lines.push(`It typically runs for ${duration}.`);
+  } else if (programme?.studyMode) {
+    lines.push(`Study mode: ${programme.studyMode}.`);
+  }
+
+  if (programmeHasAdmissionPoints(programme)) {
+    lines.push(`Applicants usually need at least ${programme.minPoints} BGCSE points (best six).`);
+  } else if (careers.length) {
+    lines.push(`Graduates often move into roles such as ${careers.slice(0, 3).join(", ")}.`);
+  } else {
+    lines.push(`Confirm entry requirements and campus details with ${university} before you apply.`);
+  }
+
+  return lines.slice(0, 3).join(" ");
+}
+
 const SUBJECT_LABELS = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
 function unique(values) {

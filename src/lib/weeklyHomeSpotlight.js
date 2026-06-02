@@ -52,6 +52,9 @@ export function programmeEligibleForSpotlight(programme) {
   );
 }
 
+/** Bundled DTEF branding used on the home scholarship spotlight card. */
+export const DTEF_CARD_BACKGROUND = "sponsorship/dtef-card-background.jpg";
+
 /** Rotating funding topics (internal links only; confirm on official notices). */
 export const WEEKLY_FUNDING_SPOTLIGHTS = [
   {
@@ -59,6 +62,7 @@ export const WEEKLY_FUNDING_SPOTLIGHTS = [
     body: "Public sponsorship often runs on its own calendar. Line up documents and deadlines alongside your admission plan.",
     to: "/sponsorships",
     cta: "Funding routes",
+    cardBackground: DTEF_CARD_BACKGROUND,
   },
   {
     title: "Institution scholarships and bursaries",
@@ -107,6 +111,7 @@ export const WEEKLY_FUNDING_SPOTLIGHTS = [
     body: "New-student applications for national sponsorship often run through the Online Tertiary Education Sponsorship portal. Thuto lists the published steps and DTEF contact numbers—always confirm deadlines on the live site.",
     to: "/sponsorships",
     cta: "Open sponsorship guide",
+    cardBackground: DTEF_CARD_BACKGROUND,
   },
 ];
 

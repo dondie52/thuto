@@ -1,9 +1,16 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import OpportunityPostsFeed from "../components/OpportunityPostsFeed.jsx";
 import { OPPORTUNITY_CATEGORY } from "../lib/opportunityPosts.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
+
+const FUNDING_ROUTE = {
+  GOVERNMENT: "government",
+  INSTITUTION: "institution",
+  PRIVATE: "private",
+};
 
 const assetBase = import.meta.env.BASE_URL;
 
@@ -54,72 +61,70 @@ const fundingIcons = {
   briefcase: IconBriefcase,
 };
 
-export default function Sponsorships() {
-  useDocumentTitle("Sponsorships | Thuto");
-  const { content } = usePageContent("sponsorships", PAGE_CONTENT_DEFAULTS.sponsorships);
-  const fundingRoutes = Array.isArray(content.fundingRoutes?.items) ? content.fundingRoutes.items : [];
-  const contacts = Array.isArray(content.dtef?.contacts) ? content.dtef.contacts : [];
-  const steps = Array.isArray(content.dtef?.steps) ? content.dtef.steps : [];
-  const portalUrl = content.dtef?.portalUrl || "https://tef.gov.bw";
+function routeIdForItem(item) {
+  if (item.icon === "government") return FUNDING_ROUTE.GOVERNMENT;
+  if (item.icon === "campus") return FUNDING_ROUTE.INSTITUTION;
+  if (item.icon === "briefcase") return FUNDING_ROUTE.PRIVATE;
+  return item.title?.toLowerCase().includes("government") ? FUNDING_ROUTE.GOVERNMENT : FUNDING_ROUTE.PRIVATE;
+}
 
+function PrivateSponsorshipPanel({ content }) {
   return (
-    <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-2xl border border-brand-200 bg-gradient-to-br from-white via-brand-50/50 to-brand-100/30 p-5 shadow-sm sm:p-6">
-        <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-300/25 blur-2xl" aria-hidden />
-        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{content.hero?.kicker}</p>
-            <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">{content.hero?.title}</h1>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">{content.hero?.body}</p>
-          </div>
-          <div className="flex shrink-0 items-center gap-3 rounded-2xl border border-brand-100 bg-white/90 px-4 py-3 shadow-sm ring-1 ring-brand-900/5">
-            <img src={`${assetBase}icons/tef-portal-mark.svg`} alt="" width={56} height={56} className="h-14 w-14 shrink-0" />
-            <div className="min-w-0 text-xs leading-snug text-slate-600">
-              <p className="font-semibold text-brand-900">{content.hero?.portalTitle}</p>
-              <p className="mt-1">{content.hero?.portalNote}</p>
-            </div>
-          </div>
-        </div>
+    <section
+      className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm"
+      aria-labelledby="private-sponsorship-heading"
+    >
+      <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800/95 to-[#1a4d48] px-4 py-4 text-white sm:px-6">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">{content.privateSponsorships?.kicker}</p>
+        <h2 id="private-sponsorship-heading" className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
+          {content.privateSponsorships?.heading}
+        </h2>
+        <p className="mt-1 text-sm text-brand-100/95">{content.privateSponsorships?.body}</p>
       </div>
+      <div className="p-4 sm:p-6">
+        <OpportunityPostsFeed
+          category={OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP}
+          emptyTitle={content.privateSponsorships?.emptyTitle}
+          emptyBody={content.privateSponsorships?.emptyBody}
+        />
+        <p className="mt-4 text-sm text-slate-600">
+          {content.privateSponsorships?.internshipPrefix}{" "}
+          <Link to="/internships" className="font-semibold text-brand-800 underline">
+            {content.privateSponsorships?.internshipLinkText}
+          </Link>
+        </p>
+      </div>
+    </section>
+  );
+}
 
-      <section className="grid gap-3 sm:grid-cols-3">
-        {fundingRoutes.map(({ title, body, icon }) => {
-          const Icon = fundingIcons[icon] || IconBriefcase;
-          return (
-            <article key={title} className="flex flex-col rounded-2xl border border-brand-100 bg-white p-4 shadow-sm transition hover:border-brand-200 hover:shadow-md">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
-                <Icon className="h-6 w-6" />
-              </span>
-              <h2 className="mt-3 font-display text-lg font-semibold text-brand-900">{title}</h2>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{body}</p>
-            </article>
-          );
-        })}
-      </section>
+function InstitutionScholarshipsPanel() {
+  return (
+    <section
+      className="overflow-hidden rounded-2xl border border-brand-200 bg-white p-4 shadow-sm sm:p-6"
+      aria-labelledby="institution-sponsorship-heading"
+    >
+      <h2 id="institution-sponsorship-heading" className="font-display text-xl font-semibold text-brand-900">
+        Institution scholarships
+      </h2>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+        Merit awards, faculty bursaries, and programme-specific funding are usually published on each university&apos;s
+        website or notice board. Open a university profile to review deadlines, contacts, and application links in one
+        place.
+      </p>
+      <Link
+        to="/universities"
+        className="focus-ring mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
+      >
+        Browse universities
+      </Link>
+    </section>
+  );
+}
 
-      <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm" aria-labelledby="private-sponsorship-heading">
-        <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800/95 to-[#1a4d48] px-4 py-4 text-white sm:px-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">{content.privateSponsorships?.kicker}</p>
-          <h2 id="private-sponsorship-heading" className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
-            {content.privateSponsorships?.heading}
-          </h2>
-          <p className="mt-1 text-sm text-brand-100/95">{content.privateSponsorships?.body}</p>
-        </div>
-        <div className="p-4 sm:p-6">
-          <OpportunityPostsFeed
-            category={OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP}
-            emptyTitle={content.privateSponsorships?.emptyTitle}
-            emptyBody={content.privateSponsorships?.emptyBody}
-          />
-          <p className="mt-4 text-sm text-slate-600">
-            {content.privateSponsorships?.internshipPrefix}{" "}
-            <Link to="/internships" className="font-semibold text-brand-800 underline">
-              {content.privateSponsorships?.internshipLinkText}
-            </Link>
-          </p>
-        </div>
-      </section>
-
+function GovernmentSponsorshipPanel({ content, contacts, steps, portalUrl }) {
+  return (
+    <>
       <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800 to-[#0d4a45] px-4 py-4 text-white sm:px-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">{content.dtef?.kicker}</p>
@@ -159,7 +164,10 @@ export default function Sponsorships() {
                   <div className="min-w-0 text-sm">
                     <p className="font-semibold text-slate-900">{row.label}</p>
                     {row.tel ? (
-                      <a href={row.tel} className="mt-0.5 block text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950">
+                      <a
+                        href={row.tel}
+                        className="mt-0.5 block text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
+                      >
                         {row.detail}
                       </a>
                     ) : (
@@ -198,6 +206,111 @@ export default function Sponsorships() {
           {content.verify?.linkLabel}
         </Link>
       </div>
+    </>
+  );
+}
+
+function FundingRoutePanel({ routeId, content, contacts, steps, portalUrl }) {
+  if (routeId === FUNDING_ROUTE.GOVERNMENT) {
+    return <GovernmentSponsorshipPanel content={content} contacts={contacts} steps={steps} portalUrl={portalUrl} />;
+  }
+  if (routeId === FUNDING_ROUTE.INSTITUTION) return <InstitutionScholarshipsPanel />;
+  if (routeId === FUNDING_ROUTE.PRIVATE) return <PrivateSponsorshipPanel content={content} />;
+  return null;
+}
+
+export default function Sponsorships() {
+  useDocumentTitle("Sponsorships | Thuto");
+  const { content } = usePageContent("sponsorships", PAGE_CONTENT_DEFAULTS.sponsorships);
+  const [activeRoute, setActiveRoute] = useState(null);
+  const detailRef = useRef(null);
+  const fundingRoutes = Array.isArray(content.fundingRoutes?.items) ? content.fundingRoutes.items : [];
+  const contacts = Array.isArray(content.dtef?.contacts) ? content.dtef.contacts : [];
+  const steps = Array.isArray(content.dtef?.steps) ? content.dtef.steps : [];
+  const portalUrl = content.dtef?.portalUrl || "https://tef.gov.bw";
+
+  useEffect(() => {
+    if (activeRoute && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [activeRoute]);
+
+  const handleRouteSelect = (routeId) => {
+    setActiveRoute((current) => (current === routeId ? null : routeId));
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="relative overflow-hidden rounded-2xl border border-brand-200 bg-gradient-to-br from-white via-brand-50/50 to-brand-100/30 p-5 shadow-sm sm:p-6">
+        <div
+          className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-300/25 blur-2xl"
+          aria-hidden
+        />
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{content.hero?.kicker}</p>
+            <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">{content.hero?.title}</h1>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">{content.hero?.body}</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-3 rounded-2xl border border-brand-100 bg-white/90 px-4 py-3 shadow-sm ring-1 ring-brand-900/5">
+            <img
+              src={`${assetBase}icons/tef-portal-mark.svg`}
+              alt=""
+              width={56}
+              height={56}
+              className="h-14 w-14 shrink-0"
+            />
+            <div className="min-w-0 text-xs leading-snug text-slate-600">
+              <p className="font-semibold text-brand-900">{content.hero?.portalTitle}</p>
+              {content.hero?.portalNote ? <p className="mt-1">{content.hero.portalNote}</p> : null}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-3" role="group" aria-label="Funding routes">
+        {fundingRoutes.map((route) => {
+          const id = routeIdForItem(route);
+          const Icon = fundingIcons[route.icon] || IconBriefcase;
+          const isSelected = activeRoute === id;
+          return (
+            <button
+              key={`${id}-${route.title}`}
+              type="button"
+              onClick={() => handleRouteSelect(id)}
+              aria-expanded={isSelected}
+              aria-controls={isSelected ? `funding-route-${id}` : undefined}
+              className={`focus-ring flex flex-col rounded-2xl border bg-white p-4 text-left shadow-sm transition hover:border-brand-200 hover:shadow-md ${
+                isSelected ? "border-brand-400 ring-2 ring-brand-200" : "border-brand-100"
+              }`}
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
+                <Icon className="h-6 w-6" />
+              </span>
+              <h2 className="mt-3 font-display text-lg font-semibold text-brand-900">{route.title}</h2>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{route.body}</p>
+              <p className="mt-3 text-xs font-semibold text-brand-700">{isSelected ? "Hide details" : "View details"}</p>
+            </button>
+          );
+        })}
+      </div>
+
+      {activeRoute ? (
+        <div id={`funding-route-${activeRoute}`} ref={detailRef} className="space-y-6">
+          <FundingRoutePanel
+            routeId={activeRoute}
+            content={content}
+            contacts={contacts}
+            steps={steps}
+            portalUrl={portalUrl}
+          />
+        </div>
+      ) : null}
+
+      <p className="text-center text-sm leading-relaxed text-slate-500">
+        Thuto does not submit applications to funders - always apply through the official portals and contacts listed
+        for each route.
+      </p>
     </div>
   );
 }

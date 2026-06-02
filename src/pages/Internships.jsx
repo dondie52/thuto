@@ -41,6 +41,10 @@ export default function Internships() {
           {content.verify?.linkLabel}
         </Link>
       </div>
+
+      <p className="text-center text-sm leading-relaxed text-slate-500">
+        Thuto does not accept applications here, follow each post instructions to apply on original channels.
+      </p>
     </div>
   );
 }

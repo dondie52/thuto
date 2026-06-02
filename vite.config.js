@@ -26,6 +26,7 @@ export default defineConfig({
         "icons/thuto-mark.svg",
         "icons/tef-portal-mark.svg",
         "og-image.png",
+        "sponsorship/dtef-card-background.jpg",
         "programme-themes/*.jpg",
       ],
       manifest: {
