@@ -34,7 +34,7 @@ function ProfileAvatarPreview({ url, displayName, onPickFile, isUploading }) {
             className="block w-full max-w-xs text-sm text-stone-600 file:mr-3 file:rounded-xl file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-brand-800 hover:file:bg-brand-100 disabled:opacity-60"
           />
         </label>
-        <p className="mt-1 text-xs text-stone-500">JPEG, PNG or WebP. Max 2MB.</p>
+        <p className="mt-1 text-xs text-stone-500">Max 2MB.</p>
       </div>
     </div>
   );
@@ -95,7 +95,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
       const url = await uploadProfileAvatar(file);
       setAvatarUrl(url);
       await onSave({ avatarUrl: url });
-      setNotice("Profile picture updated.");
+      setNotice("Photo updated.");
     } catch (err) {
       setError(err.message || "Could not upload profile picture.");
     } finally {
@@ -118,7 +118,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
         distinction,
         avatarUrl,
       });
-      setNotice("Profile saved. Your feed posts will show this info.");
+      setNotice("Saved.");
     } catch (err) {
       setError(err.message || "Could not save profile.");
     } finally {
@@ -142,7 +142,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
           onChange={(event) => setFullName(event.target.value)}
           maxLength={80}
           disabled={disabled || isSaving}
-          placeholder="How you appear on the feed"
+          placeholder="Your name"
           className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
         />
       </label>
@@ -165,7 +165,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
           </select>
         </label>
         <label className="block">
-          <span className="text-xs font-semibold text-stone-600">Your link to this university</span>
+          <span className="text-xs font-semibold text-stone-600">Status</span>
           <select
             value={universityStatus}
             onChange={(event) => setUniversityStatus(event.target.value)}
@@ -188,7 +188,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
       ) : null}
 
       <label className="block">
-        <span className="text-xs font-semibold text-stone-600">Distinction or short tagline</span>
+        <span className="text-xs font-semibold text-stone-600">Tagline</span>
         <input
           value={distinction}
           onChange={(event) => setDistinction(event.target.value)}
@@ -197,7 +197,6 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
           placeholder="e.g. First class hopeful, prefect, BGCSE 2025"
           className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
         />
-        <p className="mt-1 text-xs text-stone-500">Shown under your name on feed posts. Keep it short.</p>
       </label>
 
       {notice ? (
