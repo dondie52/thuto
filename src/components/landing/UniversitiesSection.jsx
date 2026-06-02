@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
-const featuredLogos = [
+const allLogos = [
   { id: "ub", short: "UB", name: "University of Botswana", src: "university-logos/ub.jpg" },
   { id: "biust", short: "BIUST", name: "BIUST", src: "university-logos/biust.jpg" },
   { id: "buan", short: "BUAN", name: "Botswana University of Agriculture and Natural Resources", src: "university-logos/buan.jpg" },
@@ -21,16 +21,23 @@ const featuredLogos = [
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
-export default function UniversitiesSection() {
+export default function UniversitiesSection({ content }) {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const marqueeTweenRef = useRef(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const { isSignedIn } = useLandingAuth();
 
+  const featuredLogos = useMemo(() => {
+    const ids = Array.isArray(content?.featuredUniversityIds) ? content.featuredUniversityIds : [];
+    const byId = new Map(allLogos.map((logo) => [logo.id, logo]));
+    const picked = ids.map((id) => byId.get(id)).filter(Boolean);
+    return picked.length ? picked : allLogos;
+  }, [content?.featuredUniversityIds]);
+
   const visibleLogos = useMemo(
     () => (reducedMotion ? featuredLogos : [...featuredLogos, ...featuredLogos]),
-    [reducedMotion],
+    [featuredLogos, reducedMotion],
   );
 
   useEffect(() => {
@@ -85,7 +92,7 @@ export default function UniversitiesSection() {
       marqueeTweenRef.current = null;
       ctx.revert();
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, featuredLogos]);
 
   function pauseMarquee() {
     marqueeTweenRef.current?.pause();
@@ -118,24 +125,24 @@ export default function UniversitiesSection() {
         <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
           <div>
             <p className="logo-showcase-copy text-xs font-bold uppercase tracking-[0.22em] text-brand-700">
-              University directory
+              {content?.kicker}
             </p>
             <h2
               id="unis-heading"
               className="logo-showcase-copy mt-3 max-w-xl font-display text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"
             >
-              Compare institutions across Botswana.
+              {content?.heading}
             </h2>
             <p className="logo-showcase-copy mt-4 max-w-xl text-base leading-relaxed text-slate-600">
-              Browse universities and training institutions, then jump straight into their programmes.
+              {content?.body}
             </p>
           </div>
 
           <div className="logo-showcase-copy flex flex-col gap-3 rounded-xl border border-white/80 bg-white/65 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-5">
             <div className="flex items-center justify-between gap-4">
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Featured</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{content?.featuredLabel}</span>
               <span className="rounded-full bg-brand-700 px-3 py-1 text-xs font-bold text-white">
-                {featuredLogos.length} logos
+                {featuredLogos.length} {content?.badgeSuffix}
               </span>
             </div>
             <ul className="grid grid-cols-2 gap-3 py-2 sm:hidden" aria-label="Featured institution logos">
@@ -150,36 +157,20 @@ export default function UniversitiesSection() {
                     onBlur={settleLogo}
                   >
                     <span className="flex min-h-0 flex-1 items-center justify-center">
-                      <img
-                        src={assetUrl(u.src)}
-                        alt={`${u.name} logo`}
-                        className="max-h-12 max-w-[6.5rem] object-contain"
-                        loading="lazy"
-                      />
+                      <img src={assetUrl(u.src)} alt={`${u.name} logo`} className="max-h-12 max-w-[6.5rem] object-contain" loading="lazy" />
                     </span>
-                    <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">
-                      {u.short}
-                    </span>
+                    <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{u.short}</span>
                   </Link>
                 </li>
               ))}
             </ul>
 
             <div className="relative -mx-4 hidden overflow-hidden px-4 sm:-mx-5 sm:block sm:px-5">
-              <div
-                className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white/95 to-transparent sm:w-20"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/95 to-transparent sm:w-20"
-                aria-hidden
-              />
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white/95 to-transparent sm:w-20" aria-hidden />
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/95 to-transparent sm:w-20" aria-hidden />
               <ul
                 ref={trackRef}
-                className={[
-                  "flex gap-3 py-2",
-                  reducedMotion ? "flex-wrap justify-center" : "w-max",
-                ].join(" ")}
+                className={["flex gap-3 py-2", reducedMotion ? "flex-wrap justify-center" : "w-max"].join(" ")}
                 aria-label="Featured institution logos"
               >
                 {visibleLogos.map((u, index) => {
@@ -197,16 +188,9 @@ export default function UniversitiesSection() {
                         onBlur={settleLogo}
                       >
                         <span className="flex min-h-0 flex-1 items-center justify-center">
-                          <img
-                            src={assetUrl(u.src)}
-                            alt={duplicateLogo ? "" : `${u.name} logo`}
-                            className="max-h-14 max-w-[7.75rem] object-contain"
-                            loading="lazy"
-                          />
+                          <img src={assetUrl(u.src)} alt={duplicateLogo ? "" : `${u.name} logo`} className="max-h-14 max-w-[7.75rem] object-contain" loading="lazy" />
                         </span>
-                        <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">
-                          {u.short}
-                        </span>
+                        <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{u.short}</span>
                       </Link>
                     </li>
                   );
@@ -221,9 +205,9 @@ export default function UniversitiesSection() {
             to={landingTo(isSignedIn, "/universities", "#universities")}
             className="focus-ring landing-motion-press inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-brand-800"
           >
-            {isSignedIn ? "View all universities" : "Explore universities"}
+            {isSignedIn ? content?.ctaSignedIn : content?.ctaGuest}
           </Link>
-          <span className="text-sm text-slate-500">Profiles include locations, programmes, and application timing.</span>
+          <span className="text-sm text-slate-500">{content?.note}</span>
         </div>
       </div>
     </section>

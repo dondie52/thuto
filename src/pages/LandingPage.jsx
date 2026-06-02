@@ -10,10 +10,13 @@ import UniversitiesSection from "../components/landing/UniversitiesSection.jsx";
 import CTA from "../components/landing/CTA.jsx";
 import AboutSection from "../components/landing/AboutSection.jsx";
 import LandingFooter from "../components/landing/LandingFooter.jsx";
+import { usePageContent } from "../hooks/usePageContent.js";
+import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
 export default function LandingPage() {
   useDocumentTitle("Thuto - Botswana University Companion");
   const { hash } = useLocation();
+  const { content } = usePageContent("landing", PAGE_CONTENT_DEFAULTS.landing);
 
   useEffect(() => {
     if (!hash) return;
@@ -24,15 +27,15 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <Hero />
-      <ProblemSection />
-      <HowItWorks />
-      <Features />
-      <UseCaseShowcase />
-      <UniversitiesSection />
-      <CTA />
-      <AboutSection />
-      <LandingFooter />
+      <Hero content={content.hero} />
+      <ProblemSection content={content.problem} />
+      <HowItWorks content={content.howItWorks} />
+      <Features content={content.features} />
+      <UseCaseShowcase content={content.examples} />
+      <UniversitiesSection content={content.universities} />
+      <CTA content={content.cta} />
+      <AboutSection content={content.about} />
+      <LandingFooter content={content.footer} />
     </div>
   );
 }

@@ -29,7 +29,7 @@ jobs:
               --output /tmp/supabase-keepalive.json \
               --write-out "%{http_code}" \
               --max-time 20 \
-              "${SUPABASE_URL%/}/rest/v1/" \
+              "${SUPABASE_URL%/}/rest/v1/content_university_overrides?select=id&limit=1" \
               --header "apikey: ${SUPABASE_ANON_KEY}" \
               --header "Authorization: Bearer ${SUPABASE_ANON_KEY}"
           )"

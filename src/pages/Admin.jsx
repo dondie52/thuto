@@ -14,10 +14,26 @@ import { useAuth } from "../lib/auth.jsx";
 import {
   deleteProgrammeOverride,
   deleteUniversityOverride,
+  deletePageSection,
+  fetchPageContent,
   saveProgrammeOverride,
+  savePageSection,
   saveUniversityOverride,
   uploadContentAsset,
 } from "../lib/contentManagement.js";
+import { fetchProgrammes } from "../lib/programmesData.js";
+import { fetchUniversities } from "../lib/universitiesData.js";
+import { PAGE_CONTENT_DEFAULTS, PAGE_CONTENT_META } from "../lib/pageContentDefaults.js";
+import { fetchSupportFeedback, updateSupportFeedbackStatus } from "../lib/supportFeedback.js";
+
+const ADMIN_TABS = [
+  { key: "overview", label: "Overview" },
+  { key: "catalog", label: "Catalogue" },
+  { key: "pages", label: "Page content" },
+  { key: "opportunities", label: "Opportunities" },
+  { key: "feedback", label: "Feedback" },
+  { key: "premium", label: "Premium" },
+];
 
 const CONTROL_LINKS = [
   { to: "/admin/feed", label: "Feed moderation", description: "Approve, reject, remove, restore, and review reports." },
@@ -137,16 +153,161 @@ function selectedFile(event) {
   return event.target.files?.[0] || null;
 }
 
+function labelize(key) {
+  return String(key || "")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function emptyLike(value) {
+  if (Array.isArray(value)) return [];
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, emptyLike(child)]));
+  }
+  if (typeof value === "boolean") return false;
+  if (typeof value === "number") return 0;
+  return "";
+}
+
+function StructuredContentFields({ value, onChange, depth = 0 }) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+
+  return (
+    <div className={depth ? "grid gap-3 rounded-xl border border-stone-200 bg-white/80 p-3" : "grid gap-3"}>
+      {Object.entries(value).map(([key, field]) => {
+        const update = (nextValue) => onChange({ ...value, [key]: nextValue });
+        if (Array.isArray(field)) {
+          const primitiveArray = field.every((item) => item == null || typeof item !== "object");
+          return (
+            <div key={key} className="grid gap-2 rounded-xl border border-stone-200 bg-white p-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">{labelize(key)}</p>
+                {!primitiveArray ? (
+                  <button
+                    type="button"
+                    onClick={() => update([...field, emptyLike(field[0] || {})])}
+                    className="focus-ring rounded-lg border border-brand-100 bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-800"
+                  >
+                    Add item
+                  </button>
+                ) : null}
+              </div>
+              {primitiveArray ? (
+                <textarea
+                  rows={Math.max(3, field.length)}
+                  value={field.join("\n")}
+                  onChange={(event) =>
+                    update(
+                      event.target.value
+                        .split("\n")
+                        .map((line) => line.trim())
+                        .filter(Boolean),
+                    )
+                  }
+                  className="focus-ring w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm text-stone-800"
+                />
+              ) : (
+                <div className="grid gap-3">
+                  {field.map((item, index) => (
+                    <div key={`${key}-${index}`} className="grid gap-2 rounded-xl bg-stone-50 p-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs font-semibold text-stone-500">Item {index + 1}</p>
+                        <button
+                          type="button"
+                          onClick={() => update(field.filter((_, itemIndex) => itemIndex !== index))}
+                          className="focus-ring rounded-lg border border-red-200 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <StructuredContentFields
+                        value={item}
+                        depth={depth + 1}
+                        onChange={(nextItem) => update(field.map((current, itemIndex) => (itemIndex === index ? nextItem : current)))}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        if (field && typeof field === "object") {
+          return (
+            <fieldset key={key} className="grid gap-2 rounded-xl border border-stone-200 bg-white p-3">
+              <legend className="px-1 text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">{labelize(key)}</legend>
+              <StructuredContentFields value={field} depth={depth + 1} onChange={update} />
+            </fieldset>
+          );
+        }
+
+        if (typeof field === "boolean") {
+          return (
+            <label key={key} className="flex items-center gap-2 rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-semibold text-brand-900">
+              <input type="checkbox" checked={field} onChange={(event) => update(event.target.checked)} />
+              {labelize(key)}
+            </label>
+          );
+        }
+
+        if (typeof field === "number") {
+          return (
+            <label key={key} className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              {labelize(key)}
+              <input
+                type="number"
+                value={field}
+                onChange={(event) => update(Number(event.target.value || 0))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              />
+            </label>
+          );
+        }
+
+        return (
+          <label key={key} className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+            {labelize(key)}
+            {String(field || "").length > 90 || /body|paragraph|intro|note|description/i.test(key) ? (
+              <textarea
+                rows={3}
+                value={field || ""}
+                onChange={(event) => update(event.target.value)}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              />
+            ) : (
+              <input
+                value={field || ""}
+                onChange={(event) => update(event.target.value)}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              />
+            )}
+          </label>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Admin() {
   useDocumentTitle("Superuser | Thuto");
   const { isLoading, isSuperuser, isSuperuserLoading, supabaseConfigured, user } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
   const [overview, setOverview] = useState(null);
+  const [activeTab, setActiveTab] = useState("overview");
   const [busyTarget, setBusyTarget] = useState("");
   const [officialPostForm, setOfficialPostForm] = useState(EMPTY_OFFICIAL_POST);
   const [opportunityForm, setOpportunityForm] = useState(EMPTY_OPPORTUNITY);
   const [contentUniversities, setContentUniversities] = useState([]);
   const [contentProgrammes, setContentProgrammes] = useState([]);
+  const [pageContentRows, setPageContentRows] = useState([]);
+  const [pageContentPageKey, setPageContentPageKey] = useState(PAGE_CONTENT_META[0].pageKey);
+  const [pageContentSectionKey, setPageContentSectionKey] = useState("hero");
+  const [pageContentForm, setPageContentForm] = useState(PAGE_CONTENT_DEFAULTS.landing.hero);
+  const [pageContentPublished, setPageContentPublished] = useState(true);
+  const [pageContentSortOrder, setPageContentSortOrder] = useState(0);
+  const [feedbackRows, setFeedbackRows] = useState([]);
   const [universityForm, setUniversityForm] = useState(EMPTY_UNIVERSITY_FORM);
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
   const [editingOpportunityId, setEditingOpportunityId] = useState("");
@@ -172,6 +333,33 @@ export default function Admin() {
     setContentProgrammes(programmes);
   }
 
+  function hydratePageContentForm(nextPageKey, nextSectionKey, rows = pageContentRows) {
+    const pageDefaults = PAGE_CONTENT_DEFAULTS[nextPageKey] || {};
+    const sectionDefaults = pageDefaults[nextSectionKey] || {};
+    const row = rows.find((item) => item.section_key === nextSectionKey);
+    setPageContentPageKey(nextPageKey);
+    setPageContentSectionKey(nextSectionKey);
+    setPageContentForm({ ...sectionDefaults, ...(row?.content || {}) });
+    setPageContentPublished(row ? Boolean(row.published) : true);
+    setPageContentSortOrder(row?.sort_order || 0);
+  }
+
+  async function loadPageContentEditor(nextPageKey = pageContentPageKey) {
+    const rows = await fetchPageContent(nextPageKey, { includeDrafts: true });
+    setPageContentRows(rows);
+    const pageDefaults = PAGE_CONTENT_DEFAULTS[nextPageKey] || {};
+    const currentSection = pageDefaults[pageContentSectionKey] ? pageContentSectionKey : Object.keys(pageDefaults)[0];
+    hydratePageContentForm(nextPageKey, currentSection, rows);
+  }
+
+  async function loadFeedbackRows() {
+    try {
+      setFeedbackRows(await fetchSupportFeedback({ limit: 40 }));
+    } catch (err) {
+      setError(err.message || "Could not load support feedback.");
+    }
+  }
+
   useEffect(() => {
     let cancelled = false;
     async function loadForSuperuser() {
@@ -179,7 +367,7 @@ export default function Admin() {
         setOverview(null);
         return;
       }
-      await Promise.all([loadOverview(), loadContentCatalog()]);
+      await Promise.all([loadOverview(), loadContentCatalog(), loadPageContentEditor(), loadFeedbackRows()]);
       if (cancelled) return;
     }
     loadForSuperuser();
@@ -510,6 +698,78 @@ export default function Admin() {
     }
   }
 
+  async function handlePageContentPageChange(nextPageKey) {
+    setBusyTarget("page-content:load");
+    setError("");
+    try {
+      const rows = await fetchPageContent(nextPageKey, { includeDrafts: true });
+      setPageContentRows(rows);
+      const firstSection = Object.keys(PAGE_CONTENT_DEFAULTS[nextPageKey] || {})[0];
+      hydratePageContentForm(nextPageKey, firstSection, rows);
+    } catch (err) {
+      setError(err.message || "Could not load page content.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  function handlePageContentSectionChange(nextSectionKey) {
+    hydratePageContentForm(pageContentPageKey, nextSectionKey, pageContentRows);
+  }
+
+  async function handlePageContentSave(event) {
+    event.preventDefault();
+    setBusyTarget("page-content:save");
+    setError("");
+    setNotice("");
+    try {
+      await savePageSection({
+        pageKey: pageContentPageKey,
+        sectionKey: pageContentSectionKey,
+        content: pageContentForm,
+        published: pageContentPublished,
+        sortOrder: pageContentSortOrder,
+      });
+      setNotice("Page section saved.");
+      await loadPageContentEditor(pageContentPageKey);
+    } catch (err) {
+      setError(err.message || "Could not save page section.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handlePageContentDelete() {
+    if (!pageContentPageKey || !pageContentSectionKey) return;
+    setBusyTarget("page-content:delete");
+    setError("");
+    setNotice("");
+    try {
+      await deletePageSection(pageContentPageKey, pageContentSectionKey);
+      setNotice("Page section override deleted. Bundled defaults will show again.");
+      await loadPageContentEditor(pageContentPageKey);
+    } catch (err) {
+      setError(err.message || "Could not delete page section override.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handleFeedbackStatus(id, status) {
+    setBusyTarget(`feedback:${id}`);
+    setError("");
+    setNotice("");
+    try {
+      await updateSupportFeedbackStatus(id, status);
+      setNotice("Feedback status updated.");
+      await loadFeedbackRows();
+    } catch (err) {
+      setError(err.message || "Could not update feedback.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
   async function handlePremiumSave(profile) {
     const edit = premiumEdits[profile.id] || {};
     setBusyTarget(`profile:${profile.id}:premium`);
@@ -610,7 +870,23 @@ export default function Admin() {
         </div>
       ) : null}
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <nav className="flex gap-2 overflow-x-auto rounded-2xl border border-brand-100 bg-white p-2 shadow-sm" aria-label="Admin sections">
+        {ADMIN_TABS.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setActiveTab(tab.key)}
+            className={[
+              "focus-ring whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold transition",
+              activeTab === tab.key ? "bg-brand-700 text-white shadow-sm" : "text-stone-600 hover:bg-brand-50 hover:text-brand-900",
+            ].join(" ")}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+
+      <section className={`${activeTab === "overview" ? "grid" : "hidden"} gap-3 sm:grid-cols-2 lg:grid-cols-3`}>
         <Stat label="Needs review" value={counts.pendingFeed || 0} detail={`${counts.reports || 0} recent reports`} />
         <Stat label="Readable profiles" value={counts.profiles ?? 0} detail={`${counts.premiumProfiles ?? 0} premium profiles`} />
         <Stat label="Opportunities" value={counts.opportunities ?? 0} detail="Sponsorship and internship rows" />
@@ -619,7 +895,7 @@ export default function Admin() {
         <Stat label="Application dates" value={localData?.universitiesWithOpenDates ?? 0} detail="Universities with window data" />
       </section>
 
-      <section className="grid gap-3 sm:grid-cols-2">
+      <section className={`${activeTab === "overview" ? "grid" : "hidden"} gap-3 sm:grid-cols-2`}>
         {CONTROL_LINKS.map((link) => (
           <Link
             key={link.to}
@@ -632,7 +908,7 @@ export default function Admin() {
         ))}
       </section>
 
-      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className={`${activeTab === "catalog" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-xl font-semibold text-brand-950">University page editor</h2>
@@ -827,7 +1103,7 @@ export default function Admin() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className={`${activeTab === "catalog" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-xl font-semibold text-brand-950">Programme page editor</h2>
@@ -1044,7 +1320,95 @@ export default function Admin() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className={`${activeTab === "pages" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="font-display text-xl font-semibold text-brand-950">Page content editor</h2>
+            <p className="mt-1 text-sm leading-relaxed text-stone-600">
+              Edit public page sections with structured fields. Unpublished drafts are visible only to superusers.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => loadPageContentEditor(pageContentPageKey)}
+            className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+          >
+            Reload page content
+          </button>
+        </div>
+        <form onSubmit={handlePageContentSave} className="mt-3 grid gap-4 rounded-2xl bg-stone-50 p-3">
+          <div className="grid gap-3 sm:grid-cols-[12rem_1fr_8rem]">
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Page
+              <select
+                value={pageContentPageKey}
+                onChange={(event) => handlePageContentPageChange(event.target.value)}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              >
+                {PAGE_CONTENT_META.map((page) => (
+                  <option key={page.pageKey} value={page.pageKey}>
+                    {page.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Section
+              <select
+                value={pageContentSectionKey}
+                onChange={(event) => handlePageContentSectionChange(event.target.value)}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              >
+                {Object.keys(PAGE_CONTENT_DEFAULTS[pageContentPageKey] || {}).map((sectionKey) => {
+                  const row = pageContentRows.find((item) => item.section_key === sectionKey);
+                  return (
+                    <option key={sectionKey} value={sectionKey}>
+                      {labelize(sectionKey)}{row ? (row.published ? " (live)" : " (draft)") : ""}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Sort
+              <input
+                type="number"
+                value={pageContentSortOrder}
+                onChange={(event) => setPageContentSortOrder(Number(event.target.value || 0))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              />
+            </label>
+          </div>
+          <StructuredContentFields value={pageContentForm} onChange={setPageContentForm} />
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="flex items-center gap-2 rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-semibold text-brand-900">
+              <input
+                type="checkbox"
+                checked={pageContentPublished}
+                onChange={(event) => setPageContentPublished(event.target.checked)}
+              />
+              Published
+            </label>
+            <button
+              type="submit"
+              disabled={busyTarget === "page-content:save"}
+              className="focus-ring rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-60"
+            >
+              Save section
+            </button>
+            <button
+              type="button"
+              disabled={busyTarget === "page-content:delete"}
+              onClick={handlePageContentDelete}
+              className="focus-ring rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-100 disabled:opacity-50"
+            >
+              Delete override
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section className={`${activeTab === "overview" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
         <h2 className="font-display text-xl font-semibold text-brand-950">Official feed post</h2>
         <form onSubmit={handleOfficialPost} className="mt-3 grid gap-3 rounded-2xl bg-stone-50 p-3">
           <div className="grid gap-3 sm:grid-cols-[12rem_1fr]">
@@ -1102,7 +1466,7 @@ export default function Admin() {
         </form>
       </section>
 
-      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className={`${activeTab === "overview" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-display text-xl font-semibold text-brand-950">Fast moderation</h2>
           <Link to="/admin/feed" className="text-sm font-semibold text-brand-700 underline">
@@ -1158,7 +1522,7 @@ export default function Admin() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className={`${activeTab === "opportunities" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
         <h2 className="font-display text-xl font-semibold text-brand-950">Latest opportunities</h2>
         <form onSubmit={handleSaveOpportunity} className="mt-3 grid gap-3 rounded-2xl bg-stone-50 p-3">
           <div className="grid gap-3 sm:grid-cols-2">
@@ -1317,7 +1681,50 @@ export default function Admin() {
         )}
       </section>
 
-      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className={`${activeTab === "feedback" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-xl font-semibold text-brand-950">Support feedback</h2>
+          <button
+            type="button"
+            onClick={loadFeedbackRows}
+            className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+          >
+            Refresh feedback
+          </button>
+        </div>
+        {feedbackRows.length ? (
+          <div className="mt-3 grid gap-3">
+            {feedbackRows.map((row) => (
+              <article key={row.id} className="rounded-2xl bg-stone-50 p-3">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-brand-950">{labelize(row.topic)}</p>
+                    <p className="mt-1 text-xs text-stone-500">
+                      {formatDate(row.created_at)} / {row.contact_email || row.user_id || "No contact"}
+                    </p>
+                  </div>
+                  <select
+                    value={row.status}
+                    disabled={busyTarget === `feedback:${row.id}`}
+                    onChange={(event) => handleFeedbackStatus(row.id, event.target.value)}
+                    className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium text-stone-800 disabled:opacity-60"
+                  >
+                    <option value="new">New</option>
+                    <option value="reviewing">Reviewing</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </div>
+                <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-stone-700">{row.message}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-stone-500">No support feedback rows yet.</p>
+        )}
+      </section>
+
+      <section className={`${activeTab === "premium" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
         <h2 className="font-display text-xl font-semibold text-brand-950">Premium profiles</h2>
         {overview?.profiles?.length ? (
           <div className="mt-3 grid gap-2">

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import OpportunityPostsFeed from "../components/OpportunityPostsFeed.jsx";
 import { OPPORTUNITY_CATEGORY } from "../lib/opportunityPosts.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { usePageContent } from "../hooks/usePageContent.js";
+import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
 const FUNDING_ROUTE = {
   GOVERNMENT: "government",
@@ -10,7 +12,6 @@ const FUNDING_ROUTE = {
   PRIVATE: "private",
 };
 
-const DTEF_PORTAL = "https://tef.gov.bw";
 const assetBase = import.meta.env.BASE_URL;
 
 function IconGovBuilding({ className = "h-6 w-6" }) {
@@ -41,11 +42,7 @@ function IconBriefcase({ className = "h-6 w-6" }) {
 function IconPhone({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.44 12.44 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.44 12.44 0 002.81.7A2 2 0 0122 16.92z"
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.44 12.44 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.44 12.44 0 002.81.7A2 2 0 0122 16.92z" />
     </svg>
   );
 }
@@ -58,111 +55,42 @@ function IconExternal({ className = "h-4 w-4" }) {
   );
 }
 
-const fundingRoutes = [
-  {
-    id: FUNDING_ROUTE.GOVERNMENT,
-    title: "Government sponsorship",
-    body: "Track public application windows, required documents, and step-by-step guides for the DTEF online portal.",
-    Icon: IconGovBuilding,
-  },
-  {
-    id: FUNDING_ROUTE.INSTITUTION,
-    title: "Institution scholarships",
-    body: "Explore university-funded scholarships, merit-based tuition support, and programme-specific funding notices.",
-    Icon: IconCampus,
-  },
-  {
-    id: FUNDING_ROUTE.PRIVATE,
-    title: "Private company scholarships",
-    body: "Find private corporate bursaries, workplace sponsorships, and industry-funded training grants.",
-    Icon: IconBriefcase,
-  },
-];
+const fundingIcons = {
+  government: IconGovBuilding,
+  campus: IconCampus,
+  briefcase: IconBriefcase,
+};
 
-const dtefContacts = [
-  { label: "Enquiries", detail: "Weekdays 07:30–16:30", tel: null },
-  { label: "Toll-free", detail: "0800 600 185", tel: "tel:+267800600185" },
-  { label: "Call centre", detail: "371 9364 / 371 9439 / 371 9441 / 371 9473", tel: "tel:+2673719364" },
-  { label: "PR office", detail: "371 9319", tel: "tel:+2673719319" },
-  { label: "Switchboard", detail: "371 9300 / 371 9301", tel: "tel:+2673719300" },
-];
+function routeIdForItem(item) {
+  if (item.icon === "government") return FUNDING_ROUTE.GOVERNMENT;
+  if (item.icon === "campus") return FUNDING_ROUTE.INSTITUTION;
+  if (item.icon === "briefcase") return FUNDING_ROUTE.PRIVATE;
+  return item.title?.toLowerCase().includes("government") ? FUNDING_ROUTE.GOVERNMENT : FUNDING_ROUTE.PRIVATE;
+}
 
-const dtefApplicationSteps = [
-  {
-    title: "Online log-in and sign up",
-    body: `Visit the Online Tertiary Education Sponsorship portal (${DTEF_PORTAL}), choose Sign Up (top right), complete your details, enter a valid email, then select Create New Account. DTEF should email you to confirm the account was created.`,
-  },
-  {
-    title: "Verify your email",
-    body: "Open the DTEF message in your inbox, follow the instructions, create your password, then sign in with that password.",
-  },
-  {
-    title: "Apply",
-    body: "After logging in, select Apply for Sponsorship.",
-  },
-  {
-    title: "Choose the application type",
-    body: "Under Applications and beneficiary, open the New student sub-tab.",
-  },
-  {
-    title: "Complete the form and attach documents",
-    body: "Enter all relevant details, choose the correct category of sponsorship, and upload supporting documents as PDF, JPEG, PNG, or JPG. Use Next and Previous to move between pages. Save Draft to pause before the deadline; Reset clears unsubmitted work, including drafts. If you are below the minimum cut-off points, the system stops you from continuing and emails you.",
-  },
-  {
-    title: "Sign the declaration",
-    body: "Tick the Student Declaration box to accept the application requirements. If a programme has hit its sponsorship limit, choose Add revise programme for an alternative.",
-  },
-  {
-    title: "Review the application",
-    body: "Select Review and read everything carefully before final submission.",
-  },
-  {
-    title: "Submit",
-    body: "Choose Submit so your application can be assessed.",
-  },
-  {
-    title: "Confirmation of submission",
-    body: "Expect a confirmation or acknowledgement message in the email you registered.",
-  },
-  {
-    title: "View and print",
-    body: "You can open the submitted application form and acknowledgement to print copies for your records.",
-  },
-  {
-    title: "Check application status",
-    body: "Sign in, choose Submissions, and review the status of each submitted application whenever you need an update.",
-  },
-  {
-    title: "Accept the sponsorship agreement",
-    body: "If you qualify and receive an offer, accept it to read the DTEF sponsorship agreement. Agreeing to the terms should release your sponsorship letter by email so you can print it and register at your institution.",
-  },
-];
-
-function PrivateSponsorshipPanel() {
+function PrivateSponsorshipPanel({ content }) {
   return (
     <section
       className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm"
       aria-labelledby="private-sponsorship-heading"
     >
       <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800/95 to-[#1a4d48] px-4 py-4 text-white sm:px-6">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">Private &amp; sector</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">{content.privateSponsorships?.kicker}</p>
         <h2 id="private-sponsorship-heading" className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
-          Private company scholarships
+          {content.privateSponsorships?.heading}
         </h2>
-        <p className="mt-1 text-sm text-brand-100/95">
-          BDF, employers, and other private sponsors—summaries from their official posts. No in-app applications.
-        </p>
+        <p className="mt-1 text-sm text-brand-100/95">{content.privateSponsorships?.body}</p>
       </div>
       <div className="p-4 sm:p-6">
         <OpportunityPostsFeed
           category={OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP}
-          emptyTitle="No private sponsorship posts yet"
-          emptyBody="When a sponsor like BDF publishes a new window, it will appear here with deadlines and how to apply."
+          emptyTitle={content.privateSponsorships?.emptyTitle}
+          emptyBody={content.privateSponsorships?.emptyBody}
         />
         <p className="mt-4 text-sm text-slate-600">
-          Looking for internship openings?{" "}
+          {content.privateSponsorships?.internshipPrefix}{" "}
           <Link to="/internships" className="font-semibold text-brand-800 underline">
-            See internships
+            {content.privateSponsorships?.internshipLinkText}
           </Link>
         </p>
       </div>
@@ -194,55 +122,42 @@ function InstitutionScholarshipsPanel() {
   );
 }
 
-function GovernmentSponsorshipPanel() {
+function GovernmentSponsorshipPanel({ content, contacts, steps, portalUrl }) {
   return (
     <>
       <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800 to-[#0d4a45] px-4 py-4 text-white sm:px-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">Botswana · DTEF</p>
-          <h2 className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">
-            Tertiary education government sponsorship
-          </h2>
-          <p className="mt-1 text-sm text-brand-100/95">2025/2026 intake · New students · Public application summary</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">{content.dtef?.kicker}</p>
+          <h2 className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">{content.dtef?.heading}</h2>
+          <p className="mt-1 text-sm text-brand-100/95">{content.dtef?.subheading}</p>
         </div>
 
         <div className="space-y-5 p-4 sm:p-6">
-          <p className="text-sm leading-relaxed text-slate-600">
-            The steps below summarise the public application process published for the Online Tertiary Education
-            Sponsorship portal. Always confirm deadlines, wording, and requirements on the official site or with DTEF
-            before you act.
-          </p>
+          <p className="text-sm leading-relaxed text-slate-600">{content.dtef?.intro}</p>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <a
-              href={DTEF_PORTAL}
+              href={portalUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
             >
-              Open official portal
+              {content.dtef?.portalButtonLabel}
               <IconExternal className="h-4 w-4 opacity-90" />
             </a>
-            <span className="text-xs text-slate-500 sm:ml-1">{DTEF_PORTAL}</span>
+            <span className="text-xs text-slate-500 sm:ml-1">{portalUrl}</span>
           </div>
 
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-stone-800">
-            <p className="font-semibold text-stone-900">Website security</p>
-            <p className="mt-1 leading-relaxed">
-              Browsers may warn you if the portal certificate is expired or invalid. If you see a security warning, avoid
-              entering passwords until the site is fixed or use the contact numbers below to confirm how DTEF wants
-              applicants to proceed.
-            </p>
+            <p className="font-semibold text-stone-900">{content.dtef?.warningTitle}</p>
+            <p className="mt-1 leading-relaxed">{content.dtef?.warningBody}</p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-brand-900">For enquiries</h3>
+            <h3 className="text-sm font-semibold text-brand-900">{content.dtef?.contactsHeading}</h3>
             <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-              {dtefContacts.map((row) => (
-                <li
-                  key={row.label}
-                  className="flex items-start gap-3 rounded-xl border border-stone-200/80 bg-stone-50/80 px-3 py-3"
-                >
+              {contacts.map((row) => (
+                <li key={`${row.label}-${row.detail}`} className="flex items-start gap-3 rounded-xl border border-stone-200/80 bg-stone-50/80 px-3 py-3">
                   <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-brand-700 shadow-sm ring-1 ring-stone-200/80">
                     <IconPhone />
                   </span>
@@ -262,21 +177,15 @@ function GovernmentSponsorshipPanel() {
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-xs leading-relaxed text-slate-500">
-              Call-centre row dials the first listed number on tap-to-call devices; use the other extensions from a
-              landline or full national number if needed.
-            </p>
+            <p className="mt-2 text-xs leading-relaxed text-slate-500">{content.dtef?.contactsNote}</p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-brand-900">Application steps</h3>
+            <h3 className="text-sm font-semibold text-brand-900">{content.dtef?.stepsHeading}</h3>
             <ol className="mt-3 space-y-0 divide-y divide-stone-200/90 rounded-xl border border-stone-200/90 bg-stone-50/50">
-              {dtefApplicationSteps.map((step, index) => (
-                <li key={step.title} className="flex gap-3 px-3 py-3.5 sm:gap-4 sm:px-4">
-                  <span
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-bold text-white shadow-sm"
-                    aria-hidden
-                  >
+              {steps.map((step, index) => (
+                <li key={`${step.title}-${index}`} className="flex gap-3 px-3 py-3.5 sm:gap-4 sm:px-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-bold text-white shadow-sm" aria-hidden>
                     {index + 1}
                   </span>
                   <div className="min-w-0 text-sm leading-relaxed text-slate-700">
@@ -291,30 +200,34 @@ function GovernmentSponsorshipPanel() {
       </section>
 
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-        <p className="text-sm font-semibold text-stone-900">Verify before you rely on this page</p>
-        <p className="mt-1 text-sm leading-relaxed text-stone-700">
-          Sponsorship rules change. Cross-check every detail with official DTEF notices, the live portal, or the call
-          centre numbers above.
-        </p>
+        <p className="text-sm font-semibold text-stone-900">{content.verify?.title}</p>
+        <p className="mt-1 text-sm leading-relaxed text-stone-700">{content.verify?.body}</p>
         <Link to="/universities" className="mt-3 inline-flex text-sm font-semibold text-brand-800 underline">
-          Check university profiles
+          {content.verify?.linkLabel}
         </Link>
       </div>
     </>
   );
 }
 
-function FundingRoutePanel({ routeId }) {
-  if (routeId === FUNDING_ROUTE.GOVERNMENT) return <GovernmentSponsorshipPanel />;
+function FundingRoutePanel({ routeId, content, contacts, steps, portalUrl }) {
+  if (routeId === FUNDING_ROUTE.GOVERNMENT) {
+    return <GovernmentSponsorshipPanel content={content} contacts={contacts} steps={steps} portalUrl={portalUrl} />;
+  }
   if (routeId === FUNDING_ROUTE.INSTITUTION) return <InstitutionScholarshipsPanel />;
-  if (routeId === FUNDING_ROUTE.PRIVATE) return <PrivateSponsorshipPanel />;
+  if (routeId === FUNDING_ROUTE.PRIVATE) return <PrivateSponsorshipPanel content={content} />;
   return null;
 }
 
 export default function Sponsorships() {
   useDocumentTitle("Sponsorships | Thuto");
+  const { content } = usePageContent("sponsorships", PAGE_CONTENT_DEFAULTS.sponsorships);
   const [activeRoute, setActiveRoute] = useState(null);
   const detailRef = useRef(null);
+  const fundingRoutes = Array.isArray(content.fundingRoutes?.items) ? content.fundingRoutes.items : [];
+  const contacts = Array.isArray(content.dtef?.contacts) ? content.dtef.contacts : [];
+  const steps = Array.isArray(content.dtef?.steps) ? content.dtef.steps : [];
+  const portalUrl = content.dtef?.portalUrl || "https://tef.gov.bw";
 
   useEffect(() => {
     if (activeRoute && detailRef.current) {
@@ -335,11 +248,9 @@ export default function Sponsorships() {
         />
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Sponsorships</p>
-            <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">Funding routes</h1>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
-              Find funding, check deadlines, apply through official portals.
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{content.hero?.kicker}</p>
+            <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">{content.hero?.title}</h1>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">{content.hero?.body}</p>
           </div>
           <div className="flex shrink-0 items-center gap-3 rounded-2xl border border-brand-100 bg-white/90 px-4 py-3 shadow-sm ring-1 ring-brand-900/5">
             <img
@@ -350,18 +261,21 @@ export default function Sponsorships() {
               className="h-14 w-14 shrink-0"
             />
             <div className="min-w-0 text-xs leading-snug text-slate-600">
-              <p className="font-semibold text-brand-900">Online Tertiary Education Sponsorship</p>
+              <p className="font-semibold text-brand-900">{content.hero?.portalTitle}</p>
+              {content.hero?.portalNote ? <p className="mt-1">{content.hero.portalNote}</p> : null}
             </div>
           </div>
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3" role="group" aria-label="Funding routes">
-        {fundingRoutes.map(({ id, title, body, Icon }) => {
+        {fundingRoutes.map((route) => {
+          const id = routeIdForItem(route);
+          const Icon = fundingIcons[route.icon] || IconBriefcase;
           const isSelected = activeRoute === id;
           return (
             <button
-              key={id}
+              key={`${id}-${route.title}`}
               type="button"
               onClick={() => handleRouteSelect(id)}
               aria-expanded={isSelected}
@@ -370,11 +284,11 @@ export default function Sponsorships() {
                 isSelected ? "border-brand-400 ring-2 ring-brand-200" : "border-brand-100"
               }`}
             >
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
-                  <Icon className="h-6 w-6" />
-                </span>
-                <h2 className="mt-3 font-display text-lg font-semibold text-brand-900">{title}</h2>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{body}</p>
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
+                <Icon className="h-6 w-6" />
+              </span>
+              <h2 className="mt-3 font-display text-lg font-semibold text-brand-900">{route.title}</h2>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{route.body}</p>
               <p className="mt-3 text-xs font-semibold text-brand-700">{isSelected ? "Hide details" : "View details"}</p>
             </button>
           );
@@ -383,13 +297,19 @@ export default function Sponsorships() {
 
       {activeRoute ? (
         <div id={`funding-route-${activeRoute}`} ref={detailRef} className="space-y-6">
-          <FundingRoutePanel routeId={activeRoute} />
+          <FundingRoutePanel
+            routeId={activeRoute}
+            content={content}
+            contacts={contacts}
+            steps={steps}
+            portalUrl={portalUrl}
+          />
         </div>
       ) : null}
 
       <p className="text-center text-sm leading-relaxed text-slate-500">
-        Thuto does not submit applications to funders—always apply through the official portals and contacts listed for
-        each route.
+        Thuto does not submit applications to funders - always apply through the official portals and contacts listed
+        for each route.
       </p>
     </div>
   );
