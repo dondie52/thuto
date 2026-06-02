@@ -17,9 +17,7 @@ import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
 const STARTER_QUESTIONS = [
   "I have 36 APS. What can I study?",
-  "Which programmes lead to software careers?",
   "Compare Computer Science and IT",
-  "What can I study with Maths Literacy?",
   "Which applications are still open?",
 ];
 
@@ -81,7 +79,7 @@ function normalizeAssistantPayload(data) {
     answer: answer || "I could not generate a useful answer this time. Try asking again with a programme or university name.",
     confidence: data?.confidence || "medium",
     usedLocalContext: Boolean(data?.usedLocalContext),
-    suggestions: Array.isArray(data?.suggestions) ? data.suggestions.filter(Boolean).slice(0, 4) : [],
+    suggestions: Array.isArray(data?.suggestions) ? data.suggestions.filter(Boolean).slice(0, 2) : [],
     references: Array.isArray(data?.references) ? data.references.filter(Boolean).slice(0, 5) : [],
   };
 }
@@ -98,14 +96,10 @@ export default function Assistant() {
   const [speakingMessageId, setSpeakingMessageId] = useState(null);
   const [lastQuestion, setLastQuestion] = useState("");
   const [messages, setMessages] = useState(() => [
-    createMessage(
-      "assistant",
-      "Ask me about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.",
-      {
-        source: "local",
-        suggestions: STARTER_QUESTIONS.slice(0, 3),
-      },
-    ),
+    createMessage("assistant", "Ask your question below.", {
+      source: "local",
+      suggestions: [],
+    }),
   ]);
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
@@ -208,7 +202,7 @@ export default function Assistant() {
           source: "gemini",
           confidence: payload.confidence,
           usedLocalContext: payload.usedLocalContext,
-          suggestions: payload.suggestions.length ? payload.suggestions : STARTER_QUESTIONS.slice(0, 3),
+          suggestions: payload.suggestions.slice(0, 2),
           references: payload.references,
         }),
       ]);
@@ -316,8 +310,8 @@ export default function Assistant() {
       <header>
         <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
         <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
-          Ask about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.
+        <p className="mt-2 max-w-3xl text-sm text-slate-600">
+          Programmes, requirements, careers, and application dates.
         </p>
         {canUseGemini ? (
           <p className="mt-2 text-xs text-slate-500">
@@ -339,13 +333,7 @@ export default function Assistant() {
       <section className="rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="border-b border-brand-100 px-4 py-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold text-brand-900">What can I help you with?</p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                Use this page to explore study options, understand requirements, compare programmes, and prepare for
-                applications.
-              </p>
-            </div>
+            <p className="text-sm font-semibold text-brand-900">Try a question</p>
             <Link
               to="/fit-finder"
               className="rounded-lg border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
@@ -468,7 +456,7 @@ export default function Assistant() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               rows={3}
-              placeholder="Example: I have 33 APS and enjoy maths and coding. Which programmes should I consider?"
+              placeholder="Type your question…"
               className="min-h-24 w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
             <div className="flex gap-2 md:flex-col">
