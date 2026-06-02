@@ -15,12 +15,6 @@ import { scrollElementIntoView } from "../lib/motion.js";
 import { getAssistantUsageToday } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
-const STARTER_QUESTIONS = [
-  "I have 36 APS. What can I study?",
-  "Compare Computer Science and IT",
-  "Which applications are still open?",
-];
-
 const speechRecognition =
   typeof window !== "undefined" ? window.SpeechRecognition || window.webkitSpeechRecognition : null;
 
@@ -47,6 +41,18 @@ function VolumeIcon() {
   );
 }
 
+function firstNameFromProfile(profile, user) {
+  const raw = String(profile?.full_name || user?.user_metadata?.full_name || "").trim();
+  if (!raw) return null;
+  const first = raw.split(/\s+/)[0];
+  return first || null;
+}
+
+function helpPromptName(profile, user) {
+  const first = firstNameFromProfile(profile, user);
+  return first ? `What can I help you with today ${first}?` : "What can I help you with today?";
+}
+
 function createMessage(role, content, extras = {}) {
   return {
     id:
@@ -66,7 +72,7 @@ function localReplyToMessage(reply, source = "local") {
   });
   return createMessage("assistant", [reply.answer, ...itemLines].filter(Boolean).join("\n\n"), {
     source,
-    suggestions: (reply.suggestions || []).slice(0, 2),
+    suggestions: reply.suggestions || [],
     references: (reply.items || [])
       .filter((item) => item.href)
       .map((item) => ({ title: item.heading, href: item.href, external: item.external })),
@@ -79,14 +85,14 @@ function normalizeAssistantPayload(data) {
     answer: answer || "I could not generate a useful answer this time. Try asking again with a programme or university name.",
     confidence: data?.confidence || "medium",
     usedLocalContext: Boolean(data?.usedLocalContext),
-    suggestions: Array.isArray(data?.suggestions) ? data.suggestions.filter(Boolean).slice(0, 2) : [],
+    suggestions: Array.isArray(data?.suggestions) ? data.suggestions.filter(Boolean).slice(0, 4) : [],
     references: Array.isArray(data?.references) ? data.references.filter(Boolean).slice(0, 5) : [],
   };
 }
 
 export default function Assistant() {
   useDocumentTitle("Ask Thuto | Thuto");
-  const { isPremium } = useAuth();
+  const { isPremium, profile, user } = useAuth();
   const [question, setQuestion] = useState("");
   const [programmes, setProgrammes] = useState([]);
   const [universities, setUniversities] = useState([]);
@@ -95,12 +101,7 @@ export default function Assistant() {
   const [isListening, setIsListening] = useState(false);
   const [speakingMessageId, setSpeakingMessageId] = useState(null);
   const [lastQuestion, setLastQuestion] = useState("");
-  const [messages, setMessages] = useState(() => [
-    createMessage("assistant", "Ask your question below.", {
-      source: "local",
-      suggestions: [],
-    }),
-  ]);
+  const [messages, setMessages] = useState([]);
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -138,6 +139,7 @@ export default function Assistant() {
   }, []);
 
   const predictorSnap = useMemo(() => readPredictorSession(), []);
+  const helpHeading = useMemo(() => helpPromptName(profile, user), [profile, user]);
   const canUseGemini = providerStatus.configured && Boolean(getSupabase());
   const canListen = Boolean(speechRecognition);
   const canSpeak = Boolean(getSupabase()) || (typeof window !== "undefined" && Boolean(window.speechSynthesis));
@@ -310,8 +312,8 @@ export default function Assistant() {
       <header>
         <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
         <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
-        <p className="mt-2 max-w-3xl text-sm text-slate-600">
-          Programmes, requirements, careers, and application dates.
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+          Ask about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.
         </p>
         {canUseGemini ? (
           <p className="mt-2 text-xs text-slate-500">
@@ -332,27 +334,7 @@ export default function Assistant() {
 
       <section className="rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="border-b border-brand-100 px-4 py-3">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-brand-900">Try a question</p>
-            <Link
-              to="/fit-finder"
-              className="rounded-lg border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
-            >
-              Fit Finder
-            </Link>
-          </div>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {STARTER_QUESTIONS.map((suggestion) => (
-              <button
-                key={suggestion}
-                type="button"
-                onClick={() => ask(suggestion)}
-                className="rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
-              >
-                {suggestion}
-              </button>
-            ))}
-          </div>
+          <p className="text-sm font-semibold text-brand-900">{helpHeading}</p>
         </div>
 
         <div className="max-h-[34rem] space-y-4 overflow-y-auto px-4 py-5" aria-live="polite">
