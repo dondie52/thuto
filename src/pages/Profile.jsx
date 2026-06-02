@@ -41,28 +41,14 @@ export default function Profile() {
     <div className="space-y-5">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Profile</p>
-        <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">
-          {isSignedIn ? "Your Thuto account" : "Your profile"}
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          {isSignedIn
-            ? isPremium
-              ? "Pro is active. Your shortlist and predictor summary can sync across devices when you use saved programmes."
-              : "Your account is active. Local predictor and shortlist data stay on this device unless you upgrade to Pro."
-            : "Sign in to save your pathway and sync your account across visits."}
-        </p>
+        {!isSignedIn ? (
+          <p className="mt-2 text-sm text-slate-600">Sign in to sync your pathway.</p>
+        ) : null}
       </div>
 
       {isSignedIn && supabaseConfigured ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm sm:p-5">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Public profile</p>
-              <h2 className="mt-1 font-display text-xl font-semibold text-brand-900">How you appear on the feed</h2>
-              <p className="mt-1 text-sm text-slate-600">
-                Add a photo, your university, and a short distinction so other students recognise you.
-              </p>
-            </div>
+          <div className="flex justify-end">
             <Link
               to="/feed"
               className="rounded-xl border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
@@ -143,7 +129,7 @@ export default function Profile() {
           <p className="mt-1 text-sm text-slate-600">Active until {premiumUntil}.</p>
         ) : (
           <p className="mt-1 text-sm text-slate-600">
-            Upgrade for cloud shortlist sync, deadline alerts on saved choices, and compare up to five programmes.
+            Cloud sync, deadline alerts, compare up to five programmes.
           </p>
         )}
         <div className="mt-4 flex flex-wrap gap-2">
@@ -176,7 +162,6 @@ export default function Profile() {
         <div className="rounded-2xl border border-brand-100 bg-brand-50/70 p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">Best six</p>
           <p className="mt-2 text-3xl font-bold text-brand-900">{predictor.total == null ? "--" : predictor.total}</p>
-          <p className="mt-1 text-xs text-slate-600">Latest predictor total on this device.</p>
         </div>
         <div className="rounded-2xl border border-brand-100 bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">Subject keys</p>
@@ -185,9 +170,6 @@ export default function Profile() {
         <div className="rounded-2xl border border-brand-100 bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">Saved</p>
           <p className="mt-2 text-3xl font-bold text-brand-900">{savedCount}</p>
-          <p className="mt-1 text-xs text-slate-600">
-            {isPremium ? "Shortlist synced to your account when you save programmes." : "Programmes shortlisted on this device."}
-          </p>
         </div>
       </section>
 

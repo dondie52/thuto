@@ -30,10 +30,7 @@ export default function PredictorGradeSection({
   return (
     <div id="predictor-grade-section" className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
       <fieldset className="space-y-3">
-        <legend className="text-sm font-semibold text-brand-800">Step 1: Add your subjects and grades</legend>
-        <p className="text-sm leading-relaxed text-slate-600">
-          Start with the subjects you know. Thuto updates your best-six total as soon as each subject has a grade.
-        </p>
+        <legend className="text-sm font-semibold text-brand-800">Add grades</legend>
         <ul className="space-y-3">
           {rows.map((row) => (
             <li
