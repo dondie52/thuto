@@ -18,6 +18,8 @@ import { fetchGeminiHomeSpotlight, isHomeSpotlightAiEnabled } from "../lib/fetch
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
+import { usePageContent } from "../hooks/usePageContent.js";
+import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
 const cards = [
   {
@@ -105,6 +107,7 @@ function mergeFeaturedWithLocal(pool, calendarDayKey, aiOrder) {
 
 export default function Home() {
   useDocumentTitle("Thuto - Your Botswana University Companion");
+  const { content } = usePageContent("home", PAGE_CONTENT_DEFAULTS.home);
   const [urgentUnis, setUrgentUnis] = useState([]);
   /** @type {'remote' | 'bundled' | null} */
   const [uniDataSource, setUniDataSource] = useState(null);
@@ -286,17 +289,16 @@ export default function Home() {
         />
         <p className="relative text-xs font-semibold uppercase tracking-[0.2em] text-brand-200">Thuto · BUC</p>
         <h1 className="relative mt-3 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
-          Check what your BGCSE results may qualify you for
+          {content.hero?.title}
         </h1>
         <p className="relative mt-3 max-w-xl text-sm leading-relaxed text-brand-100/95">
-          Start with your grades, get indicative programme matches, and use the result to build a shortlist before you
-          confirm details with each institution.
+          {content.hero?.body}
         </p>
         <Link
           to="/predictor"
           className="focus-ring-on-dark relative mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-900 shadow-md transition hover:bg-brand-50 hover:shadow-lg"
         >
-          Check eligibility
+          {content.hero?.ctaLabel}
         </Link>
       </section>
 
@@ -403,9 +405,9 @@ export default function Home() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-brand-900">Get started</h2>
+        <h2 className="font-display text-xl font-semibold tracking-tight text-brand-900">{content.cards?.heading}</h2>
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map(({ to, title, body }, i) => (
+          {(content.cards?.items || cards).map(({ to, title, body }, i) => (
             <li
               key={to}
               className="animate-fade-up"

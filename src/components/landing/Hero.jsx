@@ -1,25 +1,17 @@
 import { Link } from "react-router-dom";
 import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
-
 import { resolveProgrammeThemeUrl } from "../../lib/programmeBranding.js";
 
-/** Local Botswana-focused campus imagery (see public/programme-themes/attribution.json). */
-const HERO_IMAGE = resolveProgrammeThemeUrl("programme-themes/landing-hero-bw.jpg");
-
-const HERO_STATS = [
-  { value: "55+", label: "institutions" },
-  { value: "Best six", label: "BGCSE scoring" },
-  { value: "Shareable", label: "programme compare" },
-];
-
-export default function Hero() {
+export default function Hero({ content }) {
   const { isSignedIn } = useLandingAuth();
+  const heroImage = resolveProgrammeThemeUrl(content?.image || "programme-themes/landing-hero-bw.jpg");
+  const stats = Array.isArray(content?.stats) ? content.stats : [];
 
   return (
     <section className="relative isolate flex min-h-[min(86vh,42rem)] items-end overflow-hidden sm:min-h-[min(82vh,44rem)] sm:items-center">
       <div
         className="landing-hero-image absolute inset-0 bg-slate-900 bg-cover bg-[center_35%]"
-        style={{ backgroundImage: `url("${HERO_IMAGE}")` }}
+        style={{ backgroundImage: `url("${heroImage}")` }}
         aria-hidden
       />
       <div
@@ -31,42 +23,44 @@ export default function Hero() {
         aria-hidden
       />
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-12 pt-28 sm:px-6 sm:pb-16 sm:pt-32">
-        <p className="landing-hero-kicker text-xs font-semibold uppercase tracking-[0.25em] text-brand-200 sm:text-sm">Thuto · Botswana University Companion</p>
+        <p className="landing-hero-kicker text-xs font-semibold uppercase tracking-[0.25em] text-brand-200 sm:text-sm">
+          {content?.kicker}
+        </p>
         <h1 className="landing-hero-title mt-3 max-w-2xl font-display text-4xl font-semibold leading-[1.08] text-white sm:text-5xl lg:text-6xl">
-          Check what your BGCSE results may qualify you for
+          {content?.title}
         </h1>
         <p className="landing-hero-copy mt-5 max-w-xl text-base leading-7 text-slate-100/95 sm:text-lg">
-          Start with real or estimated grades, see possible programme matches, and spot requirements to confirm before applications open.
+          {content?.body}
         </p>
         <div className="landing-hero-actions mt-8 flex flex-wrap items-center gap-3 sm:mt-9">
           <Link
             to="/predictor"
             className="focus-ring-on-dark landing-motion-press inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg ring-1 ring-white/60 hover:bg-brand-50 hover:shadow-xl"
           >
-            Check eligibility
+            {content?.primaryCtaLabel}
           </Link>
           <Link
             to={landingTo(isSignedIn, "/programmes", "#programmes")}
             className="focus-ring-on-dark landing-motion-press inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-sm backdrop-blur-sm hover:border-white/55 hover:bg-white/20"
           >
-            Browse programmes
+            {content?.secondaryCtaLabel}
           </Link>
         </div>
-        <dl className="landing-hero-stats mt-10 grid max-w-2xl grid-cols-1 gap-2 sm:grid-cols-3">
-          {HERO_STATS.map((item, index) => (
-            <div
-              key={item.label}
-              className="landing-hero-stat rounded-2xl border border-white/15 bg-slate-950/35 px-4 py-3 shadow-sm backdrop-blur-sm"
-              style={{ "--stat-delay": `${680 + index * 130}ms` }}
-            >
-              <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-100">{item.label}</dt>
-              <dd className="mt-1 font-display text-xl font-semibold leading-none text-white">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
-        <p className="landing-hero-note mt-5 max-w-xl text-sm leading-6 text-slate-200/90">
-          Thuto is planning guidance, not an admission decision. Always confirm final requirements with each institution.
-        </p>
+        {stats.length ? (
+          <dl className="landing-hero-stats mt-10 grid max-w-2xl grid-cols-1 gap-2 sm:grid-cols-3">
+            {stats.map((item, index) => (
+              <div
+                key={`${item.label}-${index}`}
+                className="landing-hero-stat rounded-2xl border border-white/15 bg-slate-950/35 px-4 py-3 shadow-sm backdrop-blur-sm"
+                style={{ "--stat-delay": `${680 + index * 130}ms` }}
+              >
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-100">{item.label}</dt>
+                <dd className="mt-1 font-display text-xl font-semibold leading-none text-white">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+        <p className="landing-hero-note mt-5 max-w-xl text-sm leading-6 text-slate-200/90">{content?.note}</p>
       </div>
     </section>
   );

@@ -4,6 +4,8 @@ import { useAuth } from "../lib/auth.jsx";
 import { startPremiumCheckout, isBillingConfigured } from "../lib/billing.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { formatPremiumUntil, getPlanCheckoutLabel, PREMIUM_PLANS } from "../lib/premium.js";
+import { usePageContent } from "../hooks/usePageContent.js";
+import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
 const iconClass = "h-5 w-5 shrink-0 text-brand-600";
 
@@ -107,6 +109,7 @@ export default function Upgrade() {
   useDocumentTitle("Upgrade to Pro | Thuto");
   const navigate = useNavigate();
   const { user, isPremium, profile, supabaseConfigured } = useAuth();
+  const { content } = usePageContent("upgrade", PAGE_CONTENT_DEFAULTS.upgrade);
   const [loadingPlan, setLoadingPlan] = useState(null);
   const [error, setError] = useState("");
 
@@ -132,17 +135,16 @@ export default function Upgrade() {
 
   const premiumUntil = formatPremiumUntil(profile);
   const showCheckout = !isPremium;
+  const featureIconByKey = new Map(proFeatures.map((feature) => [feature.key, feature.icon]));
+  const editableFeatures = Array.isArray(content.features?.items) ? content.features.items : [];
 
   return (
     <>
       <div className={`space-y-5 ${showCheckout ? "pb-28" : ""}`}>
         <section className="overflow-hidden rounded-2xl border border-brand-200 bg-brand-900 p-5 text-white shadow-card">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-100">Thuto Pro</p>
-          <h1 className="mt-3 font-display text-3xl font-bold">Get Pro. Plan with confidence</h1>
-          <p className="mt-3 text-sm leading-relaxed text-brand-50/90">
-            Download programme breakdowns, get WhatsApp support, and unlock unlimited tools to finalize your
-            applications
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-100">{content.hero?.kicker}</p>
+          <h1 className="mt-3 font-display text-3xl font-bold">{content.hero?.title}</h1>
+          <p className="mt-3 text-sm leading-relaxed text-brand-50/90">{content.hero?.body}</p>
         </section>
 
         {isPremium ? (
@@ -182,11 +184,11 @@ export default function Upgrade() {
         ) : null}
 
         <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
-          <h2 className="font-display text-xl font-semibold text-brand-900">Pro Features</h2>
+          <h2 className="font-display text-xl font-semibold text-brand-900">{content.features?.heading}</h2>
           <ul className="mt-3 space-y-3">
-            {proFeatures.map((feature) => (
+            {editableFeatures.map((feature) => (
               <li key={feature.key} className="flex gap-3 text-sm leading-relaxed text-slate-700">
-                <span className="mt-0.5">{feature.icon}</span>
+                <span className="mt-0.5">{featureIconByKey.get(feature.icon) || featureIconByKey.get(feature.key) || featureIconByKey.get("support")}</span>
                 <span>{feature.text}</span>
               </li>
             ))}
