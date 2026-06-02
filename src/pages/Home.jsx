@@ -55,7 +55,7 @@ const cards = [
   },
   {
     to: "/universities",
-    title: "Universities",
+    title: "Tertiary Institutions",
     body: "Institutions, locations, and application windows.",
   },
   {

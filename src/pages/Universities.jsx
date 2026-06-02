@@ -121,7 +121,7 @@ export default function Universities() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-brand-900">Universities</h1>
+        <h1 className="font-display text-2xl font-bold text-brand-900">Tertiary Institutions</h1>
         <p className="mt-2 text-sm text-slate-600">
           {count === 0
             ? "Loading institutions..."
