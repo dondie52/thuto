@@ -170,6 +170,21 @@ function emptyLike(value) {
   return "";
 }
 
+function isStatArray(key, value) {
+  return (
+    Array.isArray(value) &&
+    key === "stats" &&
+    value.every(
+      (item) =>
+        item &&
+        typeof item === "object" &&
+        !Array.isArray(item) &&
+        Object.prototype.hasOwnProperty.call(item, "value") &&
+        Object.prototype.hasOwnProperty.call(item, "label"),
+    )
+  );
+}
+
 function StructuredContentFields({ value, onChange, depth = 0 }) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
 
@@ -178,6 +193,61 @@ function StructuredContentFields({ value, onChange, depth = 0 }) {
       {Object.entries(value).map(([key, field]) => {
         const update = (nextValue) => onChange({ ...value, [key]: nextValue });
         if (Array.isArray(field)) {
+          if (isStatArray(key, field)) {
+            return (
+              <div key={key} className="grid gap-3 rounded-xl border border-stone-200 bg-white p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">{labelize(key)}</p>
+                    <p className="mt-1 text-xs normal-case tracking-normal text-stone-500">
+                      Edit the landing hero stat cards shown over the hero image.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => update([...field, { value: "", label: "" }])}
+                    className="focus-ring rounded-lg border border-brand-100 bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-800"
+                  >
+                    Add stat
+                  </button>
+                </div>
+                <div className="grid gap-3">
+                  {field.map((item, index) => (
+                    <div key={`${key}-${index}`} className="grid gap-3 rounded-xl bg-stone-50 p-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+                      <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                        Value
+                        <input
+                          value={item.value || ""}
+                          onChange={(event) =>
+                            update(field.map((current, itemIndex) => (itemIndex === index ? { ...current, value: event.target.value } : current)))
+                          }
+                          className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                        />
+                      </label>
+                      <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                        Label
+                        <input
+                          value={item.label || ""}
+                          onChange={(event) =>
+                            update(field.map((current, itemIndex) => (itemIndex === index ? { ...current, label: event.target.value } : current)))
+                          }
+                          className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                        />
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => update(field.filter((_, itemIndex) => itemIndex !== index))}
+                        className="focus-ring rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
           const primitiveArray = field.every((item) => item == null || typeof item !== "object");
           return (
             <div key={key} className="grid gap-2 rounded-xl border border-stone-200 bg-white p-3">
