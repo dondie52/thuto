@@ -9,6 +9,8 @@
  * Official sites rarely offer CORS-friendly JSON; this is the practical pattern.
  */
 
+import { fetchUniversityOverrides, mergeContentOverrides } from "./contentManagement.js";
+
 const BUNDLED_PATH = `${import.meta.env.BASE_URL}data/universities.json`;
 
 /** @type {string} */
@@ -170,11 +172,11 @@ function normalizeList(data) {
 }
 
 /**
- * @param {{ signal?: AbortSignal }} [options]
- * @returns {Promise<{ list: object[], source: 'remote' | 'bundled' }>}
+ * @param {{ signal?: AbortSignal, includeDrafts?: boolean }} [options]
+ * @returns {Promise<{ list: object[], source: 'remote' | 'bundled' | 'live' }>}
  */
 export async function fetchUniversities(options = {}) {
-  const { signal } = options;
+  const { signal, includeDrafts = false } = options;
 
   async function loadBundled() {
     const r = await fetch(BUNDLED_PATH, { signal, cache: "no-store" });
@@ -185,9 +187,15 @@ export async function fetchUniversities(options = {}) {
     return list;
   }
 
+  async function mergeLiveOverrides(list, source) {
+    const overrides = await fetchUniversityOverrides({ includeDrafts });
+    if (!overrides.length) return { list, source };
+    return { list: mergeContentOverrides(list, overrides), source: "live" };
+  }
+
   if (!REMOTE_URL) {
     const list = await loadBundled();
-    return { list, source: "bundled" };
+    return mergeLiveOverrides(list, "bundled");
   }
 
   try {
@@ -209,10 +217,10 @@ export async function fetchUniversities(options = {}) {
     }
     const base = await loadBundled();
     const list = mergeUniversityRecords(base, remote);
-    return { list, source: "remote" };
+    return mergeLiveOverrides(list, "remote");
   } catch {
     const list = await loadBundled();
-    return { list, source: "bundled" };
+    return mergeLiveOverrides(list, "bundled");
   }
 }
 
