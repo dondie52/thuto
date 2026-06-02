@@ -8,7 +8,11 @@ import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universi
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 
-const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
+const assetUrl = (path) => {
+  const value = String(path || "").trim();
+  if (/^https?:\/\//i.test(value)) return value;
+  return `${import.meta.env.BASE_URL}${value.replace(/^\//, "")}`;
+};
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];

@@ -1,3 +1,5 @@
+import { fetchProgrammeOverrides, mergeContentOverrides } from "./contentManagement.js";
+
 const PROGRAMMES_PATH = `${import.meta.env.BASE_URL}data/programmes.json`;
 
 /** @param {string} path */
@@ -7,14 +9,16 @@ function withCacheBuster(path, cacheBuster) {
   return `${path}${sep}d=${encodeURIComponent(String(cacheBuster))}`;
 }
 
-/** @param {{ signal?: AbortSignal, cacheBuster?: string }} [options] */
+/** @param {{ signal?: AbortSignal, cacheBuster?: string, includeDrafts?: boolean }} [options] */
 export async function fetchProgrammes(options = {}) {
-  const { signal, cacheBuster } = options;
+  const { signal, cacheBuster, includeDrafts = false } = options;
   const url = withCacheBuster(PROGRAMMES_PATH, cacheBuster);
   const response = await fetch(url, { signal, cache: "no-store" });
   if (!response.ok) throw new Error("Could not load programmes");
   const data = await response.json();
-  return Array.isArray(data) ? data : [];
+  const bundled = Array.isArray(data) ? data : [];
+  const overrides = await fetchProgrammeOverrides({ includeDrafts });
+  return mergeContentOverrides(bundled, overrides);
 }
 
 function normalize(value) {

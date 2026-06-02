@@ -6,7 +6,6 @@ import {
   FEED_STATUS_LABELS,
   categoryLabel,
   fetchAdminFeedItems,
-  isCurrentUserFeedAdmin,
   isSupabaseConfigured,
   moderateFeedTarget,
 } from "../lib/feed.js";
@@ -87,11 +86,9 @@ function AdminActions({ targetType, targetId, status, onAction, busy }) {
 }
 
 export default function AdminFeed() {
-  useDocumentTitle("Feed admin | Thuto");
-  const { user, supabaseConfigured } = useAuth();
+  useDocumentTitle("Feed moderation | Thuto");
+  const { isLoading, isSuperuser, isSuperuserLoading, supabaseConfigured, user } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
-  const [isChecking, setIsChecking] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [items, setItems] = useState({ posts: [], comments: [], reports: [] });
   const [statusFilter, setStatusFilter] = useState("pending_review");
   const [busyTarget, setBusyTarget] = useState("");
@@ -109,28 +106,24 @@ export default function AdminFeed() {
 
   useEffect(() => {
     let cancelled = false;
-    async function checkAccess() {
-      setIsChecking(true);
+    async function loadForSuperuser() {
+      if (!configured || !user?.id || !isSuperuser) {
+        setItems({ posts: [], comments: [], reports: [] });
+        return;
+      }
       setError("");
       try {
-        const admin = await isCurrentUserFeedAdmin();
-        if (cancelled) return;
-        setIsAdmin(admin);
-        if (admin) {
-          const nextItems = await fetchAdminFeedItems();
-          if (!cancelled) setItems(nextItems);
-        }
+        const nextItems = await fetchAdminFeedItems();
+        if (!cancelled) setItems(nextItems);
       } catch (err) {
-        if (!cancelled) setError(err.message || "Could not verify admin access.");
-      } finally {
-        if (!cancelled) setIsChecking(false);
+        if (!cancelled) setError(err.message || "Could not load feed moderation queues.");
       }
     }
-    checkAccess();
+    loadForSuperuser();
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
+  }, [configured, isSuperuser, user?.id]);
 
   const postById = useMemo(() => {
     const map = new Map();
@@ -164,7 +157,7 @@ export default function AdminFeed() {
         targetType,
         targetId,
         action,
-        adminNote: `Admin ${action} from Thuto feed panel.`,
+        adminNote: `Superuser ${action} from Thuto feed moderation.`,
       });
       setNotice("Feed item updated.");
       await loadAdminItems();
@@ -178,7 +171,7 @@ export default function AdminFeed() {
   if (!configured) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Feed admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Feed moderation</h1>
         <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           Supabase must be configured before the feed admin panel can work.
         </p>
@@ -186,37 +179,37 @@ export default function AdminFeed() {
     );
   }
 
-  if (!user && !isChecking) {
+  if (!user && !isLoading) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Feed admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Feed moderation</h1>
         <p className="rounded-2xl border border-brand-100 bg-white p-4 text-sm text-stone-600 shadow-sm">
           <Link to="/auth?mode=login" className="font-semibold text-brand-700 underline">
             Log in
           </Link>{" "}
-          with an admin account to review feed posts.
+          with a Thuto superuser account to review feed posts.
         </p>
       </div>
     );
   }
 
-  if (isChecking) {
+  if (isLoading || (user && isSuperuserLoading)) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Feed admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Feed moderation</h1>
         <p className="rounded-2xl border border-brand-100 bg-white p-4 text-sm text-stone-500 shadow-sm">
-          Checking admin access...
+          Checking superuser access...
         </p>
       </div>
     );
   }
 
-  if (!isAdmin) {
+  if (!isSuperuser) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Feed admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Feed moderation</h1>
         <p className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          This account is not listed in feed_admins.
+          This account is not listed as a Thuto superuser.
         </p>
       </div>
     );
@@ -225,10 +218,10 @@ export default function AdminFeed() {
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Admin moderation</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Superuser moderation</p>
         <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">Feed control room</h1>
         <p className="mt-2 text-sm leading-relaxed text-stone-600">
-          Review AI decisions, take down weak posts, restore safe content, and watch reports.
+          Review AI decisions, take down weak posts, restore safe content, and watch reports as a Thuto superuser.
         </p>
       </header>
 

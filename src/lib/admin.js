@@ -1,9 +1,9 @@
-import { fetchAdminFeedItems, isCurrentUserFeedAdmin } from "./feed.js";
+import { fetchAdminFeedItems } from "./feed.js";
 import { fetchProgrammes } from "./programmesData.js";
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 import { fetchUniversities } from "./universitiesData.js";
 
-export { isCurrentUserFeedAdmin, isSupabaseConfigured };
+export { isSupabaseConfigured };
 
 function countBy(items, getKey) {
   return items.reduce((counts, item) => {

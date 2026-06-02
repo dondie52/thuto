@@ -4,7 +4,6 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import {
   deleteOpportunityPost,
   fetchAdminOverview,
-  isCurrentUserFeedAdmin,
   isSupabaseConfigured,
   saveOpportunityPost,
   setOpportunityPublished,
@@ -12,6 +11,13 @@ import {
 } from "../lib/admin.js";
 import { FEED_CATEGORIES, FEED_STATUS_LABELS, categoryLabel, moderateFeedTarget, submitFeedPost } from "../lib/feed.js";
 import { useAuth } from "../lib/auth.jsx";
+import {
+  deleteProgrammeOverride,
+  deleteUniversityOverride,
+  saveProgrammeOverride,
+  saveUniversityOverride,
+  uploadContentAsset,
+} from "../lib/contentManagement.js";
 
 const CONTROL_LINKS = [
   { to: "/admin/feed", label: "Feed moderation", description: "Approve, reject, remove, restore, and review reports." },
@@ -41,6 +47,42 @@ const EMPTY_OFFICIAL_POST = {
   linkUrl: "",
 };
 
+const EMPTY_UNIVERSITY_FORM = {
+  id: "",
+  name: "",
+  location: "",
+  description: "",
+  website: "",
+  phone: "",
+  applicationOpen: "",
+  applicationClose: "",
+  applyUrl: "",
+  logo: "",
+  campusPhoto: "",
+  resourcesJson: "[]",
+  published: true,
+};
+
+const EMPTY_PROGRAMME_FORM = {
+  id: "",
+  name: "",
+  university: "",
+  universityShort: "",
+  field: "",
+  faculty: "",
+  minPoints: "",
+  duration: "",
+  description: "",
+  officialUrl: "",
+  applyUrl: "",
+  applicationDeadline: "",
+  coverImage: "",
+  careers: "",
+  tags: "",
+  modulesJson: "[]",
+  published: true,
+};
+
 function formatDate(value) {
   if (!value) return "Not set";
   const date = new Date(value);
@@ -68,16 +110,45 @@ function StatusPill({ status }) {
   return <span className={`rounded-full px-3 py-1 text-xs font-semibold ${tone}`}>{FEED_STATUS_LABELS[status] || status}</span>;
 }
 
+function toJson(value, fallback = "[]") {
+  try {
+    return JSON.stringify(value || [], null, 2);
+  } catch {
+    return fallback;
+  }
+}
+
+function parseJsonArray(value, label) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) return [];
+  const parsed = JSON.parse(trimmed);
+  if (!Array.isArray(parsed)) throw new Error(`${label} must be a JSON array.`);
+  return parsed;
+}
+
+function csvList(value) {
+  return String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function selectedFile(event) {
+  return event.target.files?.[0] || null;
+}
+
 export default function Admin() {
-  useDocumentTitle("Admin | Thuto");
-  const { user, supabaseConfigured } = useAuth();
+  useDocumentTitle("Superuser | Thuto");
+  const { isLoading, isSuperuser, isSuperuserLoading, supabaseConfigured, user } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
-  const [isChecking, setIsChecking] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [overview, setOverview] = useState(null);
   const [busyTarget, setBusyTarget] = useState("");
   const [officialPostForm, setOfficialPostForm] = useState(EMPTY_OFFICIAL_POST);
   const [opportunityForm, setOpportunityForm] = useState(EMPTY_OPPORTUNITY);
+  const [contentUniversities, setContentUniversities] = useState([]);
+  const [contentProgrammes, setContentProgrammes] = useState([]);
+  const [universityForm, setUniversityForm] = useState(EMPTY_UNIVERSITY_FORM);
+  const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
   const [editingOpportunityId, setEditingOpportunityId] = useState("");
   const [premiumEdits, setPremiumEdits] = useState({});
   const [error, setError] = useState("");
@@ -92,27 +163,30 @@ export default function Admin() {
     }
   }
 
+  async function loadContentCatalog() {
+    const [universitiesResult, programmes] = await Promise.all([
+      fetchUniversities({ includeDrafts: true }),
+      fetchProgrammes({ includeDrafts: true }),
+    ]);
+    setContentUniversities(universitiesResult.list);
+    setContentProgrammes(programmes);
+  }
+
   useEffect(() => {
     let cancelled = false;
-    async function checkAccess() {
-      setIsChecking(true);
-      setError("");
-      try {
-        const admin = await isCurrentUserFeedAdmin();
-        if (cancelled) return;
-        setIsAdmin(admin);
-        if (admin) await loadOverview();
-      } catch (err) {
-        if (!cancelled) setError(err.message || "Could not verify admin access.");
-      } finally {
-        if (!cancelled) setIsChecking(false);
+    async function loadForSuperuser() {
+      if (!configured || !user?.id || !isSuperuser) {
+        setOverview(null);
+        return;
       }
+      await Promise.all([loadOverview(), loadContentCatalog()]);
+      if (cancelled) return;
     }
-    checkAccess();
+    loadForSuperuser();
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
+  }, [configured, isSuperuser, user?.id]);
 
   const reviewQueue = useMemo(() => {
     if (!overview) return [];
@@ -137,7 +211,7 @@ export default function Admin() {
         targetType,
         targetId,
         action,
-        adminNote: `Admin ${action} from Thuto admin dashboard.`,
+        adminNote: `Superuser ${action} from Thuto control room.`,
       });
       setNotice("Admin action saved.");
       await loadOverview();
@@ -243,6 +317,199 @@ export default function Admin() {
     }
   }
 
+  function editUniversityContent(id) {
+    const university = contentUniversities.find((item) => item.id === id);
+    if (!university) {
+      setUniversityForm(EMPTY_UNIVERSITY_FORM);
+      return;
+    }
+    setUniversityForm({
+      id: university.id || "",
+      name: university.name || "",
+      location: university.location || "",
+      description: university.description || "",
+      website: university.website || "",
+      phone: university.phone || "",
+      applicationOpen: university.applicationOpen || "",
+      applicationClose: university.applicationClose || "",
+      applyUrl: university.applyUrl || "",
+      logo: university.logo || "",
+      campusPhoto: university.campusPhoto || university.campusImage || "",
+      resourcesJson: toJson(university.resources),
+      published: true,
+    });
+  }
+
+  function editProgrammeContent(id) {
+    const programme = contentProgrammes.find((item) => item.id === id);
+    if (!programme) {
+      setProgrammeForm(EMPTY_PROGRAMME_FORM);
+      return;
+    }
+    setProgrammeForm({
+      id: programme.id || "",
+      name: programme.name || "",
+      university: programme.university || "",
+      universityShort: programme.universityShort || "",
+      field: programme.field || "",
+      faculty: programme.faculty || "",
+      minPoints: Number.isFinite(programme.minPoints) ? String(programme.minPoints) : "",
+      duration: programme.duration || "",
+      description: programme.description || "",
+      officialUrl: programme.officialUrl || "",
+      applyUrl: programme.applyUrl || "",
+      applicationDeadline: programme.applicationDeadline || "",
+      coverImage: programme.coverImage || programme.heroImage || "",
+      careers: (programme.careers || programme.careerOpportunities || []).join(", "),
+      tags: (programme.tags || []).join(", "),
+      modulesJson: toJson(programme.modules),
+      published: true,
+    });
+  }
+
+  async function handleContentUpload(event, target) {
+    const file = selectedFile(event);
+    event.target.value = "";
+    if (!file) return;
+    setBusyTarget(`content-upload:${target}`);
+    setError("");
+    setNotice("");
+    try {
+      const url = await uploadContentAsset(file, target);
+      if (target === "university-logo") {
+        setUniversityForm((form) => ({ ...form, logo: url }));
+      } else if (target === "university-campus") {
+        setUniversityForm((form) => ({ ...form, campusPhoto: url }));
+      } else if (target === "university-document") {
+        setUniversityForm((form) => {
+          let resources = [];
+          try {
+            resources = parseJsonArray(form.resourcesJson, "Resources");
+          } catch {
+            resources = [];
+          }
+          resources.push({
+            title: file.name,
+            category: "Uploaded document",
+            url,
+            format: file.type?.includes("pdf") ? "PDF" : "Document",
+            sourceLabel: form.name || "Thuto upload",
+          });
+          return { ...form, resourcesJson: toJson(resources) };
+        });
+      } else if (target === "programme-cover") {
+        setProgrammeForm((form) => ({ ...form, coverImage: url }));
+      }
+      setNotice("Asset uploaded. Save the content form to publish the URL.");
+    } catch (err) {
+      setError(err.message || "Could not upload file.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handleUniversitySave(event) {
+    event.preventDefault();
+    setBusyTarget("content:university:save");
+    setError("");
+    setNotice("");
+    try {
+      const resources = parseJsonArray(universityForm.resourcesJson, "Resources");
+      const patch = {
+        id: universityForm.id.trim(),
+        name: universityForm.name.trim(),
+        location: universityForm.location.trim(),
+        description: universityForm.description.trim(),
+        website: universityForm.website.trim(),
+        phone: universityForm.phone.trim(),
+        applicationOpen: universityForm.applicationOpen || null,
+        applicationClose: universityForm.applicationClose || null,
+        applyUrl: universityForm.applyUrl.trim(),
+        logo: universityForm.logo.trim(),
+        campusPhoto: universityForm.campusPhoto.trim(),
+        resources,
+      };
+      await saveUniversityOverride({ id: patch.id, patch, published: universityForm.published });
+      setNotice("University page saved.");
+      await loadContentCatalog();
+    } catch (err) {
+      setError(err.message || "Could not save university page.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handleProgrammeSave(event) {
+    event.preventDefault();
+    setBusyTarget("content:programme:save");
+    setError("");
+    setNotice("");
+    try {
+      const modules = parseJsonArray(programmeForm.modulesJson, "Modules");
+      const minPoints = programmeForm.minPoints === "" ? null : Number(programmeForm.minPoints);
+      if (programmeForm.minPoints !== "" && !Number.isFinite(minPoints)) throw new Error("Minimum points must be a number.");
+      const patch = {
+        id: programmeForm.id.trim(),
+        name: programmeForm.name.trim(),
+        university: programmeForm.university.trim(),
+        universityShort: programmeForm.universityShort.trim(),
+        field: programmeForm.field.trim(),
+        faculty: programmeForm.faculty.trim(),
+        minPoints,
+        duration: programmeForm.duration.trim(),
+        description: programmeForm.description.trim(),
+        officialUrl: programmeForm.officialUrl.trim(),
+        applyUrl: programmeForm.applyUrl.trim(),
+        applicationDeadline: programmeForm.applicationDeadline || null,
+        coverImage: programmeForm.coverImage.trim(),
+        careers: csvList(programmeForm.careers),
+        tags: csvList(programmeForm.tags),
+        modules,
+      };
+      await saveProgrammeOverride({ id: patch.id, patch, published: programmeForm.published });
+      setNotice("Programme page saved.");
+      await loadContentCatalog();
+    } catch (err) {
+      setError(err.message || "Could not save programme page.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handleDeleteUniversityOverride() {
+    if (!universityForm.id) return;
+    setBusyTarget("content:university:delete");
+    setError("");
+    setNotice("");
+    try {
+      await deleteUniversityOverride(universityForm.id);
+      setNotice("University override deleted. Bundled data will show again.");
+      setUniversityForm(EMPTY_UNIVERSITY_FORM);
+      await loadContentCatalog();
+    } catch (err) {
+      setError(err.message || "Could not delete university override.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handleDeleteProgrammeOverride() {
+    if (!programmeForm.id) return;
+    setBusyTarget("content:programme:delete");
+    setError("");
+    setNotice("");
+    try {
+      await deleteProgrammeOverride(programmeForm.id);
+      setNotice("Programme override deleted. Bundled data will show again.");
+      setProgrammeForm(EMPTY_PROGRAMME_FORM);
+      await loadContentCatalog();
+    } catch (err) {
+      setError(err.message || "Could not delete programme override.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
   async function handlePremiumSave(profile) {
     const edit = premiumEdits[profile.id] || {};
     setBusyTarget(`profile:${profile.id}:premium`);
@@ -267,7 +534,7 @@ export default function Admin() {
   if (!configured) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Superuser</h1>
         <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           Supabase must be configured before live admin controls can work.
         </p>
@@ -275,37 +542,37 @@ export default function Admin() {
     );
   }
 
-  if (!user && !isChecking) {
+  if (!user && !isLoading) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Superuser</h1>
         <p className="rounded-2xl border border-brand-100 bg-white p-4 text-sm text-stone-600 shadow-sm">
           <Link to="/auth?mode=login" className="font-semibold text-brand-700 underline">
             Log in
           </Link>{" "}
-          with an admin account to control Thuto.
+          with a Thuto superuser account to control operations.
         </p>
       </div>
     );
   }
 
-  if (isChecking) {
+  if (isLoading || (user && isSuperuserLoading)) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Superuser</h1>
         <p className="rounded-2xl border border-brand-100 bg-white p-4 text-sm text-stone-500 shadow-sm">
-          Checking admin access...
+          Checking superuser access...
         </p>
       </div>
     );
   }
 
-  if (!isAdmin) {
+  if (!isSuperuser) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-3xl font-bold text-brand-900">Admin</h1>
+        <h1 className="font-display text-3xl font-bold text-brand-900">Superuser</h1>
         <p className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          This account is not listed in feed_admins.
+          This account is not listed as a Thuto superuser.
         </p>
       </div>
     );
@@ -318,10 +585,10 @@ export default function Admin() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Thuto admin</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Thuto superuser</p>
           <h1 className="mt-2 font-display text-3xl font-bold text-brand-950">Control room</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-            Run moderation, inspect live operations, and jump into the main surfaces from one admin page.
+            Run moderation, inspect live operations, and jump into the main surfaces from one superuser page.
           </p>
         </div>
         <button
@@ -363,6 +630,418 @@ export default function Admin() {
             <p className="mt-1 text-sm leading-relaxed text-stone-600">{link.description}</p>
           </Link>
         ))}
+      </section>
+
+      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="font-display text-xl font-semibold text-brand-950">University page editor</h2>
+            <p className="mt-1 text-sm leading-relaxed text-stone-600">
+              Edit institution text, dates, logos, campus photos, and downloadable resources.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setUniversityForm(EMPTY_UNIVERSITY_FORM)}
+            className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+          >
+            New university
+          </button>
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-[16rem_1fr]">
+          <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+            Load existing
+            <select
+              value={universityForm.id}
+              onChange={(event) => editUniversityContent(event.target.value)}
+              className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+            >
+              <option value="">Choose university...</option>
+              {contentUniversities.map((university) => (
+                <option key={university.id} value={university.id}>
+                  {university.name || university.id}
+                </option>
+              ))}
+            </select>
+          </label>
+          <form onSubmit={handleUniversitySave} className="grid gap-3 rounded-2xl bg-stone-50 p-3">
+            <div className="grid gap-3 sm:grid-cols-3">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                ID
+                <input
+                  required
+                  value={universityForm.id}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, id: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 sm:col-span-2">
+                Name
+                <input
+                  required
+                  value={universityForm.name}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, name: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Location
+                <input
+                  value={universityForm.location}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, location: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Phone
+                <input
+                  value={universityForm.phone}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, phone: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Description
+              <textarea
+                rows={3}
+                value={universityForm.description}
+                onChange={(event) => setUniversityForm((form) => ({ ...form, description: event.target.value }))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              />
+            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Website
+                <input
+                  type="url"
+                  value={universityForm.website}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, website: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Apply URL
+                <input
+                  type="url"
+                  value={universityForm.applyUrl}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, applyUrl: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Opens
+                <input
+                  type="date"
+                  value={universityForm.applicationOpen || ""}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, applicationOpen: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Closes
+                <input
+                  type="date"
+                  value={universityForm.applicationClose || ""}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, applicationClose: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Logo URL
+                <input
+                  value={universityForm.logo}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, logo: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="focus-ring self-end rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
+                Upload logo
+                <input type="file" accept="image/*" onChange={(event) => handleContentUpload(event, "university-logo")} className="sr-only" />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Campus photo URL
+                <input
+                  value={universityForm.campusPhoto}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, campusPhoto: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="focus-ring self-end rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
+                Upload photo
+                <input type="file" accept="image/*" onChange={(event) => handleContentUpload(event, "university-campus")} className="sr-only" />
+              </label>
+            </div>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Resources JSON
+              <textarea
+                rows={5}
+                value={universityForm.resourcesJson}
+                onChange={(event) => setUniversityForm((form) => ({ ...form, resourcesJson: event.target.value }))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 font-mono text-xs normal-case tracking-normal text-stone-800"
+              />
+            </label>
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
+                Upload document
+                <input
+                  type="file"
+                  accept="application/pdf,.doc,.docx,image/*"
+                  onChange={(event) => handleContentUpload(event, "university-document")}
+                  className="sr-only"
+                />
+              </label>
+              <label className="flex items-center gap-2 rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-semibold text-brand-900">
+                <input
+                  type="checkbox"
+                  checked={universityForm.published}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, published: event.target.checked }))}
+                />
+                Published
+              </label>
+              <button
+                type="submit"
+                disabled={busyTarget === "content:university:save"}
+                className="focus-ring rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-60"
+              >
+                Save university
+              </button>
+              <button
+                type="button"
+                disabled={!universityForm.id || busyTarget === "content:university:delete"}
+                onClick={handleDeleteUniversityOverride}
+                className="focus-ring rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-100 disabled:opacity-50"
+              >
+                Delete override
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="font-display text-xl font-semibold text-brand-950">Programme page editor</h2>
+            <p className="mt-1 text-sm leading-relaxed text-stone-600">
+              Add or edit programmes, application links, covers, careers, tags, and module samples.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setProgrammeForm(EMPTY_PROGRAMME_FORM)}
+            className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+          >
+            New programme
+          </button>
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-[16rem_1fr]">
+          <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+            Load existing
+            <select
+              value={programmeForm.id}
+              onChange={(event) => editProgrammeContent(event.target.value)}
+              className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+            >
+              <option value="">Choose programme...</option>
+              {contentProgrammes.slice(0, 600).map((programme) => (
+                <option key={programme.id} value={programme.id}>
+                  {programme.name || programme.id}
+                </option>
+              ))}
+            </select>
+          </label>
+          <form onSubmit={handleProgrammeSave} className="grid gap-3 rounded-2xl bg-stone-50 p-3">
+            <div className="grid gap-3 sm:grid-cols-3">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                ID
+                <input
+                  required
+                  value={programmeForm.id}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, id: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 sm:col-span-2">
+                Name
+                <input
+                  required
+                  value={programmeForm.name}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, name: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                University
+                <input
+                  required
+                  value={programmeForm.university}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, university: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                University short
+                <input
+                  value={programmeForm.universityShort}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, universityShort: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Field
+                <input
+                  value={programmeForm.field}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, field: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Faculty
+                <input
+                  value={programmeForm.faculty}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, faculty: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Min points
+                <input
+                  type="number"
+                  value={programmeForm.minPoints}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, minPoints: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Duration
+                <input
+                  value={programmeForm.duration}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, duration: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Application deadline
+                <input
+                  type="date"
+                  value={programmeForm.applicationDeadline || ""}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, applicationDeadline: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Description
+              <textarea
+                rows={3}
+                value={programmeForm.description}
+                onChange={(event) => setProgrammeForm((form) => ({ ...form, description: event.target.value }))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              />
+            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Official URL
+                <input
+                  type="url"
+                  value={programmeForm.officialUrl}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, officialUrl: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Apply URL
+                <input
+                  type="url"
+                  value={programmeForm.applyUrl}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, applyUrl: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Cover image URL
+                <input
+                  value={programmeForm.coverImage}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, coverImage: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="focus-ring self-end rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
+                Upload cover
+                <input type="file" accept="image/*" onChange={(event) => handleContentUpload(event, "programme-cover")} className="sr-only" />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Careers (comma-separated)
+                <input
+                  value={programmeForm.careers}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, careers: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Tags (comma-separated)
+                <input
+                  value={programmeForm.tags}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, tags: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+            </div>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Modules JSON
+              <textarea
+                rows={5}
+                value={programmeForm.modulesJson}
+                onChange={(event) => setProgrammeForm((form) => ({ ...form, modulesJson: event.target.value }))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 font-mono text-xs normal-case tracking-normal text-stone-800"
+              />
+            </label>
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="flex items-center gap-2 rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-semibold text-brand-900">
+                <input
+                  type="checkbox"
+                  checked={programmeForm.published}
+                  onChange={(event) => setProgrammeForm((form) => ({ ...form, published: event.target.checked }))}
+                />
+                Published
+              </label>
+              <button
+                type="submit"
+                disabled={busyTarget === "content:programme:save"}
+                className="focus-ring rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-60"
+              >
+                Save programme
+              </button>
+              <button
+                type="button"
+                disabled={!programmeForm.id || busyTarget === "content:programme:delete"}
+                onClick={handleDeleteProgrammeOverride}
+                className="focus-ring rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-100 disabled:opacity-50"
+              >
+                Delete override
+              </button>
+            </div>
+          </form>
+        </div>
       </section>
 
       <section className="rounded-3xl border border-brand-100 bg-white p-4 shadow-sm">

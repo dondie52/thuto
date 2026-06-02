@@ -27,6 +27,8 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured());
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [isSuperuser, setIsSuperuser] = useState(false);
+  const [isSuperuserLoading, setIsSuperuserLoading] = useState(() => isSupabaseConfigured());
   const [authError, setAuthError] = useState("");
   const supabaseConfigured = isSupabaseConfigured();
 
@@ -64,6 +66,34 @@ export function AuthProvider({ children }) {
     return fetchProfile(userId);
   }, [fetchProfile, session?.user?.id]);
 
+  const refreshSuperuserStatus = useCallback(async () => {
+    const supabase = getSupabase();
+    const userId = session?.user?.id;
+    if (!supabase || !userId) {
+      setIsSuperuser(false);
+      setIsSuperuserLoading(false);
+      return false;
+    }
+
+    setIsSuperuserLoading(true);
+    const { data, error } = await supabase
+      .from("feed_admins")
+      .select("user_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+    setIsSuperuserLoading(false);
+
+    if (error) {
+      console.warn("Superuser status fetch failed:", error.message);
+      setIsSuperuser(false);
+      return false;
+    }
+
+    const nextIsSuperuser = Boolean(data);
+    setIsSuperuser(nextIsSuperuser);
+    return nextIsSuperuser;
+  }, [session?.user?.id]);
+
   const saveProfile = useCallback(
     async (patch) => {
       const updated = await updateUserProfile(patch);
@@ -99,9 +129,11 @@ export function AuthProvider({ children }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setIsSuperuserLoading(Boolean(nextSession?.user?.id));
       setSession(nextSession);
       if (!nextSession) {
         setProfile(null);
+        setIsSuperuser(false);
         setAuthError("");
       }
     });
@@ -120,6 +152,39 @@ export function AuthProvider({ children }) {
     }
     fetchProfile(userId);
   }, [session?.user?.id, fetchProfile]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const supabase = getSupabase();
+    const userId = session?.user?.id;
+    if (!supabase || !userId) {
+      setIsSuperuser(false);
+      setIsSuperuserLoading(false);
+      return undefined;
+    }
+
+    async function checkSuperuserStatus() {
+      setIsSuperuserLoading(true);
+      const { data, error } = await supabase
+        .from("feed_admins")
+        .select("user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
+      if (cancelled) return;
+      if (error) {
+        console.warn("Superuser status fetch failed:", error.message);
+        setIsSuperuser(false);
+      } else {
+        setIsSuperuser(Boolean(data));
+      }
+      setIsSuperuserLoading(false);
+    }
+
+    checkSuperuserStatus();
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.user?.id]);
 
   async function signUp({ email, password, fullName }) {
     const supabase = getSupabase();
@@ -141,6 +206,7 @@ export function AuthProvider({ children }) {
       throw error;
     }
     if (data?.session) {
+      setIsSuperuserLoading(Boolean(data.session.user?.id));
       setSession(data.session);
     }
     return data;
@@ -157,6 +223,7 @@ export function AuthProvider({ children }) {
       setAuthError(error.message);
       throw error;
     }
+    setIsSuperuserLoading(Boolean(data?.session?.user?.id));
     setSession(data?.session || null);
     return data;
   }
@@ -173,6 +240,8 @@ export function AuthProvider({ children }) {
     }
     setSession(null);
     setProfile(null);
+    setIsSuperuser(false);
+    setIsSuperuserLoading(false);
   }
 
   const isPremium = useMemo(() => isPremiumActive(profile), [profile]);
@@ -182,9 +251,12 @@ export function AuthProvider({ children }) {
       authError,
       isLoading,
       isProfileLoading,
+      isSuperuser,
+      isSuperuserLoading,
       logout,
       profile,
       refreshProfile,
+      refreshSuperuserStatus,
       saveProfile,
       session,
       signIn,
@@ -193,7 +265,20 @@ export function AuthProvider({ children }) {
       user: session?.user || null,
       isPremium,
     }),
-    [authError, isLoading, isProfileLoading, profile, refreshProfile, saveProfile, session, supabaseConfigured, isPremium],
+    [
+      authError,
+      isLoading,
+      isProfileLoading,
+      isSuperuser,
+      isSuperuserLoading,
+      profile,
+      refreshProfile,
+      refreshSuperuserStatus,
+      saveProfile,
+      session,
+      supabaseConfigured,
+      isPremium,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

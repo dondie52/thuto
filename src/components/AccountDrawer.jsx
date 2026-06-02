@@ -11,6 +11,8 @@ function ToolIcon({ name }) {
     saved: <path strokeLinecap="round" strokeLinejoin="round" d="M6 4.75A2.75 2.75 0 018.75 2h6.5A2.75 2.75 0 0118 4.75V21l-6-3.5L6 21V4.75z" />,
     compare: <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16M17 4v16M4 8h6M14 8h6M5 8l2 5 2-5M15 8l2 5 2-5" />,
     fit: <path strokeLinecap="round" strokeLinejoin="round" d="M10.75 18.5a7.75 7.75 0 117.75-7.75 7.75 7.75 0 01-7.75 7.75zM16.5 16.5L21 21M8.5 10.75l1.5 1.5 3.25-3.5" />,
+    admin: <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 3v5.4c0 4.5-2.9 8.5-7 9.6-4.1-1.1-7-5.1-7-9.6V6l7-3zM9.5 12.5l1.7 1.7 3.6-4" />,
+    moderation: <path strokeLinecap="round" strokeLinejoin="round" d="M5 5.5A2.5 2.5 0 017.5 3h9A2.5 2.5 0 0119 5.5v13L15.5 16h-8A2.5 2.5 0 015 13.5v-8zM8.5 8h7M8.5 11.5h4M15 11l1 1 2-2" />,
     settings: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25A3.75 3.75 0 1112 15.75 3.75 3.75 0 0112 8.25zM19 12a7.2 7.2 0 00-.08-1l2-1.55-2-3.46-2.35.94a7.65 7.65 0 00-1.73-1L14.5 3h-5l-.34 2.93a7.65 7.65 0 00-1.73 1L5.08 5.99l-2 3.46 2 1.55a7.2 7.2 0 000 2l-2 1.55 2 3.46 2.35-.94a7.65 7.65 0 001.73 1L9.5 21h5l.34-2.93a7.65 7.65 0 001.73-1l2.35.94 2-3.46-2-1.55c.05-.33.08-.66.08-1z" />,
     support: <path strokeLinecap="round" strokeLinejoin="round" d="M5 5.5A3.5 3.5 0 018.5 2h7A3.5 3.5 0 0119 5.5v5A3.5 3.5 0 0115.5 14H11l-5 5v-5.25A3.5 3.5 0 015 10.5v-5zM9 7h6M9 10h4" />,
   };
@@ -35,6 +37,11 @@ const moreToolItems = [
   { to: "/fit-finder", label: "Fit Finder", description: "Discover programmes suited to you", icon: "fit" },
   { to: "/settings", label: "General Settings", description: "App preferences and data controls", icon: "settings" },
   { to: "/support", label: "Support and Feedback", description: "Report a problem or share ideas", icon: "support" },
+];
+
+const superuserToolItems = [
+  { to: "/admin", label: "Control Room", description: "Operations overview, opportunities, and premium tools", icon: "admin" },
+  { to: "/admin/feed", label: "Feed Moderation", description: "Approve, reject, restore, and review reports", icon: "moderation" },
 ];
 
 function itemClass({ isActive }) {
@@ -69,13 +76,37 @@ function DrawerNavItem({ to, label, description, icon }) {
   );
 }
 
+function OperatorNavItem({ to, label, description, icon }) {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        [
+          "focus-ring flex items-center gap-3 rounded-xl border px-3 py-3 text-left transition",
+          isActive
+            ? "border-white/60 bg-white text-brand-900 shadow-sm"
+            : "border-white/15 bg-white/10 text-white hover:border-white/40 hover:bg-white/15",
+        ].join(" ")
+      }
+    >
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/15 text-current">
+        <ToolIcon name={icon} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block break-words text-sm font-semibold">{label}</span>
+        <span className="line-clamp-1 block text-xs opacity-75">{description}</span>
+      </span>
+    </NavLink>
+  );
+}
+
 export default function AccountDrawer() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [drawerError, setDrawerError] = useState("");
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
-  const { isLoading, isPremium, logout, profile, supabaseConfigured, user } = useAuth();
+  const { isLoading, isPremium, isSuperuser, isSuperuserLoading, logout, profile, supabaseConfigured, user } = useAuth();
 
   const isSignedIn = Boolean(user);
 
@@ -197,6 +228,11 @@ export default function AccountDrawer() {
                 >
                   {profileDisplayName}
                 </Link>
+                {isSuperuser ? (
+                  <span className="shrink-0 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-800">
+                    Superuser
+                  </span>
+                ) : null}
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
@@ -211,37 +247,60 @@ export default function AccountDrawer() {
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+              {isSuperuser ? (
+                <div className="mb-4 rounded-2xl border border-brand-200 bg-gradient-to-br from-brand-900 via-brand-800 to-teal-700 p-3 text-white shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-50/80">Operator mode</p>
+                  <p className="mt-1 font-display text-lg font-semibold">Thuto Ops Superuser</p>
+                  <p className="mt-1 text-xs leading-relaxed text-brand-50/85">
+                    Manage moderation, opportunities, and account operations with admin-only database policies.
+                  </p>
+                  <nav className="mt-3 grid gap-2" aria-label="Superuser tools">
+                    {superuserToolItems.map((item) => (
+                      <OperatorNavItem key={item.to} {...item} />
+                    ))}
+                  </nav>
+                </div>
+              ) : null}
+
               <nav className="space-y-1" aria-label="Tools">
                 {primaryToolItems.map((item) => (
                   <DrawerNavItem key={item.to} {...item} />
                 ))}
               </nav>
 
-              <div
-                className={`mt-4 rounded-2xl border p-3 shadow-sm ${
-                  isPremium ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"
-                }`}
-              >
-                <p
-                  className={`text-xs font-semibold uppercase tracking-wide ${
-                    isPremium ? "text-emerald-800" : "text-amber-800"
+              {isSuperuser ? null : (
+                <div
+                  className={`mt-4 rounded-2xl border p-3 shadow-sm ${
+                    isPremium ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"
                   }`}
                 >
-                  {isPremium ? "Pro active" : "Upgrade"}
+                  <p
+                    className={`text-xs font-semibold uppercase tracking-wide ${
+                      isPremium ? "text-emerald-800" : "text-amber-800"
+                    }`}
+                  >
+                    {isPremium ? "Pro active" : "Upgrade"}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Pro</p>
+                  <p className="mt-1 text-xs leading-relaxed text-stone-600">
+                    {isPremium
+                      ? "PDF downloads, WhatsApp support, and unlimited tools are unlocked."
+                      : "Download programme breakdowns, get WhatsApp support, and unlock unlimited tools to finalise your applications."}
+                  </p>
+                  <Link
+                    to={isPremium ? "/settings" : "/upgrade"}
+                    className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-xl bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
+                  >
+                    {isPremium ? "Manage plan" : "Upgrade to Pro"}
+                  </Link>
+                </div>
+              )}
+
+              {isSuperuserLoading && isSignedIn && !isSuperuser ? (
+                <p className="mt-4 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs text-stone-500">
+                  Checking operator access...
                 </p>
-                <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Pro</p>
-                <p className="mt-1 text-xs leading-relaxed text-stone-600">
-                  {isPremium
-                    ? "PDF downloads, WhatsApp support, and unlimited tools are unlocked."
-                    : "Download programme breakdowns, get WhatsApp support, and unlock unlimited tools to finalise your applications."}
-                </p>
-                <Link
-                  to={isPremium ? "/settings" : "/upgrade"}
-                  className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-xl bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
-                >
-                  {isPremium ? "Manage plan" : "Upgrade to Pro"}
-                </Link>
-              </div>
+              ) : null}
 
               <nav className="mt-4 space-y-1" aria-label="More tools">
                 <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">More tools</p>
