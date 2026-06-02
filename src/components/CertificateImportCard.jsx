@@ -100,8 +100,10 @@ export default function CertificateImportCard({ onUseGrades }) {
       <div className="border-b border-brand-100 bg-brand-50/70 px-4 py-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="font-display text-base font-semibold text-brand-900">Import certificate</h2>
-            <p className="mt-1 text-sm text-slate-600">Photo or PDF.</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Certificate Import</p>
+            <h2 className="mt-1 font-display text-base font-semibold text-brand-900">
+              Upload a certificate photo or PDF instead.
+            </h2>
           </div>
           <div className="flex flex-wrap gap-2">
             <button

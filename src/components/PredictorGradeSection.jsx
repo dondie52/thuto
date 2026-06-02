@@ -30,7 +30,8 @@ export default function PredictorGradeSection({
   return (
     <div id="predictor-grade-section" className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
       <fieldset className="space-y-3">
-        <legend className="text-sm font-semibold text-brand-800">Add grades</legend>
+        <legend className="text-sm font-semibold text-brand-800">Add your subjects and grades</legend>
+        <p className="text-sm text-slate-600">Thuto updates points as soon as each subject has a grade.</p>
         <ul className="space-y-3">
           {rows.map((row) => (
             <li
