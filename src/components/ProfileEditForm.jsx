@@ -95,7 +95,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
       const url = await uploadProfileAvatar(file);
       setAvatarUrl(url);
       await onSave({ avatarUrl: url });
-      setNotice("Profile picture updated.");
+      setNotice("Photo updated.");
     } catch (err) {
       setError(err.message || "Could not upload profile picture.");
     } finally {

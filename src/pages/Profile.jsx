@@ -181,7 +181,6 @@ export default function Profile() {
         <div className="rounded-2xl border border-brand-100 bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">Subject keys</p>
           <p className="mt-2 text-3xl font-bold text-brand-900">{predictor.requirementCount}</p>
-          <p className="mt-1 text-xs text-slate-600">Requirement categories saved from predictor rows.</p>
         </div>
         <div className="rounded-2xl border border-brand-100 bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">Saved</p>
