@@ -9,7 +9,19 @@ Manual “Facebook-style” announcements for **internships** and **private spon
 3. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in your deployment (see `.env.example`).
 4. Redeploy the Thuto PWA.
 
-## Adding a post
+## Adding a post from Superuser
+
+1. Open `/admin`, sign in with a Thuto superuser account, and choose **Opportunities**.
+2. Choose **Private sponsorship** or **Internship**.
+3. Paste the sponsor, title, body, optional source URL, expiry date, and sort order.
+4. Add a flyer image in either way:
+   - Choose **Upload flyer/image** to upload a gallery image to the public `opportunity-images` Supabase Storage bucket.
+   - Or paste an existing public URL into **Image URL**.
+5. Save. The post appears on `/sponsorships` (private sponsorship) or `/internships` if it is marked **Published**.
+
+Superuser uploads require the latest storage policy migration. Public users can read images, but only authenticated users listed in `public.feed_admins` can write to `opportunity-images`.
+
+## Adding a post from Supabase Dashboard
 
 1. **Storage** (optional): Upload a flyer/screenshot to `opportunity-images`. Copy the public URL.
 2. **Table Editor** → `opportunity_posts` → **Insert row**:
@@ -29,6 +41,10 @@ Manual “Facebook-style” announcements for **internships** and **private spon
 
 3. Save. The post appears on `/sponsorships` (private) or `/internships` within seconds for users.
 
+## Support feedback repair
+
+If the Superuser page shows `Could not find the table 'public.support_feedback' in the schema cache`, apply the latest migrations, including `support_feedback_repair`. The repair creates the table if it is missing, restores grants and RLS policies, and sends `notify pgrst, 'reload schema';` so PostgREST refreshes its schema cache.
+
 ## Unpublish or edit
 
 - Set `published` to `false` to hide without deleting.
@@ -38,7 +54,8 @@ Manual “Facebook-style” announcements for **internships** and **private spon
 ## Security
 
 - The **anon** key in the web app can **only read** rows where `published = true` and `expires_at` is null or in the future.
-- **Inserts/updates/deletes** require the service role (Dashboard, SQL editor, or a future admin tool)—never put the service role key in the PWA.
+- **Opportunity row writes** require a signed-in `public.feed_admins` superuser in the app, or the service role in Supabase Dashboard/SQL. Never put the service role key in the PWA.
+- **Opportunity image writes** to `opportunity-images` are limited to signed-in `public.feed_admins` superusers.
 
 ## App routes
 
