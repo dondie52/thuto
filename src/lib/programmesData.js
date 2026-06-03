@@ -42,7 +42,6 @@ const UNIVERSITY_ALIASES = {
   boitekanelo: ["Boitekanelo College"],
   "new-era": ["New Era College"],
   gips: ["Gaborone Institute of Professional Studies", "GIPS"],
-  bocodol: ["Botswana College of Distance and Open Learning", "BOCODOL"],
   "botswana-accountancy-training": ["Botswana Institute of Chartered Accountants Training Centre"],
   "chobe-brigade": ["Chobe Brigade", "Chobe Vocational Training Centre"],
   krda: ["KRDA (Kweneng Rural Development Association)", "KRDA", "Kweneng Rural Development Association"],
