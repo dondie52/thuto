@@ -318,6 +318,9 @@ export async function setFeedReaction({ postId, reaction }) {
 
   if (!reaction) {
     const { error } = await supabase.from("feed_reactions").delete().eq("post_id", postId).eq("user_id", user.id);
+    if (error?.code === "42501") {
+      throw new Error("Reactions are unavailable until the latest feed grants migration runs in Supabase.");
+    }
     if (error) throw error;
     return;
   }
@@ -330,6 +333,9 @@ export async function setFeedReaction({ postId, reaction }) {
     },
     { onConflict: "post_id,user_id" },
   );
+  if (error?.code === "42501") {
+    throw new Error("Reactions are unavailable until the latest feed grants migration runs in Supabase.");
+  }
   if (error) throw error;
 }
 
@@ -344,6 +350,9 @@ export async function reportFeedTarget({ targetType, targetId, reason, details =
     details,
   });
   if (error?.code === "23505") return { alreadyReported: true };
+  if (error?.code === "42501") {
+    throw new Error("Reporting is unavailable until the latest feed grants migration runs in Supabase.");
+  }
   if (error) throw error;
   return { alreadyReported: false };
 }

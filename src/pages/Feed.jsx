@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FeedPostCard from "../components/FeedPostCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
@@ -12,6 +12,14 @@ import {
   submitFeedComment,
   submitFeedPost,
 } from "../lib/feed.js";
+
+function profileInitial(name) {
+  const letter = String(name || "S")
+    .trim()
+    .charAt(0)
+    .toUpperCase();
+  return letter || "S";
+}
 
 function publishMessage(status) {
   if (status === "published") return "Posted live. Your update is on the feed.";
@@ -30,9 +38,11 @@ export default function Feed() {
   const [commentSubmittingFor, setCommentSubmittingFor] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [postFeedbackById, setPostFeedbackById] = useState({});
+  const [reportedTargetKeys, setReportedTargetKeys] = useState({});
   const [commentDrafts, setCommentDrafts] = useState({});
   const [expandedComments, setExpandedComments] = useState({});
-  const commentInputRefs = useRef({});
+  const [showComposerDetails, setShowComposerDetails] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(0);
   const [form, setForm] = useState({
     category: "general",
@@ -55,6 +65,8 @@ export default function Feed() {
   }
 
   useEffect(() => {
+    setPostFeedbackById({});
+    setReportedTargetKeys({});
     loadFeed();
   }, [user?.id]);
 
@@ -66,25 +78,39 @@ export default function Feed() {
     setCommentDrafts((current) => ({ ...current, [postId]: value }));
   }
 
-  function toggleComments(postId, { focusReply = false } = {}) {
-    setExpandedComments((current) => {
-      const nextOpen = focusReply ? true : !current[postId];
-      return { ...current, [postId]: nextOpen };
-    });
-    if (focusReply) {
-      window.requestAnimationFrame(() => {
-        commentInputRefs.current[postId]?.focus();
-      });
-    }
+  function setPostFeedback(postId, tone, message) {
+    setPostFeedbackById((current) => ({
+      ...current,
+      [postId]: { tone, message },
+    }));
   }
 
-  function setCommentInputRef(postId, node) {
-    if (node) commentInputRefs.current[postId] = node;
-    else delete commentInputRefs.current[postId];
+  function clearPostFeedback(postId) {
+    setPostFeedbackById((current) => {
+      if (!current[postId]) return current;
+      const next = { ...current };
+      delete next[postId];
+      return next;
+    });
+  }
+
+  function markTargetReported(targetType, targetId) {
+    setReportedTargetKeys((current) => ({
+      ...current,
+      [`${targetType}:${targetId}`]: true,
+    }));
+  }
+
+  function toggleComments(postId) {
+    setExpandedComments((current) => ({ ...current, [postId]: !current[postId] }));
   }
 
   const canCompose = configured && !isAuthLoading;
   const canPublish = canCompose && Boolean(user);
+  const composerName =
+    profile?.full_name?.trim() ||
+    user?.user_metadata?.full_name?.trim() ||
+    "Student";
   const profileIncomplete =
     Boolean(user) &&
     !(
@@ -116,6 +142,7 @@ export default function Feed() {
       });
       setNotice(publishMessage(result.post?.status));
       setForm({ category: "general", title: "", body: "", linkUrl: "", files: [] });
+      setShowComposerDetails(false);
       setFileInputKey((key) => key + 1);
       await loadFeed();
     } catch (err) {
@@ -127,10 +154,10 @@ export default function Feed() {
 
   async function handleReaction(post, reaction) {
     if (!user) {
-      setNotice("Log in to react to feed posts.");
+      setPostFeedback(post.id, "notice", "Log in to react to feed posts.");
       return;
     }
-    setError("");
+    clearPostFeedback(post.id);
     try {
       await setFeedReaction({
         postId: post.id,
@@ -138,7 +165,7 @@ export default function Feed() {
       });
       await loadFeed();
     } catch (err) {
-      setError(err.message || "Could not update reaction.");
+      setPostFeedback(post.id, "error", err.message || "Could not update reaction.");
     }
   }
 
@@ -161,12 +188,12 @@ export default function Feed() {
     }
   }
 
-  async function handleReport(targetType, targetId) {
+  async function handleReport({ postId, targetType, targetId }) {
     if (!user) {
-      setNotice("Log in to report feed content.");
+      setPostFeedback(postId, "notice", "Log in to report feed content.");
       return;
     }
-    setError("");
+    clearPostFeedback(postId);
     try {
       const result = await reportFeedTarget({
         targetType,
@@ -174,9 +201,15 @@ export default function Feed() {
         reason: "other",
         details: "Reported from the feed screen.",
       });
-      setNotice(result.alreadyReported ? "You already reported this item." : "Report sent to admins.");
+      markTargetReported(targetType, targetId);
+      setPostFeedback(
+        postId,
+        "notice",
+        result.alreadyReported ? "You already reported this item." : "Report sent to admins.",
+      );
+      await loadFeed();
     } catch (err) {
-      setError(err.message || "Could not send report.");
+      setPostFeedback(postId, "error", err.message || "Could not send report.");
     }
   }
 
@@ -239,107 +272,141 @@ export default function Feed() {
       ) : null}
 
       <section className="rounded-2xl border border-brand-100 bg-white p-4 shadow-card sm:p-5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="text-base font-bold text-brand-900">Add a post</h2>
-            <p className="mt-1 text-sm text-stone-500">Keep it useful for applicants and students.</p>
+        <div className="flex items-start gap-3">
+          {profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt=""
+              className="mt-0.5 h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-brand-100"
+            />
+          ) : (
+            <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-800 ring-1 ring-brand-100">
+              {profileInitial(composerName)}
+            </div>
+          )}
+
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h2 className="text-base font-bold text-brand-900">Create post</h2>
+                <p className="mt-1 text-sm text-stone-500">
+                  {user ? `Posting as ${composerName}. Keep it useful for applicants and students.` : "Draft a post in a smaller, quicker composer."}
+                </p>
+              </div>
+              <label className="min-w-[10rem] text-xs font-semibold text-stone-600">
+                Category
+                <select
+                  value={form.category}
+                  onChange={(event) => updateForm({ category: event.target.value })}
+                  disabled={!canCompose || isPosting}
+                  className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                >
+                  {FEED_CATEGORIES.map((category) => (
+                    <option key={category.value} value={category.value}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <form className="mt-3 space-y-3" onSubmit={handleSubmitPost}>
+              <label className="block">
+                <span className="sr-only">Post</span>
+                <textarea
+                  value={form.body}
+                  onChange={(event) => updateForm({ body: event.target.value })}
+                  maxLength={2400}
+                  rows={3}
+                  required
+                  disabled={!canCompose || isPosting}
+                  placeholder="What do you want to share?"
+                  className="w-full rounded-2xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-4 py-3 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                />
+              </label>
+
+              {showComposerDetails ? (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="text-xs font-semibold text-stone-600">Title optional</span>
+                    <input
+                      value={form.title}
+                      onChange={(event) => updateForm({ title: event.target.value })}
+                      maxLength={120}
+                      disabled={!canCompose || isPosting}
+                      placeholder="Example: BDF scholarship notice"
+                      className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-semibold text-stone-600">Source link optional</span>
+                    <input
+                      value={form.linkUrl}
+                      onChange={(event) => updateForm({ linkUrl: event.target.value })}
+                      disabled={!canCompose || isPosting}
+                      placeholder="https://..."
+                      className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                    />
+                  </label>
+                </div>
+              ) : null}
+
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-stone-100 bg-stone-50/80 px-3 py-2.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowComposerDetails((open) => !open)}
+                    className="focus-ring inline-flex min-h-9 items-center justify-center rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+                  >
+                    {showComposerDetails ? "Hide details" : "Add details"}
+                  </button>
+                  <label className="focus-within:ring-2 focus-within:ring-brand-200 inline-flex min-h-9 cursor-pointer items-center justify-center rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 hover:bg-brand-50">
+                    Photos
+                    <input
+                      key={fileInputKey}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      disabled={!canCompose || isPosting}
+                      onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
+                      className="sr-only"
+                    />
+                  </label>
+                  {form.files.length ? (
+                    <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+                      {form.files.length} {form.files.length === 1 ? "photo" : "photos"}
+                    </span>
+                  ) : null}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={!canPublish || isPosting || !form.body.trim()}
+                  className="focus-ring inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isPosting ? "Submitting..." : user ? "Post" : "Log in to post"}
+                </button>
+              </div>
+
+              {form.files.length ? (
+                <p className="rounded-xl bg-stone-50 px-3 py-2 text-xs text-stone-600">
+                  Attached: {form.files.map((file) => file.name).join(", ")}
+                </p>
+              ) : null}
+
+              {notice ? (
+                <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900" role="status">
+                  {notice}
+                </p>
+              ) : null}
+              {error ? (
+                <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+                  {error}
+                </p>
+              ) : null}
+            </form>
           </div>
         </div>
-
-        <form className="mt-4 space-y-3" onSubmit={handleSubmitPost}>
-          <div className="grid gap-3 sm:grid-cols-[12rem_1fr]">
-            <label className="block">
-              <span className="text-xs font-semibold text-stone-600">Category</span>
-              <select
-                value={form.category}
-                onChange={(event) => updateForm({ category: event.target.value })}
-                disabled={!canCompose || isPosting}
-                className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-              >
-                {FEED_CATEGORIES.map((category) => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-xs font-semibold text-stone-600">Title optional</span>
-              <input
-                value={form.title}
-                onChange={(event) => updateForm({ title: event.target.value })}
-                maxLength={120}
-                disabled={!canCompose || isPosting}
-                placeholder="Example: BDF scholarship notice"
-                className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-              />
-            </label>
-          </div>
-
-          <label className="block">
-            <span className="text-xs font-semibold text-stone-600">Post</span>
-            <textarea
-              value={form.body}
-              onChange={(event) => updateForm({ body: event.target.value })}
-              maxLength={2400}
-              rows={5}
-              required
-              disabled={!canCompose || isPosting}
-              placeholder="Write the update, question, opportunity, or useful notice..."
-              className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-            />
-          </label>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block">
-              <span className="text-xs font-semibold text-stone-600">Source link optional</span>
-              <input
-                value={form.linkUrl}
-                onChange={(event) => updateForm({ linkUrl: event.target.value })}
-                disabled={!canCompose || isPosting}
-                placeholder="https://..."
-                className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-              />
-            </label>
-            <label className="block">
-              <span className="text-xs font-semibold text-stone-600">Images optional, max 4</span>
-              <input
-                key={fileInputKey}
-                type="file"
-                accept="image/*"
-                multiple
-                disabled={!canCompose || isPosting}
-                onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
-                className="mt-1 block w-full text-sm text-stone-600 file:mr-3 file:rounded-xl file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-brand-800 hover:file:bg-brand-100 disabled:opacity-60"
-              />
-            </label>
-          </div>
-
-          {form.files.length ? (
-            <p className="rounded-xl bg-stone-50 px-3 py-2 text-xs text-stone-600">
-              Attached: {form.files.map((file) => file.name).join(", ")}
-            </p>
-          ) : null}
-
-          {notice ? (
-            <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900" role="status">
-              {notice}
-            </p>
-          ) : null}
-          {error ? (
-            <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
-              {error}
-            </p>
-          ) : null}
-
-          <button
-            type="submit"
-            disabled={!canPublish || isPosting || !form.body.trim()}
-            className="focus-ring inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-          >
-            {isPosting ? "Submitting..." : user ? "Post to feed" : "Log in to post"}
-          </button>
-        </form>
       </section>
 
       <section className="space-y-4">
@@ -374,12 +441,13 @@ export default function Feed() {
             commentsExpanded={Boolean(expandedComments[post.id])}
             commentDraft={commentDrafts[post.id]}
             isCommentSubmitting={commentSubmittingFor === post.id}
-            commentInputRef={(node) => setCommentInputRef(post.id, node)}
             onReact={handleReaction}
             onToggleComments={toggleComments}
             onCommentDraftChange={updateCommentDraft}
             onSubmitComment={handleSubmitComment}
             onReport={handleReport}
+            actionFeedback={postFeedbackById[post.id] || null}
+            reportedTargetKeys={reportedTargetKeys}
           />
         ))}
       </section>

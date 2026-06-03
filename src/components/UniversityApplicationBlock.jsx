@@ -20,6 +20,57 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
 
   if (!hasWindow && !applyHref) return null;
 
+  if (compact) {
+    const summary = hasWindow
+      ? [
+          u.applicationOpen ? `Opens ${formatDisplayDate(u.applicationOpen)}` : null,
+          u.applicationClose ? `Closes ${formatDisplayDate(u.applicationClose)}` : null,
+        ]
+          .filter(Boolean)
+          .join(" · ")
+      : "Dates not listed in Thuto - check the admissions site.";
+
+    return (
+      <div
+        className={[
+          "rounded-xl border p-3 text-xs",
+          urgent && daysLeft != null && daysLeft >= 0
+            ? "border-amber-300 bg-amber-50/80"
+            : "border-brand-100 bg-brand-50/50",
+        ].join(" ")}
+      >
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-900">Applications</p>
+            <p className="mt-1 leading-relaxed text-slate-700">{summary}</p>
+            {urgent && countdown && daysLeft != null && daysLeft >= 0 ? (
+              <p className="mt-1 font-semibold text-amber-900">{countdown}</p>
+            ) : u.applicationClose && daysLeft != null && daysLeft < 0 ? (
+              <p className="mt-1 font-medium text-slate-600">{countdown}</p>
+            ) : null}
+          </div>
+          {applyHref ? (
+            <a
+              href={applyHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center rounded-full bg-white px-3 py-1.5 font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 hover:text-brand-950"
+            >
+              Apply
+            </a>
+          ) : null}
+        </div>
+        {profileLink && u.id ? (
+          <p className="mt-2">
+            <Link to={`/universities/${u.id}`} className="font-medium text-brand-700 underline hover:text-brand-900">
+              View profile & deadlines
+            </Link>
+          </p>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div
       className={[

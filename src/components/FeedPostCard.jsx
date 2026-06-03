@@ -1,9 +1,11 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { categoryLabel, FEED_STATUS_LABELS } from "../lib/feed.js";
+import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS } from "../lib/feed.js";
 import { formatAuthorUniversity } from "../lib/profile.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const OFFICIAL_DISPLAY_NAME = "Thuto Admin";
+const LONG_PRESS_MS = 420;
 
 function formatRelativeTime(value) {
   if (!value) return "";
@@ -34,6 +36,15 @@ function avatarInitial(displayName) {
     .charAt(0)
     .toUpperCase();
   return letter || "S";
+}
+
+function targetKey(targetType, targetId) {
+  return `${targetType}:${targetId}`;
+}
+
+function feedbackClassName(tone) {
+  if (tone === "error") return "border border-red-200 bg-red-50 text-red-800";
+  return "border border-brand-100 bg-brand-50 text-brand-900";
 }
 
 function IconHeart({ filled, className = "h-4 w-4" }) {
@@ -174,54 +185,86 @@ function PostImages({ images }) {
   );
 }
 
+function InlineActionFeedback({ feedback, className = "mt-3" }) {
+  if (!feedback?.message) return null;
+
+  return (
+    <p
+      className={`${className} rounded-xl px-3 py-2 text-sm ${feedbackClassName(feedback.tone)}`}
+      role={feedback.tone === "error" ? "alert" : "status"}
+    >
+      {feedback.message}
+    </p>
+  );
+}
+
 function CommentSection({
   post,
   user,
   draft,
   isSubmitting,
-  commentInputRef,
+  actionFeedback,
   onDraftChange,
   onSubmitComment,
   onReport,
+  reportedTargetKeys,
 }) {
+  const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
+
   return (
     <div className="mt-4 border-t border-stone-100 pt-4">
       <div className="flex items-center justify-between gap-3">
         <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Comments</p>
         <button
           type="button"
-          onClick={() => onReport("post", post.id)}
-          className="text-xs font-semibold text-stone-500 underline hover:text-red-700"
+          onClick={() => onReport({ postId: post.id, targetType: "post", targetId: post.id })}
+          disabled={postReported}
+          className={[
+            "text-xs font-semibold underline",
+            postReported ? "cursor-default text-brand-700 decoration-brand-300" : "text-stone-500 hover:text-red-700",
+          ].join(" ")}
         >
-          Report
+          {postReported ? "Reported" : "Report"}
         </button>
       </div>
 
+      <InlineActionFeedback feedback={actionFeedback} />
+
       {post.comments.length ? (
         <ul className="mt-3 space-y-2">
-          {post.comments.map((comment) => (
-            <li key={comment.id} className="rounded-xl bg-stone-50 px-3 py-2.5">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold text-brand-900">{comment.authorDisplayName}</p>
-                  {comment.authorDistinction ? (
-                    <p className="text-[11px] font-medium text-brand-800/80">{comment.authorDistinction}</p>
-                  ) : null}
-                  <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-stone-700">{comment.body}</p>
-                  <p className="mt-1 text-[11px] text-stone-400">
-                    {formatRelativeTime(comment.publishedAt || comment.createdAt)}
-                  </p>
+          {post.comments.map((comment) => {
+            const commentReported = Boolean(reportedTargetKeys?.[targetKey("comment", comment.id)]);
+
+            return (
+              <li key={comment.id} className="rounded-xl bg-stone-50 px-3 py-2.5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-brand-900">{comment.authorDisplayName}</p>
+                    {comment.authorDistinction ? (
+                      <p className="text-[11px] font-medium text-brand-800/80">{comment.authorDistinction}</p>
+                    ) : null}
+                    <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-stone-700">{comment.body}</p>
+                    <p className="mt-1 text-[11px] text-stone-400">
+                      {formatRelativeTime(comment.publishedAt || comment.createdAt)}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onReport({ postId: post.id, targetType: "comment", targetId: comment.id })}
+                    disabled={commentReported}
+                    className={[
+                      "shrink-0 text-[11px] font-semibold underline",
+                      commentReported
+                        ? "cursor-default text-brand-700 decoration-brand-300"
+                        : "text-stone-400 hover:text-red-700",
+                    ].join(" ")}
+                  >
+                    {commentReported ? "Reported" : "Report"}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onReport("comment", comment.id)}
-                  className="shrink-0 text-[11px] font-semibold text-stone-400 underline hover:text-red-700"
-                >
-                  Report
-                </button>
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p className="mt-3 rounded-xl bg-stone-50 px-3 py-3 text-sm text-stone-500">No comments yet.</p>
@@ -230,7 +273,6 @@ function CommentSection({
       {user ? (
         <form className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]" onSubmit={(event) => onSubmitComment(event, post.id)}>
           <input
-            ref={commentInputRef}
             value={draft || ""}
             onChange={(event) => onDraftChange(post.id, event.target.value)}
             maxLength={1000}
@@ -267,12 +309,13 @@ function CommentSection({
  *   commentsExpanded?: boolean,
  *   commentDraft?: string,
  *   isCommentSubmitting?: boolean,
- *   commentInputRef?: (node: HTMLInputElement | null) => void,
+ *   actionFeedback?: { tone: string, message: string } | null,
+ *   reportedTargetKeys?: Record<string, boolean>,
  *   onReact: (post: object, reaction: string) => void,
  *   onToggleComments: (postId: string) => void,
  *   onCommentDraftChange: (postId: string, value: string) => void,
  *   onSubmitComment: (event: import("react").FormEvent, postId: string) => void,
- *   onReport: (targetType: string, targetId: string) => void,
+ *   onReport: (params: { postId: string, targetType: string, targetId: string }) => void,
  * }} props
  */
 export default function FeedPostCard({
@@ -282,21 +325,98 @@ export default function FeedPostCard({
   commentsExpanded = false,
   commentDraft = "",
   isCommentSubmitting = false,
-  commentInputRef,
+  actionFeedback = null,
+  reportedTargetKeys = {},
   onReact,
   onToggleComments,
   onCommentDraftChange,
   onSubmitComment,
   onReport,
 }) {
+  const [reactionPickerOpen, setReactionPickerOpen] = useState(false);
+  const reactionPickerRef = useRef(null);
+  const longPressTimerRef = useRef(null);
+  const suppressNextLikeClickRef = useRef(false);
   const linkUrl = safeExternalUrl(post.linkUrl);
   const isPublished = post.status === "published";
   const isOfficial = Boolean(post.isOfficial);
   const displayName = isOfficial ? OFFICIAL_DISPLAY_NAME : post.authorDisplayName;
   const timeLabel = formatRelativeTime(post.publishedAt || post.createdAt);
-  const likeCount = post.reactionCounts?.like || 0;
   const commentCount = post.comments?.length || 0;
-  const liked = post.viewerReaction === "like";
+  const reactionOptions = FEED_REACTIONS.map((reaction) => ({
+    ...reaction,
+    count: Number(post.reactionCounts?.[reaction.value] || 0),
+    active: post.viewerReaction === reaction.value,
+  }));
+  const activeReaction = reactionOptions.find((reaction) => reaction.active) || null;
+  const primaryReactionCount = activeReaction ? activeReaction.count : Number(post.reactionCounts?.like || 0);
+  const visibleReactionCounts = reactionOptions.filter((reaction) => reaction.count > 0);
+  const reactButtonLabel = activeReaction ? activeReaction.shortLabel : "Like";
+  const reactButtonActive = Boolean(activeReaction);
+
+  useEffect(() => {
+    if (!reactionPickerOpen) return undefined;
+
+    function handlePointerDown(event) {
+      if (!reactionPickerRef.current?.contains(event.target)) {
+        setReactionPickerOpen(false);
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setReactionPickerOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [reactionPickerOpen]);
+
+  useEffect(
+    () => () => {
+      if (longPressTimerRef.current) {
+        window.clearTimeout(longPressTimerRef.current);
+      }
+    },
+    [],
+  );
+
+  function clearLongPressTimer() {
+    if (longPressTimerRef.current) {
+      window.clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  }
+
+  function startLongPress() {
+    if (!user) return;
+    clearLongPressTimer();
+    longPressTimerRef.current = window.setTimeout(() => {
+      suppressNextLikeClickRef.current = true;
+      setReactionPickerOpen(true);
+    }, LONG_PRESS_MS);
+  }
+
+  function handleLikeButtonClick() {
+    if (suppressNextLikeClickRef.current) {
+      suppressNextLikeClickRef.current = false;
+      return;
+    }
+    setReactionPickerOpen(false);
+    onReact(post, "like");
+  }
+
+  function handleReactionSelect(reaction) {
+    clearLongPressTimer();
+    setReactionPickerOpen(false);
+    onReact(post, reaction);
+  }
 
   return (
     <article
@@ -363,24 +483,91 @@ export default function FeedPostCard({
 
       <PostImages images={post.images} />
 
+      {isPublished && visibleReactionCounts.length ? (
+        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-stone-500">
+          {visibleReactionCounts.map((reaction) => (
+            <span
+              key={reaction.value}
+              className={[
+                "inline-flex items-center gap-1 rounded-full border px-2.5 py-1",
+                reaction.active
+                  ? "border-brand-200 bg-brand-50 text-brand-800"
+                  : "border-stone-200 bg-stone-50 text-stone-600",
+              ].join(" ")}
+            >
+              <span>{reaction.shortLabel}</span>
+              <span>{reaction.count}</span>
+            </span>
+          ))}
+        </div>
+      ) : null}
+
       {isPublished ? (
-        <div className="mt-4 grid grid-cols-3 gap-2 border-t border-stone-100 pt-3">
-          <button
-            type="button"
-            disabled={!user}
-            onClick={() => onReact(post, "like")}
-            className={[
-              "focus-ring flex min-h-10 items-center justify-center gap-1.5 rounded-xl border px-2 text-sm font-semibold transition",
-              liked
-                ? "border-orange-200 bg-orange-50 text-orange-600"
-                : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50",
-              !user ? "cursor-not-allowed opacity-60" : "",
-            ].join(" ")}
-            aria-pressed={liked}
-          >
-            <IconHeart filled={liked} className="h-4 w-4" />
-            <span>{likeCount || "Like"}</span>
-          </button>
+        <div className="mt-4 grid grid-cols-2 gap-2 border-t border-stone-100 pt-3">
+          <div className="relative" ref={reactionPickerRef}>
+            {reactionPickerOpen ? (
+              <div className="absolute left-0 bottom-full z-10 mb-2 w-64 max-w-[calc(100vw-3.5rem)] rounded-2xl border border-stone-200 bg-white p-2 shadow-card">
+                <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wide text-stone-500">
+                  Choose a reaction
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {reactionOptions.map((reaction) => (
+                    <button
+                      key={reaction.value}
+                      type="button"
+                      onClick={() => handleReactionSelect(reaction.value)}
+                      className={[
+                        "focus-ring inline-flex min-h-10 w-full items-center justify-center rounded-xl border px-3 py-2 text-xs font-semibold transition",
+                        reaction.active
+                          ? "border-brand-300 bg-brand-50 text-brand-800"
+                          : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50",
+                      ].join(" ")}
+                    >
+                      {reaction.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            <button
+              type="button"
+              onClick={handleLikeButtonClick}
+              onPointerDown={startLongPress}
+              onPointerUp={clearLongPressTimer}
+              onPointerLeave={clearLongPressTimer}
+              onPointerCancel={clearLongPressTimer}
+              onContextMenu={(event) => {
+                if (!user) return;
+                event.preventDefault();
+                clearLongPressTimer();
+                suppressNextLikeClickRef.current = true;
+                setReactionPickerOpen(true);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowDown") {
+                  event.preventDefault();
+                  clearLongPressTimer();
+                  setReactionPickerOpen(true);
+                }
+              }}
+              className={[
+                "focus-ring flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border px-2 text-sm font-semibold transition",
+                reactButtonActive
+                  ? "border-orange-200 bg-orange-50 text-orange-600"
+                  : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50",
+              ].join(" ")}
+              aria-pressed={reactButtonActive}
+              aria-haspopup="menu"
+              aria-expanded={reactionPickerOpen}
+            >
+              <IconHeart filled={reactButtonActive} className="h-4 w-4" />
+              <span>{reactButtonLabel}</span>
+              {primaryReactionCount ? (
+                <span className="rounded-full bg-white/80 px-2 py-0.5 text-xs text-current">{primaryReactionCount}</span>
+              ) : null}
+              <span className="sr-only">Hold or right-click for more reactions.</span>
+            </button>
+          </div>
           <button
             type="button"
             onClick={() => onToggleComments(post.id)}
@@ -390,20 +577,12 @@ export default function FeedPostCard({
             <IconComment />
             <span>{commentCount || "Comment"}</span>
           </button>
-          <button
-            type="button"
-            onClick={() => onToggleComments(post.id, { focusReply: true })}
-            className="focus-ring flex min-h-10 items-center justify-center gap-1 rounded-xl border border-stone-200 bg-white px-2 text-sm font-semibold text-brand-700 hover:bg-brand-50"
-          >
-            <span className="text-lg leading-none" aria-hidden>
-              +
-            </span>
-            Reply
-          </button>
         </div>
       ) : isOwnPost ? (
         <p className="mt-4 text-xs text-amber-800">Only you can see this until it is approved for the public feed.</p>
       ) : null}
+
+      {isPublished && !commentsExpanded ? <InlineActionFeedback feedback={actionFeedback} /> : null}
 
       {isPublished && commentsExpanded ? (
         <CommentSection
@@ -411,10 +590,11 @@ export default function FeedPostCard({
           user={user}
           draft={commentDraft}
           isSubmitting={isCommentSubmitting}
-          commentInputRef={commentInputRef}
+          actionFeedback={actionFeedback}
           onDraftChange={onCommentDraftChange}
           onSubmitComment={onSubmitComment}
           onReport={onReport}
+          reportedTargetKeys={reportedTargetKeys}
         />
       ) : null}
     </article>

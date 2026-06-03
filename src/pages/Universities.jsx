@@ -61,12 +61,12 @@ function InstitutionCard({ university }) {
   const websiteHref = safeExternalUrl(university.website);
 
   return (
-    <li className="flex flex-col rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+    <li className="flex flex-col rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
       <div className="flex flex-1 flex-col">
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-3">
           <Link
             to={`/universities/${university.id}`}
-            className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
+            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
             aria-label={`${university.name} profile`}
           >
             {resolveUniversityLogo(university) ? (
@@ -82,12 +82,12 @@ function InstitutionCard({ university }) {
             )}
           </Link>
           <div className="min-w-0 flex-1">
-            <h3 className="font-display text-xl font-semibold leading-snug text-brand-900">
+            <h3 className="font-display text-lg font-semibold leading-snug text-brand-900">
               <Link to={`/universities/${university.id}`} className="hover:text-brand-700 hover:underline">
                 {university.name}
               </Link>
             </h3>
-            <p className="mt-2 text-sm font-medium text-brand-600">{university.location}</p>
+            <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
           </div>
         </div>
         {university.featured ? (
@@ -95,40 +95,36 @@ function InstitutionCard({ university }) {
             Featured institution
           </span>
         ) : null}
-        <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{university.description}</p>
-        <div className="mt-4">
-          <UniversityApplicationBlock university={university} compact profileLink />
+        <p className="mt-3 flex-1 line-clamp-4 text-sm leading-relaxed text-slate-600">{university.description}</p>
+        <div className="mt-3">
+          <UniversityApplicationBlock university={university} compact />
         </div>
-        <dl className="mt-4 space-y-2 border-t border-brand-100 pt-4 text-xs text-slate-600">
-          {university.phone && (
-            <div>
-              <dt className="font-medium text-slate-500">Phone</dt>
-              <dd>
-                <a
-                  href={`tel:${String(university.phone).replace(/\s/g, "")}`}
-                  className="text-brand-700 hover:underline"
-                >
-                  {university.phone}
-                </a>
-              </dd>
-            </div>
-          )}
-          {websiteHref && (
-            <div>
-              <dt className="font-medium text-slate-500">Website</dt>
-              <dd>
-                <a
-                  href={websiteHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="break-all font-medium text-brand-700 hover:underline"
-                >
-                  {university.website}
-                </a>
-              </dd>
-            </div>
-          )}
-        </dl>
+        <div className="mt-3 flex flex-wrap gap-2 border-t border-brand-100 pt-3 text-xs">
+          <Link
+            to={`/universities/${university.id}`}
+            className="inline-flex items-center rounded-full bg-brand-700 px-3 py-1.5 font-semibold text-white transition hover:bg-brand-800"
+          >
+            View profile
+          </Link>
+          {university.phone ? (
+            <a
+              href={`tel:${String(university.phone).replace(/\s/g, "")}`}
+              className="inline-flex items-center rounded-full border border-brand-200 bg-white px-3 py-1.5 font-semibold text-brand-800 transition hover:border-brand-300 hover:bg-brand-50"
+            >
+              Call
+            </a>
+          ) : null}
+          {websiteHref ? (
+            <a
+              href={websiteHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-full border border-brand-200 bg-white px-3 py-1.5 font-semibold text-brand-800 transition hover:border-brand-300 hover:bg-brand-50"
+            >
+              Website
+            </a>
+          ) : null}
+        </div>
       </div>
     </li>
   );
@@ -288,7 +284,7 @@ export default function Universities() {
       <div className="space-y-8">
         {groupedUniversities.map((group) => (
           <section key={group.key} className="space-y-4">
-            {institutionType === "all" ? (
+            {institutionType === "all" && group.key !== "universities" ? (
               <div className="flex flex-col gap-2 rounded-2xl border border-brand-100 bg-brand-50/60 px-4 py-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <h2 className="font-display text-xl font-semibold text-brand-900">{group.label}</h2>
@@ -300,7 +296,7 @@ export default function Universities() {
               </div>
             ) : null}
 
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {group.items.map((university) => (
                 <InstitutionCard key={university.id} university={university} />
               ))}
