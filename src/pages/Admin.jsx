@@ -384,6 +384,7 @@ export default function Admin() {
   const [pageContentPublished, setPageContentPublished] = useState(true);
   const [pageContentSortOrder, setPageContentSortOrder] = useState(0);
   const [feedbackRows, setFeedbackRows] = useState([]);
+  const [feedbackLoaded, setFeedbackLoaded] = useState(false);
   const [feedbackWarning, setFeedbackWarning] = useState("");
   const [universityForm, setUniversityForm] = useState(EMPTY_UNIVERSITY_FORM);
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
@@ -441,6 +442,8 @@ export default function Admin() {
         return;
       }
       setError(err.message || "Could not load support feedback.");
+    } finally {
+      setFeedbackLoaded(true);
     }
   }
 
@@ -449,9 +452,13 @@ export default function Admin() {
     async function loadForSuperuser() {
       if (!configured || !user?.id || !isSuperuser) {
         setOverview(null);
+        setFeedbackRows([]);
+        setFeedbackWarning("");
+        setFeedbackLoaded(false);
         return;
       }
-      await Promise.all([loadOverview(), loadContentCatalog(), loadPageContentEditor(), loadFeedbackRows()]);
+      setFeedbackLoaded(false);
+      await Promise.all([loadOverview(), loadContentCatalog(), loadPageContentEditor()]);
       if (cancelled) return;
     }
     loadForSuperuser();
@@ -459,6 +466,11 @@ export default function Admin() {
       cancelled = true;
     };
   }, [configured, isSuperuser, user?.id]);
+
+  useEffect(() => {
+    if (activeTab !== "feedback" || !configured || !user?.id || !isSuperuser || feedbackLoaded) return;
+    loadFeedbackRows();
+  }, [activeTab, configured, feedbackLoaded, isSuperuser, user?.id]);
 
   const reviewQueue = useMemo(() => {
     if (!overview) return [];
@@ -970,11 +982,6 @@ export default function Admin() {
 
       {notice ? <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900">{notice}</p> : null}
       {error ? <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p> : null}
-      {feedbackWarning ? (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          <p>{feedbackWarning}</p>
-        </div>
-      ) : null}
       {overview?.warnings?.length ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           {overview.warnings.slice(0, 3).map((warning) => (
