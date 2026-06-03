@@ -209,7 +209,7 @@ export default function UniversityDetail() {
   return (
     <article className="space-y-6">
       <Link to="/universities" className="inline-block text-sm font-medium text-brand-700 hover:underline">
-        ← Universities
+        ← Tertiary Institutions
       </Link>
 
       <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">

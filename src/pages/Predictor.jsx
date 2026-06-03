@@ -29,7 +29,7 @@ function buildShareText(breakdownTotal, results) {
 }
 
 export default function Predictor() {
-  useDocumentTitle("Admission predictor | Thuto");
+  useDocumentTitle("Admission Predictor | Thuto");
   const [programmes, setProgrammes] = useState([]);
   const [loadError, setLoadError] = useState(null);
   const [shareFeedback, setShareFeedback] = useState(null);
@@ -128,14 +128,12 @@ export default function Predictor() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-brand-900">Admission predictor</h1>
+        <h1 className="font-display text-2xl font-bold text-brand-900">Admission Predictor</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Start with real or estimated BGCSE grades. Thuto calculates your best-six points and shows programmes you may
-          qualify for, so you can spot options and requirements before application time.
+          Thuto calculates your best-six points and shows programmes you may qualify for.
         </p>
-        <p className="mt-2 text-xs leading-relaxed text-slate-500">
-          Indicative guidance only: A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Best-six maximum = 48 pts. Always
-          confirm final requirements with each institution.
+        <p className="mt-2 text-xs text-slate-500">
+          A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Best-six maximum = 48 pts.
         </p>
       </div>
 
@@ -146,11 +144,7 @@ export default function Predictor() {
             hasResults ? "border-emerald-200 bg-emerald-50/70" : "border-brand-200 bg-white",
           ].join(" ")}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">Step 1</p>
-          <h2 className="mt-1 font-display text-base font-semibold text-brand-900">Add your grades</h2>
-          <p className="mt-1 text-sm leading-relaxed text-slate-600">
-            Estimated grades are enough to start. You can edit them anytime.
-          </p>
+          <h2 className="font-display text-base font-semibold text-brand-900">Add grades</h2>
         </li>
         <li
           className={[
@@ -158,11 +152,7 @@ export default function Predictor() {
             hasResults ? "border-brand-200 bg-white" : "border-stone-200 bg-stone-50/80",
           ].join(" ")}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">Step 2</p>
-          <h2 className="mt-1 font-display text-base font-semibold text-brand-900">Review your matches</h2>
-          <p className="mt-1 text-sm leading-relaxed text-slate-600">
-            Use the results to open, save, or compare programmes worth checking officially.
-          </p>
+          <h2 className="font-display text-base font-semibold text-brand-900">Review your matches</h2>
         </li>
       </ol>
 

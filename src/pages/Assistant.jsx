@@ -15,14 +15,6 @@ import { scrollElementIntoView } from "../lib/motion.js";
 import { getAssistantUsageToday } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
-const STARTER_QUESTIONS = [
-  "I have 36 APS. What can I study?",
-  "Which programmes lead to software careers?",
-  "Compare Computer Science and IT",
-  "What can I study with Maths Literacy?",
-  "Which applications are still open?",
-];
-
 const speechRecognition =
   typeof window !== "undefined" ? window.SpeechRecognition || window.webkitSpeechRecognition : null;
 
@@ -47,6 +39,18 @@ function VolumeIcon() {
       <path strokeLinecap="round" strokeLinejoin="round" d="M16 9.5a4 4 0 010 5M19 7a8 8 0 010 10" />
     </svg>
   );
+}
+
+function firstNameFromProfile(profile, user) {
+  const raw = String(profile?.full_name || user?.user_metadata?.full_name || "").trim();
+  if (!raw) return null;
+  const first = raw.split(/\s+/)[0];
+  return first || null;
+}
+
+function helpPromptName(profile, user) {
+  const first = firstNameFromProfile(profile, user);
+  return first ? `What can I help you with today ${first}?` : "What can I help you with today?";
 }
 
 function createMessage(role, content, extras = {}) {
@@ -88,7 +92,7 @@ function normalizeAssistantPayload(data) {
 
 export default function Assistant() {
   useDocumentTitle("Ask Thuto | Thuto");
-  const { isPremium } = useAuth();
+  const { isPremium, profile, user } = useAuth();
   const [question, setQuestion] = useState("");
   const [programmes, setProgrammes] = useState([]);
   const [universities, setUniversities] = useState([]);
@@ -97,16 +101,7 @@ export default function Assistant() {
   const [isListening, setIsListening] = useState(false);
   const [speakingMessageId, setSpeakingMessageId] = useState(null);
   const [lastQuestion, setLastQuestion] = useState("");
-  const [messages, setMessages] = useState(() => [
-    createMessage(
-      "assistant",
-      "Ask me about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.",
-      {
-        source: "local",
-        suggestions: STARTER_QUESTIONS.slice(0, 3),
-      },
-    ),
-  ]);
+  const [messages, setMessages] = useState([]);
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -144,6 +139,7 @@ export default function Assistant() {
   }, []);
 
   const predictorSnap = useMemo(() => readPredictorSession(), []);
+  const helpHeading = useMemo(() => helpPromptName(profile, user), [profile, user]);
   const canUseGemini = providerStatus.configured && Boolean(getSupabase());
   const canListen = Boolean(speechRecognition);
   const canSpeak = Boolean(getSupabase()) || (typeof window !== "undefined" && Boolean(window.speechSynthesis));
@@ -208,7 +204,7 @@ export default function Assistant() {
           source: "gemini",
           confidence: payload.confidence,
           usedLocalContext: payload.usedLocalContext,
-          suggestions: payload.suggestions.length ? payload.suggestions : STARTER_QUESTIONS.slice(0, 3),
+          suggestions: payload.suggestions.slice(0, 2),
           references: payload.references,
         }),
       ]);
@@ -338,33 +334,7 @@ export default function Assistant() {
 
       <section className="rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="border-b border-brand-100 px-4 py-3">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold text-brand-900">What can I help you with?</p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                Use this page to explore study options, understand requirements, compare programmes, and prepare for
-                applications.
-              </p>
-            </div>
-            <Link
-              to="/fit-finder"
-              className="rounded-lg border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
-            >
-              Fit Finder
-            </Link>
-          </div>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {STARTER_QUESTIONS.map((suggestion) => (
-              <button
-                key={suggestion}
-                type="button"
-                onClick={() => ask(suggestion)}
-                className="rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
-              >
-                {suggestion}
-              </button>
-            ))}
-          </div>
+          <p className="text-sm font-semibold text-brand-900">{helpHeading}</p>
         </div>
 
         <div className="max-h-[34rem] space-y-4 overflow-y-auto px-4 py-5" aria-live="polite">
@@ -468,7 +438,7 @@ export default function Assistant() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               rows={3}
-              placeholder="Example: I have 33 APS and enjoy maths and coding. Which programmes should I consider?"
+              placeholder="Type your question…"
               className="min-h-24 w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
             <div className="flex gap-2 md:flex-col">

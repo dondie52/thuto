@@ -1,10 +1,55 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
-import { fetchUniversities, groupUniversitiesByCategory } from "../lib/universitiesData.js";
+import {
+  fetchUniversities,
+  groupUniversitiesByCategory,
+  UNIVERSITY_CATEGORY_META,
+  UNIVERSITY_CATEGORY_ORDER,
+} from "../lib/universitiesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
+
+const SORT_OPTIONS = [
+  { value: "name_asc", label: "Name (A–Z)" },
+  { value: "name_desc", label: "Name (Z–A)" },
+  { value: "location_asc", label: "Location (A–Z)" },
+];
+
+const INSTITUTION_TYPE_OPTIONS = [
+  { value: "all", label: "All types" },
+  ...UNIVERSITY_CATEGORY_ORDER.map((key) => ({
+    value: key,
+    label: UNIVERSITY_CATEGORY_META[key].label,
+  })),
+];
+
+function patchSearchParams(prev, patch) {
+  const next = new URLSearchParams(prev);
+  for (const [key, value] of Object.entries(patch)) {
+    if (value === "" || value === null || value === undefined) {
+      next.delete(key);
+    } else {
+      next.set(key, String(value));
+    }
+  }
+  if (next.get("type") === "all" || !next.get("type")) next.delete("type");
+  if (next.get("sort") === "name_asc") next.delete("sort");
+  return next;
+}
+
+function sortInstitutions(items, sort) {
+  const list = [...items];
+  if (sort === "name_desc") {
+    list.sort((a, b) => String(b.name || "").localeCompare(String(a.name || "")));
+  } else if (sort === "location_asc") {
+    list.sort((a, b) => String(a.location || "").localeCompare(String(b.location || "")));
+  } else {
+    list.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+  }
+  return list;
+}
 
 const assetUrl = (path) => {
   const value = String(path || "").trim();
@@ -90,11 +135,22 @@ function InstitutionCard({ university }) {
 }
 
 export default function Universities() {
-  useDocumentTitle("Universities | Thuto");
+  useDocumentTitle("Tertiary Institutions | Thuto");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [universities, setUniversities] = useState([]);
   const [error, setError] = useState(null);
   /** @type {'remote' | 'bundled' | 'live' | null} */
   const [dataSource, setDataSource] = useState(null);
+
+  const institutionType = searchParams.get("type") ?? "all";
+  const sort = searchParams.get("sort") ?? "name_asc";
+
+  const setPatch = useCallback(
+    (patch) => {
+      setSearchParams((prev) => patchSearchParams(prev, patch), { replace: true });
+    },
+    [setSearchParams],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -115,22 +171,49 @@ export default function Universities() {
     };
   }, []);
 
+  const groupedUniversities = useMemo(() => {
+    let groups = groupUniversitiesByCategory(universities);
+    if (institutionType !== "all") {
+      groups = groups.filter((group) => group.key === institutionType);
+    }
+    return groups
+      .map((group) => ({
+        ...group,
+        items: sortInstitutions(group.items, sort),
+      }))
+      .filter((group) => group.items.length > 0);
+  }, [universities, institutionType, sort]);
+
+  const visibleCount = useMemo(
+    () => groupedUniversities.reduce((total, group) => total + group.items.length, 0),
+    [groupedUniversities],
+  );
+
   const count = universities.length;
-  const groupedUniversities = groupUniversitiesByCategory(universities);
+  const hasActiveFilters = institutionType !== "all" || sort !== "name_asc";
+
+  const activeTypeLabel =
+    institutionType === "all"
+      ? null
+      : INSTITUTION_TYPE_OPTIONS.find((option) => option.value === institutionType)?.label;
+
+  function clearFilters() {
+    setSearchParams(new URLSearchParams(), { replace: true });
+  }
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-brand-900">Universities</h1>
+        <h1 className="font-display text-2xl font-bold text-brand-900">Tertiary Institutions</h1>
         <p className="mt-2 text-sm text-slate-600">
           {count === 0
             ? "Loading institutions..."
-            : `${count} institution${count === 1 ? "" : "s"} in Thuto - ${
+            : `${count} institution${count === 1 ? "" : "s"} in Thuto — ${
                 dataSource === "live"
                   ? "live superuser edits merged with bundled profiles; verify with each provider."
                   : dataSource === "remote"
-                  ? "application windows merged from the live feed and bundled profiles; verify with each provider."
-                  : "sample listings; verify details with each provider."
+                    ? "application windows merged from the live feed and bundled profiles; verify with each provider."
+                    : "sample listings; verify details with each provider."
               }`}
         </p>
       </div>
@@ -141,18 +224,81 @@ export default function Universities() {
         </p>
       )}
 
+      <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="institution-type-filter" className="block text-xs font-medium text-slate-600">
+              Institution type
+            </label>
+            <select
+              id="institution-type-filter"
+              value={institutionType}
+              onChange={(e) => setPatch({ type: e.target.value === "all" ? "" : e.target.value })}
+              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+            >
+              {INSTITUTION_TYPE_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="institution-sort-filter" className="block text-xs font-medium text-slate-600">
+              Sort
+            </label>
+            <select
+              id="institution-sort-filter"
+              value={sort}
+              onChange={(e) => setPatch({ sort: e.target.value === "name_asc" ? "" : e.target.value })}
+              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+            >
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-slate-600">
+            <span className="font-semibold text-brand-900">{visibleCount}</span> institution
+            {visibleCount === 1 ? "" : "s"} shown
+            {activeTypeLabel ? (
+              <>
+                {" "}
+                in <span className="font-semibold text-brand-900">{activeTypeLabel}</span>
+              </>
+            ) : null}
+          </p>
+          {hasActiveFilters ? (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="self-start rounded-lg text-sm font-semibold text-brand-700 underline underline-offset-4 hover:text-brand-900 sm:self-auto"
+            >
+              Clear filters
+            </button>
+          ) : null}
+        </div>
+      </div>
+
       <div className="space-y-8">
         {groupedUniversities.map((group) => (
           <section key={group.key} className="space-y-4">
-            <div className="flex flex-col gap-2 rounded-2xl border border-brand-100 bg-brand-50/60 px-4 py-4 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h2 className="font-display text-xl font-semibold text-brand-900">{group.label}</h2>
-                <p className="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">{group.description}</p>
+            {institutionType === "all" ? (
+              <div className="flex flex-col gap-2 rounded-2xl border border-brand-100 bg-brand-50/60 px-4 py-4 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h2 className="font-display text-xl font-semibold text-brand-900">{group.label}</h2>
+                  <p className="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">{group.description}</p>
+                </div>
+                <p className="text-sm font-medium text-brand-700">
+                  {group.items.length} institution{group.items.length === 1 ? "" : "s"}
+                </p>
               </div>
-              <p className="text-sm font-medium text-brand-700">
-                {group.items.length} institution{group.items.length === 1 ? "" : "s"}
-              </p>
-            </div>
+            ) : null}
 
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {group.items.map((university) => (
@@ -161,6 +307,15 @@ export default function Universities() {
             </ul>
           </section>
         ))}
+
+        {!error && count > 0 && visibleCount === 0 ? (
+          <p className="rounded-2xl border border-brand-100 bg-brand-50/60 px-4 py-6 text-center text-sm text-slate-600">
+            No institutions match this filter.{" "}
+            <button type="button" onClick={clearFilters} className="font-semibold text-brand-800 underline">
+              Show all types
+            </button>
+          </p>
+        ) : null}
       </div>
     </div>
   );

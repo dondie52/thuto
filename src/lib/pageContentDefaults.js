@@ -121,7 +121,7 @@ export const PAGE_CONTENT_DEFAULTS = {
         { to: "/programmes", title: "Programmes", body: "Browse courses, entry requirements, modules, and career ideas." },
         { to: "/saved", title: "Saved programmes", body: "Shortlist favourites on this device and jump back to them anytime." },
         { to: "/compare", title: "Compare programmes", body: "Select up to three programmes and open a shareable side-by-side table." },
-        { to: "/universities", title: "Universities", body: "Institutions, locations, and application windows." },
+        { to: "/universities", title: "Tertiary Institutions", body: "Institutions, locations, and application windows." },
         { to: "/sponsorships", title: "Sponsorships & funding", body: "Government sponsorship steps, private sponsor posts, and other funding routes." },
         { to: "/internships", title: "Internships", body: "Latest internship windows copied from official posts - apply on the original channel." },
       ],
