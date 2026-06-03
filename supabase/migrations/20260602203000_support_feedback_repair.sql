@@ -96,4 +96,4 @@ create policy support_feedback_admin_delete on public.support_feedback
   );
 
 -- Prompt PostgREST to observe the current schema state after repair.
-select pg_notification_queue_usage();
+notify pgrst, 'reload schema';

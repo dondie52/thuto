@@ -5,6 +5,24 @@ import { fetchUniversities } from "./universitiesData.js";
 
 export { isSupabaseConfigured };
 
+const OPPORTUNITY_IMAGES_BUCKET = "opportunity-images";
+const MAX_OPPORTUNITY_IMAGE_BYTES = 5 * 1024 * 1024;
+
+function randomId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function safeFileName(name) {
+  return String(name || "opportunity-image")
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 100) || "opportunity-image";
+}
+
 function countBy(items, getKey) {
   return items.reduce((counts, item) => {
     const key = getKey(item) || "Unknown";
@@ -182,6 +200,25 @@ export async function deleteOpportunityPost(id) {
   if (!supabase) throw new Error("Supabase is not configured.");
   const { error } = await supabase.from("opportunity_posts").delete().eq("id", id);
   if (error) throw error;
+}
+
+export async function uploadOpportunityImage(file) {
+  const supabase = getSupabase();
+  if (!supabase) throw new Error("Supabase is not configured.");
+  if (!file) throw new Error("Choose an image to upload.");
+  if (!file.type?.startsWith("image/")) throw new Error("Choose a JPEG, PNG, WebP, or GIF image.");
+  if (file.size > MAX_OPPORTUNITY_IMAGE_BYTES) throw new Error("Opportunity images must be 5MB or smaller.");
+
+  const path = `opportunities/${Date.now()}-${randomId()}-${safeFileName(file.name)}`;
+  const { error } = await supabase.storage.from(OPPORTUNITY_IMAGES_BUCKET).upload(path, file, {
+    cacheControl: "3600",
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) throw error;
+
+  const { data } = supabase.storage.from(OPPORTUNITY_IMAGES_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
 }
 
 export async function updateProfilePremium({ id, premiumStatus, premiumPlan, premiumUntil }) {

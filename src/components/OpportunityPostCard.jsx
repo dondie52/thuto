@@ -1,3 +1,4 @@
+import ExpandableText from "./ExpandableText.jsx";
 import { formatOpportunityDate } from "../lib/opportunityPosts.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
@@ -40,7 +41,11 @@ export default function OpportunityPostCard({ post }) {
           {dateLabel ? <time dateTime={post.publishedAt || undefined}>{dateLabel}</time> : null}
         </div>
         <h3 className="font-display text-lg font-semibold text-brand-900">{post.title}</h3>
-        <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-600">{post.body}</p>
+        <ExpandableText
+          text={post.body}
+          preserveWrap
+          className="text-sm leading-relaxed text-slate-600"
+        />
         {sourceHref ? (
           <a
             href={sourceHref}

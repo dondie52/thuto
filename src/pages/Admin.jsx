@@ -7,6 +7,7 @@ import {
   isSupabaseConfigured,
   saveOpportunityPost,
   setOpportunityPublished,
+  uploadOpportunityImage,
   updateProfilePremium,
 } from "../lib/admin.js";
 import { FEED_CATEGORIES, FEED_STATUS_LABELS, categoryLabel, moderateFeedTarget, submitFeedPost } from "../lib/feed.js";
@@ -29,6 +30,7 @@ import {
   isSupportFeedbackUnavailableError,
   updateSupportFeedbackStatus,
 } from "../lib/supportFeedback.js";
+import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const ADMIN_TABS = [
   { key: "overview", label: "Overview" },
@@ -434,6 +436,7 @@ export default function Admin() {
     } catch (err) {
       if (isSupportFeedbackUnavailableError(err)) {
         setFeedbackRows([]);
+        setError("");
         setFeedbackWarning(err.message || "Support feedback is unavailable in this Supabase project right now.");
         return;
       }
@@ -550,6 +553,24 @@ export default function Admin() {
       await loadOverview();
     } catch (err) {
       setError(err.message || "Could not save opportunity.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handleOpportunityImageUpload(event) {
+    const file = selectedFile(event);
+    event.target.value = "";
+    if (!file) return;
+    setBusyTarget("opportunity:image-upload");
+    setError("");
+    setNotice("");
+    try {
+      const url = await uploadOpportunityImage(file);
+      setOpportunityForm((form) => ({ ...form, imageUrl: url }));
+      setNotice("Flyer uploaded. Save the opportunity to publish the image URL.");
+    } catch (err) {
+      setError(err.message || "Could not upload opportunity image.");
     } finally {
       setBusyTarget("");
     }
@@ -845,6 +866,11 @@ export default function Admin() {
       setNotice("Feedback status updated.");
       await loadFeedbackRows();
     } catch (err) {
+      if (isSupportFeedbackUnavailableError(err)) {
+        setError("");
+        setFeedbackWarning(err.message || "Support feedback is unavailable in this Supabase project right now.");
+        return;
+      }
       setError(err.message || "Could not update feedback.");
     } finally {
       setBusyTarget("");
@@ -921,6 +947,7 @@ export default function Admin() {
 
   const localData = overview?.localData;
   const counts = overview?.counts || {};
+  const opportunityImagePreview = safeExternalUrl(opportunityForm.imageUrl);
 
   return (
     <div className="space-y-6">
@@ -1661,16 +1688,39 @@ export default function Admin() {
                 className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
               />
             </label>
-            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
-              Image URL
-              <input
-                type="url"
-                value={opportunityForm.imageUrl}
-                onChange={(event) => setOpportunityForm((form) => ({ ...form, imageUrl: event.target.value }))}
-                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
-              />
-            </label>
+            <div className="grid gap-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Image URL
+                <input
+                  type="url"
+                  value={opportunityForm.imageUrl}
+                  onChange={(event) => setOpportunityForm((form) => ({ ...form, imageUrl: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="focus-ring inline-flex min-h-10 cursor-pointer items-center justify-center rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50">
+                {busyTarget === "opportunity:image-upload" ? "Uploading..." : "Upload flyer/image"}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={handleOpportunityImageUpload}
+                  disabled={busyTarget === "opportunity:image-upload"}
+                  className="sr-only"
+                />
+              </label>
+            </div>
           </div>
+          {opportunityImagePreview ? (
+            <div className="overflow-hidden rounded-2xl border border-brand-100 bg-white">
+              <img
+                src={opportunityImagePreview}
+                alt=""
+                className="max-h-56 w-full object-contain object-center"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ) : null}
           <div className="grid gap-3 sm:grid-cols-[1fr_8rem_auto_auto]">
             <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
               Expires

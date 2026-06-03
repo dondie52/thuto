@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import ExpandableText from "./ExpandableText.jsx";
 import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS } from "../lib/feed.js";
 import { formatAuthorUniversity } from "../lib/profile.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
@@ -460,9 +461,10 @@ export default function FeedPostCard({
       {post.title ? (
         <h4 className="mt-4 text-lg font-bold leading-snug text-stone-950">{post.title}</h4>
       ) : null}
-      <p className={`whitespace-pre-line text-[15px] leading-relaxed text-stone-700 ${post.title ? "mt-2" : "mt-4"}`}>
-        {post.body}
-      </p>
+      <ExpandableText
+        text={post.body}
+        className={`text-[15px] leading-relaxed text-stone-700 ${post.title ? "mt-2" : "mt-4"}`}
+      />
 
       {!isPublished && isOwnPost && post.moderationReason ? (
         <p className="mt-3 rounded-xl bg-white/80 px-3 py-2 text-xs leading-relaxed text-amber-900">
