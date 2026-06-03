@@ -24,7 +24,11 @@ import {
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { PAGE_CONTENT_DEFAULTS, PAGE_CONTENT_META } from "../lib/pageContentDefaults.js";
-import { fetchSupportFeedback, updateSupportFeedbackStatus } from "../lib/supportFeedback.js";
+import {
+  fetchSupportFeedback,
+  isSupportFeedbackUnavailableError,
+  updateSupportFeedbackStatus,
+} from "../lib/supportFeedback.js";
 
 const ADMIN_TABS = [
   { key: "overview", label: "Overview" },
@@ -378,6 +382,7 @@ export default function Admin() {
   const [pageContentPublished, setPageContentPublished] = useState(true);
   const [pageContentSortOrder, setPageContentSortOrder] = useState(0);
   const [feedbackRows, setFeedbackRows] = useState([]);
+  const [feedbackWarning, setFeedbackWarning] = useState("");
   const [universityForm, setUniversityForm] = useState(EMPTY_UNIVERSITY_FORM);
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
   const [editingOpportunityId, setEditingOpportunityId] = useState("");
@@ -423,9 +428,15 @@ export default function Admin() {
   }
 
   async function loadFeedbackRows() {
+    setFeedbackWarning("");
     try {
       setFeedbackRows(await fetchSupportFeedback({ limit: 40 }));
     } catch (err) {
+      if (isSupportFeedbackUnavailableError(err)) {
+        setFeedbackRows([]);
+        setFeedbackWarning(err.message || "Support feedback is unavailable in this Supabase project right now.");
+        return;
+      }
       setError(err.message || "Could not load support feedback.");
     }
   }
@@ -932,6 +943,11 @@ export default function Admin() {
 
       {notice ? <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900">{notice}</p> : null}
       {error ? <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p> : null}
+      {feedbackWarning ? (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          <p>{feedbackWarning}</p>
+        </div>
+      ) : null}
       {overview?.warnings?.length ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           {overview.warnings.slice(0, 3).map((warning) => (
@@ -1762,7 +1778,14 @@ export default function Admin() {
             Refresh feedback
           </button>
         </div>
-        {feedbackRows.length ? (
+        {feedbackWarning ? (
+          <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            <p>{feedbackWarning}</p>
+            <p className="mt-2 text-amber-800/90">
+              Once the table migration is applied in Supabase, refresh this tab and feedback submissions will appear here.
+            </p>
+          </div>
+        ) : feedbackRows.length ? (
           <div className="mt-3 grid gap-3">
             {feedbackRows.map((row) => (
               <article key={row.id} className="rounded-2xl bg-stone-50 p-3">
