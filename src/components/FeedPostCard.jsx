@@ -115,8 +115,8 @@ function AuthorMetaLine({ universityName, universityStatus, distinction, timeLab
 
   return (
     <div className="mt-0.5 space-y-0.5">
-      {parts.length ? <p className="text-xs text-stone-500">{parts.join(" - ")}</p> : null}
-      {distinction ? <p className="text-xs font-medium text-brand-800/90">{distinction}</p> : null}
+      {parts.length ? <p className="break-words text-xs text-stone-500">{parts.join(" - ")}</p> : null}
+      {distinction ? <p className="break-words text-xs font-medium text-brand-800/90">{distinction}</p> : null}
     </div>
   );
 }
@@ -152,7 +152,7 @@ function PostImages({ images }) {
         <img
           src={primary.publicUrl}
           alt={primary.altText || "Post image"}
-          className="aspect-[16/10] w-full object-cover"
+          className="h-auto max-h-[28rem] w-full object-cover"
           loading="lazy"
           decoding="async"
         />
@@ -176,7 +176,7 @@ function PostImages({ images }) {
           <img
             src={image.publicUrl}
             alt={image.altText || "Post image"}
-            className="aspect-[16/10] w-full object-cover"
+            className="aspect-[4/3] h-auto w-full object-cover sm:aspect-[16/10]"
             loading="lazy"
             decoding="async"
           />
@@ -214,7 +214,7 @@ function CommentSection({
 
   return (
     <div className="mt-4 border-t border-stone-100 pt-4">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Comments</p>
         <button
           type="button"
@@ -242,9 +242,9 @@ function CommentSection({
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-brand-900">{comment.authorDisplayName}</p>
                     {comment.authorDistinction ? (
-                      <p className="text-[11px] font-medium text-brand-800/80">{comment.authorDistinction}</p>
+                      <p className="break-words text-[11px] font-medium text-brand-800/80">{comment.authorDistinction}</p>
                     ) : null}
-                    <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-stone-700">{comment.body}</p>
+                    <p className="mt-1 whitespace-pre-line break-words text-sm leading-relaxed text-stone-700">{comment.body}</p>
                     <p className="mt-1 text-[11px] text-stone-400">
                       {formatRelativeTime(comment.publishedAt || comment.createdAt)}
                     </p>
@@ -272,18 +272,18 @@ function CommentSection({
       )}
 
       {user ? (
-        <form className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]" onSubmit={(event) => onSubmitComment(event, post.id)}>
+        <form className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]" onSubmit={(event) => onSubmitComment(event, post.id)}>
           <input
             value={draft || ""}
             onChange={(event) => onDraftChange(post.id, event.target.value)}
             maxLength={1000}
             placeholder="Write a reply..."
-            className="min-h-11 rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            className="min-h-11 min-w-0 rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200"
           />
           <button
             type="submit"
             disabled={isSubmitting || !String(draft || "").trim()}
-            className="focus-ring rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+            className="focus-ring min-h-10 rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Reply
           </button>
@@ -422,17 +422,17 @@ export default function FeedPostCard({
   return (
     <article
       className={[
-        "rounded-2xl border bg-white p-4 shadow-card transition-shadow hover:shadow-card-hover sm:p-5",
+        "min-w-0 overflow-hidden rounded-2xl border bg-white p-3.5 shadow-card transition-shadow hover:shadow-card-hover sm:p-5",
         isPublished ? "border-stone-200" : "border-amber-200 bg-amber-50/30",
       ].join(" ")}
     >
-      <header className="flex items-start gap-3">
+      <header className="flex min-w-0 items-start gap-2.5 sm:gap-3">
         <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-start justify-between gap-2">
+          <div className="flex min-w-0 flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1.5">
-                <h3 className="truncate text-sm font-bold text-stone-900">{displayName}</h3>
+                <h3 className="min-w-0 break-words text-sm font-bold text-stone-900">{displayName}</h3>
                 {isOfficial ? <OfficialBadge /> : null}
                 {!isPublished && isOwnPost ? (
                   <span className="rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-900">
@@ -448,7 +448,7 @@ export default function FeedPostCard({
                 isOfficial={isOfficial}
               />
             </div>
-            <span className="shrink-0 rounded-full bg-brand-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-800 ring-1 ring-brand-100">
+            <span className="max-w-full rounded-full bg-brand-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-800 ring-1 ring-brand-100">
               {categoryBadgeText(post.category)}
             </span>
           </div>
@@ -459,15 +459,15 @@ export default function FeedPostCard({
       </header>
 
       {post.title ? (
-        <h4 className="mt-4 text-lg font-bold leading-snug text-stone-950">{post.title}</h4>
+        <h4 className="mt-3 break-words text-base font-bold leading-snug text-stone-950 sm:mt-4 sm:text-lg">{post.title}</h4>
       ) : null}
       <ExpandableText
         text={post.body}
-        className={`text-[15px] leading-relaxed text-stone-700 ${post.title ? "mt-2" : "mt-4"}`}
+        className={`break-words text-sm leading-relaxed text-stone-700 sm:text-[15px] ${post.title ? "mt-2" : "mt-3 sm:mt-4"}`}
       />
 
       {!isPublished && isOwnPost && post.moderationReason ? (
-        <p className="mt-3 rounded-xl bg-white/80 px-3 py-2 text-xs leading-relaxed text-amber-900">
+        <p className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800">
           {post.moderationReason}
         </p>
       ) : null}
@@ -508,7 +508,7 @@ export default function FeedPostCard({
         <div className="mt-4 grid grid-cols-2 gap-2 border-t border-stone-100 pt-3">
           <div className="relative" ref={reactionPickerRef}>
             {reactionPickerOpen ? (
-              <div className="absolute left-0 bottom-full z-10 mb-2 w-64 max-w-[calc(100vw-3.5rem)] rounded-2xl border border-stone-200 bg-white p-2 shadow-card">
+              <div className="absolute left-0 bottom-full z-10 mb-2 w-64 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-stone-200 bg-white p-2 shadow-card">
                 <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wide text-stone-500">
                   Choose a reaction
                 </p>
@@ -581,7 +581,7 @@ export default function FeedPostCard({
           </button>
         </div>
       ) : isOwnPost ? (
-        <p className="mt-4 text-xs text-amber-800">Only you can see this until it is approved for the public feed.</p>
+        <p className="mt-4 text-xs text-amber-700">Visible only to you while review is pending.</p>
       ) : null}
 
       {isPublished && !commentsExpanded ? <InlineActionFeedback feedback={actionFeedback} /> : null}

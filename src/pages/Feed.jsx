@@ -214,7 +214,7 @@ export default function Feed() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="mx-auto w-full max-w-2xl space-y-4 pb-8 sm:space-y-5 sm:pb-0">
       <section className="rounded-2xl border border-brand-100 bg-[var(--thuto-surface-elevated)] p-4 shadow-card sm:p-5">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
@@ -271,29 +271,29 @@ export default function Feed() {
         </div>
       ) : null}
 
-      <section className="rounded-2xl border border-brand-100 bg-white p-4 shadow-card sm:p-5">
-        <div className="flex items-start gap-3">
+      <section className="rounded-2xl border border-brand-100 bg-white p-3 shadow-card sm:p-5">
+        <div className="flex min-w-0 items-start gap-2.5 sm:gap-3">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
               alt=""
-              className="mt-0.5 h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-brand-100"
+              className="mt-0.5 h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-brand-100 sm:h-11 sm:w-11"
             />
           ) : (
-            <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-800 ring-1 ring-brand-100">
+            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-800 ring-1 ring-brand-100 sm:h-11 sm:w-11">
               {profileInitial(composerName)}
             </div>
           )}
 
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
+            <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-3">
+              <div className="min-w-0">
                 <h2 className="text-base font-bold text-brand-900">Create post</h2>
-                <p className="mt-1 text-sm text-stone-500">
+                <p className="mt-0.5 text-xs leading-relaxed text-stone-500 sm:text-sm">
                   {user ? `Posting as ${composerName}. Keep it useful for applicants and students.` : "Draft a post in a smaller, quicker composer."}
                 </p>
               </div>
-              <label className="min-w-[10rem] text-xs font-semibold text-stone-600">
+              <label className="min-w-0 text-xs font-semibold text-stone-600 sm:min-w-[10rem]">
                 Category
                 <select
                   value={form.category}
@@ -310,7 +310,7 @@ export default function Feed() {
               </label>
             </div>
 
-            <form className="mt-3 space-y-3" onSubmit={handleSubmitPost}>
+            <form className="mt-2.5 space-y-2.5 sm:mt-3 sm:space-y-3" onSubmit={handleSubmitPost}>
               <label className="block">
                 <span className="sr-only">Post</span>
                 <textarea
@@ -321,7 +321,7 @@ export default function Feed() {
                   required
                   disabled={!canCompose || isPosting}
                   placeholder="What do you want to share?"
-                  className="w-full rounded-2xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-4 py-3 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                  className="w-full rounded-2xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60 sm:px-4 sm:py-3"
                 />
               </label>
 
@@ -351,8 +351,8 @@ export default function Feed() {
                 </div>
               ) : null}
 
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-stone-100 bg-stone-50/80 px-3 py-2.5">
-                <div className="flex flex-wrap items-center gap-2">
+              <div className="grid gap-2 rounded-2xl border border-stone-100 bg-stone-50/80 px-2.5 py-2 sm:flex sm:items-center sm:justify-between sm:gap-3 sm:px-3 sm:py-2.5">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setShowComposerDetails((open) => !open)}
@@ -382,7 +382,7 @@ export default function Feed() {
                 <button
                   type="submit"
                   disabled={!canPublish || isPosting || !form.body.trim()}
-                  className="focus-ring inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="focus-ring inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
                   {isPosting ? "Submitting..." : user ? "Post" : "Log in to post"}
                 </button>
@@ -409,7 +409,7 @@ export default function Feed() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-3 pt-1 sm:space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-display text-xl font-semibold text-brand-900">Latest posts</h2>
           <span className="rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-semibold text-stone-500">

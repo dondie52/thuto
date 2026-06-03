@@ -243,7 +243,7 @@ export async function fetchFeedPosts({ limit = 30 } = {}) {
   );
 
   if (viewer?.id) {
-    postsQuery = postsQuery.or(`status.eq.published,author_id.eq.${viewer.id}`);
+    postsQuery = postsQuery.in("status", ["published", "pending_ai", "pending_review"]);
   } else {
     postsQuery = postsQuery.eq("status", "published");
   }
@@ -280,14 +280,16 @@ export async function fetchFeedPosts({ limit = 30 } = {}) {
   const commentsByPost = groupBy(commentsResult.data, "post_id");
   const reactionsByPost = groupBy(reactionsResult.data, "post_id");
 
-  return posts.map((post) =>
-    normalizePost(post, {
-      images: imagesByPost.get(post.id) || [],
-      comments: commentsByPost.get(post.id) || [],
-      reactions: reactionsByPost.get(post.id) || [],
-      viewerUserId: viewer?.id || null,
-    }),
-  );
+  return posts
+    .filter((post) => post.status === "published" || (post.author_id === viewer?.id && ["pending_ai", "pending_review"].includes(post.status)))
+    .map((post) =>
+      normalizePost(post, {
+        images: imagesByPost.get(post.id) || [],
+        comments: commentsByPost.get(post.id) || [],
+        reactions: reactionsByPost.get(post.id) || [],
+        viewerUserId: viewer?.id || null,
+      }),
+    );
 }
 
 export async function submitFeedPost({ category, title, body, linkUrl, imageFiles }) {
