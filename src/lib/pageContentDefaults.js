@@ -3,6 +3,7 @@ export const PAGE_CONTENT_META = [
   { pageKey: "home", label: "App home" },
   { pageKey: "sponsorships", label: "Sponsorships" },
   { pageKey: "internships", label: "Internships" },
+  { pageKey: "study", label: "BGCSE Study" },
   { pageKey: "support", label: "Support" },
   { pageKey: "disclaimer", label: "Disclaimer" },
   { pageKey: "privacy", label: "Privacy" },
@@ -124,8 +125,31 @@ export const PAGE_CONTENT_DEFAULTS = {
         { to: "/universities", title: "Tertiary Institutions", body: "Institutions, locations, and application windows." },
         { to: "/sponsorships", title: "Sponsorships & funding", body: "Government sponsorship steps, private sponsor posts, and other funding routes." },
         { to: "/internships", title: "Internships", body: "Latest internship windows copied from official posts - apply on the original channel." },
+        { to: "/study", title: "BGCSE Study", body: "Revision links via Learning Passport, free resources, and which programmes need each subject." },
       ],
     },
+  },
+  study: {
+    hero: {
+      kicker: "BGCSE Study",
+      title: "Revise for exams, plan for university",
+      body: "A bridge between BGCSE revision and tertiary planning. Thuto links to official Learning Passport content and shows which programmes depend on each subject — we do not host curriculum materials here.",
+    },
+    featured: {
+      heading: "Official revision platforms",
+      body: "Open these resources in your browser or the Learning Passport app. Sign in with your school username where required.",
+      attribution: "Content on Learning Passport is provided by the Ministry of Education and Skills Development, UNICEF, and Microsoft.",
+    },
+    subjects: {
+      heading: "BGCSE subjects",
+      body: "Pick a subject for revision links, study tips, and related university programmes in Thuto.",
+    },
+    verify: {
+      title: "Tie revision to your admission plan",
+      body: "After studying, enter your grades in the Predictor to see which programmes you may qualify for.",
+      linkLabel: "Open Predictor",
+    },
+    footerNote: "Thuto does not host curriculum content. External links open official platforms.",
   },
   sponsorships: {
     hero: {
