@@ -79,10 +79,41 @@ function IconComment({ className = "h-4 w-4" }) {
   );
 }
 
+function IconShare({ className = "h-4 w-4" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M7 17l10-10M17 7H9m8 0v8" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.5 10.5v7a1.5 1.5 0 001.5 1.5h7" />
+    </svg>
+  );
+}
+
+function IconSave({ className = "h-4 w-4" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.5 4.75A1.75 1.75 0 018.25 3h7.5a1.75 1.75 0 011.75 1.75V21l-5.5-3.5L6.5 21V4.75z" />
+    </svg>
+  );
+}
+
+function renderHashtagText(text) {
+  return String(text || "")
+    .split(/(#[\p{L}\p{N}_-]+)/gu)
+    .map((part, index) =>
+      part.startsWith("#") ? (
+        <span key={`${part}-${index}`} className="font-semibold text-brand-700">
+          {part}
+        </span>
+      ) : (
+        part
+      ),
+    );
+}
+
 function PostAvatar({ isOfficial, displayName, avatarUrl }) {
   if (isOfficial) {
     return (
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-800 text-lg font-bold text-white ring-2 ring-white">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-700 to-brand-900 text-xl font-bold text-white ring-2 ring-white">
         T
       </div>
     );
@@ -92,13 +123,13 @@ function PostAvatar({ isOfficial, displayName, avatarUrl }) {
       <img
         src={avatarUrl}
         alt=""
-        className="h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-white"
+        className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white"
       />
     );
   }
   return (
     <div
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-100 text-base font-bold text-brand-800 ring-2 ring-white"
+      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-100 text-base font-bold text-brand-800 ring-2 ring-white"
       aria-hidden
     >
       {avatarInitial(displayName)}
@@ -213,7 +244,7 @@ function CommentSection({
   const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
 
   return (
-    <div className="mt-4 border-t border-stone-100 pt-4">
+    <div className="mt-4 border-t border-stone-100 px-4 pb-4 pt-4 sm:px-5 sm:pb-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Comments</p>
         <button
@@ -422,17 +453,17 @@ export default function FeedPostCard({
   return (
     <article
       className={[
-        "min-w-0 overflow-hidden rounded-2xl border bg-white p-3.5 shadow-card transition-shadow hover:shadow-card-hover sm:p-5",
-        isPublished ? "border-stone-200" : "border-amber-200 bg-amber-50/30",
+        "min-w-0 overflow-hidden rounded-[1.35rem] border bg-white shadow-[0_14px_34px_rgba(15,118,110,0.13)] transition-shadow hover:shadow-card-hover",
+        isPublished ? "border-brand-100/80" : "border-amber-200 bg-amber-50/30",
       ].join(" ")}
     >
-      <header className="flex min-w-0 items-start gap-2.5 sm:gap-3">
+      <header className="flex min-w-0 items-start gap-3 px-4 pt-4 sm:px-5 sm:pt-5">
         <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1.5">
-                <h3 className="min-w-0 break-words text-sm font-bold text-stone-900">{displayName}</h3>
+                <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">{displayName}</h3>
                 {isOfficial ? <OfficialBadge /> : null}
                 {!isPublished && isOwnPost ? (
                   <span className="rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-900">
@@ -448,7 +479,7 @@ export default function FeedPostCard({
                 isOfficial={isOfficial}
               />
             </div>
-            <span className="max-w-full rounded-full bg-brand-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-brand-800 ring-1 ring-brand-100">
+            <span className="max-w-full rounded-full bg-brand-700 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
               {categoryBadgeText(post.category)}
             </span>
           </div>
@@ -459,15 +490,17 @@ export default function FeedPostCard({
       </header>
 
       {post.title ? (
-        <h4 className="mt-3 break-words text-base font-bold leading-snug text-stone-950 sm:mt-4 sm:text-lg">{post.title}</h4>
+        <h4 className="mt-3 break-words px-4 text-base font-bold leading-snug text-stone-950 sm:mt-4 sm:px-5 sm:text-lg">{post.title}</h4>
       ) : null}
       <ExpandableText
         text={post.body}
-        className={`break-words text-sm leading-relaxed text-stone-700 sm:text-[15px] ${post.title ? "mt-2" : "mt-3 sm:mt-4"}`}
+        className={`break-words px-4 text-[1rem] leading-relaxed text-stone-950 sm:px-5 sm:text-[1.05rem] ${post.title ? "mt-2" : "mt-3 sm:mt-4"}`}
+        buttonClassName="ml-4 sm:ml-5"
+        renderText={renderHashtagText}
       />
 
       {!isPublished && isOwnPost && post.moderationReason ? (
-        <p className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800">
+        <p className="mx-4 mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 sm:mx-5">
           {post.moderationReason}
         </p>
       ) : null}
@@ -477,7 +510,7 @@ export default function FeedPostCard({
           href={linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-flex break-all text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
+          className="mx-4 mt-3 inline-flex break-all text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950 sm:mx-5"
         >
           Open source link
         </a>
@@ -486,7 +519,7 @@ export default function FeedPostCard({
       <PostImages images={post.images} />
 
       {isPublished && visibleReactionCounts.length ? (
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-stone-500">
+        <div className="mx-4 mt-4 flex flex-wrap gap-2 text-xs font-semibold text-stone-500 sm:mx-5">
           {visibleReactionCounts.map((reaction) => (
             <span
               key={reaction.value}
@@ -505,7 +538,7 @@ export default function FeedPostCard({
       ) : null}
 
       {isPublished ? (
-        <div className="mt-4 grid grid-cols-2 gap-2 border-t border-stone-100 pt-3">
+        <div className="mt-4 grid grid-cols-4 border-t border-brand-100/80 bg-white">
           <div className="relative" ref={reactionPickerRef}>
             {reactionPickerOpen ? (
               <div className="absolute left-0 bottom-full z-10 mb-2 w-64 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-stone-200 bg-white p-2 shadow-card">
@@ -553,35 +586,52 @@ export default function FeedPostCard({
                 }
               }}
               className={[
-                "focus-ring flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border px-2 text-sm font-semibold transition",
+                "focus-ring flex min-h-14 w-full items-center justify-center gap-1.5 px-1 text-sm font-semibold transition",
                 reactButtonActive
-                  ? "border-orange-200 bg-orange-50 text-orange-600"
-                  : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50",
+                  ? "text-brand-700"
+                  : "text-brand-900 hover:bg-brand-50",
               ].join(" ")}
               aria-pressed={reactButtonActive}
               aria-haspopup="menu"
               aria-expanded={reactionPickerOpen}
             >
               <IconHeart filled={reactButtonActive} className="h-4 w-4" />
-              <span>{reactButtonLabel}</span>
-              {primaryReactionCount ? (
-                <span className="rounded-full bg-white/80 px-2 py-0.5 text-xs text-current">{primaryReactionCount}</span>
-              ) : null}
+              <span className="flex flex-col items-start leading-none">
+                {primaryReactionCount ? <span className="text-[11px] font-medium">{primaryReactionCount}</span> : null}
+                <span>{reactButtonLabel}</span>
+              </span>
               <span className="sr-only">Hold or right-click for more reactions.</span>
             </button>
           </div>
           <button
             type="button"
             onClick={() => onToggleComments(post.id)}
-            className="focus-ring flex min-h-10 items-center justify-center gap-1.5 rounded-xl border border-stone-200 bg-white px-2 text-sm font-semibold text-stone-600 hover:bg-stone-50"
+            className="focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold text-brand-900 hover:bg-brand-50"
             aria-expanded={commentsExpanded}
           >
             <IconComment />
-            <span>{commentCount || "Comment"}</span>
+            <span className="flex flex-col items-start leading-none">
+              {commentCount ? <span className="text-[11px] font-medium">{commentCount}</span> : null}
+              <span>Comment</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            className="focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold text-brand-900 hover:bg-brand-50"
+          >
+            <IconShare />
+            <span>Share</span>
+          </button>
+          <button
+            type="button"
+            className="focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold text-brand-900 hover:bg-brand-50"
+          >
+            <IconSave />
+            <span>Save</span>
           </button>
         </div>
       ) : isOwnPost ? (
-        <p className="mt-4 text-xs text-amber-700">Visible only to you while review is pending.</p>
+        <p className="mx-4 mt-4 text-xs text-amber-700 sm:mx-5">Visible only to you while review is pending.</p>
       ) : null}
 
       {isPublished && !commentsExpanded ? <InlineActionFeedback feedback={actionFeedback} /> : null}

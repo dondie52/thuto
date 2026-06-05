@@ -11,6 +11,7 @@ const DEFAULT_LIMIT = 650;
  *   className?: string,
  *   buttonClassName?: string,
  *   preserveWrap?: boolean,
+ *   renderText?: (text: string) => import("react").ReactNode,
  * }} props
  */
 export default function ExpandableText({
@@ -19,6 +20,7 @@ export default function ExpandableText({
   className = "",
   buttonClassName = "",
   preserveWrap = false,
+  renderText,
 }) {
   const [expanded, setExpanded] = useState(false);
   const contentId = useId();
@@ -43,7 +45,7 @@ export default function ExpandableText({
           .filter(Boolean)
           .join(" ")}
       >
-        {preview}
+        {renderText ? renderText(preview) : preview}
         {shouldCollapse && !expanded ? "..." : ""}
       </p>
       {shouldCollapse ? (
