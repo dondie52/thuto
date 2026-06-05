@@ -6,34 +6,34 @@ const VALID_PLANS = new Set(["monthly", "annual", "season_pass"]);
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders(req) });
   }
   if (req.method !== "POST") {
-    return jsonResponse({ error: "Method not allowed" }, 405);
+    return jsonResponse({ error: "Method not allowed" }, 405, req);
   }
 
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return jsonResponse({ error: "Unauthorized" }, 401);
+      return jsonResponse({ error: "Unauthorized" }, 401, req);
     }
 
     const supabaseUser = getSupabaseUserClient(authHeader);
     const { data: userData, error: userError } = await supabaseUser.auth.getUser();
     if (userError || !userData?.user) {
-      return jsonResponse({ error: "Unauthorized" }, 401);
+      return jsonResponse({ error: "Unauthorized" }, 401, req);
     }
     const user = userData.user;
 
     const body = await req.json().catch(() => ({}));
     const planId = String(body?.planId || "").trim();
     if (!VALID_PLANS.has(planId)) {
-      return jsonResponse({ error: "Invalid plan" }, 400);
+      return jsonResponse({ error: "Invalid plan" }, 400, req);
     }
 
     const priceId = getPriceId(planId);
     if (!priceId) {
-      return jsonResponse({ error: "Plan is not configured on the server" }, 503);
+      return jsonResponse({ error: "Plan is not configured on the server" }, 503, req);
     }
 
     const admin = getSupabaseAdmin();
@@ -81,10 +81,10 @@ Deno.serve(async (req) => {
         : {}),
     });
 
-    return jsonResponse({ url: session.url });
+    return jsonResponse({ url: session.url }, 200, req);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Checkout failed";
     console.error("create-checkout-session:", message);
-    return jsonResponse({ error: message }, 500);
+    return jsonResponse({ error: message }, 500, req);
   }
 });

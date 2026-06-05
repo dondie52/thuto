@@ -4,22 +4,22 @@ import { getSupabaseAdmin, getSupabaseUserClient } from "../_shared/supabaseAdmi
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders(req) });
   }
   if (req.method !== "POST") {
-    return jsonResponse({ error: "Method not allowed" }, 405);
+    return jsonResponse({ error: "Method not allowed" }, 405, req);
   }
 
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return jsonResponse({ error: "Unauthorized" }, 401);
+      return jsonResponse({ error: "Unauthorized" }, 401, req);
     }
 
     const supabaseUser = getSupabaseUserClient(authHeader);
     const { data: userData, error: userError } = await supabaseUser.auth.getUser();
     if (userError || !userData?.user) {
-      return jsonResponse({ error: "Unauthorized" }, 401);
+      return jsonResponse({ error: "Unauthorized" }, 401, req);
     }
 
     const admin = getSupabaseAdmin();
@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
       .maybeSingle();
 
     if (!profile?.stripe_customer_id) {
-      return jsonResponse({ error: "No billing account found. Subscribe to Premium first." }, 400);
+      return jsonResponse({ error: "No billing account found. Subscribe to Premium first." }, 400, req);
     }
 
     const stripe = getStripe();
@@ -39,10 +39,10 @@ Deno.serve(async (req) => {
       return_url: `${getSiteUrl()}/settings`,
     });
 
-    return jsonResponse({ url: portal.url });
+    return jsonResponse({ url: portal.url }, 200, req);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Portal failed";
     console.error("create-portal-session:", message);
-    return jsonResponse({ error: message }, 500);
+    return jsonResponse({ error: message }, 500, req);
   }
 });

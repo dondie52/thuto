@@ -1,5 +1,28 @@
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 
+async function parseFunctionInvokeError(error, data, fallbackMessage) {
+  if (data?.error) return new Error(String(data.error));
+
+  if (error && typeof error === "object") {
+    const context = error.context;
+    if (context && typeof context.json === "function") {
+      try {
+        const payload = await context.json();
+        if (payload?.error) return new Error(String(payload.error));
+      } catch {
+        /* fall through */
+      }
+    }
+  }
+
+  const message = String(error?.message || "").trim();
+  if (/failed to send a request to the edge function/i.test(message)) {
+    return new Error(fallbackMessage);
+  }
+
+  return new Error(message || fallbackMessage);
+}
+
 /**
  * @param {'monthly' | 'annual' | 'season_pass'} planId
  * @returns {Promise<string>} Stripe Checkout URL
@@ -21,7 +44,11 @@ export async function startPremiumCheckout(planId) {
   });
 
   if (error) {
-    throw new Error(error.message || "Could not start checkout.");
+    throw await parseFunctionInvokeError(
+      error,
+      data,
+      "Could not start checkout. Check that the create-checkout-session Edge Function is deployed and its Stripe secrets are set.",
+    );
   }
   const url = data?.url;
   if (!url || typeof url !== "string") {
@@ -50,7 +77,11 @@ export async function openBillingPortal() {
   });
 
   if (error) {
-    throw new Error(error.message || "Could not open billing portal.");
+    throw await parseFunctionInvokeError(
+      error,
+      data,
+      "Could not open billing portal. Check that the create-portal-session Edge Function is deployed and the user has a Stripe customer id.",
+    );
   }
   const url = data?.url;
   if (!url || typeof url !== "string") {

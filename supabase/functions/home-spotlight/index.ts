@@ -71,38 +71,45 @@ function isHttpsUrl(value: string) {
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", {
+      headers: {
+        ...corsHeaders,
+        "Access-Control-Allow-Headers":
+          request.headers.get("access-control-request-headers")?.trim() ||
+          "authorization, x-client-info, apikey, content-type, x-supabase-api-version, accept, accept-profile, prefer, range",
+      },
+    });
   }
 
   if (request.method !== "POST") {
-    return jsonResponse({ ok: false, error: "Method not allowed" }, 405);
+    return jsonResponse({ ok: false, error: "Method not allowed" }, 405, request);
   }
 
   const provider = Deno.env.get("AI_PROVIDER") || "gemini";
   if (provider !== "gemini") {
-    return jsonResponse({ ok: false, error: "Only Gemini is configured for this endpoint" }, 400);
+    return jsonResponse({ ok: false, error: "Only Gemini is configured for this endpoint" }, 400, request);
   }
 
   const geminiKey = Deno.env.get("GEMINI_API_KEY");
   if (!geminiKey) {
-    return jsonResponse({ ok: false, error: "Gemini is not configured on the server" }, 503);
+    return jsonResponse({ ok: false, error: "Gemini is not configured on the server" }, 503, request);
   }
 
   let body: HomeSpotlightRequest = {};
   try {
     body = (await request.json()) as HomeSpotlightRequest;
   } catch {
-    return jsonResponse({ ok: false, error: "Invalid JSON body" }, 400);
+    return jsonResponse({ ok: false, error: "Invalid JSON body" }, 400, request);
   }
 
   const calendarDayKey = cleanText(body.calendarDayKey, 12);
   if (!calendarDayKey || !isDayKey(calendarDayKey)) {
-    return jsonResponse({ ok: false, error: "calendarDayKey must be YYYY-MM-DD" }, 400);
+    return jsonResponse({ ok: false, error: "calendarDayKey must be YYYY-MM-DD" }, 400, request);
   }
 
   const programmeCandidates = normalizeCandidates(body.programmeCandidates);
   if (programmeCandidates.length < 8) {
-    return jsonResponse({ ok: false, error: "At least 8 programme candidates are required" }, 400);
+    return jsonResponse({ ok: false, error: "At least 8 programme candidates are required" }, 400, request);
   }
 
   const candidateIds = new Set(programmeCandidates.map((c) => c.id));
@@ -181,18 +188,19 @@ Produce the JSON response now.`;
         error: raw.error?.message || "Gemini request failed",
       },
       502,
+      request,
     );
   }
 
   const text =
     raw.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n").trim() || "";
   if (!text) {
-    return jsonResponse({ ok: false, error: "Gemini returned an empty response" }, 502);
+    return jsonResponse({ ok: false, error: "Gemini returned an empty response" }, 502, request);
   }
 
   const parsed = extractJson(text);
   if (!parsed || typeof parsed !== "object") {
-    return jsonResponse({ ok: false, error: "Could not parse Gemini JSON" }, 502);
+    return jsonResponse({ ok: false, error: "Could not parse Gemini JSON" }, 502, request);
   }
 
   const obj = parsed as Record<string, unknown>;
@@ -221,7 +229,7 @@ Produce the JSON response now.`;
   };
 
   if (!scholarship.body) {
-    return jsonResponse({ ok: false, error: "Gemini omitted scholarship body" }, 502);
+    return jsonResponse({ ok: false, error: "Gemini omitted scholarship body" }, 502, request);
   }
 
   return jsonResponse({
@@ -231,5 +239,5 @@ Produce the JSON response now.`;
     calendarDayKey,
     featuredProgrammes,
     scholarship,
-  });
+  }, 200, request);
 });
