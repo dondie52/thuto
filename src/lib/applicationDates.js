@@ -86,4 +86,4 @@ export function formatDisplayDate(iso) {
 }
 
 export const APPLICATION_DATES_DISCLAIMER =
-  "Verify with the university - application dates may change.";
+  "Verify dates on the institution's official website — application windows may change.";

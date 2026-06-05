@@ -1,43 +1,63 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import UniversityInitialsBadge from "../UniversityInitialsBadge.jsx";
+import { fetchUniversities } from "../../lib/universitiesData.js";
+import { deriveUniversityInitials } from "../../lib/universityBranding.js";
 import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
-const allLogos = [
-  { id: "ub", short: "UB", name: "University of Botswana", src: "university-logos/ub.jpg" },
-  { id: "biust", short: "BIUST", name: "BIUST", src: "university-logos/biust.jpg" },
-  { id: "buan", short: "BUAN", name: "Botswana University of Agriculture and Natural Resources", src: "university-logos/buan.jpg" },
-  { id: "botho", short: "Botho", name: "Botho University", src: "university-logos/botho.jpg" },
-  { id: "ba-isago", short: "BA ISAGO", name: "BA ISAGO University", src: "university-logos/ba-isago.jpg" },
-  { id: "bou", short: "BOU", name: "Botswana Open University", src: "university-logos/bou.jpg" },
-  { id: "limkokwing", short: "Limkokwing", name: "Limkokwing University", src: "university-logos/limkokwing.jpg" },
-  { id: "bac", short: "BSBS", name: "Botswana School of Business Sciences", src: "university-logos/bac.jpg" },
-  { id: "fctve", short: "FCTVE", name: "Francistown College of Technical and Vocational Education", src: "university-logos/fctve.jpg" },
-  { id: "boitekanelo", short: "Boitekanelo", name: "Boitekanelo College", src: "university-logos/boitekanelo.jpg" },
-  { id: "abm", short: "ABM", name: "ABM University College", src: "university-logos/abm.jpg" },
-  { id: "new-era", short: "New Era", name: "New Era College", src: "university-logos/new-era.jpg" },
-  { id: "naledi-training-institute", short: "NTI", name: "Naledi Training Institute", src: "university-logos/naledi.jpg" },
+const DEFAULT_FEATURED_IDS = [
+  "ub",
+  "biust",
+  "buan",
+  "botho",
+  "ba-isago",
+  "bou",
+  "limkokwing",
+  "bac",
+  "fctve",
+  "boitekanelo",
+  "abm",
+  "new-era",
+  "naledi-training-institute",
 ];
-
-const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
 
 export default function UniversitiesSection({ content }) {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const marqueeTweenRef = useRef(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [universitiesById, setUniversitiesById] = useState(new Map());
   const { isSignedIn } = useLandingAuth();
 
-  const featuredLogos = useMemo(() => {
-    const ids = Array.isArray(content?.featuredUniversityIds) ? content.featuredUniversityIds : [];
-    const byId = new Map(allLogos.map((logo) => [logo.id, logo]));
-    const picked = ids.map((id) => byId.get(id)).filter(Boolean);
-    return picked.length ? picked : allLogos;
-  }, [content?.featuredUniversityIds]);
+  useEffect(() => {
+    let cancelled = false;
+    fetchUniversities()
+      .then(({ list }) => {
+        if (cancelled) return;
+        setUniversitiesById(new Map(list.map((u) => [u.id, u])));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-  const visibleLogos = useMemo(
-    () => (reducedMotion ? featuredLogos : [...featuredLogos, ...featuredLogos]),
-    [featuredLogos, reducedMotion],
+  const featuredInstitutions = useMemo(() => {
+    const ids = Array.isArray(content?.featuredUniversityIds) ? content.featuredUniversityIds : DEFAULT_FEATURED_IDS;
+    const picked = ids
+      .map((id) => {
+        const university = universitiesById.get(id);
+        if (university) return university;
+        return { id, name: id, shortName: id.toUpperCase().slice(0, 6) };
+      })
+      .filter(Boolean);
+    return picked.length ? picked : DEFAULT_FEATURED_IDS.map((id) => ({ id, name: id, shortName: id.toUpperCase() }));
+  }, [content?.featuredUniversityIds, universitiesById]);
+
+  const visibleInstitutions = useMemo(
+    () => (reducedMotion ? featuredInstitutions : [...featuredInstitutions, ...featuredInstitutions]),
+    [featuredInstitutions, reducedMotion],
   );
 
   useEffect(() => {
@@ -92,7 +112,7 @@ export default function UniversitiesSection({ content }) {
       marqueeTweenRef.current = null;
       ctx.revert();
     };
-  }, [reducedMotion, featuredLogos]);
+  }, [reducedMotion, featuredInstitutions]);
 
   function pauseMarquee() {
     marqueeTweenRef.current?.pause();
@@ -102,16 +122,20 @@ export default function UniversitiesSection({ content }) {
     marqueeTweenRef.current?.resume();
   }
 
-  function liftLogo(event) {
+  function liftCard(event) {
     if (reducedMotion) return;
     pauseMarquee();
     gsap.to(event.currentTarget, { y: -6, scale: 1.03, duration: 0.24, ease: "expo.out" });
   }
 
-  function settleLogo(event) {
+  function settleCard(event) {
     if (reducedMotion) return;
     gsap.to(event.currentTarget, { y: 0, scale: 1, duration: 0.24, ease: "expo.out" });
     resumeMarquee();
+  }
+
+  function institutionLabel(university) {
+    return university.shortName || deriveUniversityInitials(university);
   }
 
   return (
@@ -142,24 +166,24 @@ export default function UniversitiesSection({ content }) {
             <div className="flex items-center justify-between gap-4">
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{content?.featuredLabel}</span>
               <span className="rounded-full bg-brand-700 px-3 py-1 text-xs font-bold text-white">
-                {featuredLogos.length} {content?.badgeSuffix}
+                {featuredInstitutions.length} {content?.badgeSuffix}
               </span>
             </div>
-            <ul className="grid grid-cols-2 gap-3 py-2 sm:hidden" aria-label="Featured institution logos">
-              {featuredLogos.slice(0, 6).map((u) => (
+            <ul className="grid grid-cols-2 gap-3 py-2 sm:hidden" aria-label="Featured institutions">
+              {featuredInstitutions.slice(0, 6).map((u) => (
                 <li key={u.id}>
                   <Link
                     to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
                     className="logo-card flex h-24 min-w-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
-                    onMouseEnter={liftLogo}
-                    onMouseLeave={settleLogo}
-                    onFocus={liftLogo}
-                    onBlur={settleLogo}
+                    onMouseEnter={liftCard}
+                    onMouseLeave={settleCard}
+                    onFocus={liftCard}
+                    onBlur={settleCard}
                   >
                     <span className="flex min-h-0 flex-1 items-center justify-center">
-                      <img src={assetUrl(u.src)} alt={`${u.name} logo`} className="max-h-12 max-w-[6.5rem] object-contain" loading="lazy" />
+                      <UniversityInitialsBadge university={u} size="lg" />
                     </span>
-                    <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{u.short}</span>
+                    <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{institutionLabel(u)}</span>
                   </Link>
                 </li>
               ))}
@@ -171,26 +195,26 @@ export default function UniversitiesSection({ content }) {
               <ul
                 ref={trackRef}
                 className={["flex gap-3 py-2", reducedMotion ? "flex-wrap justify-center" : "w-max"].join(" ")}
-                aria-label="Featured institution logos"
+                aria-label="Featured institutions"
               >
-                {visibleLogos.map((u, index) => {
-                  const duplicateLogo = !reducedMotion && index >= featuredLogos.length;
+                {visibleInstitutions.map((u, index) => {
+                  const duplicate = !reducedMotion && index >= featuredInstitutions.length;
                   return (
-                    <li key={`${u.id}-${index}`} aria-hidden={duplicateLogo}>
+                    <li key={`${u.id}-${index}`} aria-hidden={duplicate}>
                       <Link
                         to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
                         className="logo-card group flex h-28 w-40 shrink-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
-                        tabIndex={duplicateLogo ? -1 : undefined}
-                        aria-hidden={duplicateLogo}
-                        onMouseEnter={liftLogo}
-                        onMouseLeave={settleLogo}
-                        onFocus={liftLogo}
-                        onBlur={settleLogo}
+                        tabIndex={duplicate ? -1 : undefined}
+                        aria-hidden={duplicate}
+                        onMouseEnter={liftCard}
+                        onMouseLeave={settleCard}
+                        onFocus={liftCard}
+                        onBlur={settleCard}
                       >
                         <span className="flex min-h-0 flex-1 items-center justify-center">
-                          <img src={assetUrl(u.src)} alt={duplicateLogo ? "" : `${u.name} logo`} className="max-h-14 max-w-[7.75rem] object-contain" loading="lazy" />
+                          <UniversityInitialsBadge university={u} size="xl" />
                         </span>
-                        <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{u.short}</span>
+                        <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{institutionLabel(u)}</span>
                       </Link>
                     </li>
                   );

@@ -7,6 +7,7 @@ import { useAuth } from "../lib/auth.jsx";
 import { compareSelectionHref, getCompareIds, setCompareIds } from "../lib/compareSelection.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { getCompareMax } from "../lib/premium.js";
+import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
@@ -123,17 +124,17 @@ function ValueWithBadge({ children, label, tone = "neutral" }) {
   );
 }
 
-function ExternalAction({ href, children, variant = "primary" }) {
+function ExternalAction({ href, children, variant = "primary", institutionName = "" }) {
   if (!href) return null;
   return (
-    <a
+    <ExternalSiteLink
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={variant === "primary" ? ACTION_LINK_CLASS : SECONDARY_ACTION_LINK_CLASS}
+      variant={variant === "primary" ? "comparePrimary" : "compareSecondary"}
+      institutionName={institutionName}
+      useInterstitial
     >
       {children}
-    </a>
+    </ExternalSiteLink>
   );
 }
 
@@ -216,8 +217,10 @@ function MobileCompareCards({
             </div>
 
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              <ExternalAction href={applyHref}>Apply</ExternalAction>
-              <ExternalAction href={officialHref} variant="secondary">
+              <ExternalAction href={applyHref} institutionName={p.university}>
+                Apply
+              </ExternalAction>
+              <ExternalAction href={officialHref} variant="secondary" institutionName={p.university}>
                 Official link
               </ExternalAction>
             </div>
@@ -599,8 +602,10 @@ export default function CompareProgrammes() {
                         </div>
                         {el ? <EligibilityPill eligibility={el} /> : null}
                         <div className="grid grid-cols-2 gap-2">
-                          <ExternalAction href={safeExternalUrl(p.applyUrl)}>Apply</ExternalAction>
-                          <ExternalAction href={safeExternalUrl(p.officialUrl)} variant="secondary">
+                          <ExternalAction href={safeExternalUrl(p.applyUrl)} institutionName={p.university}>
+                            Apply
+                          </ExternalAction>
+                          <ExternalAction href={safeExternalUrl(p.officialUrl)} variant="secondary" institutionName={p.university}>
                             Official link
                           </ExternalAction>
                         </div>
@@ -673,7 +678,9 @@ export default function CompareProgrammes() {
                   return (
                     <td key={p.id} className={CELL_CLASS}>
                       {applyHref ? (
-                        <ExternalAction href={applyHref}>Apply</ExternalAction>
+                        <ExternalAction href={applyHref} institutionName={p.university}>
+                          Apply
+                        </ExternalAction>
                       ) : (
                         EMPTY_MARK
                       )}
@@ -766,7 +773,7 @@ export default function CompareProgrammes() {
                 return (
                   <td key={p.id} className={CELL_CLASS}>
                     {officialHref ? (
-                      <ExternalAction href={officialHref} variant="secondary">
+                      <ExternalAction href={officialHref} variant="secondary" institutionName={p.university}>
                         Official link
                       </ExternalAction>
                     ) : (

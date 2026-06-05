@@ -12,7 +12,6 @@
     "applyUrl": "https://www.ub.bw/admissions",
     "featured": true,
     "sponsorshipTier": "core",
-    "logo": "university-logos/ub.jpg",
     "resources": [
       {
         "title": "A Guide to Prospective Applicants 2026 - Undergraduate Admissions",
@@ -85,7 +84,6 @@
     "applyUrl": "https://www.biust.ac.bw/admissions",
     "featured": true,
     "sponsorshipTier": "core",
-    "logo": "university-logos/biust.jpg",
     "resources": [
       {
         "title": "Undergraduate admissions hub",
@@ -158,7 +156,6 @@
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
     "featured": true,
     "sponsorshipTier": "core",
-    "logo": "university-logos/bac.jpg",
     "resources": [
       {
         "title": "Admissions and enrolment guide",
@@ -189,7 +186,6 @@
     "applyUrl": "https://www.bothouniversity.ac.bw/admissions",
     "featured": true,
     "sponsorshipTier": "core",
-    "logo": "university-logos/botho.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -220,7 +216,6 @@
     "applyUrl": "https://www.baisago.ac.bw/admissions",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/ba-isago.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -286,7 +281,6 @@
     "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/abm.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -324,7 +318,6 @@
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/limkokwing.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -362,7 +355,6 @@
     "applyUrl": "https://www.gtc.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/gtc.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -393,7 +385,6 @@
     "applyUrl": "https://www.bou.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/bou.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -466,7 +457,6 @@
     "applyUrl": "https://boitekanelo.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/boitekanelo.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -539,7 +529,6 @@
     "applyUrl": "https://www.neweracollege.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/new-era.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -577,7 +566,6 @@
     "applyUrl": "https://www.gips.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/gips.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -638,7 +626,6 @@
     "applyUrl": "https://www.bica.org.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/botswana-accountancy-training.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -677,8 +664,7 @@
         "format": "Web page",
         "sourceLabel": "Government of Botswana"
       }
-    ],
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    ]
   },
   {
     "id": "kgale",
@@ -721,7 +707,6 @@
     "applyUrl": "https://www.isbs.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/isbs.png",
     "resources": [
       {
         "title": "Official website",
@@ -763,7 +748,6 @@
     "applyUrl": "https://www.idmbls.com/bw",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/idm.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -798,7 +782,6 @@
     "applyUrl": "https://firecollege.co.bw/qualifications-form/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/fire-college.png",
     "resources": [
       {
         "title": "Official website",
@@ -847,7 +830,6 @@
     "applyUrl": "https://lcibs.ac.bw/apply/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/lcibs.png",
     "resources": [
       {
         "title": "Official website",
@@ -885,7 +867,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/bcet.jpeg",
     "resources": []
   },
   {
@@ -898,7 +879,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/fctve.jpg",
     "resources": []
   },
   {
@@ -914,7 +894,6 @@
     "applyUrl": "https://www.moh.gov.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/ihs.jpeg",
     "resources": []
   },
   {
@@ -927,7 +906,6 @@
     "applyUrl": "https://www.guc.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/guc.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -962,7 +940,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/pillar-of-success.jpeg",
     "resources": []
   },
   {
@@ -978,7 +955,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/oodi.jpeg",
     "resources": []
   },
   {
@@ -994,7 +970,6 @@
     "applyUrl": "https://www.buan.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/buan.jpg",
     "resources": [
       {
         "title": "Official website",
@@ -1067,7 +1042,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/logan-business-college.png",
     "resources": []
   },
   {
@@ -1083,7 +1057,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/mega-size-college.jpeg",
     "resources": []
   },
   {
@@ -1099,7 +1072,6 @@
     "applyUrl": "https://drive.google.com/file/d/1VEjEztNV69FgwSjLFsQYZ0AQCOAX4bhF/view?usp=sharing",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/kanye-sda-nursing.svg",
     "resources": [
       {
         "title": "Application form",
@@ -1130,7 +1102,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/bosa-bosele.jpeg",
     "resources": []
   },
   {
@@ -1146,7 +1117,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/tlokweng-coe.jpeg",
     "resources": []
   },
   {
@@ -1162,7 +1132,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/serowe-coe.jpeg",
     "resources": []
   },
   {
@@ -1178,7 +1147,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/molepolole-coe.jpeg",
     "resources": []
   },
   {
@@ -1194,7 +1162,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/roads-training-centre.jpeg",
     "resources": []
   },
   {
@@ -1210,7 +1177,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/dawn-training.jpeg",
     "resources": []
   },
   {
@@ -1226,7 +1192,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/cep-training.jpeg",
     "resources": []
   },
   {
@@ -1242,7 +1207,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/learneasy.jpeg",
     "resources": []
   },
   {
@@ -1258,7 +1222,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/stargems.jpeg",
     "resources": []
   },
   {
@@ -1274,7 +1237,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/homeland-college.jpeg",
     "resources": []
   },
   {
@@ -1290,7 +1252,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/gcca.jpeg",
     "resources": []
   },
   {
@@ -1306,7 +1267,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/gaborone-commercial-college.png",
     "resources": []
   },
   {
@@ -1322,7 +1282,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/tebelopele.jpeg",
     "resources": []
   },
   {
@@ -1338,7 +1297,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/byte-size-college.jpeg",
     "resources": []
   },
   {
@@ -1354,7 +1312,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/insurance-training-institute.jpeg",
     "resources": []
   },
   {
@@ -1370,7 +1327,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/realic.jpeg",
     "resources": []
   },
   {
@@ -1386,7 +1342,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/crackit.jpeg",
     "resources": []
   },
   {
@@ -1402,7 +1357,6 @@
     "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/palapye-technical-college.jpeg",
     "resources": [
       {
         "title": "Vocational Education Training",
@@ -1441,7 +1395,6 @@
     "applyUrl": "https://www.bibf.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/bibf.jpeg",
     "resources": [
       {
         "title": "Official website",
@@ -1472,7 +1425,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/tonota-coe.jpeg",
     "resources": []
   },
   {
@@ -1503,7 +1455,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/aafm.jpeg",
     "resources": []
   },
   {
@@ -1542,7 +1493,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/africa-insurance-training-institute.jpeg",
     "resources": []
   },
   {
@@ -1558,7 +1508,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/awil-college.jpeg",
     "resources": []
   },
   {
@@ -1574,7 +1523,6 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/delta-training-academy.jpeg",
     "resources": []
   },
   {
@@ -1586,8 +1534,7 @@
     "phone": "+267 71458649 / +267 77851168",
     "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
     "featured": false,
-    "sponsorshipTier": "standard",
-    "logo": "university-logos/naledi.jpg"
+    "sponsorshipTier": "standard"
   },
   {
     "id": "elsimate-institute",
@@ -1602,8 +1549,7 @@
     "academicYearStart": null,
     "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
     "featured": false,
-    "sponsorshipTier": "standard",
-    "logo": "university-logos/elsimate-institute.jpeg"
+    "sponsorshipTier": "standard"
   },
   {
     "id": "nampol-college-of-education",
@@ -1618,8 +1564,7 @@
     "academicYearStart": null,
     "applyUrl": "https://nce.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard",
-    "logo": "university-logos/nampol-college-of-education.jpeg"
+    "sponsorshipTier": "standard"
   },
   {
     "id": "barolong-brigade",
@@ -1642,8 +1587,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "bobonong-brigade",
@@ -1666,8 +1610,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "boteti-brigade",
@@ -1690,8 +1633,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "ghanzi-brigade",
@@ -1714,8 +1656,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "gweta-brigade",
@@ -1738,8 +1679,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "kang-brigade",
@@ -1762,8 +1702,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "kanye-brigade",
@@ -1786,8 +1725,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "kgatleng-brigade",
@@ -1810,8 +1748,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "krda",
@@ -1834,8 +1771,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "kweneng-bophirima-brigade",
@@ -1858,8 +1794,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "lobatse-brigade",
@@ -1882,8 +1817,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "madiba-brigade",
@@ -1906,8 +1840,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "mahalapye-brigade",
@@ -1930,8 +1863,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "marapong-brigade",
@@ -1954,8 +1886,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "marobela-brigade",
@@ -1978,8 +1909,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "matsheng-brigade",
@@ -2002,8 +1932,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "maun-technical-college",
@@ -2049,8 +1978,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "moshupa-brigade",
@@ -2073,8 +2001,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "ngethu-brigade",
@@ -2097,8 +2024,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "nswazwi-brigade",
@@ -2121,8 +2047,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "okavango-brigade",
@@ -2145,8 +2070,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "selebi-phikwe-technical-college",
@@ -2192,8 +2116,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "shashe-brigade",
@@ -2216,8 +2139,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "shoshong-brigade",
@@ -2240,8 +2162,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "tlokweng-brigade",
@@ -2264,8 +2185,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "kgalagadi-south-brigade",
@@ -2288,8 +2208,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "tshwaragano-brigade",
@@ -2312,8 +2231,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "tswelelopele-brigade",
@@ -2336,8 +2254,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "tswapong-bokone-brigade",
@@ -2360,8 +2277,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "tutume-brigade",
@@ -2384,8 +2300,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "zwenshambe-brigade",
@@ -2408,8 +2323,7 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
-    "logo": "university-logos/botswana-coat-of-arms.png"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
   },
   {
     "id": "inchrist-bible-institute-university",

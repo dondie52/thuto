@@ -12,6 +12,14 @@ const root = path.join(__dirname, "..");
 const targetsPath = path.join(__dirname, "data", "targets", "institutions-55.json");
 const uniPath = path.join(root, "public/data/universities.json");
 
+const BLOCKED_RESOURCE_HOSTS = new Set([
+  "thutoapp.com",
+  "www.thutoapp.com",
+  "thuto.bw",
+  "www.thuto.bw",
+  "thuto.local",
+]);
+
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
 }
@@ -23,6 +31,25 @@ function safeExternalUrl(value) {
     return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
   } catch {
     return "";
+  }
+}
+
+function isBlockedResourceHost(hostname) {
+  const host = String(hostname || "").toLowerCase();
+  if (!host) return true;
+  if (BLOCKED_RESOURCE_HOSTS.has(host)) return true;
+  if (host.endsWith(".supabase.co")) return true;
+  if (host.endsWith(".supabase.in")) return true;
+  return false;
+}
+
+function isAllowedExternalResourceUrl(value) {
+  const href = safeExternalUrl(value);
+  if (!href) return false;
+  try {
+    return !isBlockedResourceHost(new URL(href).hostname);
+  } catch {
+    return false;
   }
 }
 
@@ -53,6 +80,9 @@ function main() {
       if (!r?.title?.trim()) errors.push(`${id}: resources[${i}] missing title`);
       const url = safeExternalUrl(r?.url);
       if (!url) errors.push(`${id}: resources[${i}] invalid url '${r?.url}'`);
+      if (url && !isAllowedExternalResourceUrl(url)) {
+        errors.push(`${id}: resources[${i}] must not be hosted on Thuto/Supabase ('${r?.url}')`);
+      }
       if (url && seen.has(url)) errors.push(`${id}: duplicate resource url ${url}`);
       if (url) seen.add(url);
     }

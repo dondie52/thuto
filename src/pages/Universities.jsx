@@ -8,7 +8,8 @@ import {
   UNIVERSITY_CATEGORY_ORDER,
 } from "../lib/universitiesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
-import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
+import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
+import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const SORT_OPTIONS = [
@@ -51,11 +52,6 @@ function sortInstitutions(items, sort) {
   return list;
 }
 
-const assetUrl = (path) => {
-  const value = String(path || "").trim();
-  if (/^https?:\/\//i.test(value)) return value;
-  return `${import.meta.env.BASE_URL}${value.replace(/^\//, "")}`;
-};
 
 function InstitutionCard({ university }) {
   const websiteHref = safeExternalUrl(university.website);
@@ -69,17 +65,7 @@ function InstitutionCard({ university }) {
             className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
             aria-label={`${university.name} profile`}
           >
-            {resolveUniversityLogo(university) ? (
-              <img
-                src={assetUrl(resolveUniversityLogo(university))}
-                alt={`${university.name} logo`}
-                className="max-h-full max-w-full object-contain"
-              />
-            ) : (
-              <span className="inline-flex h-14 min-w-14 items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-3 text-sm font-semibold tracking-wide text-brand-800">
-                {deriveUniversityInitials(university)}
-              </span>
-            )}
+            <UniversityInitialsBadge university={university} size="md" />
           </Link>
           <div className="min-w-0 flex-1">
             <h3 className="font-display text-lg font-semibold leading-snug text-brand-900">
@@ -115,14 +101,9 @@ function InstitutionCard({ university }) {
             </a>
           ) : null}
           {websiteHref ? (
-            <a
-              href={websiteHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full border border-brand-200 bg-white px-3 py-1.5 font-semibold text-brand-800 transition hover:border-brand-300 hover:bg-brand-50"
-            >
+            <ExternalSiteLink href={websiteHref} variant="secondary" institutionName={university.name}>
               Website
-            </a>
+            </ExternalSiteLink>
           ) : null}
         </div>
       </div>

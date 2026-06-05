@@ -34,6 +34,7 @@ const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
 const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
 const UpgradeCancel = lazy(() => import("./pages/UpgradeCancel.jsx"));
+const ExternalRedirect = lazy(() => import("./pages/ExternalRedirect.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
 const splashEnterMs = 520;
@@ -115,6 +116,7 @@ export default function App() {
             <Route path="/study/:subjectId" element={<StudySubject />} />
             <Route path="/support" element={<Support />} />
             <Route path="/upgrade" element={<Upgrade />} />
+            <Route path="/go" element={<ExternalRedirect />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />

@@ -23,6 +23,7 @@ import {
   getSimilarProgrammes,
   isFitFinderCompatible,
 } from "../lib/programmeInsights.js";
+import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
 
@@ -217,24 +218,24 @@ export default function ProgrammeDetail() {
             </ul>
             <div className="mt-4 flex flex-wrap gap-3">
               {applyHref ? (
-                <a
+                <ExternalSiteLink
                   href={applyHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+                  variant="programmePrimary"
+                  institutionName={programme.university || university?.name}
+                  useInterstitial
                 >
                   Apply / admissions
-                </a>
+                </ExternalSiteLink>
               ) : null}
               {officialHref ? (
-                <a
+                <ExternalSiteLink
                   href={officialHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex rounded-xl border border-brand-300 bg-white px-4 py-2 text-sm font-semibold text-brand-800 shadow-sm hover:bg-brand-50"
+                  variant="programmeSecondary"
+                  institutionName={programme.university || university?.name}
+                  useInterstitial
                 >
                   Official programme page
-                </a>
+                </ExternalSiteLink>
               ) : null}
             </div>
             <p className="mt-3 text-xs text-slate-500">

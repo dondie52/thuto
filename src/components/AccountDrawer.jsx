@@ -313,6 +313,20 @@ export default function AccountDrawer() {
             </div>
 
             <div className="shrink-0 border-t border-stone-200 bg-white/70 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
+              <nav className="mb-3 flex flex-wrap gap-x-4 gap-y-2 text-xs" aria-label="Legal">
+                <Link to="/disclaimer" className="font-medium text-stone-600 underline decoration-stone-300 underline-offset-2 hover:text-brand-800">
+                  Disclaimer
+                </Link>
+                <Link
+                  to="/disclaimer#content-removal"
+                  className="font-medium text-stone-600 underline decoration-stone-300 underline-offset-2 hover:text-brand-800"
+                >
+                  IP &amp; Content Removal
+                </Link>
+                <Link to="/privacy" className="font-medium text-stone-600 underline decoration-stone-300 underline-offset-2 hover:text-brand-800">
+                  Privacy
+                </Link>
+              </nav>
               {!supabaseConfigured ? (
                 <p className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
                   Account login is not configured yet. You can still browse programmes on this device.
