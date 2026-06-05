@@ -214,24 +214,42 @@ export default function Feed() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-4 pb-8 sm:space-y-5 sm:pb-0">
-      <section className="rounded-2xl border border-brand-100 bg-[var(--thuto-surface-elevated)] p-4 shadow-card sm:p-5">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Social Feed</p>
-            <h1 className="mt-1 font-display text-2xl font-semibold text-brand-900">Campus updates</h1>
-          </div>
+    <div className="-mx-4 -my-4 min-h-[calc(100vh-7rem)] bg-gradient-to-b from-brand-50 via-teal-50/80 to-white px-4 py-4 sm:mx-auto sm:my-0 sm:w-full sm:max-w-2xl sm:rounded-[2rem] sm:px-5 sm:py-5">
+      <section className="mb-4 border-b border-brand-100/80 pb-4">
+        <div className="flex items-center gap-3">
+          <label className="relative min-w-0 flex-1">
+            <span className="sr-only">Search feed</span>
+            <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/90">
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 110-15 7.5 7.5 0 010 15z" />
+              </svg>
+            </span>
+            <input
+              type="search"
+              placeholder="Search posts, people, or universities..."
+              className="h-12 w-full rounded-full border border-brand-200 bg-brand-700/90 pl-11 pr-4 text-sm font-medium text-white shadow-sm placeholder:text-white/75 focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            />
+          </label>
           <button
             type="button"
             onClick={loadFeed}
-            className="focus-ring inline-flex min-h-10 items-center justify-center rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+            className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-100 bg-white text-brand-800 shadow-sm hover:bg-brand-50"
+            aria-label="Refresh feed"
           >
-            Refresh
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20 11a8.1 8.1 0 00-15.5-2M4 5v4h4M4 13a8.1 8.1 0 0015.5 2M20 19v-4h-4" />
+            </svg>
           </button>
+          <Link to="/profile" className="focus-ring shrink-0 rounded-full" aria-label="Open profile">
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="" className="h-11 w-11 rounded-full object-cover ring-2 ring-white shadow-sm" />
+            ) : (
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-sm font-bold text-brand-800 ring-2 ring-white shadow-sm">
+                {profileInitial(composerName)}
+              </span>
+            )}
+          </Link>
         </div>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600">
-          Share opportunities, campus stories, questions, study tips, and deadlines.
-        </p>
       </section>
 
       {!configured ? (
@@ -271,62 +289,88 @@ export default function Feed() {
         </div>
       ) : null}
 
-      <section className="rounded-2xl border border-brand-100 bg-white p-3 shadow-card sm:p-5">
-        <div className="flex min-w-0 items-start gap-2.5 sm:gap-3">
+      <section className="mb-4 rounded-[1.35rem] border border-brand-100/80 bg-white p-3 shadow-[0_14px_34px_rgba(15,118,110,0.13)] sm:mb-5 sm:p-4">
+        <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
               alt=""
-              className="mt-0.5 h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-brand-100 sm:h-11 sm:w-11"
+              className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-brand-100"
             />
           ) : (
-            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-800 ring-1 ring-brand-100 sm:h-11 sm:w-11">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-700 text-lg font-bold text-white ring-1 ring-brand-100">
               {profileInitial(composerName)}
             </div>
           )}
 
           <div className="min-w-0 flex-1">
-            <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-3">
-              <div className="min-w-0">
-                <h2 className="text-base font-bold text-brand-900">Create post</h2>
-                <p className="mt-0.5 text-xs leading-relaxed text-stone-500 sm:text-sm">
-                  {user ? `Posting as ${composerName}. Keep it useful for applicants and students.` : "Draft a post in a smaller, quicker composer."}
-                </p>
-              </div>
-              <label className="min-w-0 text-xs font-semibold text-stone-600 sm:min-w-[10rem]">
-                Category
-                <select
-                  value={form.category}
-                  onChange={(event) => updateForm({ category: event.target.value })}
-                  disabled={!canCompose || isPosting}
-                  className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+            <form className="space-y-2.5 sm:space-y-3" onSubmit={handleSubmitPost}>
+              <div className="flex min-w-0 items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowComposerDetails(true)}
+                  className="focus-ring min-h-11 min-w-0 flex-1 rounded-full border border-stone-200 bg-stone-50 px-4 text-left text-sm font-medium text-stone-700 shadow-inner hover:bg-white"
                 >
-                  {FEED_CATEGORIES.map((category) => (
-                    <option key={category.value} value={category.value}>
-                      {category.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <form className="mt-2.5 space-y-2.5 sm:mt-3 sm:space-y-3" onSubmit={handleSubmitPost}>
-              <label className="block">
-                <span className="sr-only">Post</span>
-                <textarea
-                  value={form.body}
-                  onChange={(event) => updateForm({ body: event.target.value })}
-                  maxLength={2400}
-                  rows={3}
-                  required
-                  disabled={!canCompose || isPosting}
-                  placeholder="What do you want to share?"
-                  className="w-full rounded-2xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60 sm:px-4 sm:py-3"
-                />
-              </label>
+                  Start a post
+                </button>
+                <label className="focus-within:ring-2 focus-within:ring-brand-200 inline-flex min-h-11 cursor-pointer flex-col items-center justify-center rounded-xl px-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.75 5.75A1.75 1.75 0 016.5 4h11a1.75 1.75 0 011.75 1.75v12.5A1.75 1.75 0 0117.5 20h-11a1.75 1.75 0 01-1.75-1.75V5.75z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM5 16l4-4 3 3 2-2 5 5" />
+                  </svg>
+                  Photo
+                  <input
+                    key={fileInputKey}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    disabled={!canCompose || isPosting}
+                    onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
+                    className="sr-only"
+                  />
+                </label>
+                <button
+                  type="submit"
+                  disabled={!canPublish || isPosting || !form.body.trim()}
+                  className="focus-ring inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-brand-700 px-5 py-2 text-sm font-bold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isPosting ? "..." : "Post"}
+                </button>
+              </div>
 
               {showComposerDetails ? (
-                <div className="grid gap-3 sm:grid-cols-2">
+                <label className="block">
+                  <span className="sr-only">Post</span>
+                  <textarea
+                    value={form.body}
+                    onChange={(event) => updateForm({ body: event.target.value })}
+                    maxLength={2400}
+                    rows={3}
+                    required
+                    disabled={!canCompose || isPosting}
+                    placeholder="What do you want to share?"
+                    className="w-full rounded-2xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60 sm:px-4 sm:py-3"
+                  />
+                </label>
+              ) : null}
+
+              {showComposerDetails ? (
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <label className="block">
+                    <span className="text-xs font-semibold text-stone-600">Category</span>
+                    <select
+                      value={form.category}
+                      onChange={(event) => updateForm({ category: event.target.value })}
+                      disabled={!canCompose || isPosting}
+                      className="mt-1 w-full rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                    >
+                      {FEED_CATEGORIES.map((category) => (
+                        <option key={category.value} value={category.value}>
+                          {category.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
                   <label className="block">
                     <span className="text-xs font-semibold text-stone-600">Title optional</span>
                     <input
@@ -335,7 +379,7 @@ export default function Feed() {
                       maxLength={120}
                       disabled={!canCompose || isPosting}
                       placeholder="Example: BDF scholarship notice"
-                      className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                      className="mt-1 w-full rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
                     />
                   </label>
                   <label className="block">
@@ -345,48 +389,28 @@ export default function Feed() {
                       onChange={(event) => updateForm({ linkUrl: event.target.value })}
                       disabled={!canCompose || isPosting}
                       placeholder="https://..."
-                      className="mt-1 w-full rounded-xl border border-brand-100 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                      className="mt-1 w-full rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
                     />
                   </label>
                 </div>
               ) : null}
 
-              <div className="grid gap-2 rounded-2xl border border-stone-100 bg-stone-50/80 px-2.5 py-2 sm:flex sm:items-center sm:justify-between sm:gap-3 sm:px-3 sm:py-2.5">
+              {showComposerDetails ? (
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setShowComposerDetails((open) => !open)}
                     className="focus-ring inline-flex min-h-9 items-center justify-center rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 hover:bg-brand-50"
                   >
-                    {showComposerDetails ? "Hide details" : "Add details"}
+                    Hide details
                   </button>
-                  <label className="focus-within:ring-2 focus-within:ring-brand-200 inline-flex min-h-9 cursor-pointer items-center justify-center rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 hover:bg-brand-50">
-                    Photos
-                    <input
-                      key={fileInputKey}
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      disabled={!canCompose || isPosting}
-                      onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
-                      className="sr-only"
-                    />
-                  </label>
                   {form.files.length ? (
                     <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
                       {form.files.length} {form.files.length === 1 ? "photo" : "photos"}
                     </span>
                   ) : null}
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={!canPublish || isPosting || !form.body.trim()}
-                  className="focus-ring inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-                >
-                  {isPosting ? "Submitting..." : user ? "Post" : "Log in to post"}
-                </button>
-              </div>
+              ) : null}
 
               {form.files.length ? (
                 <p className="rounded-xl bg-stone-50 px-3 py-2 text-xs text-stone-600">
