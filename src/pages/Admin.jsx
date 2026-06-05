@@ -30,7 +30,7 @@ import {
   isSupportFeedbackUnavailableError,
   updateSupportFeedbackStatus,
 } from "../lib/supportFeedback.js";
-import { safeExternalUrl } from "../lib/urlSafety.js";
+import { safeExternalUrl, isAllowedExternalResourceUrl } from "../lib/urlSafety.js";
 
 const ADMIN_TABS = [
   { key: "overview", label: "Overview" },
@@ -79,7 +79,6 @@ const EMPTY_UNIVERSITY_FORM = {
   applicationOpen: "",
   applicationClose: "",
   applyUrl: "",
-  logo: "",
   campusPhoto: "",
   resourcesJson: "[]",
   published: true,
@@ -635,7 +634,6 @@ export default function Admin() {
       applicationOpen: university.applicationOpen || "",
       applicationClose: university.applicationClose || "",
       applyUrl: university.applyUrl || "",
-      logo: university.logo || "",
       campusPhoto: university.campusPhoto || university.campusImage || "",
       resourcesJson: toJson(university.resources),
       published: true,
@@ -678,27 +676,8 @@ export default function Admin() {
     setNotice("");
     try {
       const url = await uploadContentAsset(file, target);
-      if (target === "university-logo") {
-        setUniversityForm((form) => ({ ...form, logo: url }));
-      } else if (target === "university-campus") {
+      if (target === "university-campus") {
         setUniversityForm((form) => ({ ...form, campusPhoto: url }));
-      } else if (target === "university-document") {
-        setUniversityForm((form) => {
-          let resources = [];
-          try {
-            resources = parseJsonArray(form.resourcesJson, "Resources");
-          } catch {
-            resources = [];
-          }
-          resources.push({
-            title: file.name,
-            category: "Uploaded document",
-            url,
-            format: file.type?.includes("pdf") ? "PDF" : "Document",
-            sourceLabel: form.name || "Thuto upload",
-          });
-          return { ...form, resourcesJson: toJson(resources) };
-        });
       } else if (target === "programme-cover") {
         setProgrammeForm((form) => ({ ...form, coverImage: url }));
       }
@@ -717,6 +696,13 @@ export default function Admin() {
     setNotice("");
     try {
       const resources = parseJsonArray(universityForm.resourcesJson, "Resources");
+      for (const [index, resource] of resources.entries()) {
+        if (!isAllowedExternalResourceUrl(resource?.url)) {
+          throw new Error(
+            `Resources[${index}] must link to an official institution URL (Thuto/Supabase hosting is not allowed).`,
+          );
+        }
+      }
       const patch = {
         id: universityForm.id.trim(),
         name: universityForm.name.trim(),
@@ -727,7 +713,6 @@ export default function Admin() {
         applicationOpen: universityForm.applicationOpen || null,
         applicationClose: universityForm.applicationClose || null,
         applyUrl: universityForm.applyUrl.trim(),
-        logo: universityForm.logo.trim(),
         campusPhoto: universityForm.campusPhoto.trim(),
         resources,
       };
@@ -1033,7 +1018,7 @@ export default function Admin() {
           <div>
             <h2 className="font-display text-xl font-semibold text-brand-950">University page editor</h2>
             <p className="mt-1 text-sm leading-relaxed text-stone-600">
-              Edit institution text, dates, logos, campus photos, and downloadable resources.
+              Edit institution text, dates, campus photos, and external resource links.
             </p>
           </div>
           <button
@@ -1150,20 +1135,6 @@ export default function Admin() {
             </div>
             <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
               <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
-                Logo URL
-                <input
-                  value={universityForm.logo}
-                  onChange={(event) => setUniversityForm((form) => ({ ...form, logo: event.target.value }))}
-                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
-                />
-              </label>
-              <label className="focus-ring self-end rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
-                Upload logo
-                <input type="file" accept="image/*" onChange={(event) => handleContentUpload(event, "university-logo")} className="sr-only" />
-              </label>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
-              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
                 Campus photo URL
                 <input
                   value={universityForm.campusPhoto}
@@ -1185,16 +1156,10 @@ export default function Admin() {
                 className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 font-mono text-xs normal-case tracking-normal text-stone-800"
               />
             </label>
+            <p className="text-xs leading-relaxed text-stone-500">
+              Resource URLs must point to official institution websites. Thuto does not host prospectuses or PDFs.
+            </p>
             <div className="flex flex-wrap items-center gap-2">
-              <label className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
-                Upload document
-                <input
-                  type="file"
-                  accept="application/pdf,.doc,.docx,image/*"
-                  onChange={(event) => handleContentUpload(event, "university-document")}
-                  className="sr-only"
-                />
-              </label>
               <label className="flex items-center gap-2 rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-semibold text-brand-900">
                 <input
                   type="checkbox"

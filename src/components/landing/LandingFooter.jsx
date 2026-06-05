@@ -34,6 +34,9 @@ export default function LandingFooter({ content }) {
             <Link to="/disclaimer" className="font-medium text-slate-700 hover:text-brand-800">
               Disclaimer
             </Link>
+            <Link to="/disclaimer#content-removal" className="font-medium text-slate-700 hover:text-brand-800">
+              IP &amp; Content Removal
+            </Link>
             <Link to="/privacy" className="font-medium text-slate-700 hover:text-brand-800">
               Privacy
             </Link>

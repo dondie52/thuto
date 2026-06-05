@@ -266,9 +266,19 @@ export const PAGE_CONTENT_DEFAULTS = {
     paragraphs: [
       "Thuto (Botswana University Companion) provides programme information and rough eligibility estimates for planning purposes only. Minimum points, subject rules, fees, and deadlines in the app may be incomplete, out of date, or simplified compared with official university sources.",
       "Nothing in Thuto constitutes an offer of admission, legal advice, or a substitute for each institution's official prospectus, website, or admissions office. You are responsible for verifying every requirement before you apply or pay any fees.",
+      "Thuto is an independent educational directory and is not affiliated, endorsed, or partnered with any listed university or examination council. While we strive to keep admission requirements and deadlines accurate, institutional details change frequently. Application dates and portals are provided solely for convenience. Users must verify all critical dates and submit official applications directly via the verified institutional websites opened through this application.",
+      "Thuto accepts no liability for missed deadlines, outdated information, or application errors. Always confirm dates and requirements on the institution's official website before you apply.",
       "Thuto does not process university applications or tuition fees. We do not transmit application forms to universities on your behalf and do not collect institution application fees. Optional Thuto Premium subscriptions are billed through Stripe for in-app features.",
       "Thuto may use sample or bundled data in development; where live feeds are configured, treat them as convenience only and still confirm critical dates directly with the institution.",
+      "Official prospectuses, calendars, and application guides linked in Thuto are hosted on institution servers. Thuto does not store, modify, or redistribute those documents.",
     ],
+    contentRemoval: {
+      heading: "IP & content removal",
+      paragraphs: [
+        "If you represent a listed institution and are uncomfortable with how your details, links, or references appear in Thuto, contact us at legal@thutoapp.com before pursuing formal action.",
+        "We will review takedown or correction requests in good faith and respond as promptly as we can.",
+      ],
+    },
   },
   privacy: {
     heading: "Privacy",

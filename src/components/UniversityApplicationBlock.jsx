@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ExternalSiteLink from "./ExternalSiteLink.jsx";
 import {
   APPLICATION_DATES_DISCLAIMER,
   daysFromTodayTo,
@@ -50,14 +51,14 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
             ) : null}
           </div>
           {applyHref ? (
-            <a
+            <ExternalSiteLink
               href={applyHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center rounded-full bg-white px-3 py-1.5 font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 hover:text-brand-950"
+              variant="compact"
+              institutionName={u.name}
+              useInterstitial
             >
               Apply
-            </a>
+            </ExternalSiteLink>
           ) : null}
         </div>
         {profileLink && u.id ? (
@@ -107,14 +108,15 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
         <p className="mt-2 font-medium text-slate-600">{countdown}</p>
       ) : null}
       {applyHref ? (
-        <a
+        <ExternalSiteLink
           href={applyHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-2 inline-block font-semibold text-brand-800 underline hover:text-brand-950"
+          variant="text"
+          institutionName={u.name}
+          useInterstitial
+          className="mt-2 inline-block"
         >
           Apply now
-        </a>
+        </ExternalSiteLink>
       ) : null}
       <p className={compact ? "mt-2 text-[10px] leading-snug text-slate-500" : "mt-2 text-[11px] leading-snug text-slate-500"}>
         {APPLICATION_DATES_DISCLAIMER}

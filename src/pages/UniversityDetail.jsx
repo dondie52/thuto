@@ -4,27 +4,30 @@ import UniversityApplicationBlock from "../components/UniversityApplicationBlock
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
-import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
-import { safeExternalUrl } from "../lib/urlSafety.js";
+import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
+import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
+import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from "../lib/urlSafety.js";
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
-
-const assetUrl = (path) => {
-  const value = String(path || "").trim();
-  if (/^https?:\/\//i.test(value)) return value;
-  return `${import.meta.env.BASE_URL}${value.replace(/^\//, "")}`;
-};
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
   return resources
-    .map((resource) => ({ ...resource, href: safeExternalUrl(resource?.url) }))
+    .map((resource) => ({
+      ...resource,
+      href: isAllowedExternalResourceUrl(resource?.url) ? safeExternalUrl(resource?.url) : "",
+    }))
     .filter((resource) => resource?.title && resource.href);
 }
 
-function resourceActionLabel(resource) {
-  const format = String(resource?.format || "");
-  const url = String(resource?.url || "");
-  return format.toLowerCase().includes("pdf") || url.toLowerCase().includes(".pdf") ? "Download" : "Open";
+function institutionShortName(university) {
+  return university?.shortName || university?.name || "institution";
+}
+
+function resourceActionLabel(resource, university) {
+  const short = institutionShortName(university);
+  if (isPdfResource(resource)) return `Get from ${short}`;
+  const host = externalHostname(resource.href);
+  return host ? `Open on ${host}` : "Open official page";
 }
 
 function isPdfResource(resource) {
@@ -43,9 +46,9 @@ function UniversityResourcesSection({ university, resources }) {
     <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="font-display text-lg font-semibold text-brand-900">Downloads & resources</h2>
+          <h2 className="font-display text-lg font-semibold text-brand-900">Official resources</h2>
           <p className="mt-1 text-sm leading-relaxed text-slate-600">
-            Official guides, calendars, fees and application links from the institution.
+            Hosted on the institution&apos;s website — Thuto does not store these files.
           </p>
         </div>
         {hasResources ? (
@@ -63,24 +66,14 @@ function UniversityResourcesSection({ university, resources }) {
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {websiteHref ? (
-              <a
-                href={websiteHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full border border-brand-200 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 transition hover:border-brand-300 hover:bg-brand-50"
-              >
+              <ExternalSiteLink href={websiteHref} variant="secondary" institutionName={university.name} useInterstitial>
                 Official website
-              </a>
+              </ExternalSiteLink>
             ) : null}
             {applyHref && applyHref !== websiteHref ? (
-              <a
-                href={applyHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full bg-brand-700 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-brand-800"
-              >
+              <ExternalSiteLink href={applyHref} variant="primary" institutionName={university.name} useInterstitial>
                 Apply online
-              </a>
+              </ExternalSiteLink>
             ) : null}
           </div>
         </div>
@@ -99,12 +92,7 @@ function UniversityResourcesSection({ university, resources }) {
           <ul className="mt-4 grid gap-3">
             {resources.map((resource) => (
               <li key={`${resource.title}-${resource.url}`}>
-                <a
-                  href={resource.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex min-w-0 flex-col gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-sm transition hover:border-brand-300 hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between"
-                >
+                <div className="group flex min-w-0 flex-col gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-sm transition hover:border-brand-300 hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between">
                   <span className="flex min-w-0 items-start gap-2 sm:items-center">
                     {isPdfResource(resource) ? (
                       <span
@@ -115,21 +103,28 @@ function UniversityResourcesSection({ university, resources }) {
                       </span>
                     ) : null}
                     <span className="min-w-0">
-                      <span className="block break-words font-semibold text-brand-900 group-hover:underline">{resource.title}</span>
+                      <span className="block break-words font-semibold text-brand-900">{resource.title}</span>
                       <span className="mt-1 block text-xs leading-relaxed text-slate-500">
                         {[resource.category, resource.format, resource.sourceLabel].filter(Boolean).join(" · ")}
                       </span>
                     </span>
                   </span>
-                  <span className="inline-flex w-fit shrink-0 items-center rounded-full bg-brand-700 px-3 py-1 text-xs font-semibold text-white">
-                    {resourceActionLabel(resource)}
-                  </span>
-                </a>
+                  <ExternalSiteLink
+                    href={resource.href}
+                    variant="primary"
+                    institutionName={university.name}
+                    useInterstitial
+                    documentNotice={isPdfResource(resource)}
+                  >
+                    {resourceActionLabel(resource, university)}
+                  </ExternalSiteLink>
+                </div>
               </li>
             ))}
           </ul>
           <p className="mt-3 text-xs leading-relaxed text-slate-500">
-            Links open the institution&apos;s official site. Files and dates may change.
+            Links open the institution&apos;s official site in your browser. Files and dates may change — verify before
+            you apply.
           </p>
         </>
       )}
@@ -215,17 +210,7 @@ export default function UniversityDetail() {
       <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
-            {resolveUniversityLogo(university) ? (
-              <img
-                src={assetUrl(resolveUniversityLogo(university))}
-                alt={`${university.name} logo`}
-                className="max-h-full max-w-full object-contain"
-              />
-            ) : (
-              <span className="inline-flex h-14 min-w-14 items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-3 text-sm font-semibold tracking-wide text-brand-800">
-                {deriveUniversityInitials(university)}
-              </span>
-            )}
+            <UniversityInitialsBadge university={university} size="md" />
           </div>
           <div className="min-w-0">
             <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{university.name}</h1>
@@ -248,14 +233,9 @@ export default function UniversityDetail() {
             <div>
               <dt className="text-xs font-medium text-slate-500">Website</dt>
               <dd>
-                <a
-                  href={websiteHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="break-all font-medium text-brand-700 hover:underline"
-                >
+                <ExternalSiteLink href={websiteHref} variant="inline" institutionName={university.name} showDomain>
                   {university.website}
-                </a>
+                </ExternalSiteLink>
               </dd>
             </div>
           )}

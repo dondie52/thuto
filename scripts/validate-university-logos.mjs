@@ -1,53 +1,26 @@
 /**
- * Validate bundled university logo coverage and asset references.
+ * Validate that bundled university data does not include trademark logos.
  *
  * Usage: node scripts/validate-university-logos.mjs
  */
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { UNIVERSITY_LOGO_BY_ID } from "../src/lib/universityBranding.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const root = path.join(__dirname, "..");
-const uniPath = path.join(root, "public", "data", "universities.json");
-const publicDir = path.join(root, "public");
+const uniPath = path.join(__dirname, "..", "public", "data", "universities.json");
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
 }
 
-function fileExistsFromPublic(relativePath) {
-  return fs.existsSync(path.join(publicDir, relativePath));
-}
-
 function main() {
   const universities = readJson(uniPath);
-  const byId = new Map(universities.map((u) => [u.id, u]));
   const errors = [];
 
   for (const university of universities) {
-    if (!university?.logo) continue;
-    if (!fileExistsFromPublic(university.logo)) {
-      errors.push(`${university.id}: logo path '${university.logo}' does not exist under public/`);
-    }
-  }
-
-  for (const [id, logoPath] of Object.entries(UNIVERSITY_LOGO_BY_ID)) {
-    const university = byId.get(id);
-    if (!university) {
-      errors.push(`${id}: logo map entry has no matching university record`);
-      continue;
-    }
-
-    if (!fileExistsFromPublic(logoPath)) {
-      errors.push(`${id}: fallback logo asset '${logoPath}' does not exist under public/`);
-    }
-
-    if (university.logo !== logoPath) {
-      errors.push(
-        `${id}: fallback logo map points to '${logoPath}' but bundled university data has '${university.logo || "(missing)"}'`
-      );
+    if (university?.logo) {
+      errors.push(`${university.id}: logo field must be removed (use text initials instead)`);
     }
   }
 
@@ -57,7 +30,7 @@ function main() {
     return;
   }
 
-  console.log(`validate-university-logos: OK (${universities.filter((u) => u.logo).length} bundled logos)`);
+  console.log(`validate-university-logos: OK (${universities.length} institutions, no logo fields)`);
 }
 
 main();

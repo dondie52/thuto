@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import OpportunityPostsFeed from "../components/OpportunityPostsFeed.jsx";
+import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { OPPORTUNITY_CATEGORY } from "../lib/opportunityPosts.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
@@ -136,15 +137,16 @@ function GovernmentSponsorshipPanel({ content, contacts, steps, portalUrl }) {
           <p className="text-sm leading-relaxed text-slate-600">{content.dtef?.intro}</p>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <a
+            <ExternalSiteLink
               href={portalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              variant="primary"
+              institutionName="DTEF"
+              useInterstitial
               className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
             >
               {content.dtef?.portalButtonLabel}
               <IconExternal className="h-4 w-4 opacity-90" />
-            </a>
+            </ExternalSiteLink>
             <span className="text-xs text-slate-500 sm:ml-1">{portalUrl}</span>
           </div>
 

@@ -16,6 +16,7 @@ import {
   saveFitAnswersToStorage,
 } from "../lib/fitFinder.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const STEPS = /** @type {const} */ (["grades", "profile", "results"]);
@@ -405,14 +406,15 @@ function FitResultCard({ match, isBookmarked, onToggle }) {
                 {admission.reason ? ` - ${admission.reason}` : ""}
               </p>
               {safeApplyLink ? (
-                <a
+                <ExternalSiteLink
                   href={safeApplyLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-flex font-semibold text-brand-700 underline"
+                  variant="text"
+                  institutionName={matchedInstitution || programme.university}
+                  useInterstitial
+                  className="mt-2 inline-flex"
                 >
                   Open apply link
-                </a>
+                </ExternalSiteLink>
               ) : (
                 <span className="mt-2 inline-flex text-slate-500">Apply link not listed in Thuto</span>
               )}
