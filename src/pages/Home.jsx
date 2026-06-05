@@ -68,6 +68,11 @@ const cards = [
     title: "Internships",
     body: "Latest internship windows copied from official posts—apply on the original channel.",
   },
+  {
+    to: "/study",
+    title: "BGCSE Study",
+    body: "Revision links via Learning Passport, free resources, and which programmes need each subject.",
+  },
 ];
 
 /** Shown if the programme directory fails to load (ids match sample landing content). */

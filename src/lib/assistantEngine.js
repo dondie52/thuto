@@ -1,6 +1,8 @@
 import { formatDisplayDate } from "./applicationDates.js";
-import { evaluateProgramme, programmeHasAdmissionPoints } from "./admissions.js";
+import { evaluateProgramme, programmeHasAdmissionPoints, SUBJECT_FIELDS } from "./admissions.js";
+import { BGCSE_SUBJECTS } from "./bgcseSubjects.js";
 import { buildProgrammeFitExplanation, normalizeText, rankProgrammeMatches } from "./fitFinder.js";
+import { computeFocusSubjects, programmesForRequirementKey } from "./studyData.js";
 
 const MAX_RESULTS = 5;
 
@@ -197,6 +199,75 @@ export function buildLocalAssistantReply({ question, programmes = [], universiti
       answer: "I use the bundled Thuto data first, so I can still help when you are offline.",
       items: [],
       suggestions: ["What can I study with my grades?", "Which technology programmes are available?", "When do applications close?"],
+    };
+  }
+
+  if (
+    hasAny(q, ["revise", "revision", "study", "improve", "past paper", "learning passport", "bgcse exam", "focus subject"])
+  ) {
+    const focusRows = computeFocusSubjects(programmes, predictorSnap);
+    const subjectMatch = BGCSE_SUBJECTS.find((s) => {
+      const label = normalizeText(s.label);
+      const aliases = (s.aliases || []).map(normalizeText);
+      const qNorm = normalizeText(q);
+      return qNorm.includes(label) || aliases.some((a) => a && qNorm.includes(a));
+    });
+
+    if (subjectMatch) {
+      const related = programmesForRequirementKey(programmes, subjectMatch.requirementKey).slice(0, MAX_RESULTS);
+      return {
+        title: `Study ${subjectMatch.label} and plan ahead`,
+        answer:
+          "Use Learning Passport for official lessons and past papers. Thuto links revision to programmes that list this subject in their requirements.",
+        items: [
+          {
+            heading: `${subjectMatch.label} on BGCSE Study`,
+            body: "Revision tips, free resources, and programmes that need this subject.",
+            href: `/study/${subjectMatch.id}`,
+          },
+          ...related.map((programme) => ({
+            heading: programme.name,
+            body: `${programme.university} · ${
+              programmeHasAdmissionPoints(programme) ? `min ${programme.minPoints} pts` : "min points not listed"
+            }${
+              subjectMatch.requirementKey && programme.subjectRequirements?.[subjectMatch.requirementKey]
+                ? ` · ${subjectMatch.label} ${programme.subjectRequirements[subjectMatch.requirementKey]}+`
+                : ""
+            }`,
+            href: `/programmes/${programme.id}`,
+          })),
+        ],
+        suggestions: ["Open BGCSE Study", "Open Predictor", "What can I study with my grades?"],
+      };
+    }
+
+    if (focusRows.length) {
+      const primary = focusRows[0];
+      return {
+        title: "Focus subjects from your saved grades",
+        answer: `Improving ${primary.label} (${primary.grade}) may unlock more programme matches. Open BGCSE Study for revision links tied to university requirements.`,
+        items: focusRows.map((row) => ({
+          heading: `${row.label} — grade ${row.grade}`,
+          body:
+            row.unlockCount > 0
+              ? `One grade step up may unlock ${row.unlockCount} programme${row.unlockCount === 1 ? "" : "s"}.`
+              : `${row.gatedProgrammeCount} programme${row.gatedProgrammeCount === 1 ? "" : "s"} list a higher grade for this subject.`,
+          href: row.studySubjectId ? `/study/${row.studySubjectId}` : "/study",
+        })),
+        suggestions: ["Open BGCSE Study", "Open Predictor", "Show application dates"],
+      };
+    }
+
+    return {
+      title: "BGCSE Study in Thuto",
+      answer:
+        "Thuto links to Botswana Learning Passport for official revision and shows which university programmes need each subject. Enter grades in the Predictor first for personalised focus subjects.",
+      items: SUBJECT_FIELDS.slice(0, MAX_RESULTS).map(({ key, label }) => ({
+        heading: label,
+        body: `${programmesForRequirementKey(programmes, key).length} programmes list this requirement in Thuto.`,
+        href: `/study/${BGCSE_SUBJECTS.find((s) => s.requirementKey === key)?.id || "mathematics"}`,
+      })),
+      suggestions: ["Open BGCSE Study", "Open Predictor", "What can I study with my grades?"],
     };
   }
 

@@ -28,6 +28,8 @@ const Privacy = lazy(() => import("./pages/Privacy.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Sponsorships = lazy(() => import("./pages/Sponsorships.jsx"));
 const Internships = lazy(() => import("./pages/Internships.jsx"));
+const Study = lazy(() => import("./pages/Study.jsx"));
+const StudySubject = lazy(() => import("./pages/StudySubject.jsx"));
 const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
 const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
@@ -109,6 +111,8 @@ export default function App() {
             <Route path="/share" element={<ShareAdmissionResult />} />
             <Route path="/sponsorships" element={<Sponsorships />} />
             <Route path="/internships" element={<Internships />} />
+            <Route path="/study" element={<Study />} />
+            <Route path="/study/:subjectId" element={<StudySubject />} />
             <Route path="/support" element={<Support />} />
             <Route path="/upgrade" element={<Upgrade />} />
             <Route path="/disclaimer" element={<Disclaimer />} />

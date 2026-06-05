@@ -1,0 +1,270 @@
+{
+  "featuredSections": [
+    {
+      "id": "lp-senior-secondary",
+      "title": "Senior Secondary curriculum",
+      "description": "Full BGCSE subject lessons on Botswana Learning Passport — sign in with your school username.",
+      "url": "https://botswana.learningpassport.org/",
+      "badge": "Learning Passport"
+    },
+    {
+      "id": "lp-bsse-revision",
+      "title": "BSSE revision materials",
+      "description": "Subject revision notes and BEC past papers (2018–2020) on Learning Passport.",
+      "url": "https://botswana.learningpassport.org/",
+      "badge": "Past papers"
+    },
+    {
+      "id": "lp-android-app",
+      "title": "Learning Passport app",
+      "description": "Official Android app by Ministry of Education and Skills Development, UNICEF, and Microsoft.",
+      "url": "https://play.google.com/store/apps/details?id=org.unicef.learningpassport.botswana.twa",
+      "badge": "Play Store"
+    },
+    {
+      "id": "lp-online-library",
+      "title": "Online library",
+      "description": "Free supplementary resources linked from Learning Passport — CK-12, PhET simulations, and more.",
+      "url": "https://botswana.learningpassport.org/",
+      "badge": "OER"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "mathematics",
+      "bgcseSubjectId": "mathematics",
+      "learningPassport": {
+        "label": "Mathematics on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "PhET Math Simulations",
+          "url": "https://phet.colorado.edu/en/simulations/filter?subjects=math-and-statistics",
+          "type": "simulation"
+        },
+        {
+          "title": "CK-12 Mathematics",
+          "url": "https://www.ck12.org/student/",
+          "type": "textbook"
+        }
+      ],
+      "revisionTips": [
+        "Practice Paper 1 (non-calculator) and Paper 2 (calculator) separately — universities often weight Math heavily.",
+        "Algebra and functions matter most for technology and science programmes — check which min Math grade your target course needs.",
+        "Use your Thuto Predictor grade for Math to see how many programmes you may qualify for today."
+      ]
+    },
+    {
+      "id": "english",
+      "bgcseSubjectId": "english",
+      "learningPassport": {
+        "label": "English on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "British Council Learn English",
+          "url": "https://learnenglish.britishcouncil.org/",
+          "type": "practice"
+        }
+      ],
+      "revisionTips": [
+        "Most university programmes require at least a C in English — confirm the exact grade on each programme page in Thuto.",
+        "Practice comprehension and summary writing under timed conditions.",
+        "Strong English supports every application essay and interview — not just the exam."
+      ]
+    },
+    {
+      "id": "biology",
+      "bgcseSubjectId": "biology",
+      "learningPassport": {
+        "label": "Biology on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "PhET Biology Simulations",
+          "url": "https://phet.colorado.edu/en/simulations/filter?subjects=biology",
+          "type": "simulation"
+        },
+        {
+          "title": "CK-12 Biology",
+          "url": "https://www.ck12.org/book/ck-12-biology/",
+          "type": "textbook"
+        }
+      ],
+      "revisionTips": [
+        "Health sciences and life-science programmes often need a strong science grade — Biology counts toward the science requirement in Thuto.",
+        "Draw and label diagrams from memory; BEC papers reward clear biological processes.",
+        "Link topics to careers (nursing, medicine, agriculture) to stay motivated through revision."
+      ]
+    },
+    {
+      "id": "chemistry",
+      "bgcseSubjectId": "chemistry",
+      "learningPassport": {
+        "label": "Chemistry on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "PhET Chemistry Simulations",
+          "url": "https://phet.colorado.edu/en/simulations/filter?subjects=chemistry",
+          "type": "simulation"
+        },
+        {
+          "title": "CK-12 Chemistry",
+          "url": "https://www.ck12.org/book/ck-12-chemistry/",
+          "type": "textbook"
+        }
+      ],
+      "revisionTips": [
+        "Master mole calculations and chemical equations — they appear across multiple papers.",
+        "Chemistry supports engineering, pharmacy, and science programmes — check science requirements in Thuto.",
+        "Revise practical-style questions even if you cannot do lab work at home."
+      ]
+    },
+    {
+      "id": "physics",
+      "bgcseSubjectId": "physics",
+      "learningPassport": {
+        "label": "Physics on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "PhET Physics Simulations",
+          "url": "https://phet.colorado.edu/en/simulations/filter?subjects=physics",
+          "type": "simulation"
+        },
+        {
+          "title": "CK-12 Physics",
+          "url": "https://www.ck12.org/book/ck-12-physics/",
+          "type": "textbook"
+        }
+      ],
+      "revisionTips": [
+        "Show working for every calculation — method marks add up even when the final answer is wrong.",
+        "Physics is key for engineering and technology routes at BIUST and similar institutions.",
+        "Pair Physics revision with Math practice; many papers assume confident algebra."
+      ]
+    },
+    {
+      "id": "science_double",
+      "bgcseSubjectId": "science_double",
+      "learningPassport": {
+        "label": "Science Double Award on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "PhET Science Simulations",
+          "url": "https://phet.colorado.edu/en/simulations",
+          "type": "simulation"
+        }
+      ],
+      "revisionTips": [
+        "Double Award Science satisfies the broad science requirement many programmes list in Thuto.",
+        "Balance time across biology, chemistry, and physics sections of the syllabus.",
+        "If you take separate sciences later, your best science grade counts toward requirements."
+      ]
+    },
+    {
+      "id": "accounting",
+      "bgcseSubjectId": "accounting",
+      "learningPassport": {
+        "label": "Accounting on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "AccountingCoach (free basics)",
+          "url": "https://www.accountingcoach.com/",
+          "type": "practice"
+        }
+      ],
+      "revisionTips": [
+        "Accounting and Business Studies unlock commerce and finance programmes — browse related courses in Thuto Programmes.",
+        "Practice ledger and final-account questions under exam time limits.",
+        "Link each topic to real business scenarios to remember debit/credit rules."
+      ]
+    },
+    {
+      "id": "business_studies",
+      "bgcseSubjectId": "business_studies",
+      "learningPassport": {
+        "label": "Business Studies on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [],
+      "revisionTips": [
+        "Business Studies pairs well with Accounting for BCom and management programmes.",
+        "Use case-study answers that name real Botswana business contexts where you can.",
+        "Check Thuto for programmes listing businessStudies in subject requirements."
+      ]
+    },
+    {
+      "id": "commerce",
+      "bgcseSubjectId": "commerce",
+      "learningPassport": {
+        "label": "Commerce on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [],
+      "revisionTips": [
+        "Commerce builds commercial literacy useful for business and office-administration routes.",
+        "Revise trade documents and office procedures — they are common exam themes.",
+        "Compare commerce-related programmes in Thuto to see which points band you are aiming for."
+      ]
+    },
+    {
+      "id": "computer_studies",
+      "bgcseSubjectId": "computer_studies",
+      "learningPassport": {
+        "label": "Computer Studies on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [
+        {
+          "title": "CK-12 Computer Science",
+          "url": "https://www.ck12.org/student/",
+          "type": "textbook"
+        }
+      ],
+      "revisionTips": [
+        "Technology programmes still need strong Math — use Thuto Predictor to check both Math and total points.",
+        "Practice pseudocode and logic problems; they transfer to university CS modules.",
+        "Build small projects (even spreadsheets) to reinforce theory."
+      ]
+    },
+    {
+      "id": "setswana",
+      "bgcseSubjectId": "setswana",
+      "learningPassport": {
+        "label": "Setswana on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [],
+      "revisionTips": [
+        "Setswana can count in your best six — a strong grade here may lift your total points.",
+        "Some programmes list Setswana in subject requirements — filter programmes in Thuto.",
+        "Practice both comprehension and composition under timed conditions."
+      ]
+    },
+    {
+      "id": "social_studies",
+      "bgcseSubjectId": "social_studies",
+      "learningPassport": {
+        "label": "Social Studies on Learning Passport",
+        "url": "https://botswana.learningpassport.org/"
+      },
+      "resources": [],
+      "revisionTips": [
+        "Social Studies satisfies the socialStudies requirement on several education and humanities programmes.",
+        "Use Botswana-specific examples in essays — examiners reward local context.",
+        "Cross-check programmes in Thuto that list Social Studies as a requirement."
+      ]
+    }
+  ]
+}
