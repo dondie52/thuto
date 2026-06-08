@@ -5,20 +5,7 @@ import { normalizeProfileRow, updateUserProfile } from "./profile.js";
 
 const LEGACY_ACCOUNT_MODE_KEY = "thuto-account-mode";
 
-/** @typedef {Object} Profile
- * @property {string} id
- * @property {string | null} full_name
- * @property {string | null} avatar_url
- * @property {string | null} university_id
- * @property {string | null} university_name
- * @property {'studying' | 'aspiring' | null} university_status
- * @property {string | null} distinction
- * @property {string | null} stripe_customer_id
- * @property {string} payment_provider
- * @property {'free' | 'active' | 'past_due' | 'canceled'} premium_status
- * @property {'monthly' | 'annual' | 'season_pass' | null} premium_plan
- * @property {string | null} premium_until
- */
+/** @typedef {import("./profile.js").Profile} Profile */
 
 const AuthContext = createContext(null);
 
@@ -42,7 +29,7 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase
       .from("profiles")
       .select(
-        "id, full_name, avatar_url, university_id, university_name, university_status, distinction, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until",
+        "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until",
       )
       .eq("id", userId)
       .maybeSingle();

@@ -198,6 +198,7 @@ function toDisplayName(user: Record<string, unknown>) {
 
 type AuthorSnapshot = {
   displayName: string;
+  username: string | null;
   avatarUrl: string | null;
   universityName: string | null;
   universityStatus: string | null;
@@ -211,7 +212,7 @@ async function getAuthorSnapshot(
   const userId = String(user.id || "");
   const { data: profile } = await adminClient
     .from("profiles")
-    .select("full_name, avatar_url, university_name, university_status, distinction")
+    .select("full_name, username, bio, avatar_url, university_name, university_status, distinction")
     .eq("id", userId)
     .maybeSingle();
 
@@ -220,19 +221,21 @@ async function getAuthorSnapshot(
 
   return {
     displayName,
+    username: cleanText(profile?.username, 30) || null,
     avatarUrl: cleanText(profile?.avatar_url, 1000) || null,
     universityName: cleanText(profile?.university_name, 120) || null,
     universityStatus:
       profile?.university_status === "studying" || profile?.university_status === "aspiring"
         ? profile.university_status
         : null,
-    distinction: cleanText(profile?.distinction, 120) || null,
+    distinction: cleanText(profile?.bio, 150) || cleanText(profile?.distinction, 120) || null,
   };
 }
 
 function authorSnapshotFields(snapshot: AuthorSnapshot) {
   return {
     author_display_name: snapshot.displayName,
+    author_username: snapshot.username,
     author_avatar_url: snapshot.avatarUrl,
     author_university_name: snapshot.universityName,
     author_university_status: snapshot.universityStatus,

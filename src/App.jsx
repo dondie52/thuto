@@ -21,6 +21,7 @@ const CompareProgrammes = lazy(() => import("./pages/CompareProgrammes.jsx"));
 const FitFinder = lazy(() => import("./pages/FitFinder.jsx"));
 const Assistant = lazy(() => import("./pages/Assistant.jsx"));
 const Auth = lazy(() => import("./pages/Auth.jsx"));
+const Onboarding = lazy(() => import("./pages/Onboarding.jsx"));
 const ShareAdmissionResult = lazy(() => import("./pages/ShareAdmissionResult.jsx"));
 const Disclaimer = lazy(() => import("./pages/Disclaimer.jsx"));
 const Profile = lazy(() => import("./pages/Profile.jsx"));
@@ -99,6 +100,7 @@ export default function App() {
             <Route path="/admin/feed" element={<AdminFeed />} />
             <Route path="/assistant" element={<Assistant />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/fit-finder" element={<FitFinder />} />
             <Route path="/predictor" element={<Predictor />} />
             <Route path="/profile" element={<Profile />} />

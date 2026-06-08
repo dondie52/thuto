@@ -2,6 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
+import OnboardingRedirect from "./OnboardingRedirect.jsx";
 
 const desktopLinks = [
   { to: "/app", label: "Home", end: true },
@@ -24,6 +25,7 @@ function navLinkClass({ isActive }) {
 export default function Layout() {
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6">
+      <OnboardingRedirect />
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md">
         <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-6xl">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">

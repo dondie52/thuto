@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   evaluateAllProgrammes,
   clearPredictorSession,
@@ -8,6 +9,9 @@ import PredictorGradeSection from "../components/PredictorGradeSection.jsx";
 import ProgrammePredictorResults from "../components/ProgrammePredictorResults.jsx";
 import CertificateImportCard from "../components/CertificateImportCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
+import { hasPredictorAccess } from "../lib/onboarding.js";
+import { filterSubjectsBySyllabus } from "../lib/syllabus.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { scrollElementIntoView } from "../lib/motion.js";
 
@@ -30,6 +34,7 @@ function buildShareText(breakdownTotal, results) {
 
 export default function Predictor() {
   useDocumentTitle("Admission Predictor | Thuto");
+  const { user, profile } = useAuth();
   const [programmes, setProgrammes] = useState([]);
   const [loadError, setLoadError] = useState(null);
   const [shareFeedback, setShareFeedback] = useState(null);
@@ -124,6 +129,12 @@ export default function Predictor() {
   }
 
   const hasResults = Boolean(results && summary);
+  const syllabusType = profile?.syllabus_type || "";
+  const predictorLocked = Boolean(user && !hasPredictorAccess(profile));
+  const activeSubjects = useMemo(
+    () => (syllabusType ? filterSubjectsBySyllabus(syllabusType, bgcseSubjects) : bgcseSubjects),
+    [syllabusType, bgcseSubjects],
+  );
 
   return (
     <div className="space-y-6">
@@ -162,31 +173,48 @@ export default function Predictor() {
         </p>
       )}
 
-      <CertificateImportCard onUseGrades={handleImportedRows} />
+      {predictorLocked ? (
+        <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
+          <p className="font-semibold">Choose your syllabus to unlock the Predictor</p>
+          <p className="mt-1 text-brand-800/90">
+            Tell us whether you are on BGCSE, IGCSE, AS Level, or O-Level so we can match the right grading scale.
+          </p>
+          <Link
+            to="/onboarding?next=%2Fpredictor"
+            className="focus-ring mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+          >
+            Set up academics
+          </Link>
+        </div>
+      ) : (
+        <>
+          <CertificateImportCard onUseGrades={handleImportedRows} />
 
-      <PredictorGradeSection
-        rows={rows}
-        chosenSubjectIds={chosenSubjectIds}
-        validationMessage={validationMessage}
-        breakdown={breakdown}
-        updateRow={updateRow}
-        addRow={addRow}
-        removeRow={removeRow}
-        canAdd={canAdd}
-        subjects={bgcseSubjects}
-      />
+          <PredictorGradeSection
+            rows={rows}
+            chosenSubjectIds={chosenSubjectIds}
+            validationMessage={validationMessage}
+            breakdown={breakdown}
+            updateRow={updateRow}
+            addRow={addRow}
+            removeRow={removeRow}
+            canAdd={canAdd}
+            subjects={activeSubjects}
+          />
 
-      <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={handleReset}
-          className="rounded-lg border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-medium text-brand-800 hover:bg-brand-100"
-        >
-          Clear all
-        </button>
-      </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={handleReset}
+              className="rounded-lg border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-medium text-brand-800 hover:bg-brand-100"
+            >
+              Clear all
+            </button>
+          </div>
+        </>
+      )}
 
-      {results && summary && (
+      {!predictorLocked && results && summary && (
         <ProgrammePredictorResults
           results={results}
           summary={summary}

@@ -94,6 +94,7 @@ function normalizePost(post, { images = [], comments = [], reactions = [], viewe
     id: post.id,
     authorId: post.author_id,
     authorDisplayName: post.author_display_name || "Student",
+    authorUsername: post.author_username || "",
     authorAvatarUrl: post.author_avatar_url || "",
     authorUniversityName: post.author_university_name || "",
     authorUniversityStatus: post.author_university_status || "",
@@ -129,6 +130,7 @@ function normalizePost(post, { images = [], comments = [], reactions = [], viewe
       postId: comment.post_id,
       authorId: comment.author_id,
       authorDisplayName: comment.author_display_name || "Student",
+      authorUsername: comment.author_username || "",
       authorAvatarUrl: comment.author_avatar_url || "",
       authorUniversityName: comment.author_university_name || "",
       authorUniversityStatus: comment.author_university_status || "",
@@ -239,7 +241,7 @@ export async function fetchFeedPosts({ limit = 30 } = {}) {
 
   const viewer = await getCurrentUser(supabase).catch(() => null);
   let postsQuery = supabase.from("feed_posts").select(
-    "id,author_id,author_display_name,author_avatar_url,author_university_name,author_university_status,author_distinction,is_official,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
+    "id,author_id,author_display_name,author_username,author_avatar_url,author_university_name,author_university_status,author_distinction,is_official,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
   );
 
   if (viewer?.id) {
@@ -265,7 +267,7 @@ export async function fetchFeedPosts({ limit = 30 } = {}) {
       .order("sort_order", { ascending: true }),
     supabase
       .from("feed_comments")
-      .select("id,post_id,author_id,author_display_name,author_avatar_url,author_university_name,author_university_status,author_distinction,body,status,moderation_reason,report_count,admin_note,published_at,created_at,updated_at,removed_at")
+      .select("id,post_id,author_id,author_display_name,author_username,author_avatar_url,author_university_name,author_university_status,author_distinction,body,status,moderation_reason,report_count,admin_note,published_at,created_at,updated_at,removed_at")
       .in("post_id", ids)
       .eq("status", "published")
       .order("created_at", { ascending: true }),
@@ -376,14 +378,14 @@ export async function fetchAdminFeedItems({ limit = 120 } = {}) {
     supabase
       .from("feed_posts")
       .select(
-        "id,author_id,author_display_name,author_avatar_url,author_university_name,author_university_status,author_distinction,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
+        "id,author_id,author_display_name,author_username,author_avatar_url,author_university_name,author_university_status,author_distinction,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
       )
       .order("updated_at", { ascending: false })
       .limit(limit),
     supabase.from("feed_post_images").select("id,post_id,public_url,alt_text,sort_order"),
     supabase
       .from("feed_comments")
-      .select("id,post_id,author_id,author_display_name,author_avatar_url,author_university_name,author_university_status,author_distinction,body,status,moderation_reason,report_count,admin_note,published_at,created_at,updated_at,removed_at")
+      .select("id,post_id,author_id,author_display_name,author_username,author_avatar_url,author_university_name,author_university_status,author_distinction,body,status,moderation_reason,report_count,admin_note,published_at,created_at,updated_at,removed_at")
       .order("updated_at", { ascending: false })
       .limit(limit),
     supabase.from("feed_reactions").select("post_id,user_id,reaction"),

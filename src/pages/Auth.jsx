@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { needsOnboarding } from "../lib/onboarding.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
 
 function cleanMode(value) {
@@ -13,7 +14,7 @@ export default function Auth() {
   const navigate = useNavigate();
   const mode = cleanMode(searchParams.get("mode"));
   const nextPath = safeInternalPath(searchParams.get("next")) || "/app";
-  const { signIn, signUp, supabaseConfigured, user } = useAuth();
+  const { signIn, signUp, supabaseConfigured, user, profile, isProfileLoading } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,8 +25,13 @@ export default function Auth() {
   useDocumentTitle(`${mode === "login" ? "Log in" : "Sign up"} | Thuto`);
 
   useEffect(() => {
-    if (user) navigate("/app", { replace: true });
-  }, [navigate, user]);
+    if (!user || isProfileLoading) return;
+    if (needsOnboarding(profile)) {
+      navigate(`/onboarding?next=${encodeURIComponent(nextPath)}`, { replace: true });
+      return;
+    }
+    navigate(nextPath, { replace: true });
+  }, [navigate, user, profile, isProfileLoading, nextPath]);
 
   const title = mode === "login" ? "Log in to Thuto" : "Create your Thuto account";
   const submitLabel = useMemo(() => {
@@ -47,11 +53,10 @@ export default function Auth() {
     try {
       if (mode === "login") {
         await signIn({ email, password });
-        navigate(nextPath);
       } else {
         const data = await signUp({ email, password, fullName });
         if (data?.session) {
-          navigate(nextPath);
+          /* redirect handled after profile loads */
         } else {
           setMessage("Check your email to finish setting up your Thuto account.");
         }
