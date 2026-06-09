@@ -96,11 +96,17 @@ function normalizePost(post, { images = [], comments = [], reactions = [], viewe
     authorDisplayName: post.author_display_name || "Student",
     authorUsername: post.author_username || "",
     authorAvatarUrl: post.author_avatar_url || "",
+    authorUniversityId: post.author_university_id || "",
     authorUniversityName: post.author_university_name || "",
     authorUniversityStatus: post.author_university_status || "",
     authorDistinction: post.author_distinction || "",
+    authorInstitutionCategory: post.author_institution_category || "",
+    targetInstitutionIds: Array.isArray(post.target_institution_ids) ? post.target_institution_ids : [],
     isOfficial: Boolean(post.is_official),
+    isNational: Boolean(post.is_national),
     category: post.category || "general",
+    feedScore: typeof post.feed_score === "number" ? post.feed_score : Number(post.feed_score) || null,
+    relevanceReason: post.relevance_reason || "",
     title: post.title || "",
     body: post.body || "",
     linkUrl: post.link_url || "",
@@ -235,27 +241,10 @@ async function uploadFeedImages(supabase, user, files) {
   return uploaded;
 }
 
-export async function fetchFeedPosts({ limit = 30 } = {}) {
-  const supabase = getSupabase();
-  if (!supabase) return [];
+const FEED_POST_COLUMNS =
+  "id,author_id,author_display_name,author_username,author_avatar_url,author_university_id,author_university_name,author_university_status,author_distinction,author_institution_category,target_institution_ids,is_official,is_national,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at";
 
-  const viewer = await getCurrentUser(supabase).catch(() => null);
-  let postsQuery = supabase.from("feed_posts").select(
-    "id,author_id,author_display_name,author_username,author_avatar_url,author_university_name,author_university_status,author_distinction,is_official,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at",
-  );
-
-  if (viewer?.id) {
-    postsQuery = postsQuery.in("status", ["published", "pending_ai", "pending_review"]);
-  } else {
-    postsQuery = postsQuery.eq("status", "published");
-  }
-
-  const { data: posts, error } = await postsQuery
-    .order("published_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false })
-    .limit(limit);
-
-  if (error) throw error;
+async function hydrateFeedPosts(supabase, posts, viewerUserId = null) {
   const ids = (posts || []).map((post) => post.id);
   if (!ids.length) return [];
 
@@ -283,18 +272,96 @@ export async function fetchFeedPosts({ limit = 30 } = {}) {
   const reactionsByPost = groupBy(reactionsResult.data, "post_id");
 
   return posts
-    .filter((post) => post.status === "published" || (post.author_id === viewer?.id && ["pending_ai", "pending_review"].includes(post.status)))
+    .filter(
+      (post) =>
+        post.status === "published" ||
+        (post.author_id === viewerUserId && ["pending_ai", "pending_review"].includes(post.status)),
+    )
     .map((post) =>
       normalizePost(post, {
         images: imagesByPost.get(post.id) || [],
         comments: commentsByPost.get(post.id) || [],
         reactions: reactionsByPost.get(post.id) || [],
-        viewerUserId: viewer?.id || null,
+        viewerUserId,
       }),
     );
 }
 
-export async function submitFeedPost({ category, title, body, linkUrl, imageFiles }) {
+/**
+ * @param {{ mode?: 'for_you' | 'latest', limit?: number, cursor?: { publishedAt?: string, id?: string, feedScore?: number | null } }} [options]
+ */
+export async function fetchFeedPosts({ mode = "for_you", limit = 30, cursor = null } = {}) {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
+  const viewer = await getCurrentUser(supabase).catch(() => null);
+  const feedMode = mode === "latest" ? "latest" : "for_you";
+
+  if (feedMode === "for_you" && viewer?.id) {
+    const { data: posts, error } = await supabase.rpc("get_personalized_feed", {
+      p_mode: "for_you",
+      p_limit: limit,
+      p_cursor_published_at: cursor?.publishedAt || null,
+      p_cursor_id: cursor?.id || null,
+      p_cursor_score: cursor?.feedScore ?? null,
+    });
+    if (!error && Array.isArray(posts)) {
+      return hydrateFeedPosts(supabase, posts, viewer.id);
+    }
+    if (error && error.code !== "PGRST202" && error.code !== "42883") {
+      throw error;
+    }
+  }
+
+  if (feedMode === "latest" && viewer?.id) {
+    const { data: posts, error } = await supabase.rpc("get_personalized_feed", {
+      p_mode: "latest",
+      p_limit: limit,
+      p_cursor_published_at: cursor?.publishedAt || null,
+      p_cursor_id: cursor?.id || null,
+      p_cursor_score: null,
+    });
+    if (!error && Array.isArray(posts)) {
+      return hydrateFeedPosts(supabase, posts, viewer.id);
+    }
+    if (error && error.code !== "PGRST202" && error.code !== "42883") {
+      throw error;
+    }
+  }
+
+  let postsQuery = supabase.from("feed_posts").select(FEED_POST_COLUMNS);
+
+  if (viewer?.id) {
+    postsQuery = postsQuery.in("status", ["published", "pending_ai", "pending_review"]);
+  } else {
+    postsQuery = postsQuery.eq("status", "published");
+  }
+
+  if (cursor?.publishedAt && cursor?.id) {
+    postsQuery = postsQuery.or(
+      `published_at.lt.${cursor.publishedAt},and(published_at.eq.${cursor.publishedAt},id.lt.${cursor.id})`,
+    );
+  }
+
+  const { data: posts, error } = await postsQuery
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return hydrateFeedPosts(supabase, posts || [], viewer?.id || null);
+}
+
+export async function submitFeedPost({
+  category,
+  title,
+  body,
+  linkUrl,
+  imageFiles,
+  targetInstitutionIds = [],
+  isNational = false,
+}) {
   const supabase = assertSupabase();
   const user = await requireCurrentUser(supabase);
   const images = await uploadFeedImages(supabase, user, imageFiles);
@@ -305,6 +372,8 @@ export async function submitFeedPost({ category, title, body, linkUrl, imageFile
     body,
     linkUrl,
     images,
+    targetInstitutionIds,
+    isNational,
   });
 }
 
