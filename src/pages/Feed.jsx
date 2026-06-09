@@ -113,11 +113,8 @@ export default function Feed() {
     "Student";
   const profileIncomplete =
     Boolean(user) &&
-    !(
-      profile?.avatar_url ||
-      profile?.university_name ||
-      profile?.distinction
-    );
+    !profile?.username &&
+    !(profile?.onboarding_completed_at || profile?.onboarding_skipped_at);
 
   async function handleSubmitPost(event) {
     event.preventDefault();
@@ -263,13 +260,13 @@ export default function Feed() {
         <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
           <p className="font-semibold">Complete your profile</p>
           <p className="mt-1 text-brand-800/90">
-            Add a photo, university, and distinction so classmates recognise you on the feed.
+            Add your name and username so classmates recognise you on the feed.
           </p>
           <Link
-            to="/profile"
+            to="/onboarding?next=%2Ffeed"
             className="focus-ring mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
           >
-            Edit profile
+            Complete setup
           </Link>
         </div>
       ) : null}

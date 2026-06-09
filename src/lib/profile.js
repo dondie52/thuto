@@ -4,6 +4,7 @@ export { isSupabaseConfigured };
 
 const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 const MAX_DISTINCTION = 120;
+const MAX_BIO = 150;
 
 export const UNIVERSITY_STATUS_OPTIONS = [
   { value: "", label: "Not set" },
@@ -33,16 +34,46 @@ function safeFileName(name) {
   return clean || "avatar";
 }
 
+/**
+ * @typedef {Object} Profile
+ * @property {string} id
+ * @property {string | null} full_name
+ * @property {string | null} username
+ * @property {string | null} bio
+ * @property {string | null} avatar_url
+ * @property {string | null} university_id
+ * @property {string | null} university_name
+ * @property {'studying' | 'aspiring' | null} university_status
+ * @property {string | null} distinction
+ * @property {'bgcse' | 'igcse' | 'as_level' | 'o_level' | null} syllabus_type
+ * @property {'dtef' | 'private' | 'self_funded' | null} sponsorship_intent
+ * @property {string[]} fields_of_interest
+ * @property {string | null} onboarding_completed_at
+ * @property {string | null} onboarding_skipped_at
+ * @property {string | null} stripe_customer_id
+ * @property {string} payment_provider
+ * @property {'free' | 'active' | 'past_due' | 'canceled'} premium_status
+ * @property {'monthly' | 'annual' | 'season_pass' | null} premium_plan
+ * @property {string | null} premium_until
+ */
+
 export function normalizeProfileRow(row) {
   if (!row) return null;
   return {
     id: row.id,
     full_name: row.full_name || "",
+    username: row.username || "",
+    bio: row.bio || "",
     avatar_url: row.avatar_url || "",
     university_id: row.university_id || "",
     university_name: row.university_name || "",
     university_status: row.university_status || "",
     distinction: row.distinction || "",
+    syllabus_type: row.syllabus_type || "",
+    sponsorship_intent: row.sponsorship_intent || "",
+    fields_of_interest: Array.isArray(row.fields_of_interest) ? row.fields_of_interest : [],
+    onboarding_completed_at: row.onboarding_completed_at || null,
+    onboarding_skipped_at: row.onboarding_skipped_at || null,
     stripe_customer_id: row.stripe_customer_id || null,
     payment_provider: row.payment_provider || "stripe",
     premium_status: row.premium_status || "free",
@@ -95,11 +126,16 @@ export async function uploadProfileAvatar(file) {
 /**
  * @param {{
  *   fullName?: string,
+ *   username?: string,
+ *   bio?: string,
  *   universityId?: string,
  *   universityName?: string,
  *   universityStatus?: string,
  *   distinction?: string,
  *   avatarUrl?: string,
+ *   syllabusType?: string,
+ *   sponsorshipIntent?: string,
+ *   fieldsOfInterest?: string[],
  * }} patch
  */
 export async function updateUserProfile(patch) {
@@ -114,6 +150,12 @@ export async function updateUserProfile(patch) {
   const updates = {};
   if (patch.fullName !== undefined) {
     updates.full_name = String(patch.fullName || "").trim().slice(0, 80);
+  }
+  if (patch.username !== undefined) {
+    updates.username = String(patch.username || "").trim().toLowerCase() || null;
+  }
+  if (patch.bio !== undefined) {
+    updates.bio = String(patch.bio || "").trim().slice(0, MAX_BIO) || null;
   }
   if (patch.universityId !== undefined) {
     updates.university_id = String(patch.universityId || "").trim().slice(0, 80) || null;
@@ -130,6 +172,22 @@ export async function updateUserProfile(patch) {
   }
   if (patch.avatarUrl !== undefined) {
     updates.avatar_url = String(patch.avatarUrl || "").trim().slice(0, 1000) || null;
+  }
+  if (patch.syllabusType !== undefined) {
+    const syllabus = String(patch.syllabusType || "").trim();
+    updates.syllabus_type =
+      syllabus === "bgcse" || syllabus === "igcse" || syllabus === "as_level" || syllabus === "o_level"
+        ? syllabus
+        : null;
+  }
+  if (patch.sponsorshipIntent !== undefined) {
+    const intent = String(patch.sponsorshipIntent || "").trim();
+    updates.sponsorship_intent = intent === "dtef" || intent === "private" || intent === "self_funded" ? intent : null;
+  }
+  if (patch.fieldsOfInterest !== undefined) {
+    updates.fields_of_interest = Array.isArray(patch.fieldsOfInterest)
+      ? [...new Set(patch.fieldsOfInterest.map((value) => String(value).trim()).filter(Boolean))].slice(0, 8)
+      : [];
   }
 
   if (!Object.keys(updates).length) {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { formatAuthorUniversity, UNIVERSITY_STATUS_OPTIONS, uploadProfileAvatar } from "../lib/profile.js";
+import UsernameInput from "./onboarding/UsernameInput.jsx";
+import { normalizeUsername } from "../lib/username.js";
 
 function ProfileAvatarPreview({ url, displayName, onPickFile, isUploading }) {
   const initial = String(displayName || "S")
@@ -50,6 +52,9 @@ function ProfileAvatarPreview({ url, displayName, onPickFile, isUploading }) {
 export default function ProfileEditForm({ profile, onSave, disabled = false }) {
   const [universities, setUniversities] = useState([]);
   const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [usernameValid, setUsernameValid] = useState(true);
   const [universityId, setUniversityId] = useState("");
   const [universityStatus, setUniversityStatus] = useState("");
   const [distinction, setDistinction] = useState("");
@@ -75,6 +80,9 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
 
   useEffect(() => {
     setFullName(profile?.full_name || "");
+    setUsername(profile?.username || "");
+    setBio(profile?.bio || profile?.distinction || "");
+    setUsernameValid(Boolean(profile?.username));
     setUniversityId(profile?.university_id || "");
     setUniversityStatus(profile?.university_status || "");
     setDistinction(profile?.distinction || "");
@@ -112,6 +120,8 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
       const uni = universities.find((u) => u.id === universityId);
       await onSave({
         fullName,
+        username: normalizeUsername(username),
+        bio,
         universityId: universityId || "",
         universityName: uni?.name || "",
         universityStatus: universityStatus || "",
@@ -143,6 +153,27 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
           maxLength={80}
           disabled={disabled || isSaving}
           placeholder="Your name"
+          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+        />
+      </label>
+
+      <UsernameInput
+        value={username}
+        onChange={setUsername}
+        currentUserId={profile?.id}
+        disabled={disabled || isSaving}
+        onValidityChange={setUsernameValid}
+      />
+
+      <label className="block">
+        <span className="text-xs font-semibold text-stone-600">Bio / headline</span>
+        <textarea
+          value={bio}
+          onChange={(event) => setBio(event.target.value)}
+          maxLength={150}
+          rows={3}
+          disabled={disabled || isSaving}
+          placeholder='e.g. "Aspiring software engineer looking to join BIUST"'
           className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
         />
       </label>
@@ -212,7 +243,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
 
       <button
         type="submit"
-        disabled={disabled || isSaving || isUploading}
+        disabled={disabled || isSaving || isUploading || (username.trim() && !usernameValid)}
         className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSaving ? "Saving..." : "Save profile"}
