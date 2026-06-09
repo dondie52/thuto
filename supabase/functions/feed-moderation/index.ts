@@ -28,6 +28,8 @@ type FeedRequest = {
   body?: string;
   linkUrl?: string;
   images?: FeedImageInput[];
+  targetInstitutionIds?: string[];
+  isNational?: boolean;
   postId?: string;
   targetType?: "post" | "comment";
   targetId?: string;
@@ -200,10 +202,62 @@ type AuthorSnapshot = {
   displayName: string;
   username: string | null;
   avatarUrl: string | null;
+  universityId: string | null;
   universityName: string | null;
   universityStatus: string | null;
   distinction: string | null;
 };
+
+const UNIVERSITY_CATEGORY_IDS = new Set([
+  "ub",
+  "biust",
+  "bac",
+  "botho",
+  "ba-isago",
+  "abm",
+  "limkokwing",
+  "bou",
+  "boitekanelo",
+  "new-era",
+  "gips",
+  "bocodol",
+  "kgale",
+  "isbs",
+  "idm",
+  "guc",
+  "buan",
+  "logan-business-college",
+  "mega-size-college",
+  "homeland-college",
+  "gaborone-commercial-college",
+  "byte-size-college",
+  "awil-college",
+]);
+
+const TECHNICAL_COLLEGE_IDS = new Set([
+  "gtc",
+  "fctve",
+  "oodi",
+  "realic",
+  "palapye-technical-college",
+  "jwaneng-technical-college",
+  "chobe-brigade",
+]);
+
+function inferInstitutionCategory(institutionId: string | null) {
+  const id = cleanText(institutionId, 120).toLowerCase();
+  if (!id) return null;
+  if (UNIVERSITY_CATEGORY_IDS.has(id)) return "universities";
+  if (id === "krda" || id.includes("brigade")) return "brigades";
+  if (TECHNICAL_COLLEGE_IDS.has(id) || id.includes("technical")) return "technical-colleges";
+  if (id.includes("university")) return "universities";
+  return "specialised-academics";
+}
+
+function cleanInstitutionIds(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map((item) => cleanText(item, 120)).filter(Boolean))].slice(0, 10);
+}
 
 async function getAuthorSnapshot(
   adminClient: ReturnType<typeof createClient>,
@@ -212,17 +266,19 @@ async function getAuthorSnapshot(
   const userId = String(user.id || "");
   const { data: profile } = await adminClient
     .from("profiles")
-    .select("full_name, username, bio, avatar_url, university_name, university_status, distinction")
+    .select("full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction")
     .eq("id", userId)
     .maybeSingle();
 
   const profileName = cleanText(profile?.full_name, 80);
   const displayName = profileName || toDisplayName(user);
+  const universityId = cleanText(profile?.university_id, 120) || null;
 
   return {
     displayName,
     username: cleanText(profile?.username, 30) || null,
     avatarUrl: cleanText(profile?.avatar_url, 1000) || null,
+    universityId,
     universityName: cleanText(profile?.university_name, 120) || null,
     universityStatus:
       profile?.university_status === "studying" || profile?.university_status === "aspiring"
@@ -237,6 +293,8 @@ function authorSnapshotFields(snapshot: AuthorSnapshot) {
     author_display_name: snapshot.displayName,
     author_username: snapshot.username,
     author_avatar_url: snapshot.avatarUrl,
+    author_university_id: snapshot.universityId,
+    author_institution_category: inferInstitutionCategory(snapshot.universityId),
     author_university_name: snapshot.universityName,
     author_university_status: snapshot.universityStatus,
     author_distinction: snapshot.distinction,
@@ -529,12 +587,17 @@ async function submitPost(
   const author = official
     ? {
         displayName: "Thuto Admin",
+        username: null,
         avatarUrl: null,
+        universityId: null,
         universityName: null,
         universityStatus: null,
         distinction: null,
       }
     : await getAuthorSnapshot(adminClient, user);
+
+  const targetInstitutionIds = cleanInstitutionIds(body.targetInstitutionIds);
+  const isNational = Boolean(body.isNational) || official;
 
   const { data: post, error } = await adminClient
     .from("feed_posts")
@@ -545,6 +608,8 @@ async function submitPost(
         displayName: official ? "Thuto Admin" : author.displayName,
       }),
       is_official: official,
+      is_national: isNational,
+      target_institution_ids: targetInstitutionIds,
       category,
       title,
       body: postBody,

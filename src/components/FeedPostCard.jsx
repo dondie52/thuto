@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ExpandableText from "./ExpandableText.jsx";
 import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS } from "../lib/feed.js";
+import { feedRelevanceLabel } from "../lib/feedRanking.js";
 import { formatAuthorUniversity } from "../lib/profile.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
@@ -353,6 +354,9 @@ function CommentSection({
  *   onCommentDraftChange: (postId: string, value: string) => void,
  *   onSubmitComment: (event: import("react").FormEvent, postId: string) => void,
  *   onReport: (params: { postId: string, targetType: string, targetId: string }) => void,
+ *   isFollowingAuthor?: boolean,
+ *   onToggleFollow?: (post: object) => void,
+ *   showRelevance?: boolean,
  * }} props
  */
 export default function FeedPostCard({
@@ -364,6 +368,9 @@ export default function FeedPostCard({
   isCommentSubmitting = false,
   actionFeedback = null,
   reportedTargetKeys = {},
+  isFollowingAuthor = false,
+  onToggleFollow,
+  showRelevance = false,
   onReact,
   onToggleComments,
   onCommentDraftChange,
@@ -390,6 +397,7 @@ export default function FeedPostCard({
   const visibleReactionCounts = reactionOptions.filter((reaction) => reaction.count > 0);
   const reactButtonLabel = activeReaction ? activeReaction.shortLabel : "Like";
   const reactButtonActive = Boolean(activeReaction);
+  const relevanceLabel = showRelevance ? feedRelevanceLabel(post.relevanceReason) : "";
 
   useEffect(() => {
     if (!reactionPickerOpen) return undefined;
@@ -486,10 +494,29 @@ export default function FeedPostCard({
                 timeLabel={timeLabel}
                 isOfficial={isOfficial}
               />
+              {relevanceLabel ? (
+                <p className="mt-1 text-[11px] font-medium text-brand-700/90">{relevanceLabel}</p>
+              ) : null}
             </div>
-            <span className="max-w-full rounded-full bg-brand-700 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
-              {categoryBadgeText(post.category)}
-            </span>
+            <div className="flex shrink-0 flex-col items-end gap-2">
+              <span className="max-w-full rounded-full bg-brand-700 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+                {categoryBadgeText(post.category)}
+              </span>
+              {user && !isOwnPost && !isOfficial && onToggleFollow ? (
+                <button
+                  type="button"
+                  onClick={() => onToggleFollow(post)}
+                  className={[
+                    "focus-ring rounded-full border px-3 py-1 text-[11px] font-semibold",
+                    isFollowingAuthor
+                      ? "border-brand-200 bg-brand-50 text-brand-800"
+                      : "border-brand-700 bg-brand-700 text-white hover:bg-brand-800",
+                  ].join(" ")}
+                >
+                  {isFollowingAuthor ? "Following" : "Follow"}
+                </button>
+              ) : null}
+            </div>
           </div>
         </div>
         {post.reportCount ? (

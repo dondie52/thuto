@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import FeedPostCard from "../components/FeedPostCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
@@ -12,6 +12,7 @@ import {
   submitFeedComment,
   submitFeedPost,
 } from "../lib/feed.js";
+import { fetchFollowingSet, toggleFollowUser } from "../lib/feedFollows.js";
 
 function profileInitial(name) {
   const letter = String(name || "S")
@@ -32,9 +33,21 @@ export default function Feed() {
   useDocumentTitle("Social Feed | Thuto");
   const { user, profile, supabaseConfigured, isLoading: isAuthLoading } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
+  const [feedMode, setFeedMode] = useState("for_you");
   const [posts, setPosts] = useState([]);
+  const [followingIds, setFollowingIds] = useState(() => new Set());
+  const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
+  const loadMoreRef = useRef(null);
+  const cursorRef = useRef(null);
+  const postsRef = useRef(posts);
+  const feedModeRef = useRef(feedMode);
+  const loadingFeedRef = useRef(false);
+
+  postsRef.current = posts;
+  feedModeRef.current = feedMode;
   const [commentSubmittingFor, setCommentSubmittingFor] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -52,23 +65,77 @@ export default function Feed() {
     files: [],
   });
 
-  async function loadFeed() {
-    setIsLoading(true);
-    setError("");
-    try {
-      setPosts(await fetchFeedPosts());
-    } catch (err) {
-      setError(err.message || "Could not load the feed.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const syncFollowingState = useCallback(async (nextPosts) => {
+    const authorIds = nextPosts.map((post) => post.authorId).filter(Boolean);
+    setFollowingIds(await fetchFollowingSet(authorIds));
+  }, []);
+
+  const loadFeed = useCallback(
+    async ({ reset = true } = {}) => {
+      if (!reset && loadingFeedRef.current) return;
+      loadingFeedRef.current = true;
+
+      if (reset) {
+        setIsLoading(true);
+        cursorRef.current = null;
+      } else {
+        setIsLoadingMore(true);
+      }
+      setError("");
+      try {
+        const batch = await fetchFeedPosts({
+          mode: feedModeRef.current,
+          limit: 30,
+          cursor: reset ? null : cursorRef.current,
+        });
+        const currentPosts = postsRef.current;
+        const merged = reset
+          ? batch
+          : [...currentPosts, ...batch.filter((post) => !currentPosts.some((item) => item.id === post.id))];
+        setPosts(merged);
+        await syncFollowingState(merged);
+        setHasMore(batch.length === 30);
+        const last = batch[batch.length - 1];
+        if (last) {
+          cursorRef.current = {
+            publishedAt: last.publishedAt || last.createdAt,
+            id: last.id,
+            feedScore: last.feedScore,
+          };
+        }
+      } catch (err) {
+        setError(err.message || "Could not load the feed.");
+      } finally {
+        loadingFeedRef.current = false;
+        setIsLoading(false);
+        setIsLoadingMore(false);
+      }
+    },
+    [syncFollowingState],
+  );
 
   useEffect(() => {
     setPostFeedbackById({});
     setReportedTargetKeys({});
-    loadFeed();
-  }, [user?.id]);
+    loadFeed({ reset: true });
+  }, [user?.id, feedMode, loadFeed]);
+
+  useEffect(() => {
+    const node = loadMoreRef.current;
+    if (!node || isLoading || isLoadingMore || !hasMore) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          loadFeed({ reset: false });
+        }
+      },
+      { rootMargin: "240px 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasMore, isLoading, isLoadingMore, loadFeed]);
 
   function updateForm(patch) {
     setForm((current) => ({ ...current, ...patch }));
@@ -141,7 +208,7 @@ export default function Feed() {
       setForm({ category: "general", title: "", body: "", linkUrl: "", files: [] });
       setShowComposerDetails(false);
       setFileInputKey((key) => key + 1);
-      await loadFeed();
+      await loadFeed({ reset: true });
     } catch (err) {
       setError(err.message || "Could not submit post.");
     } finally {
@@ -160,7 +227,7 @@ export default function Feed() {
         postId: post.id,
         reaction: post.viewerReaction === reaction ? null : reaction,
       });
-      await loadFeed();
+      await loadFeed({ reset: true });
     } catch (err) {
       setPostFeedback(post.id, "error", err.message || "Could not update reaction.");
     }
@@ -177,7 +244,7 @@ export default function Feed() {
       const result = await submitFeedComment({ postId, body });
       setNotice(publishMessage(result.comment?.status));
       setCommentDrafts((current) => ({ ...current, [postId]: "" }));
-      await loadFeed();
+      await loadFeed({ reset: true });
     } catch (err) {
       setError(err.message || "Could not submit comment.");
     } finally {
@@ -195,8 +262,8 @@ export default function Feed() {
       const result = await reportFeedTarget({
         targetType,
         targetId,
-        reason: "other",
-        details: "Reported from the feed screen.",
+        reason: targetType === "post" ? "irrelevant" : "other",
+        details: targetType === "post" ? "Not useful for my feed." : "Reported from the feed screen.",
       });
       markTargetReported(targetType, targetId);
       setPostFeedback(
@@ -204,9 +271,29 @@ export default function Feed() {
         "notice",
         result.alreadyReported ? "You already reported this item." : "Report sent to admins.",
       );
-      await loadFeed();
+      await loadFeed({ reset: true });
     } catch (err) {
       setPostFeedback(postId, "error", err.message || "Could not send report.");
+    }
+  }
+
+  async function handleToggleFollow(post) {
+    if (!user) {
+      setPostFeedback(post.id, "notice", "Log in to follow people on the feed.");
+      return;
+    }
+    clearPostFeedback(post.id);
+    try {
+      const nowFollowing = await toggleFollowUser(post.authorId);
+      setFollowingIds((current) => {
+        const next = new Set(current);
+        if (nowFollowing) next.add(post.authorId);
+        else next.delete(post.authorId);
+        return next;
+      });
+      await loadFeed({ reset: true });
+    } catch (err) {
+      setPostFeedback(post.id, "error", err.message || "Could not update follow.");
     }
   }
 
@@ -229,7 +316,7 @@ export default function Feed() {
           </label>
           <button
             type="button"
-            onClick={loadFeed}
+            onClick={() => loadFeed({ reset: true })}
             className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-100 bg-white text-brand-800 shadow-sm hover:bg-brand-50"
             aria-label="Refresh feed"
           >
@@ -431,12 +518,38 @@ export default function Feed() {
       </section>
 
       <section className="space-y-3 pt-1 sm:space-y-4">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="font-display text-xl font-semibold text-brand-900">Latest posts</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 rounded-full border border-brand-100 bg-white p-1 shadow-sm">
+            <button
+              type="button"
+              onClick={() => setFeedMode("for_you")}
+              className={[
+                "focus-ring rounded-full px-4 py-2 text-sm font-semibold transition",
+                feedMode === "for_you" ? "bg-brand-700 text-white" : "text-brand-800 hover:bg-brand-50",
+              ].join(" ")}
+            >
+              For you
+            </button>
+            <button
+              type="button"
+              onClick={() => setFeedMode("latest")}
+              className={[
+                "focus-ring rounded-full px-4 py-2 text-sm font-semibold transition",
+                feedMode === "latest" ? "bg-brand-700 text-white" : "text-brand-800 hover:bg-brand-50",
+              ].join(" ")}
+            >
+              Latest
+            </button>
+          </div>
           <span className="rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-semibold text-stone-500">
             {posts.length} {posts.length === 1 ? "post" : "posts"}
           </span>
         </div>
+        {feedMode === "for_you" && user ? (
+          <p className="text-sm text-stone-600">
+            Ranked for your institutions, interests, and the people you follow.
+          </p>
+        ) : null}
 
         {isLoading ? (
           <div className="rounded-3xl border border-brand-100 bg-white p-6 text-sm text-stone-500 shadow-sm">
@@ -462,6 +575,9 @@ export default function Feed() {
             commentsExpanded={Boolean(expandedComments[post.id])}
             commentDraft={commentDrafts[post.id]}
             isCommentSubmitting={commentSubmittingFor === post.id}
+            showRelevance={feedMode === "for_you"}
+            isFollowingAuthor={followingIds.has(post.authorId)}
+            onToggleFollow={handleToggleFollow}
             onReact={handleReaction}
             onToggleComments={toggleComments}
             onCommentDraftChange={updateCommentDraft}
@@ -471,6 +587,15 @@ export default function Feed() {
             reportedTargetKeys={reportedTargetKeys}
           />
         ))}
+
+        {hasMore && posts.length ? (
+          <div
+            ref={loadMoreRef}
+            className="rounded-3xl border border-brand-100 bg-white p-4 text-center text-sm text-stone-500 shadow-sm"
+          >
+            {isLoadingMore ? "Loading more posts..." : "Scroll for more"}
+          </div>
+        ) : null}
       </section>
     </div>
   );
