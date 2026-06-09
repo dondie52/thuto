@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchUniversities } from "../lib/universitiesData.js";
-import { formatAuthorUniversity, UNIVERSITY_STATUS_OPTIONS, uploadProfileAvatar } from "../lib/profile.js";
+import { fetchTargetInstitutions, saveTargetInstitutions } from "../lib/onboarding.js";
+import { formatAuthorUniversity, uploadProfileAvatar } from "../lib/profile.js";
+import FieldInterestPills from "./onboarding/FieldInterestPills.jsx";
+import InstitutionMultiSelect from "./onboarding/InstitutionMultiSelect.jsx";
 import UsernameInput from "./onboarding/UsernameInput.jsx";
 import { normalizeUsername } from "../lib/username.js";
 
@@ -55,8 +58,8 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [usernameValid, setUsernameValid] = useState(true);
-  const [universityId, setUniversityId] = useState("");
-  const [universityStatus, setUniversityStatus] = useState("");
+  const [targetInstitutionIds, setTargetInstitutionIds] = useState([]);
+  const [fieldsOfInterest, setFieldsOfInterest] = useState([]);
   const [distinction, setDistinction] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -83,16 +86,38 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
     setUsername(profile?.username || "");
     setBio(profile?.bio || profile?.distinction || "");
     setUsernameValid(Boolean(profile?.username));
-    setUniversityId(profile?.university_id || "");
-    setUniversityStatus(profile?.university_status || "");
+    setFieldsOfInterest(profile?.fields_of_interest || []);
     setDistinction(profile?.distinction || "");
     setAvatarUrl(profile?.avatar_url || "");
   }, [profile]);
 
-  const selectedUniversity = universities.find((u) => u.id === universityId);
+  useEffect(() => {
+    if (!profile?.id) return;
+    let active = true;
+    fetchTargetInstitutions()
+      .then((targets) => {
+        if (!active) return;
+        if (targets.length) {
+          setTargetInstitutionIds(targets);
+        } else if (profile.university_id) {
+          setTargetInstitutionIds([profile.university_id]);
+        } else {
+          setTargetInstitutionIds([]);
+        }
+      })
+      .catch(() => {
+        if (!active) return;
+        setTargetInstitutionIds(profile.university_id ? [profile.university_id] : []);
+      });
+    return () => {
+      active = false;
+    };
+  }, [profile?.id, profile?.university_id]);
+
+  const selectedUniversities = universities.filter((uni) => targetInstitutionIds.includes(uni.id));
   const previewUniversity = formatAuthorUniversity({
-    universityName: selectedUniversity?.name || profile?.university_name || "",
-    universityStatus: universityStatus,
+    universityName: selectedUniversities[0]?.name || profile?.university_name || "",
+    universityStatus: profile?.university_status || "aspiring",
   });
 
   async function handleAvatarPick(file) {
@@ -117,17 +142,29 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
     setError("");
     setNotice("");
     try {
-      const uni = universities.find((u) => u.id === universityId);
       await onSave({
         fullName,
         username: normalizeUsername(username),
         bio,
-        universityId: universityId || "",
-        universityName: uni?.name || "",
-        universityStatus: universityStatus || "",
+        fieldsOfInterest,
         distinction,
         avatarUrl,
       });
+      await saveTargetInstitutions(targetInstitutionIds);
+      const primary = universities.find((uni) => uni.id === targetInstitutionIds[0]);
+      if (primary) {
+        await onSave({
+          universityId: primary.id,
+          universityName: primary.name,
+          universityStatus: profile?.university_id === primary.id ? profile?.university_status || "aspiring" : "aspiring",
+        });
+      } else {
+        await onSave({
+          universityId: "",
+          universityName: "",
+          universityStatus: "",
+        });
+      }
       setNotice("Saved.");
     } catch (err) {
       setError(err.message || "Could not save profile.");
@@ -178,43 +215,40 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
         />
       </label>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <label className="block">
-          <span className="text-xs font-semibold text-stone-600">University</span>
-          <select
-            value={universityId}
-            onChange={(event) => setUniversityId(event.target.value)}
+      <div>
+        <p className="text-xs font-semibold text-stone-600">Universities you&apos;re interested in</p>
+        <p className="mt-0.5 text-xs text-stone-500">Tick all institutions you want to follow or apply to.</p>
+        <div className="mt-2">
+          <InstitutionMultiSelect
+            universities={universities}
+            selectedIds={targetInstitutionIds}
+            onChange={setTargetInstitutionIds}
             disabled={disabled || isSaving}
-            className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-          >
-            <option value="">Choose a university</option>
-            {universities.map((uni) => (
-              <option key={uni.id} value={uni.id}>
-                {uni.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block">
-          <span className="text-xs font-semibold text-stone-600">Status</span>
-          <select
-            value={universityStatus}
-            onChange={(event) => setUniversityStatus(event.target.value)}
-            disabled={disabled || isSaving || !universityId}
-            className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-          >
-            {UNIVERSITY_STATUS_OPTIONS.map((option) => (
-              <option key={option.value || "none"} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
+          />
+        </div>
+      </div>
+
+      <div>
+        <p className="text-xs font-semibold text-stone-600">Fields of interest</p>
+        <p className="mt-0.5 text-xs text-stone-500">Pick areas like science, business, health, and more.</p>
+        <div className="mt-2">
+          <FieldInterestPills
+            selected={fieldsOfInterest}
+            onChange={setFieldsOfInterest}
+            disabled={disabled || isSaving}
+          />
+        </div>
       </div>
 
       {previewUniversity ? (
         <p className="rounded-xl bg-brand-50 px-3 py-2 text-xs text-brand-900">
           On the feed: <span className="font-semibold">{previewUniversity}</span>
+          {selectedUniversities.length > 1 ? (
+            <span className="text-brand-800/80">
+              {" "}
+              and {selectedUniversities.length - 1} more institution{selectedUniversities.length > 2 ? "s" : ""}
+            </span>
+          ) : null}
         </p>
       ) : null}
 
