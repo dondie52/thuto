@@ -51,11 +51,11 @@ export async function checkUsernameAvailable(supabase, username, currentUserId) 
   const validation = validateUsername(normalized);
   if (!validation.valid) return { available: false, error: validation.error };
 
-  let query = supabase.from("profiles").select("id").ilike("username", normalized).limit(1);
-  if (currentUserId) query = query.neq("id", currentUserId);
-
-  const { data, error } = await query;
+  const { data, error } = await supabase.rpc("is_username_available", {
+    p_username: normalized,
+    p_exclude_user_id: currentUserId || null,
+  });
   if (error) throw error;
-  if (data?.length) return { available: false, error: "This username is already taken." };
+  if (data === false) return { available: false, error: "This username is already taken." };
   return { available: true, error: null };
 }

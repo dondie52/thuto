@@ -136,12 +136,24 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
     }
   }
 
+  function profileSaveErrorMessage(err) {
+    const message = err?.message || "Could not save profile.";
+    if (/duplicate key|profiles_username_lower_idx/i.test(message)) {
+      return "This username is already taken. Try another.";
+    }
+    if (/permission denied for table user_target_institutions/i.test(message)) {
+      return "Could not save your university choices. Please try again in a moment.";
+    }
+    return message;
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
     setIsSaving(true);
     setError("");
     setNotice("");
     try {
+      const primary = universities.find((uni) => uni.id === targetInstitutionIds[0]);
       await onSave({
         fullName,
         username: normalizeUsername(username),
@@ -149,25 +161,18 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
         fieldsOfInterest,
         distinction,
         avatarUrl,
+        universityId: primary?.id || "",
+        universityName: primary?.name || "",
+        universityStatus: primary
+          ? profile?.university_id === primary.id
+            ? profile?.university_status || "aspiring"
+            : "aspiring"
+          : "",
       });
       await saveTargetInstitutions(targetInstitutionIds);
-      const primary = universities.find((uni) => uni.id === targetInstitutionIds[0]);
-      if (primary) {
-        await onSave({
-          universityId: primary.id,
-          universityName: primary.name,
-          universityStatus: profile?.university_id === primary.id ? profile?.university_status || "aspiring" : "aspiring",
-        });
-      } else {
-        await onSave({
-          universityId: "",
-          universityName: "",
-          universityStatus: "",
-        });
-      }
       setNotice("Saved.");
     } catch (err) {
-      setError(err.message || "Could not save profile.");
+      setError(profileSaveErrorMessage(err));
     } finally {
       setIsSaving(false);
     }
