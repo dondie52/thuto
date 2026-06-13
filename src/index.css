@@ -114,26 +114,9 @@
     top: 5.875rem;
   }
 
-  .feed-top-bar.feed-top-bar--scrolled {
-    top: 4.25rem;
-  }
-
   @media (min-width: 640px) {
     .feed-top-bar {
       top: 4.5rem;
-    }
-
-    .feed-top-bar.feed-top-bar--scrolled {
-      top: 4.5rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .feed-chrome-header,
-    .feed-top-bar,
-    .feed-top-bar + *,
-    nav[aria-label="Primary"] > div {
-      transition-duration: 0.01ms !important;
     }
   }
 

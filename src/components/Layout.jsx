@@ -3,7 +3,7 @@ import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
 import OnboardingRedirect from "./OnboardingRedirect.jsx";
-import { FeedChromeProvider, useFeedChrome } from "../lib/feedChrome.jsx";
+import { FEED_CHROME_CLASSES, useFeedRoute } from "../lib/feedChrome.jsx";
 
 const desktopLinks = [
   { to: "/app", label: "Home", end: true },
@@ -24,26 +24,17 @@ function navLinkClass({ isActive }) {
 }
 
 export default function Layout() {
-  return (
-    <FeedChromeProvider>
-      <LayoutShell />
-    </FeedChromeProvider>
-  );
-}
-
-function LayoutShell() {
-  const { isFeedRoute, isScrolled } = useFeedChrome();
-  const chromeScrolled = isFeedRoute && isScrolled;
+  const isFeedRoute = useFeedRoute();
 
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <OnboardingRedirect />
       <header
         className={[
-          "feed-chrome-header sticky top-0 z-30 border-b backdrop-blur-md transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ease-out",
-          chromeScrolled
-            ? "border-stone-200/50 bg-[var(--thuto-surface-elevated)]/72 shadow-sm backdrop-blur-lg"
-            : "border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95",
+          "feed-chrome-header sticky top-0 z-30",
+          isFeedRoute
+            ? `${FEED_CHROME_CLASSES} border-b-0`
+            : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
         ].join(" ")}
       >
         <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-6xl">
@@ -60,12 +51,7 @@ function LayoutShell() {
               <AccountDrawer />
             </div>
           </div>
-          <p
-            className={[
-              "mt-1.5 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 transition-[opacity,max-height,margin] duration-300 ease-out sm:hidden",
-              chromeScrolled ? "pointer-events-none max-h-0 overflow-hidden opacity-0" : "max-h-8 opacity-100",
-            ].join(" ")}
-          >
+          <p className="mt-1.5 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
             Botswana University Companion
           </p>
         </div>
