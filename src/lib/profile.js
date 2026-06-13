@@ -6,6 +6,31 @@ const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 const MAX_DISTINCTION = 120;
 const MAX_BIO = 150;
 
+export const PROFILE_SCHEMA_UNAVAILABLE_MESSAGE =
+  "Profile save is temporarily unavailable while Supabase refreshes its schema. Wait about a minute and try again.";
+
+function isProfileSchemaCacheError(error) {
+  const code = String(error?.code || "").trim();
+  const message = String(error?.message || "").trim();
+  return (
+    /profiles/i.test(message) &&
+    (/schema cache/i.test(message) ||
+      /could not find the ['"]?bio['"]? column/i.test(message) ||
+      code === "PGRST204")
+  );
+}
+
+function profileSchemaUnavailableError(error) {
+  return Object.assign(new Error(PROFILE_SCHEMA_UNAVAILABLE_MESSAGE), {
+    cause: error,
+    profileSchemaUnavailable: true,
+  });
+}
+
+export function isProfileSchemaUnavailableError(error) {
+  return Boolean(error?.profileSchemaUnavailable) || String(error?.message || "").trim() === PROFILE_SCHEMA_UNAVAILABLE_MESSAGE;
+}
+
 export const UNIVERSITY_STATUS_OPTIONS = [
   { value: "", label: "Not set" },
   { value: "studying", label: "I study here" },
@@ -196,7 +221,12 @@ export async function updateUserProfile(patch) {
   }
 
   const { data, error } = await supabase.from("profiles").update(updates).eq("id", user.id).select("*").single();
-  if (error) throw error;
+  if (error) {
+    if (isProfileSchemaCacheError(error)) {
+      throw profileSchemaUnavailableError(error);
+    }
+    throw error;
+  }
 
   if (updates.full_name !== undefined) {
     await supabase.auth.updateUser({
