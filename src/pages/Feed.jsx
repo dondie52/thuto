@@ -299,7 +299,7 @@ export default function Feed() {
 
   return (
     <div className="-mx-4 -my-4 min-h-[calc(100vh-7rem)] bg-gradient-to-b from-brand-50 via-teal-50/80 to-white px-4 py-4 sm:mx-auto sm:my-0 sm:w-full sm:max-w-2xl sm:rounded-[2rem] sm:px-5 sm:py-5">
-      <section className="mb-4 border-b border-brand-100/80 pb-4">
+      <section className="feed-top-bar sticky z-20 -mx-4 mb-4 border-b border-brand-100/80 bg-gradient-to-b from-brand-50 via-teal-50/95 to-teal-50/90 px-4 pb-4 pt-1 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <label className="relative min-w-0 flex-1">
             <span className="sr-only">Search feed</span>

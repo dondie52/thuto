@@ -109,6 +109,17 @@
     box-shadow: 0 0 0 2px var(--thuto-surface), 0 0 0 4px var(--thuto-ring);
   }
 
+  /* Sticks below Layout header (logo row + mobile tagline on small screens). */
+  .feed-top-bar {
+    top: 5.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .feed-top-bar {
+      top: 4.5rem;
+    }
+  }
+
   .focus-ring-on-dark {
     @apply outline-none transition-shadow;
   }
