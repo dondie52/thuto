@@ -3,6 +3,7 @@ import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
 import OnboardingRedirect from "./OnboardingRedirect.jsx";
+import { FeedChromeProvider, useFeedChrome } from "../lib/feedChrome.jsx";
 
 const desktopLinks = [
   { to: "/app", label: "Home", end: true },
@@ -24,9 +25,27 @@ function navLinkClass({ isActive }) {
 
 export default function Layout() {
   return (
+    <FeedChromeProvider>
+      <LayoutShell />
+    </FeedChromeProvider>
+  );
+}
+
+function LayoutShell() {
+  const { isFeedRoute, isScrolled } = useFeedChrome();
+  const chromeScrolled = isFeedRoute && isScrolled;
+
+  return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <OnboardingRedirect />
-      <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md">
+      <header
+        className={[
+          "feed-chrome-header sticky top-0 z-30 border-b backdrop-blur-md transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ease-out",
+          chromeScrolled
+            ? "border-stone-200/50 bg-[var(--thuto-surface-elevated)]/72 shadow-sm backdrop-blur-lg"
+            : "border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95",
+        ].join(" ")}
+      >
         <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-6xl">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
             <BrandMark className="min-w-0 justify-self-start" />
@@ -41,7 +60,12 @@ export default function Layout() {
               <AccountDrawer />
             </div>
           </div>
-          <p className="mt-1.5 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
+          <p
+            className={[
+              "mt-1.5 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 transition-[opacity,max-height,margin] duration-300 ease-out sm:hidden",
+              chromeScrolled ? "pointer-events-none max-h-0 overflow-hidden opacity-0" : "max-h-8 opacity-100",
+            ].join(" ")}
+          >
             Botswana University Companion
           </p>
         </div>

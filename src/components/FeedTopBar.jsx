@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useFeedChrome } from "../lib/feedChrome.jsx";
 
 function IconRefresh({ className = "h-5 w-5" }) {
   return (
@@ -87,6 +88,7 @@ function NavIconButton({ to, label, isActive, icon, badge = 0, onClick }) {
 export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCount = 0 }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isScrolled } = useFeedChrome();
   const path = location.pathname.replace(/\/$/, "");
   const isFeedHome = path === "/feed";
 
@@ -100,7 +102,14 @@ export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCo
   }
 
   return (
-    <section className="feed-top-bar sticky z-20 border-b border-brand-100/80 bg-gradient-to-b from-brand-50 via-teal-50/95 to-teal-50/90 px-4 pb-3 pt-1 backdrop-blur-md">
+    <section
+      className={[
+        "feed-top-bar sticky z-20 border-b px-4 pb-3 pt-1 backdrop-blur-md transition-[background-color,border-color,backdrop-filter,top] duration-300 ease-out",
+        isScrolled
+          ? "feed-top-bar--scrolled border-brand-100/45 bg-gradient-to-b from-brand-50/70 via-teal-50/55 to-teal-50/45 backdrop-blur-lg"
+          : "border-brand-100/80 bg-gradient-to-b from-brand-50 via-teal-50/95 to-teal-50/90",
+      ].join(" ")}
+    >
       <div className="grid grid-cols-5 gap-2">
         <NavIconButton
           label={isFeedHome ? "Refresh feed" : "Back to feed"}

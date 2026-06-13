@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useFeedChrome } from "../lib/feedChrome.jsx";
 
 const links = [
   {
@@ -66,12 +67,22 @@ function linkClass({ isActive, center }) {
 }
 
 export default function BottomNav() {
+  const { isFeedRoute, isScrolled } = useFeedChrome();
+  const chromeScrolled = isFeedRoute && isScrolled;
+
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-20 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 sm:hidden"
       aria-label="Primary"
     >
-      <div className="mx-auto max-w-lg rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md">
+      <div
+        className={[
+          "mx-auto max-w-lg rounded-2xl border shadow-nav backdrop-blur-md transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out",
+          chromeScrolled
+            ? "border-stone-200/55 bg-[var(--thuto-surface-elevated)]/78 backdrop-blur-lg"
+            : "border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95",
+        ].join(" ")}
+      >
         <div className="grid grid-cols-5 gap-0.5 px-1 py-1">
           {links.map(({ to, label, end, icon, center }) => (
             <NavLink key={to} to={to} end={end} className={(state) => linkClass({ ...state, center })}>
