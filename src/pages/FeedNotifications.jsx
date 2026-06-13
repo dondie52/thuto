@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
+import { respondConnectionRequest } from "../lib/connections.js";
+import { followUser } from "../lib/feedFollows.js";
 import {
   fetchNotifications,
   markAllNotificationsRead,
@@ -71,6 +73,26 @@ export default function FeedNotifications() {
       } catch {
         // ignore read errors
       }
+    }
+  }
+
+  async function handleConnectionResponse(item, accept) {
+    if (!item.actorId) return;
+    setError("");
+    try {
+      await respondConnectionRequest(item.actorId, accept);
+      if (accept) await followUser(item.actorId).catch(() => {});
+      await markNotificationsRead([item.id]);
+      setItems((current) =>
+        current.map((row) =>
+          row.id === item.id
+            ? { ...row, readAt: new Date().toISOString(), type: accept ? "connection_accepted" : row.type }
+            : row,
+        ),
+      );
+      reloadBadges?.();
+    } catch (err) {
+      setError(err.message || "Could not update connection request.");
     }
   }
 
@@ -146,28 +168,50 @@ export default function FeedNotifications() {
 
       <div className="space-y-2">
         {items.map((item) => (
-          <button
+          <div
             key={item.id}
-            type="button"
-            onClick={() => handleOpen(item)}
             className={[
-              "focus-ring flex w-full items-start gap-3 rounded-2xl border p-3 text-left shadow-sm",
+              "rounded-2xl border p-3 shadow-sm",
               item.readAt ? "border-brand-100 bg-white" : "border-brand-200 bg-brand-50/70",
             ].join(" ")}
           >
-            {item.actorAvatarUrl ? (
-              <img src={item.actorAvatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
-            ) : (
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
-                {profileInitial(item.actorName)}
-              </span>
-            )}
-            <div className="min-w-0 flex-1">
-              <p className="text-sm text-brand-900">{notificationSummary(item)}</p>
-              <p className="mt-1 text-xs text-stone-500">{formatWhen(item.createdAt)}</p>
-            </div>
-            {!item.readAt ? <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-brand-600" aria-hidden /> : null}
-          </button>
+            <button
+              type="button"
+              onClick={() => handleOpen(item)}
+              className="focus-ring flex w-full items-start gap-3 text-left"
+            >
+              {item.actorAvatarUrl ? (
+                <img src={item.actorAvatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
+              ) : (
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
+                  {profileInitial(item.actorName)}
+                </span>
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-brand-900">{notificationSummary(item)}</p>
+                <p className="mt-1 text-xs text-stone-500">{formatWhen(item.createdAt)}</p>
+              </div>
+              {!item.readAt ? <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-brand-600" aria-hidden /> : null}
+            </button>
+            {item.type === "connection_request" && !item.readAt ? (
+              <div className="mt-3 flex gap-2 pl-14">
+                <button
+                  type="button"
+                  onClick={() => handleConnectionResponse(item, true)}
+                  className="focus-ring rounded-full bg-brand-700 px-4 py-2 text-xs font-semibold text-white hover:bg-brand-800"
+                >
+                  Accept
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleConnectionResponse(item, false)}
+                  className="focus-ring rounded-full border border-brand-200 bg-white px-4 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+                >
+                  Decline
+                </button>
+              </div>
+            ) : null}
+          </div>
         ))}
       </div>
     </div>
