@@ -1,4 +1,6 @@
 -- Feed social: notifications, direct messages, and connection requests.
+-- Prerequisite migration: 20260609120000_feed_personalization.sql (creates user_follows).
+-- The bootstrap below lets this file run safely in the SQL editor if that migration was skipped.
 
 create table if not exists public.user_notifications (
   id uuid primary key default gen_random_uuid(),
@@ -149,6 +151,30 @@ create policy messages_insert_sender on public.messages
     )
   );
 
+create table if not exists public.user_follows (
+  follower_id uuid not null references auth.users (id) on delete cascade,
+  following_id uuid not null references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (follower_id, following_id),
+  constraint user_follows_not_self check (follower_id <> following_id)
+);
+
+create index if not exists user_follows_following_idx
+  on public.user_follows (following_id, created_at desc);
+
+alter table public.user_follows enable row level security;
+
+drop policy if exists user_follows_select on public.user_follows;
+create policy user_follows_select on public.user_follows
+  for select to authenticated
+  using (true);
+
+drop policy if exists user_follows_mutate on public.user_follows;
+create policy user_follows_mutate on public.user_follows
+  for all to authenticated
+  using ((select auth.uid()) = follower_id)
+  with check ((select auth.uid()) = follower_id);
+
 create or replace function public.notify_follow()
 returns trigger
 language plpgsql
@@ -190,6 +216,8 @@ drop trigger if exists user_follows_notify on public.user_follows;
 create trigger user_follows_notify
   after insert on public.user_follows
   for each row execute function public.notify_follow();
+
+grant select, insert, delete on table public.user_follows to authenticated;
 
 create or replace function public.notify_connection_request()
 returns trigger
