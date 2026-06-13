@@ -533,7 +533,7 @@ export default function Feed() {
       </div>
 
       {!isLoading && posts.length ? (
-        <section className="mt-3 border-t border-stone-200/80">
+        <section className="mt-3 divide-y divide-stone-200/80 border-y border-stone-200/80 bg-white">
         {posts.map((post) => (
           <FeedPostCard
             key={post.id}
@@ -559,7 +559,7 @@ export default function Feed() {
         {hasMore ? (
           <div
             ref={loadMoreRef}
-            className="border-t border-stone-200/80 py-4 text-center text-sm text-stone-500"
+            className="py-4 text-center text-sm text-stone-500"
           >
             {isLoadingMore ? "Loading more posts..." : "Scroll for more"}
           </div>

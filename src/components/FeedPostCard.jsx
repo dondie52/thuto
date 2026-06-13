@@ -466,8 +466,8 @@ export default function FeedPostCard({
   return (
     <article
       className={[
-        "min-w-0 overflow-hidden border-b border-stone-200/80 bg-white",
-        isPublished ? "" : "bg-amber-50/40",
+        "min-w-0 overflow-hidden",
+        !isPublished && isOwnPost ? "bg-amber-50/40" : "",
       ].join(" ")}
     >
       <header className="flex min-w-0 items-start gap-3 px-4 pb-0 pt-4">
@@ -573,7 +573,7 @@ export default function FeedPostCard({
       ) : null}
 
       {isPublished ? (
-        <div className="mt-4 grid grid-cols-4 border-t border-stone-200/80 bg-white">
+        <div className="mt-4 grid grid-cols-4 border-t border-stone-200/80">
           <div className="relative" ref={reactionPickerRef}>
             {reactionPickerOpen ? (
               <div className="absolute left-0 bottom-full z-10 mb-2 w-64 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-stone-200 bg-white p-2 shadow-card">
@@ -666,7 +666,7 @@ export default function FeedPostCard({
           </button>
         </div>
       ) : isOwnPost ? (
-        <p className="mx-4 mt-4 text-xs text-amber-700 sm:mx-5">Visible only to you while review is pending.</p>
+        <p className="mx-4 mt-4 text-xs text-amber-700">Visible only to you while review is pending.</p>
       ) : null}
 
       {isPublished && !commentsExpanded ? <InlineActionFeedback feedback={actionFeedback} /> : null}
