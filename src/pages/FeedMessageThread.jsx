@@ -1,0 +1,144 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link, useOutletContext, useParams } from "react-router-dom";
+import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
+import { fetchConversations, fetchMessages, markConversationRead, sendMessage } from "../lib/messaging.js";
+
+function formatWhen(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+}
+
+export default function FeedMessageThread() {
+  const { conversationId } = useParams();
+  const { user } = useAuth();
+  const { reloadBadges } = useOutletContext() || {};
+  const [messages, setMessages] = useState([]);
+  const [peerName, setPeerName] = useState("Chat");
+  const [draft, setDraft] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState("");
+  const bottomRef = useRef(null);
+
+  useDocumentTitle(`${peerName} | Messages | Thuto`);
+
+  const loadThread = useCallback(async () => {
+    if (!user || !conversationId) return;
+    setIsLoading(true);
+    setError("");
+    try {
+      const [threadMessages, conversations] = await Promise.all([
+        fetchMessages(conversationId),
+        fetchConversations(),
+      ]);
+      setMessages(threadMessages);
+      const match = conversations.find((item) => item.id === conversationId);
+      if (match) setPeerName(match.otherName);
+      await markConversationRead(conversationId);
+      reloadBadges?.();
+    } catch (err) {
+      setError(err.message || "Could not load this conversation.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [conversationId, reloadBadges, user]);
+
+  useEffect(() => {
+    loadThread();
+  }, [loadThread]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages.length]);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    if (!conversationId || !draft.trim()) return;
+    setIsSending(true);
+    setError("");
+    try {
+      const message = await sendMessage(conversationId, draft);
+      setMessages((current) => [...current, message]);
+      setDraft("");
+      reloadBadges?.();
+    } catch (err) {
+      setError(err.message || "Could not send message.");
+    } finally {
+      setIsSending(false);
+    }
+  }
+
+  if (!user) {
+    return (
+      <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900">
+        <Link to="/auth?mode=login" className="font-semibold underline">
+          Sign in
+        </Link>{" "}
+        to view this conversation.
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex min-h-[calc(100vh-12rem)] flex-col pt-2">
+      <div className="mb-3 flex items-center gap-3">
+        <Link to="/feed/messages" className="focus-ring rounded-full border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800">
+          Back
+        </Link>
+        <h1 className="font-display text-lg font-semibold text-brand-900">{peerName}</h1>
+      </div>
+
+      {error ? (
+        <p className="mb-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="flex-1 space-y-2 overflow-y-auto rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
+        {isLoading ? <p className="text-sm text-stone-500">Loading conversation...</p> : null}
+        {!isLoading && !messages.length ? (
+          <p className="text-center text-sm text-stone-500">Say hello to start the chat.</p>
+        ) : null}
+        {messages.map((message) => {
+          const mine = message.senderId === user.id;
+          return (
+            <div key={message.id} className={mine ? "flex justify-end" : "flex justify-start"}>
+              <div
+                className={[
+                  "max-w-[85%] rounded-2xl px-3 py-2 text-sm shadow-sm",
+                  mine ? "bg-brand-700 text-white" : "bg-stone-100 text-stone-800",
+                ].join(" ")}
+              >
+                <p className="whitespace-pre-wrap">{message.body}</p>
+                <p className={["mt-1 text-[10px]", mine ? "text-white/75" : "text-stone-500"].join(" ")}>
+                  {formatWhen(message.createdAt)}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+        <div ref={bottomRef} />
+      </div>
+
+      <form onSubmit={handleSubmit} className="mt-3 flex items-end gap-2">
+        <textarea
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          rows={2}
+          placeholder="Write a message..."
+          className="focus-ring min-h-11 flex-1 rounded-2xl border border-brand-100 bg-white px-3 py-2 text-sm shadow-sm"
+        />
+        <button
+          type="submit"
+          disabled={isSending || !draft.trim()}
+          className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand-700 px-5 text-sm font-bold text-white hover:bg-brand-800 disabled:opacity-60"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  );
+}
