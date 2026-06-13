@@ -14,7 +14,9 @@ out
 .env
 .env.local
 *.local
-.cursor
+.cursor/*
+!.cursor/mcp.json.example
+!.cursor/environment.json
 
 # Editor
 .vscode/*
