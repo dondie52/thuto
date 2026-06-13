@@ -313,18 +313,12 @@ export default function Feed() {
       ) : null}
 
       {configured && user && profileIncomplete ? (
-        <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
-          <p className="font-semibold">Complete your profile</p>
-          <p className="mt-1 text-brand-800/90">
-            Add your name and username so classmates recognise you on the feed.
-          </p>
-          <Link
-            to="/onboarding?next=%2Ffeed"
-            className="focus-ring mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
-          >
-            Complete setup
-          </Link>
-        </div>
+        <Link
+          to="/onboarding?next=%2Ffeed"
+          className="focus-ring mb-4 block rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-900 hover:bg-brand-100/80"
+        >
+          Complete your profile
+        </Link>
       ) : null}
 
       {configured && !isAuthLoading && !user ? (
