@@ -529,6 +529,8 @@ export default function FeedPostCard({
       ) : null}
       <ExpandableText
         text={post.body}
+        maxLines={4}
+        preserveWrap
         className={`break-words px-4 text-[1rem] leading-relaxed text-stone-950 sm:text-[1.05rem] ${post.title ? "mt-2" : "mt-3"}`}
         buttonClassName="ml-4"
         renderText={renderHashtagText}

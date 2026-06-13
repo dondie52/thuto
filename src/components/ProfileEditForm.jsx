@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchTargetInstitutions, saveTargetInstitutions } from "../lib/onboarding.js";
-import { formatAuthorUniversity, uploadProfileAvatar } from "../lib/profile.js";
+import { formatAuthorUniversity, uploadProfileAvatar, PROFILE_SCHEMA_UNAVAILABLE_MESSAGE } from "../lib/profile.js";
 import FieldInterestPills from "./onboarding/FieldInterestPills.jsx";
 import InstitutionMultiSelect from "./onboarding/InstitutionMultiSelect.jsx";
 import UsernameInput from "./onboarding/UsernameInput.jsx";
@@ -143,6 +143,12 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
     }
     if (/permission denied for table user_target_institutions/i.test(message)) {
       return "Could not save your university choices. Please try again in a moment.";
+    }
+    if (message === PROFILE_SCHEMA_UNAVAILABLE_MESSAGE) {
+      return message;
+    }
+    if (/schema cache/i.test(message) || /could not find the ['"]?bio['"]? column/i.test(message)) {
+      return PROFILE_SCHEMA_UNAVAILABLE_MESSAGE;
     }
     return message;
   }
