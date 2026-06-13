@@ -6,6 +6,20 @@ const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 const MAX_DISTINCTION = 120;
 const MAX_BIO = 150;
 
+const PROFILE_SELECT =
+  "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until";
+
+function isProfileUpdateRpcMissing(error) {
+  const code = String(error?.code || "").trim();
+  const message = String(error?.message || "").trim();
+  return (
+    code === "42883" ||
+    code === "PGRST202" ||
+    /function.*update_own_profile/i.test(message) ||
+    /could not find the function/i.test(message)
+  );
+}
+
 export const PROFILE_SCHEMA_UNAVAILABLE_MESSAGE =
   "Profile save is temporarily unavailable while Supabase refreshes its schema. Wait about a minute and try again.";
 
@@ -216,16 +230,34 @@ export async function updateUserProfile(patch) {
   }
 
   if (!Object.keys(updates).length) {
-    const { data: existing } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+    const { data: existing } = await supabase.from("profiles").select(PROFILE_SELECT).eq("id", user.id).maybeSingle();
     return normalizeProfileRow(existing);
   }
 
-  const { data, error } = await supabase.from("profiles").update(updates).eq("id", user.id).select("*").single();
-  if (error) {
-    if (isProfileSchemaCacheError(error)) {
-      throw profileSchemaUnavailableError(error);
+  let data;
+  const { data: rpcData, error: rpcError } = await supabase.rpc("update_own_profile", { patch: updates });
+  if (rpcError) {
+    if (isProfileUpdateRpcMissing(rpcError)) {
+      const { data: directData, error: directError } = await supabase
+        .from("profiles")
+        .update(updates)
+        .eq("id", user.id)
+        .select(PROFILE_SELECT)
+        .single();
+      if (directError) {
+        if (isProfileSchemaCacheError(directError)) {
+          throw profileSchemaUnavailableError(directError);
+        }
+        throw directError;
+      }
+      data = directData;
+    } else if (isProfileSchemaCacheError(rpcError)) {
+      throw profileSchemaUnavailableError(rpcError);
+    } else {
+      throw rpcError;
     }
-    throw error;
+  } else {
+    data = rpcData;
   }
 
   if (updates.full_name !== undefined) {
