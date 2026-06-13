@@ -37,7 +37,7 @@ export default function Layout() {
             : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
         ].join(" ")}
       >
-        <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-6xl">
+        <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pb-0 pt-3" : "py-3"].join(" ")}>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
             <BrandMark className="min-w-0 justify-self-start" />
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 sm:flex" aria-label="Primary desktop">
@@ -56,7 +56,12 @@ export default function Layout() {
           </p>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 sm:max-w-3xl sm:py-8">
+      <main
+        className={[
+          "mx-auto w-full max-w-lg flex-1 px-4 sm:max-w-3xl",
+          isFeedRoute ? "pb-6 pt-0" : "py-6 sm:py-8",
+        ].join(" ")}
+      >
         <Outlet />
       </main>
       <BottomNav />

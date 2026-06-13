@@ -101,7 +101,7 @@ export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCo
   }
 
   return (
-    <section className={`feed-top-bar sticky z-20 border-b px-4 pb-3 pt-1 ${FEED_CHROME_CLASSES}`}>
+    <section className={`feed-top-bar sticky z-20 border-b border-t border-brand-100/80 px-4 pb-3 pt-0 ${FEED_CHROME_CLASSES}`}>
       <div className="grid grid-cols-5 gap-2">
         <NavIconButton
           label={isFeedHome ? "Refresh feed" : "Back to feed"}
