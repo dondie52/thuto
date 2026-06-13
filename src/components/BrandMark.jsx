@@ -18,7 +18,7 @@ export default function BrandMark({ className = "" }) {
       <img
         src={thutoLogoSrc}
         alt=""
-        className="h-10 w-10 shrink-0 rounded-[1rem] object-contain shadow-sm ring-1 ring-brand-900/5"
+        className="h-10 w-10 shrink-0 rounded-2xl object-contain"
         width="40"
         height="40"
         decoding="async"

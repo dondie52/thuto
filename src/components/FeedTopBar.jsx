@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FEED_CHROME_CLASSES } from "../lib/feedChrome.jsx";
 
 function IconRefresh({ className = "h-5 w-5" }) {
   return (
@@ -100,7 +101,7 @@ export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCo
   }
 
   return (
-    <section className="feed-top-bar sticky z-20 border-b border-brand-100/80 bg-gradient-to-b from-brand-50 via-teal-50/95 to-teal-50/90 px-4 pb-3 pt-1 backdrop-blur-md">
+    <section className={`feed-top-bar sticky z-20 border-b border-t border-brand-100/80 px-4 pb-3 pt-0 ${FEED_CHROME_CLASSES}`}>
       <div className="grid grid-cols-5 gap-2">
         <NavIconButton
           label={isFeedHome ? "Refresh feed" : "Back to feed"}

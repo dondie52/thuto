@@ -3,6 +3,7 @@ import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
 import OnboardingRedirect from "./OnboardingRedirect.jsx";
+import { FEED_CHROME_CLASSES, useFeedRoute } from "../lib/feedChrome.jsx";
 
 const desktopLinks = [
   { to: "/app", label: "Home", end: true },
@@ -23,11 +24,20 @@ function navLinkClass({ isActive }) {
 }
 
 export default function Layout() {
+  const isFeedRoute = useFeedRoute();
+
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6">
       <OnboardingRedirect />
-      <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md">
-        <div className="mx-auto max-w-lg px-4 py-3 sm:max-w-6xl">
+      <header
+        className={[
+          "feed-chrome-header sticky top-0 z-30",
+          isFeedRoute
+            ? `${FEED_CHROME_CLASSES} border-b-0`
+            : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
+        ].join(" ")}
+      >
+        <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pb-0 pt-3" : "py-3"].join(" ")}>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
             <BrandMark className="min-w-0 justify-self-start" />
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 sm:flex" aria-label="Primary desktop">
@@ -46,7 +56,12 @@ export default function Layout() {
           </p>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 sm:max-w-3xl sm:py-8">
+      <main
+        className={[
+          "mx-auto w-full max-w-lg flex-1 px-4 sm:max-w-3xl",
+          isFeedRoute ? "pb-6 pt-0" : "py-6 sm:py-8",
+        ].join(" ")}
+      >
         <Outlet />
       </main>
       <BottomNav />
