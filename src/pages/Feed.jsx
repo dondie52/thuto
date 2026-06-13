@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import FeedPostCard from "../components/FeedPostCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
@@ -31,6 +31,7 @@ function publishMessage(status) {
 
 export default function Feed() {
   useDocumentTitle("Social Feed | Thuto");
+  const { registerRefresh } = useOutletContext() || {};
   const { user, profile, supabaseConfigured, isLoading: isAuthLoading } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
   const [feedMode, setFeedMode] = useState("for_you");
@@ -119,6 +120,11 @@ export default function Feed() {
     setReportedTargetKeys({});
     loadFeed({ reset: true });
   }, [user?.id, feedMode, loadFeed]);
+
+  useEffect(() => {
+    if (!registerRefresh) return undefined;
+    return registerRefresh(() => loadFeed({ reset: true }));
+  }, [loadFeed, registerRefresh]);
 
   useEffect(() => {
     const node = loadMoreRef.current;
@@ -298,44 +304,8 @@ export default function Feed() {
   }
 
   return (
-    <div className="-mx-4 -my-4 min-h-[calc(100vh-7rem)] bg-gradient-to-b from-brand-50 via-teal-50/80 to-white px-4 py-4 sm:mx-auto sm:my-0 sm:w-full sm:max-w-2xl sm:rounded-[2rem] sm:px-5 sm:py-5">
-      <section className="mb-4 border-b border-brand-100/80 pb-4">
-        <div className="flex items-center gap-3">
-          <label className="relative min-w-0 flex-1">
-            <span className="sr-only">Search feed</span>
-            <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/90">
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 110-15 7.5 7.5 0 010 15z" />
-              </svg>
-            </span>
-            <input
-              type="search"
-              placeholder="Search posts, people, or universities..."
-              className="h-12 w-full rounded-full border border-brand-200 bg-brand-700/90 pl-11 pr-4 text-sm font-medium text-white shadow-sm placeholder:text-white/75 focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-200"
-            />
-          </label>
-          <button
-            type="button"
-            onClick={() => loadFeed({ reset: true })}
-            className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-100 bg-white text-brand-800 shadow-sm hover:bg-brand-50"
-            aria-label="Refresh feed"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M20 11a8.1 8.1 0 00-15.5-2M4 5v4h4M4 13a8.1 8.1 0 0015.5 2M20 19v-4h-4" />
-            </svg>
-          </button>
-          <Link to="/profile" className="focus-ring shrink-0 rounded-full" aria-label="Open profile">
-            {profile?.avatar_url ? (
-              <img src={profile.avatar_url} alt="" className="h-11 w-11 rounded-full object-cover ring-2 ring-white shadow-sm" />
-            ) : (
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-sm font-bold text-brand-800 ring-2 ring-white shadow-sm">
-                {profileInitial(composerName)}
-              </span>
-            )}
-          </Link>
-        </div>
-      </section>
-
+    <div className="pt-2">
+      <div className="space-y-4 px-4">
       {!configured ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900">
           Feed needs Supabase environment variables, the scroll-feed migration, and the feed-moderation Edge Function
@@ -344,18 +314,12 @@ export default function Feed() {
       ) : null}
 
       {configured && user && profileIncomplete ? (
-        <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
-          <p className="font-semibold">Complete your profile</p>
-          <p className="mt-1 text-brand-800/90">
-            Add your name and username so classmates recognise you on the feed.
-          </p>
-          <Link
-            to="/onboarding?next=%2Ffeed"
-            className="focus-ring mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
-          >
-            Complete setup
-          </Link>
-        </div>
+        <Link
+          to="/onboarding?next=%2Ffeed"
+          className="focus-ring mb-4 block rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-900 hover:bg-brand-100/80"
+        >
+          Complete your profile
+        </Link>
       ) : null}
 
       {configured && !isAuthLoading && !user ? (
@@ -373,7 +337,7 @@ export default function Feed() {
         </div>
       ) : null}
 
-      <section className="mb-4 rounded-[1.35rem] border border-brand-100/80 bg-white p-3 shadow-[0_14px_34px_rgba(15,118,110,0.13)] sm:mb-5 sm:p-4">
+      <section className="mb-1 rounded-[1.35rem] bg-white/90 p-3 shadow-[0_8px_24px_rgba(15,118,110,0.08)] sm:mb-2 sm:p-4">
         <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
           {profile?.avatar_url ? (
             <img
@@ -517,9 +481,9 @@ export default function Feed() {
         </div>
       </section>
 
-      <section className="space-y-3 pt-1 sm:space-y-4">
+      <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 rounded-full border border-brand-100 bg-white p-1 shadow-sm">
+          <div className="flex items-center gap-2 rounded-full bg-white/90 p-1 shadow-sm">
             <button
               type="button"
               onClick={() => setFeedMode("for_you")}
@@ -541,7 +505,7 @@ export default function Feed() {
               Latest
             </button>
           </div>
-          <span className="rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-semibold text-stone-500">
+          <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-500 shadow-sm">
             {posts.length} {posts.length === 1 ? "post" : "posts"}
           </span>
         </div>
@@ -552,20 +516,24 @@ export default function Feed() {
         ) : null}
 
         {isLoading ? (
-          <div className="rounded-3xl border border-brand-100 bg-white p-6 text-sm text-stone-500 shadow-sm">
+          <div className="py-8 text-center text-sm text-stone-500">
             Loading the feed...
           </div>
         ) : null}
 
         {!isLoading && !posts.length ? (
-          <div className="rounded-3xl border border-dashed border-brand-200 bg-brand-50/60 p-8 text-center">
+          <div className="py-10 text-center">
             <p className="font-display text-xl font-semibold text-brand-900">No posts yet</p>
             <p className="mt-2 text-sm text-stone-600">
               {user ? "Be the first to share an update, or check back after you submit one for review." : "Sign in and post the first student update."}
             </p>
           </div>
         ) : null}
+      </div>
+      </div>
 
+      {!isLoading && posts.length ? (
+        <section className="mt-3 divide-y divide-stone-200/80 border-y border-stone-200/80 bg-white">
         {posts.map((post) => (
           <FeedPostCard
             key={post.id}
@@ -588,15 +556,16 @@ export default function Feed() {
           />
         ))}
 
-        {hasMore && posts.length ? (
+        {hasMore ? (
           <div
             ref={loadMoreRef}
-            className="rounded-3xl border border-brand-100 bg-white p-4 text-center text-sm text-stone-500 shadow-sm"
+            className="py-4 text-center text-sm text-stone-500"
           >
             {isLoadingMore ? "Loading more posts..." : "Scroll for more"}
           </div>
         ) : null}
-      </section>
+        </section>
+      ) : null}
     </div>
   );
 }

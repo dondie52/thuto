@@ -9,6 +9,12 @@ const Layout = lazy(() => import("./components/Layout.jsx"));
 const LandingPage = lazy(() => import("./pages/LandingPage.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Feed = lazy(() => import("./pages/Feed.jsx"));
+const FeedLayout = lazy(() => import("./components/FeedLayout.jsx"));
+const FeedSearch = lazy(() => import("./pages/FeedSearch.jsx"));
+const FeedPeople = lazy(() => import("./pages/FeedPeople.jsx"));
+const FeedMessages = lazy(() => import("./pages/FeedMessages.jsx"));
+const FeedMessageThread = lazy(() => import("./pages/FeedMessageThread.jsx"));
+const FeedNotifications = lazy(() => import("./pages/FeedNotifications.jsx"));
 const Admin = lazy(() => import("./pages/Admin.jsx"));
 const AdminFeed = lazy(() => import("./pages/AdminFeed.jsx"));
 const Predictor = lazy(() => import("./pages/Predictor.jsx"));
@@ -95,7 +101,14 @@ export default function App() {
           </Route>
           <Route element={<Layout />}>
             <Route path="/app" element={<Home />} />
-            <Route path="/feed" element={<Feed />} />
+            <Route path="/feed" element={<FeedLayout />}>
+              <Route index element={<Feed />} />
+              <Route path="search" element={<FeedSearch />} />
+              <Route path="people" element={<FeedPeople />} />
+              <Route path="messages" element={<FeedMessages />} />
+              <Route path="messages/:conversationId" element={<FeedMessageThread />} />
+              <Route path="notifications" element={<FeedNotifications />} />
+            </Route>
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/feed" element={<AdminFeed />} />
             <Route path="/assistant" element={<Assistant />} />
