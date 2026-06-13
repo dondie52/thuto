@@ -25,10 +25,8 @@ const outputs = [
   { name: "icon-512-maskable.png", size: 512, maskable: true },
 ];
 
-async function renderMark(size, maskable) {
-  const inset = maskable ? Math.round(size * 0.12) : 0;
-  const markSize = size - inset * 2;
-  const mark = await sharp(svgPath).resize(markSize, markSize).png().toBuffer();
+async function renderMark(size) {
+  const mark = await sharp(svgPath).resize(size, size).png().toBuffer();
 
   return sharp({
     create: {
@@ -38,7 +36,7 @@ async function renderMark(size, maskable) {
       background: SPLASH_BG,
     },
   })
-    .composite([{ input: mark, left: inset, top: inset }])
+    .composite([{ input: mark, left: 0, top: 0 }])
     .png({ compressionLevel: 9 })
     .toBuffer();
 }
@@ -48,7 +46,7 @@ async function main() {
   await fs.mkdir(outDir, { recursive: true });
 
   for (const { name, size, maskable } of outputs) {
-    const buffer = await renderMark(size, maskable);
+    const buffer = await renderMark(size);
     await fs.writeFile(path.join(outDir, name), buffer);
     console.log(`wrote ${name} (${size}px${maskable ? ", maskable" : ""})`);
   }
