@@ -55,8 +55,8 @@ const links = [
 function linkClass({ isActive, center }) {
   if (center) {
     return [
-      "focus-ring -mt-6 flex h-[4.25rem] w-[4.25rem] justify-self-center flex-col items-center justify-center gap-0.5 rounded-full border-4 border-white px-1 py-1.5 text-[9px] font-bold uppercase leading-none shadow-[0_14px_32px_rgba(15,118,110,0.24)] transition-all duration-200",
-      isActive ? "bg-brand-700 text-white" : "bg-brand-600 text-white hover:bg-brand-700",
+      "focus-ring flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-[9px] font-semibold leading-none transition-all duration-200",
+      isActive ? "bg-brand-700 text-white shadow-sm" : "bg-brand-600 text-white hover:bg-brand-700",
     ].join(" ");
   }
   return [
