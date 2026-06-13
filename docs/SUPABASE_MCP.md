@@ -1,5 +1,8 @@
 # Supabase MCP (Cursor)
 
+**Thuto project only:** `cytqacoqyqqijwsdcrpt` (region `eu-west-1`).  
+Do **not** use the separate **Omang** Supabase project (`lefwmtncducblybyvyze`) for this repo.
+
 ## 1. Configure MCP
 
 In Cursor, add **Supabase MCP** for your Thuto project.
@@ -28,13 +31,16 @@ npx skills add supabase/agent-skills
 
 Skills are installed under `.agents/skills/` (see `skills-lock.json`).
 
-## 3. Deploy feed + profile schema
+## 3. Deploy feed + profile schema (Thuto)
 
-After MCP is linked to the correct project:
+Link and push to **Thuto** only:
 
 ```bash
-supabase db push
-supabase functions deploy feed-moderation
+supabase link --project-ref cytqacoqyqqijwsdcrpt
+supabase db push --include-all --yes
+supabase functions deploy feed-moderation --project-ref cytqacoqyqqijwsdcrpt
 ```
 
-Or ask the agent to apply migration `profile_social_and_feed_author` and deploy `feed-moderation` via MCP.
+> **Note:** Migration `20260603073932_remove_e_omang_feed_demo.sql` removes legacy **e-Omang demo posts** from the Thuto feed. It is not related to the Omang Supabase project.
+
+Or ask the agent to apply pending migrations and deploy `feed-moderation` on project `cytqacoqyqqijwsdcrpt`.

@@ -1,7 +1,5 @@
--- Remove the legacy e-Omang demo feed item.
--- The normal feed should only show live community content; demo moderation data
--- belongs outside the public feed and admin's default mobile experience.
--- Storage objects are not deleted here (Supabase blocks direct storage.objects writes).
+-- Remove the legacy e-Omang demo feed item from the Thuto feed.
+-- (This is demo post content about e-Omang, not the separate Omang Supabase project.)
 delete from public.feed_posts
 where id in (
   select id
