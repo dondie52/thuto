@@ -73,17 +73,19 @@ export default function FeedMessageThread() {
 
   if (!user) {
     return (
-      <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900">
+      <div className="px-4 pt-2">
+        <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900">
         <Link to="/auth?mode=login" className="font-semibold underline">
           Sign in
         </Link>{" "}
         to view this conversation.
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-12rem)] flex-col pt-2">
+    <div className="flex min-h-[calc(100vh-12rem)] flex-col px-4 pt-2">
       <div className="mb-3 flex items-center gap-3">
         <Link to="/feed/messages" className="focus-ring rounded-full border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800">
           Back

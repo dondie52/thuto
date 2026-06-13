@@ -76,7 +76,7 @@ export default function FeedSearch() {
   }
 
   return (
-    <div className="space-y-4 pt-2">
+    <div className="space-y-4 px-4 pt-2">
       <div>
         <h1 className="font-display text-xl font-semibold text-brand-900">Search feed</h1>
         <p className="mt-1 text-sm text-stone-600">Find posts, classmates, and university updates.</p>

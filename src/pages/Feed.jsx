@@ -305,6 +305,7 @@ export default function Feed() {
 
   return (
     <div className="pt-2">
+      <div className="space-y-4 px-4">
       {!configured ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900">
           Feed needs Supabase environment variables, the scroll-feed migration, and the feed-moderation Edge Function
@@ -336,7 +337,7 @@ export default function Feed() {
         </div>
       ) : null}
 
-      <section className="mb-4 rounded-[1.35rem] border border-brand-100/80 bg-white p-3 shadow-[0_14px_34px_rgba(15,118,110,0.13)] sm:mb-5 sm:p-4">
+      <section className="mb-1 rounded-[1.35rem] bg-white/90 p-3 shadow-[0_8px_24px_rgba(15,118,110,0.08)] sm:mb-2 sm:p-4">
         <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
           {profile?.avatar_url ? (
             <img
@@ -480,9 +481,9 @@ export default function Feed() {
         </div>
       </section>
 
-      <section className="space-y-3 pt-1 sm:space-y-4">
+      <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 rounded-full border border-brand-100 bg-white p-1 shadow-sm">
+          <div className="flex items-center gap-2 rounded-full bg-white/90 p-1 shadow-sm">
             <button
               type="button"
               onClick={() => setFeedMode("for_you")}
@@ -504,7 +505,7 @@ export default function Feed() {
               Latest
             </button>
           </div>
-          <span className="rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-semibold text-stone-500">
+          <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-500 shadow-sm">
             {posts.length} {posts.length === 1 ? "post" : "posts"}
           </span>
         </div>
@@ -515,20 +516,24 @@ export default function Feed() {
         ) : null}
 
         {isLoading ? (
-          <div className="rounded-3xl border border-brand-100 bg-white p-6 text-sm text-stone-500 shadow-sm">
+          <div className="py-8 text-center text-sm text-stone-500">
             Loading the feed...
           </div>
         ) : null}
 
         {!isLoading && !posts.length ? (
-          <div className="rounded-3xl border border-dashed border-brand-200 bg-brand-50/60 p-8 text-center">
+          <div className="py-10 text-center">
             <p className="font-display text-xl font-semibold text-brand-900">No posts yet</p>
             <p className="mt-2 text-sm text-stone-600">
               {user ? "Be the first to share an update, or check back after you submit one for review." : "Sign in and post the first student update."}
             </p>
           </div>
         ) : null}
+      </div>
+      </div>
 
+      {!isLoading && posts.length ? (
+        <section className="mt-3 border-t border-stone-200/80">
         {posts.map((post) => (
           <FeedPostCard
             key={post.id}
@@ -551,15 +556,16 @@ export default function Feed() {
           />
         ))}
 
-        {hasMore && posts.length ? (
+        {hasMore ? (
           <div
             ref={loadMoreRef}
-            className="rounded-3xl border border-brand-100 bg-white p-4 text-center text-sm text-stone-500 shadow-sm"
+            className="border-t border-stone-200/80 py-4 text-center text-sm text-stone-500"
           >
             {isLoadingMore ? "Loading more posts..." : "Scroll for more"}
           </div>
         ) : null}
-      </section>
+        </section>
+      ) : null}
     </div>
   );
 }

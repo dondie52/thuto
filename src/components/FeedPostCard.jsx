@@ -179,7 +179,7 @@ function PostImages({ images }) {
         href={primary.publicUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 block overflow-hidden rounded-2xl border border-stone-200 bg-stone-100"
+        className="mt-4 block w-full overflow-hidden bg-stone-100"
       >
         <img
           src={primary.publicUrl}
@@ -193,7 +193,7 @@ function PostImages({ images }) {
   }
 
   return (
-    <div className={`mt-4 grid gap-2 ${visible.length >= 3 ? "grid-cols-2" : "grid-cols-2"}`}>
+    <div className={`mt-4 grid gap-0.5 ${visible.length >= 3 ? "grid-cols-2" : "grid-cols-2"}`}>
       {visible.map((image, index) => (
         <a
           key={image.id || image.publicUrl}
@@ -201,7 +201,7 @@ function PostImages({ images }) {
           target="_blank"
           rel="noopener noreferrer"
           className={[
-            "block overflow-hidden rounded-2xl border border-stone-200 bg-stone-100",
+            "block w-full overflow-hidden bg-stone-100",
             visible.length === 3 && index === 0 ? "col-span-2" : "",
           ].join(" ")}
         >
@@ -245,7 +245,7 @@ function CommentSection({
   const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
 
   return (
-    <div className="mt-4 border-t border-stone-100 px-4 pb-4 pt-4 sm:px-5 sm:pb-5">
+    <div className="mt-4 border-t border-stone-200/80 px-4 pb-4 pt-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Comments</p>
         <button
@@ -466,11 +466,11 @@ export default function FeedPostCard({
   return (
     <article
       className={[
-        "min-w-0 overflow-hidden rounded-[1.35rem] border bg-white shadow-[0_14px_34px_rgba(15,118,110,0.13)] transition-shadow hover:shadow-card-hover",
-        isPublished ? "border-brand-100/80" : "border-amber-200 bg-amber-50/30",
+        "min-w-0 overflow-hidden border-b border-stone-200/80 bg-white",
+        isPublished ? "" : "bg-amber-50/40",
       ].join(" ")}
     >
-      <header className="flex min-w-0 items-start gap-3 px-4 pt-4 sm:px-5 sm:pt-5">
+      <header className="flex min-w-0 items-start gap-3 px-4 pb-0 pt-4">
         <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 flex-wrap items-start justify-between gap-2">
@@ -525,17 +525,17 @@ export default function FeedPostCard({
       </header>
 
       {post.title ? (
-        <h4 className="mt-3 break-words px-4 text-base font-bold leading-snug text-stone-950 sm:mt-4 sm:px-5 sm:text-lg">{post.title}</h4>
+        <h4 className="mt-3 break-words px-4 text-base font-bold leading-snug text-stone-950 sm:text-lg">{post.title}</h4>
       ) : null}
       <ExpandableText
         text={post.body}
-        className={`break-words px-4 text-[1rem] leading-relaxed text-stone-950 sm:px-5 sm:text-[1.05rem] ${post.title ? "mt-2" : "mt-3 sm:mt-4"}`}
-        buttonClassName="ml-4 sm:ml-5"
+        className={`break-words px-4 text-[1rem] leading-relaxed text-stone-950 sm:text-[1.05rem] ${post.title ? "mt-2" : "mt-3"}`}
+        buttonClassName="ml-4"
         renderText={renderHashtagText}
       />
 
       {!isPublished && isOwnPost && post.moderationReason ? (
-        <p className="mx-4 mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 sm:mx-5">
+        <p className="mx-4 mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800">
           {post.moderationReason}
         </p>
       ) : null}
@@ -545,7 +545,7 @@ export default function FeedPostCard({
           href={linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mx-4 mt-3 inline-flex break-all text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950 sm:mx-5"
+          className="mx-4 mt-3 inline-flex break-all text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
         >
           Open source link
         </a>
@@ -554,7 +554,7 @@ export default function FeedPostCard({
       <PostImages images={post.images} />
 
       {isPublished && visibleReactionCounts.length ? (
-        <div className="mx-4 mt-4 flex flex-wrap gap-2 text-xs font-semibold text-stone-500 sm:mx-5">
+        <div className="mx-4 mt-4 flex flex-wrap gap-2 text-xs font-semibold text-stone-500">
           {visibleReactionCounts.map((reaction) => (
             <span
               key={reaction.value}
@@ -573,7 +573,7 @@ export default function FeedPostCard({
       ) : null}
 
       {isPublished ? (
-        <div className="mt-4 grid grid-cols-4 border-t border-brand-100/80 bg-white">
+        <div className="mt-4 grid grid-cols-4 border-t border-stone-200/80 bg-white">
           <div className="relative" ref={reactionPickerRef}>
             {reactionPickerOpen ? (
               <div className="absolute left-0 bottom-full z-10 mb-2 w-64 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-stone-200 bg-white p-2 shadow-card">

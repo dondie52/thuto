@@ -56,15 +56,17 @@ export default function FeedMessages() {
 
   if (!supabaseConfigured) {
     return (
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+      <div className="px-4 pt-2">
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         Messages need Supabase to be configured on this build.
+        </div>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="space-y-3 pt-2">
+      <div className="space-y-3 px-4 pt-2">
         <h1 className="font-display text-xl font-semibold text-brand-900">Messages</h1>
         <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900">
           <Link to="/auth?mode=login&next=%2Ffeed%2Fmessages" className="font-semibold underline">
@@ -77,7 +79,7 @@ export default function FeedMessages() {
   }
 
   return (
-    <div className="space-y-4 pt-2">
+    <div className="space-y-4 px-4 pt-2">
       <div>
         <h1 className="font-display text-xl font-semibold text-brand-900">Messages</h1>
         <p className="mt-1 text-sm text-stone-600">Private chats with classmates on Thuto.</p>

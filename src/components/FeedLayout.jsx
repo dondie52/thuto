@@ -44,7 +44,7 @@ export default function FeedLayout() {
   }
 
   return (
-    <div className="-mx-4 -my-4 min-h-[calc(100vh-7rem)] bg-gradient-to-b from-brand-50 via-teal-50/80 to-white px-4 py-4 sm:mx-auto sm:my-0 sm:w-full sm:max-w-2xl sm:rounded-[2rem] sm:px-5 sm:py-5">
+    <div className="-mx-4 -my-4 min-h-[calc(100vh-7rem)] bg-gradient-to-b from-brand-50 via-teal-50/80 to-white py-4 sm:my-0 sm:min-h-0">
       <FeedTopBar onRefresh={handleRefresh} messageCount={messageCount} notificationCount={notificationCount} />
       <Outlet context={{ registerRefresh, reloadBadges: loadBadgeCounts }} />
     </div>
