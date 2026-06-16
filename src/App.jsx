@@ -12,6 +12,7 @@ const Feed = lazy(() => import("./pages/Feed.jsx"));
 const FeedLayout = lazy(() => import("./components/FeedLayout.jsx"));
 const FeedSearch = lazy(() => import("./pages/FeedSearch.jsx"));
 const FeedPeople = lazy(() => import("./pages/FeedPeople.jsx"));
+const PublicProfile = lazy(() => import("./pages/PublicProfile.jsx"));
 const FeedMessages = lazy(() => import("./pages/FeedMessages.jsx"));
 const FeedMessageThread = lazy(() => import("./pages/FeedMessageThread.jsx"));
 const FeedNotifications = lazy(() => import("./pages/FeedNotifications.jsx"));
@@ -105,6 +106,7 @@ export default function App() {
               <Route index element={<Feed />} />
               <Route path="search" element={<FeedSearch />} />
               <Route path="people" element={<FeedPeople />} />
+              <Route path="u/:username" element={<PublicProfile />} />
               <Route path="messages" element={<FeedMessages />} />
               <Route path="messages/:conversationId" element={<FeedMessageThread />} />
               <Route path="notifications" element={<FeedNotifications />} />

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ExpandableText from "./ExpandableText.jsx";
-import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS } from "../lib/feed.js";
+import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS, shareFeedPostUrl } from "../lib/feed.js";
 import { feedRelevanceLabel } from "../lib/feedRanking.js";
+import { profilePath } from "../lib/profileLinks.js";
 import { formatAuthorUniversity } from "../lib/profile.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
@@ -357,6 +358,8 @@ function CommentSection({
  *   isFollowingAuthor?: boolean,
  *   onToggleFollow?: (post: object) => void,
  *   showRelevance?: boolean,
+ *   isSaved?: boolean,
+ *   onSave?: (post: object) => void,
  * }} props
  */
 export default function FeedPostCard({
@@ -371,6 +374,8 @@ export default function FeedPostCard({
   isFollowingAuthor = false,
   onToggleFollow,
   showRelevance = false,
+  isSaved = false,
+  onSave,
   onReact,
   onToggleComments,
   onCommentDraftChange,
@@ -463,22 +468,61 @@ export default function FeedPostCard({
     onReact(post, reaction);
   }
 
+  async function handleShare() {
+    const url = await shareFeedPostUrl(post.id);
+    const title = post.title || `${displayName} on Thuto`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, text: post.body.slice(0, 120), url });
+        return;
+      }
+    } catch (err) {
+      if (err?.name === "AbortError") return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      window.prompt("Copy this link:", url);
+    }
+  }
+
+  const authorProfilePath = !isOfficial && post.authorUsername ? profilePath(post.authorUsername) : null;
+
   return (
     <article
+      id={`feed-post-${post.id}`}
       className={[
         "min-w-0 overflow-hidden",
         !isPublished && isOwnPost ? "bg-amber-50/40" : "",
       ].join(" ")}
     >
       <header className="flex min-w-0 items-start gap-3 px-4 pb-0 pt-4">
-        <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
+        {authorProfilePath ? (
+          <Link to={authorProfilePath} className="focus-ring shrink-0 rounded-full">
+            <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
+          </Link>
+        ) : (
+          <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1.5">
-                <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">{displayName}</h3>
+                {authorProfilePath ? (
+                  <Link to={authorProfilePath} className="focus-ring min-w-0 break-words text-base font-extrabold text-brand-950 hover:underline">
+                    {displayName}
+                  </Link>
+                ) : (
+                  <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">{displayName}</h3>
+                )}
                 {!isOfficial && post.authorUsername ? (
-                  <span className="text-xs font-semibold text-stone-500">@{post.authorUsername}</span>
+                  authorProfilePath ? (
+                    <Link to={authorProfilePath} className="text-xs font-semibold text-stone-500 hover:underline">
+                      @{post.authorUsername}
+                    </Link>
+                  ) : (
+                    <span className="text-xs font-semibold text-stone-500">@{post.authorUsername}</span>
+                  )
                 ) : null}
                 {isOfficial ? <OfficialBadge /> : null}
                 {!isPublished && isOwnPost ? (
@@ -654,6 +698,7 @@ export default function FeedPostCard({
           </button>
           <button
             type="button"
+            onClick={handleShare}
             className="focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold text-brand-900 hover:bg-brand-50"
           >
             <IconShare />
@@ -661,10 +706,14 @@ export default function FeedPostCard({
           </button>
           <button
             type="button"
-            className="focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold text-brand-900 hover:bg-brand-50"
+            onClick={() => onSave?.(post)}
+            className={[
+              "focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold hover:bg-brand-50",
+              isSaved ? "text-brand-700" : "text-brand-900",
+            ].join(" ")}
           >
             <IconSave />
-            <span>Save</span>
+            <span>{isSaved ? "Saved" : "Save"}</span>
           </button>
         </div>
       ) : isOwnPost ? (

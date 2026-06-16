@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import { respondConnectionRequest } from "../lib/connections.js";
 import { followUser } from "../lib/feedFollows.js";
+import { profilePath } from "../lib/profileLinks.js";
 import {
   fetchNotifications,
   markAllNotificationsRead,
@@ -34,6 +35,7 @@ function formatWhen(value) {
 
 export default function FeedNotifications() {
   useDocumentTitle("Notifications | Thuto");
+  const navigate = useNavigate();
   const { user, supabaseConfigured } = useAuth();
   const { reloadBadges } = useOutletContext() || {};
   const [items, setItems] = useState([]);
@@ -73,6 +75,19 @@ export default function FeedNotifications() {
       } catch {
         // ignore read errors
       }
+    }
+
+    if (item.type === "message" && item.targetId) {
+      navigate(`/feed/messages/${item.targetId}`);
+      return;
+    }
+    if ((item.type === "comment" || item.type === "reaction" || item.type === "post" || item.type === "mention") && item.targetId) {
+      navigate(`/feed?post=${encodeURIComponent(item.targetId)}`);
+      return;
+    }
+    const actorPath = profilePath(item.actorUsername);
+    if (actorPath) {
+      navigate(actorPath);
     }
   }
 
@@ -181,7 +196,17 @@ export default function FeedNotifications() {
               className="focus-ring flex w-full items-start gap-3 text-left"
             >
               {item.actorAvatarUrl ? (
-                <img src={item.actorAvatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
+                item.actorUsername ? (
+                  <Link
+                    to={profilePath(item.actorUsername) || "#"}
+                    onClick={(event) => event.stopPropagation()}
+                    className="focus-ring shrink-0 rounded-full"
+                  >
+                    <img src={item.actorAvatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
+                  </Link>
+                ) : (
+                  <img src={item.actorAvatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
+                )
               ) : (
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
                   {profileInitial(item.actorName)}

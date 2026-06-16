@@ -353,6 +353,61 @@ export async function fetchFeedPosts({ mode = "for_you", limit = 30, cursor = nu
   return hydrateFeedPosts(supabase, posts || [], viewer?.id || null);
 }
 
+/**
+ * @param {string} authorId
+ * @param {{ limit?: number, cursor?: { publishedAt?: string, id?: string } }} [options]
+ */
+export async function fetchPostsByAuthor(authorId, { limit = 20, cursor = null } = {}) {
+  const supabase = getSupabase();
+  if (!supabase || !authorId) return [];
+
+  const viewer = await getCurrentUser(supabase).catch(() => null);
+  let postsQuery = supabase.from("feed_posts").select(FEED_POST_COLUMNS).eq("author_id", authorId);
+
+  if (viewer?.id === authorId) {
+    postsQuery = postsQuery.in("status", ["published", "pending_ai", "pending_review"]);
+  } else {
+    postsQuery = postsQuery.eq("status", "published");
+  }
+
+  if (cursor?.publishedAt && cursor?.id) {
+    postsQuery = postsQuery.or(
+      `published_at.lt.${cursor.publishedAt},and(published_at.eq.${cursor.publishedAt},id.lt.${cursor.id})`,
+    );
+  }
+
+  const { data: posts, error } = await postsQuery
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return hydrateFeedPosts(supabase, posts || [], viewer?.id || null);
+}
+
+/**
+ * @param {string} postId
+ */
+export async function fetchFeedPostById(postId) {
+  const supabase = getSupabase();
+  if (!supabase || !postId) return null;
+
+  const viewer = await getCurrentUser(supabase).catch(() => null);
+  const { data: post, error } = await supabase.from("feed_posts").select(FEED_POST_COLUMNS).eq("id", postId).maybeSingle();
+  if (error) throw error;
+  if (!post) return null;
+
+  const [hydrated] = await hydrateFeedPosts(supabase, [post], viewer?.id || null);
+  return hydrated || null;
+}
+
+export async function shareFeedPostUrl(postId) {
+  const base = import.meta.env.BASE_URL || "/";
+  const path = `${base.replace(/\/?$/, "/")}feed?post=${encodeURIComponent(postId)}`;
+  return new URL(path, window.location.origin).href;
+}
+
 export async function submitFeedPost({
   category,
   title,

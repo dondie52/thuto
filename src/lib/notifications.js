@@ -112,5 +112,6 @@ export function notificationSummary(item) {
   if (item.type === "comment") return `${item.actorName} commented on your post`;
   if (item.type === "reaction") return `${item.actorName} reacted to your post`;
   if (item.type === "mention") return `${item.actorName} mentioned you in a post`;
+  if (item.type === "message") return item.body || `${item.actorName} sent you a message`;
   return "New activity on your feed";
 }

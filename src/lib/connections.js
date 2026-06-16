@@ -1,4 +1,5 @@
 import { getSupabase } from "./supabase.js";
+import { formatAuthorUniversity } from "./profile.js";
 
 function assertSupabase() {
   const supabase = getSupabase();
@@ -80,4 +81,110 @@ export async function fetchPendingOutgoingSet(userIds = []) {
     return new Set();
   }
   return new Set((data || []).map((row) => row.recipient_id));
+}
+
+/**
+ * @param {string[]} userIds
+ */
+export async function fetchPendingIncomingSet(userIds = []) {
+  const supabase = getSupabase();
+  const ids = [...new Set(userIds.filter(Boolean))];
+  if (!supabase || !ids.length) return new Set();
+
+  const recipientId = await currentUserId().catch(() => null);
+  if (!recipientId) return new Set();
+
+  const { data, error } = await supabase
+    .from("connection_requests")
+    .select("requester_id")
+    .eq("recipient_id", recipientId)
+    .eq("status", "pending")
+    .in("requester_id", ids);
+  if (error) {
+    if (isMissingTableError(error)) return new Set();
+    return new Set();
+  }
+  return new Set((data || []).map((row) => row.requester_id));
+}
+
+/**
+ * @param {string[]} userIds
+ * @returns {Promise<Map<string, 'none' | 'pending_outgoing' | 'pending_incoming' | 'accepted'>>}
+ */
+export async function fetchConnectionStatusMap(userIds = []) {
+  const supabase = getSupabase();
+  const ids = [...new Set(userIds.filter(Boolean))];
+  const result = new Map(ids.map((id) => [id, "none"]));
+  if (!supabase || !ids.length) return result;
+
+  const userId = await currentUserId().catch(() => null);
+  if (!userId) return result;
+
+  const { data, error } = await supabase
+    .from("connection_requests")
+    .select("requester_id,recipient_id,status")
+    .or(`requester_id.eq.${userId},recipient_id.eq.${userId}`);
+  if (error) {
+    if (isMissingTableError(error)) return result;
+    return result;
+  }
+
+  const idSet = new Set(ids);
+  for (const row of data || []) {
+    const otherId = row.requester_id === userId ? row.recipient_id : row.requester_id;
+    if (!idSet.has(otherId)) continue;
+    if (row.status === "accepted") {
+      result.set(otherId, "accepted");
+    } else if (row.status === "pending") {
+      const next = row.requester_id === userId ? "pending_outgoing" : "pending_incoming";
+      if (result.get(otherId) !== "accepted") result.set(otherId, next);
+    }
+  }
+
+  return result;
+}
+
+const PROFILE_COLUMNS = "id,full_name,username,bio,avatar_url,university_name,university_status";
+
+function normalizeConnectionPerson(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    fullName: row.full_name?.trim() || "Student",
+    username: row.username?.trim() || "",
+    avatarUrl: row.avatar_url || "",
+    bio: row.bio?.trim() || "",
+    universityLine: formatAuthorUniversity({
+      universityName: row.university_name,
+      universityStatus: row.university_status,
+    }),
+  };
+}
+
+/**
+ * @param {{ limit?: number }} [options]
+ */
+export async function fetchAcceptedConnectionProfiles({ limit = 40 } = {}) {
+  const supabase = assertSupabase();
+  const userId = await currentUserId();
+
+  const { data: requests, error } = await supabase
+    .from("connection_requests")
+    .select("requester_id,recipient_id,responded_at")
+    .eq("status", "accepted")
+    .or(`requester_id.eq.${userId},recipient_id.eq.${userId}`)
+    .order("responded_at", { ascending: false, nullsFirst: false })
+    .limit(limit);
+  if (error) throw error;
+
+  const otherIds = (requests || [])
+    .map((row) => (row.requester_id === userId ? row.recipient_id : row.requester_id))
+    .filter(Boolean);
+  if (!otherIds.length) return [];
+
+  const { data: profiles, error: profileError } = await supabase.from("profiles").select(PROFILE_COLUMNS).in("id", otherIds);
+  if (profileError) throw profileError;
+
+  const byId = new Map((profiles || []).map((row) => [row.id, row]));
+  return otherIds.map((id) => normalizeConnectionPerson(byId.get(id))).filter(Boolean);
 }

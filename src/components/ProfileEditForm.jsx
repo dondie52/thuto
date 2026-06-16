@@ -62,6 +62,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
   const [fieldsOfInterest, setFieldsOfInterest] = useState([]);
   const [distinction, setDistinction] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [messagePrivacy, setMessagePrivacy] = useState("everyone");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
@@ -89,6 +90,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
     setFieldsOfInterest(profile?.fields_of_interest || []);
     setDistinction(profile?.distinction || "");
     setAvatarUrl(profile?.avatar_url || "");
+    setMessagePrivacy(profile?.message_privacy || "everyone");
   }, [profile]);
 
   useEffect(() => {
@@ -174,6 +176,7 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
             ? profile?.university_status || "aspiring"
             : "aspiring"
           : "",
+        messagePrivacy,
       });
       await saveTargetInstitutions(targetInstitutionIds);
       setNotice("Saved.");
@@ -224,6 +227,20 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
           placeholder='e.g. "Aspiring software engineer looking to join BIUST"'
           className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
         />
+      </label>
+
+      <label className="block">
+        <span className="text-xs font-semibold text-stone-600">Who can message you</span>
+        <select
+          value={messagePrivacy}
+          onChange={(event) => setMessagePrivacy(event.target.value)}
+          disabled={disabled || isSaving}
+          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+        >
+          <option value="everyone">Everyone on Thuto</option>
+          <option value="followers_only">People you follow or who follow you</option>
+          <option value="connections_only">Accepted connections only</option>
+        </select>
       </label>
 
       <div>
