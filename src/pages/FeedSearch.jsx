@@ -5,6 +5,7 @@ import { useAuth } from "../lib/auth.jsx";
 import { searchFeed } from "../lib/feedSearch.js";
 import { categoryLabel } from "../lib/feed.js";
 import { getOrCreateConversation } from "../lib/messaging.js";
+import { profilePath } from "../lib/profileLinks.js";
 
 function profileInitial(name) {
   const letter = String(name || "S")
@@ -124,9 +125,21 @@ export default function FeedSearch() {
         <section className="space-y-2">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-stone-500">People</h2>
           <div className="space-y-2">
-            {results.people.map((person) => (
+            {results.people.map((person) => {
+              const path = profilePath(person.username);
+              return (
               <div key={person.id} className="flex items-center gap-3 rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
-                {person.avatarUrl ? (
+                {path ? (
+                  <Link to={path} className="focus-ring shrink-0 rounded-full">
+                    {person.avatarUrl ? (
+                      <img src={person.avatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
+                    ) : (
+                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
+                        {profileInitial(person.fullName)}
+                      </span>
+                    )}
+                  </Link>
+                ) : person.avatarUrl ? (
                   <img src={person.avatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
                 ) : (
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
@@ -134,7 +147,13 @@ export default function FeedSearch() {
                   </span>
                 )}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-semibold text-brand-900">{person.fullName}</p>
+                  {path ? (
+                    <Link to={path} className="focus-ring block truncate font-semibold text-brand-900 hover:underline">
+                      {person.fullName}
+                    </Link>
+                  ) : (
+                    <p className="truncate font-semibold text-brand-900">{person.fullName}</p>
+                  )}
                   <p className="truncate text-xs text-stone-500">
                     {person.username ? `@${person.username}` : "Student"}
                     {person.universityLine ? ` · ${person.universityLine}` : ""}
@@ -150,7 +169,8 @@ export default function FeedSearch() {
                   </button>
                 ) : null}
               </div>
-            ))}
+            );
+            })}
           </div>
         </section>
       ) : null}
@@ -162,7 +182,7 @@ export default function FeedSearch() {
             {results.posts.map((post) => (
               <Link
                 key={post.id}
-                to="/feed"
+                to={`/feed?post=${encodeURIComponent(post.id)}`}
                 className="focus-ring block rounded-2xl border border-brand-100 bg-white p-4 shadow-sm hover:bg-brand-50/40"
               >
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-brand-700">

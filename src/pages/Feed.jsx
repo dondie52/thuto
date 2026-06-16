@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
 import FeedPostCard from "../components/FeedPostCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import {
   FEED_CATEGORIES,
+  fetchFeedPostById,
   fetchFeedPosts,
   isSupabaseConfigured,
   reportFeedTarget,
@@ -13,6 +14,7 @@ import {
   submitFeedPost,
 } from "../lib/feed.js";
 import { fetchFollowingSet, toggleFollowUser } from "../lib/feedFollows.js";
+import { fetchSavedPostSet, toggleSavedPost } from "../lib/savedPosts.js";
 
 function profileInitial(name) {
   const letter = String(name || "S")
@@ -32,11 +34,14 @@ function publishMessage(status) {
 export default function Feed() {
   useDocumentTitle("Social Feed | Thuto");
   const { registerRefresh } = useOutletContext() || {};
+  const [searchParams] = useSearchParams();
+  const highlightPostId = (searchParams.get("post") || "").trim();
   const { user, profile, supabaseConfigured, isLoading: isAuthLoading } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
   const [feedMode, setFeedMode] = useState("for_you");
   const [posts, setPosts] = useState([]);
   const [followingIds, setFollowingIds] = useState(() => new Set());
+  const [savedPostIds, setSavedPostIds] = useState(() => new Set());
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -94,7 +99,10 @@ export default function Feed() {
           ? batch
           : [...currentPosts, ...batch.filter((post) => !currentPosts.some((item) => item.id === post.id))];
         setPosts(merged);
-        await syncFollowingState(merged);
+        await Promise.all([
+          syncFollowingState(merged),
+          fetchSavedPostSet(merged.map((post) => post.id)).then(setSavedPostIds),
+        ]);
         setHasMore(batch.length === 30);
         const last = batch[batch.length - 1];
         if (last) {
@@ -142,6 +150,42 @@ export default function Feed() {
     observer.observe(node);
     return () => observer.disconnect();
   }, [hasMore, isLoading, isLoadingMore, loadFeed]);
+
+  useEffect(() => {
+    if (!highlightPostId || isLoading) return undefined;
+
+    let cancelled = false;
+
+    async function ensureHighlightedPost() {
+      const hasPost = postsRef.current.some((post) => post.id === highlightPostId);
+      if (!hasPost) {
+        try {
+          const post = await fetchFeedPostById(highlightPostId);
+          if (post && !cancelled) {
+            setPosts((current) => (current.some((item) => item.id === post.id) ? current : [post, ...current]));
+          }
+        } catch {
+          /* ignore missing post */
+        }
+      }
+
+      window.requestAnimationFrame(() => {
+        const node = document.getElementById(`feed-post-${highlightPostId}`);
+        if (node) {
+          node.scrollIntoView({ behavior: "smooth", block: "center" });
+          node.classList.add("ring-2", "ring-brand-400", "ring-offset-2");
+          window.setTimeout(() => {
+            node.classList.remove("ring-2", "ring-brand-400", "ring-offset-2");
+          }, 2400);
+        }
+      });
+    }
+
+    ensureHighlightedPost();
+    return () => {
+      cancelled = true;
+    };
+  }, [highlightPostId, isLoading, posts.length]);
 
   function updateForm(patch) {
     setForm((current) => ({ ...current, ...patch }));
@@ -300,6 +344,26 @@ export default function Feed() {
       await loadFeed({ reset: true });
     } catch (err) {
       setPostFeedback(post.id, "error", err.message || "Could not update follow.");
+    }
+  }
+
+  async function handleSave(post) {
+    if (!user) {
+      setPostFeedback(post.id, "notice", "Log in to save posts.");
+      return;
+    }
+    clearPostFeedback(post.id);
+    try {
+      const saved = await toggleSavedPost(post.id);
+      setSavedPostIds((current) => {
+        const next = new Set(current);
+        if (saved) next.add(post.id);
+        else next.delete(post.id);
+        return next;
+      });
+      setPostFeedback(post.id, "notice", saved ? "Post saved." : "Removed from saved posts.");
+    } catch (err) {
+      setPostFeedback(post.id, "error", err.message || "Could not save post.");
     }
   }
 
@@ -545,12 +609,14 @@ export default function Feed() {
             isCommentSubmitting={commentSubmittingFor === post.id}
             showRelevance={feedMode === "for_you"}
             isFollowingAuthor={followingIds.has(post.authorId)}
+            isSaved={savedPostIds.has(post.id)}
             onToggleFollow={handleToggleFollow}
             onReact={handleReaction}
             onToggleComments={toggleComments}
             onCommentDraftChange={updateCommentDraft}
             onSubmitComment={handleSubmitComment}
             onReport={handleReport}
+            onSave={handleSave}
             actionFeedback={postFeedbackById[post.id] || null}
             reportedTargetKeys={reportedTargetKeys}
           />

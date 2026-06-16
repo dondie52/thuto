@@ -2,9 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
-import { sendConnectionRequest, fetchPendingOutgoingSet } from "../lib/connections.js";
+import {
+  fetchAcceptedConnectionProfiles,
+  fetchConnectionStatusMap,
+  sendConnectionRequest,
+} from "../lib/connections.js";
 import { toggleFollowUser } from "../lib/feedFollows.js";
 import { getOrCreateConversation } from "../lib/messaging.js";
+import { profilePath } from "../lib/profileLinks.js";
 import {
   fetchDiscoverProfiles,
   fetchFollowerProfiles,
@@ -16,6 +21,7 @@ const TABS = [
   { id: "discover", label: "Discover" },
   { id: "following", label: "Following" },
   { id: "followers", label: "Followers" },
+  { id: "connections", label: "Connections" },
 ];
 
 function profileInitial(name) {
@@ -26,10 +32,29 @@ function profileInitial(name) {
   return letter || "S";
 }
 
-function PersonRow({ person, isFollowing, isPendingConnect, onFollow, onConnect, onMessage, showActions }) {
+function connectLabel(status) {
+  if (status === "accepted") return "Connected";
+  if (status === "pending_outgoing") return "Requested";
+  if (status === "pending_incoming") return "Respond";
+  return "Connect";
+}
+
+function PersonRow({ person, isFollowing, connectionStatus, onFollow, onConnect, onMessage, showActions }) {
+  const path = profilePath(person.username);
+
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
-      {person.avatarUrl ? (
+      {path ? (
+        <Link to={path} className="focus-ring shrink-0 rounded-full">
+          {person.avatarUrl ? (
+            <img src={person.avatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
+          ) : (
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
+              {profileInitial(person.fullName)}
+            </span>
+          )}
+        </Link>
+      ) : person.avatarUrl ? (
         <img src={person.avatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
       ) : (
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
@@ -37,7 +62,13 @@ function PersonRow({ person, isFollowing, isPendingConnect, onFollow, onConnect,
         </span>
       )}
       <div className="min-w-0 flex-1">
-        <p className="truncate font-semibold text-brand-900">{person.fullName}</p>
+        {path ? (
+          <Link to={path} className="focus-ring block truncate font-semibold text-brand-900 hover:underline">
+            {person.fullName}
+          </Link>
+        ) : (
+          <p className="truncate font-semibold text-brand-900">{person.fullName}</p>
+        )}
         <p className="truncate text-xs text-stone-500">
           {person.username ? `@${person.username}` : "Student"}
           {person.universityLine ? ` · ${person.universityLine}` : ""}
@@ -58,11 +89,11 @@ function PersonRow({ person, isFollowing, isPendingConnect, onFollow, onConnect,
           </button>
           <button
             type="button"
-            onClick={() => onConnect(person.id)}
-            disabled={isPendingConnect}
+            onClick={() => onConnect(person.id, connectionStatus)}
+            disabled={connectionStatus === "pending_outgoing" || connectionStatus === "accepted"}
             className="focus-ring rounded-full border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50 disabled:opacity-60"
           >
-            {isPendingConnect ? "Requested" : "Connect"}
+            {connectLabel(connectionStatus)}
           </button>
           <button
             type="button"
@@ -84,7 +115,7 @@ export default function FeedPeople() {
   const [tab, setTab] = useState("discover");
   const [people, setPeople] = useState([]);
   const [followingIds, setFollowingIds] = useState(() => new Set());
-  const [pendingConnectIds, setPendingConnectIds] = useState(() => new Set());
+  const [connectionStatusById, setConnectionStatusById] = useState(() => new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -100,15 +131,16 @@ export default function FeedPeople() {
       let rows = [];
       if (tab === "following") rows = await fetchFollowingProfiles();
       else if (tab === "followers") rows = await fetchFollowerProfiles();
+      else if (tab === "connections") rows = await fetchAcceptedConnectionProfiles();
       else rows = await fetchDiscoverProfiles();
       setPeople(rows);
       const ids = rows.map((row) => row.id);
-      const [following, pending] = await Promise.all([
+      const [following, connectionMap] = await Promise.all([
         fetchFollowingSetForUsers(ids),
-        fetchPendingOutgoingSet(ids),
+        fetchConnectionStatusMap(ids),
       ]);
       setFollowingIds(following);
-      setPendingConnectIds(pending);
+      setConnectionStatusById(connectionMap);
     } catch (err) {
       setError(err.message || "Could not load people.");
       setPeople([]);
@@ -135,10 +167,15 @@ export default function FeedPeople() {
     }
   }
 
-  async function handleConnect(personId) {
+  async function handleConnect(personId, status) {
+    if (status === "pending_incoming") {
+      navigate("/feed/notifications");
+      return;
+    }
+    if (status && status !== "none") return;
     try {
       await sendConnectionRequest(personId);
-      setPendingConnectIds((current) => new Set(current).add(personId));
+      setConnectionStatusById((current) => new Map(current).set(personId, "pending_outgoing"));
     } catch (err) {
       setError(err.message || "Could not send connection request.");
     }
@@ -210,7 +247,7 @@ export default function FeedPeople() {
 
       {!isLoading && !people.length ? (
         <div className="rounded-2xl border border-dashed border-brand-200 bg-white p-6 text-center text-sm text-stone-600">
-          {tab === "discover" ? "No new people to discover right now." : `No ${tab} yet.`}
+          {tab === "discover" ? "No new people to discover right now." : tab === "connections" ? "No connections yet." : `No ${tab} yet.`}
         </div>
       ) : null}
 
@@ -220,7 +257,7 @@ export default function FeedPeople() {
             key={person.id}
             person={person}
             isFollowing={followingIds.has(person.id)}
-            isPendingConnect={pendingConnectIds.has(person.id)}
+            connectionStatus={connectionStatusById.get(person.id) || "none"}
             onFollow={handleFollow}
             onConnect={handleConnect}
             onMessage={handleMessage}

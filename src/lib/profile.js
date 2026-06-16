@@ -7,7 +7,7 @@ const MAX_DISTINCTION = 120;
 const MAX_BIO = 150;
 
 const PROFILE_SELECT =
-  "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until";
+  "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, message_privacy, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until";
 
 function isProfileUpdateRpcMissing(error) {
   const code = String(error?.code || "").trim();
@@ -111,6 +111,7 @@ export function normalizeProfileRow(row) {
     syllabus_type: row.syllabus_type || "",
     sponsorship_intent: row.sponsorship_intent || "",
     fields_of_interest: Array.isArray(row.fields_of_interest) ? row.fields_of_interest : [],
+    message_privacy: row.message_privacy || "everyone",
     onboarding_completed_at: row.onboarding_completed_at || null,
     onboarding_skipped_at: row.onboarding_skipped_at || null,
     stripe_customer_id: row.stripe_customer_id || null,
@@ -175,6 +176,7 @@ export async function uploadProfileAvatar(file) {
  *   syllabusType?: string,
  *   sponsorshipIntent?: string,
  *   fieldsOfInterest?: string[],
+ *   messagePrivacy?: string,
  * }} patch
  */
 export async function updateUserProfile(patch) {
@@ -227,6 +229,11 @@ export async function updateUserProfile(patch) {
     updates.fields_of_interest = Array.isArray(patch.fieldsOfInterest)
       ? [...new Set(patch.fieldsOfInterest.map((value) => String(value).trim()).filter(Boolean))].slice(0, 8)
       : [];
+  }
+  if (patch.messagePrivacy !== undefined) {
+    const privacy = String(patch.messagePrivacy || "").trim();
+    updates.message_privacy =
+      privacy === "connections_only" || privacy === "followers_only" ? privacy : "everyone";
   }
 
   if (!Object.keys(updates).length) {
