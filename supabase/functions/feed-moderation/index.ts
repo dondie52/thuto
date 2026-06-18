@@ -241,15 +241,35 @@ const TECHNICAL_COLLEGE_IDS = new Set([
   "realic",
   "palapye-technical-college",
   "jwaneng-technical-college",
+  "maun-technical-college",
+  "selebi-phikwe-technical-college",
   "chobe-brigade",
+  "krda",
+]);
+
+const SHORT_COURSE_IDS = new Set([
+  "botswana-accountancy-training",
+  "bosa-bosele",
+  "roads-training-centre",
+  "dawn-training",
+  "cep-training",
+  "learneasy",
+  "stargems",
+  "insurance-training-institute",
+  "crackit",
+  "aafm",
+  "africa-insurance-training-institute",
+  "delta-training-academy",
 ]);
 
 function inferInstitutionCategory(institutionId: string | null) {
   const id = cleanText(institutionId, 120).toLowerCase();
   if (!id) return null;
   if (UNIVERSITY_CATEGORY_IDS.has(id)) return "universities";
-  if (id === "krda" || id.includes("brigade")) return "brigades";
-  if (TECHNICAL_COLLEGE_IDS.has(id) || id.includes("technical")) return "technical-colleges";
+  if (SHORT_COURSE_IDS.has(id)) return "short-courses";
+  if (TECHNICAL_COLLEGE_IDS.has(id) || id.includes("brigade") || id.includes("technical")) {
+    return "technical-colleges-brigades";
+  }
   if (id.includes("university")) return "universities";
   return "specialised-academics";
 }
