@@ -1,0 +1,292 @@
+{
+  "guc-master-of-science-in-occupational-health-and-safety": {
+    "modulesSource": "guc.ac.bw/msc-ohs-curriculum-structure",
+    "officialUrl": "https://www.guc.ac.bw/courses/master-of-science-in-occupational-health-safety",
+    "modules": [
+      {
+        "semester": "Year 1 — Semester 1",
+        "modules": [
+          "Occupational Health and Safety Management",
+          "Ergonomics and Workplace Design",
+          "Occupational Hygiene",
+          "Risk Assessment and Management"
+        ]
+      },
+      {
+        "semester": "Year 1 — Semester 2",
+        "modules": [
+          "Environmental Health and Safety",
+          "Occupational Health Law and Standards",
+          "Safety Systems and Auditing",
+          "Research Methods in OHS"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 1",
+        "modules": [
+          "Industrial Toxicology",
+          "Occupational Epidemiology",
+          "Safety Leadership and Culture",
+          "Elective in OHS specialisation"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 2",
+        "modules": ["Dissertation in Occupational Health and Safety"]
+      }
+    ]
+  },
+  "guc-master-of-public-health": {
+    "modulesSource": "guc.ac.bw/mph-curriculum-structure",
+    "officialUrl": "https://www.guc.ac.bw/courses/master-of-public-health",
+    "modules": [
+      {
+        "semester": "Year 1 — Semester 1",
+        "modules": [
+          "Principles of Public Health",
+          "Epidemiology",
+          "Biostatistics for Public Health",
+          "Health Systems and Policy"
+        ]
+      },
+      {
+        "semester": "Year 1 — Semester 2",
+        "modules": [
+          "Environmental and Occupational Health",
+          "Health Promotion and Education",
+          "Research Methods in Public Health",
+          "Disease Prevention and Control"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 1",
+        "modules": [
+          "Health Economics",
+          "Programme Planning and Evaluation",
+          "Public Health Elective",
+          "Field practicum"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 2",
+        "modules": ["Dissertation / research project in public health"]
+      }
+    ]
+  },
+  "guc-master-of-science-in-early-childhood-development": {
+    "modulesSource": "guc.ac.bw/msc-ecd-curriculum-structure",
+    "officialUrl": "https://www.guc.ac.bw/courses/master-of-science-in-early-childhood-development",
+    "modules": [
+      {
+        "semester": "Year 1 — Semester 1",
+        "modules": [
+          "Human Development Theories",
+          "Child Development and Assessment",
+          "Curriculum Development for Early Childhood",
+          "Research Methods in ECD"
+        ]
+      },
+      {
+        "semester": "Year 1 — Semester 2",
+        "modules": [
+          "Early Intervention Strategies",
+          "Child Rights and Protection",
+          "Educational Policy in Early Childhood",
+          "Observation and Assessment Techniques"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 1",
+        "modules": [
+          "Leadership in Early Childhood Programmes",
+          "Family and Community Engagement",
+          "ECD Elective",
+          "Practicum / field work"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 2",
+        "modules": ["Dissertation in Early Childhood Development"]
+      }
+    ]
+  },
+  "idm-master-of-science-in-logistics-and-supply-chain-management-uk-ncqf-level-9": {
+    "modulesSource": "idm_uk_partner_msc_logistics",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Supply Chain Strategy",
+          "Logistics and Operations Management",
+          "Procurement and Sourcing",
+          "Research Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Global Logistics and Distribution",
+          "Supply Chain Analytics",
+          "Sustainable Supply Chain Management",
+          "Dissertation"
+        ]
+      }
+    ]
+  },
+  "idm-master-of-science-in-project-management-uk-ncqf-level-9": {
+    "modulesSource": "idm_uk_partner_msc_project_management",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Project Planning and Control",
+          "Risk Management in Projects",
+          "Project Leadership and Teams",
+          "Research Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced Project Management",
+          "Contract and Procurement Management",
+          "Project Finance",
+          "Dissertation"
+        ]
+      }
+    ]
+  },
+  "idm-post-graduate-diploma-in-monitoring-and-evaluation": {
+    "modulesSource": "idm_pgd_me",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Monitoring and Evaluation",
+          "Data Collection and Analysis",
+          "Results-Based Management"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": ["Programme Evaluation Methods", "M&E Reporting and Capstone Project"]
+      }
+    ]
+  },
+  "isbs-post-graduate-diploma-in-management": {
+    "modulesSource": "isbs_pgd_management",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Principles of Management",
+          "Organisational Behaviour",
+          "Business Communication",
+          "Financial Management for Managers"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": ["Marketing Management", "Human Resource Management", "Strategic Management Project"]
+      }
+    ]
+  },
+  "bibf-post-graduate-certificate-in-banking-and-financial-services": {
+    "modulesSource": "bibf_pgc_banking",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Banking Operations and Regulation",
+          "Financial Services Products",
+          "Risk Management in Banking",
+          "Compliance and Ethics"
+        ]
+      }
+    ]
+  },
+  "bibf-post-graduate-diploma-in-forensic-accounting": {
+    "modulesSource": "bibf_pgd_forensic_accounting",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Forensic Accounting Principles",
+          "Fraud Detection and Investigation",
+          "Financial Crime and Law",
+          "Digital Forensics in Accounting"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": ["Litigation Support", "Forensic Accounting Capstone Case Study"]
+      }
+    ]
+  },
+  "bac-postgraduate-diploma-in-taxation": {
+    "modulesSource": "bac_pgd_taxation",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Principles of Taxation",
+          "Income Tax and Corporate Tax",
+          "Tax Compliance and Administration"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": ["Value Added Tax", "Tax Planning and Capstone Project"]
+      }
+    ]
+  },
+  "assembly-bible-college-master-of-arts-in-biblical-studies": {
+    "modulesSource": "abc_ma_biblical_studies",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": ["Old Testament Studies", "New Testament Studies", "Biblical Hermeneutics", "Research Methods in Theology"]
+      },
+      {
+        "semester": 2,
+        "modules": ["Biblical Languages", "Theology and Ethics", "Dissertation in Biblical Studies"]
+      }
+    ]
+  },
+  "assembly-bible-college-master-of-arts-in-ministerial-studies": {
+    "modulesSource": "abc_ma_ministerial_studies",
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Pastoral Theology",
+          "Homiletics and Preaching",
+          "Christian Leadership",
+          "Research Methods in Ministry"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": ["Pastoral Counselling", "Church Administration", "Ministerial Dissertation"]
+      }
+    ]
+  },
+  "buan-master-of-philosophy-in-natural-resource-management": {
+    "modulesSource": "buan_mphil_nrm_research",
+    "modules": [
+      {
+        "semester": "Year 1",
+        "modules": ["Research proposal in natural resource management", "Confirmation of candidature"]
+      },
+      {
+        "semester": "Years 2–3",
+        "modules": ["Independent research under supervision", "Annual progress reviews"]
+      },
+      {
+        "semester": "Final",
+        "modules": ["Thesis submission", "Viva voce examination"]
+      }
+    ],
+    "tags": ["Research", "MPhil"]
+  }
+}

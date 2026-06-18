@@ -502,14 +502,33 @@
     "description": "Programme at Assembly Bible College. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Old Testament Studies",
+          "New Testament Studies",
+          "Biblical Hermeneutics",
+          "Research Methods in Theology"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Biblical Languages",
+          "Theology and Ethics",
+          "Dissertation in Biblical Studies"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "abc_ma_biblical_studies"
   },
   {
     "id": "assembly-bible-college-master-of-arts-in-ministerial-studies",
@@ -524,14 +543,33 @@
     "description": "Programme at Assembly Bible College. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Pastoral Theology",
+          "Homiletics and Preaching",
+          "Christian Leadership",
+          "Research Methods in Ministry"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Pastoral Counselling",
+          "Church Administration",
+          "Ministerial Dissertation"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "abc_ma_ministerial_studies"
   },
   {
     "id": "awil-college-bachelor-of-arts-in-acting",
@@ -1609,14 +1647,25 @@
     "description": "Programme at Botswana Institute of Banking and Finance. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Banking Operations and Regulation",
+          "Financial Services Products",
+          "Risk Management in Banking",
+          "Compliance and Ethics"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "bibf_pgc_banking"
   },
   {
     "id": "bibf-post-graduate-diploma-in-forensic-accounting",
@@ -1631,14 +1680,32 @@
     "description": "Programme at Botswana Institute of Banking and Finance. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Forensic Accounting Principles",
+          "Fraud Detection and Investigation",
+          "Financial Crime and Law",
+          "Digital Forensics in Accounting"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Litigation Support",
+          "Forensic Accounting Capstone Case Study"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "bibf_pgd_forensic_accounting"
   },
   {
     "id": "biust-beng-mechanical-engineering",
@@ -5078,7 +5145,42 @@
     "description": "The programme complements existing MBA/MPA programmes offered in the Commonwealth to meet the demand for post-graduate management and public administration education. The main objective of the EMBA Programme is to enable students in the Commonwealth countries to obtain Master’s degrees in the areas of Business Administration to enable them to contribute to their professional growth and career advancement and to their countries’",
     "officialUrl": "https://www.bou.ac.bw/",
     "applyUrl": "https://www.bou.ac.bw/",
-    "modules": [],
+    "modules": [
+      {
+        "semester": "Year 1 — Semester 1",
+        "modules": [
+          "BOM911 - Operations Management",
+          "BHR911 - Managing Human Resources",
+          "BMO911 - Management in Organisations",
+          "BMI911 - Managing Information Systems"
+        ]
+      },
+      {
+        "semester": "Year 1 — Semester 2 (choose 4)",
+        "modules": [
+          "BQT921 - Quantitative Techniques",
+          "BAF921 - Accounting and Finance",
+          "BMM921 - Marketing Management",
+          "SPS921 - Public Systems Management",
+          "BEC921 - Economic Environment of Business"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 1",
+        "modules": [
+          "BRM921 - Research Methods",
+          "BQM921 - Quality Management",
+          "BSM921 - Strategic Management"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 2",
+        "modules": [
+          "BRM920 - Research Project",
+          "Electives: International Marketing, Corporate Finance, Business Ethics, Disaster Management, Contemporary Administrative Systems, Project Management, Electronic Commerce"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": "BOU prospectus 2025/26 — entry requirements are described via passes/credits/grades (no single numeric best-six points cut-off published).",
@@ -5091,7 +5193,9 @@
     ],
     "tags": [
       "Business"
-    ]
+    ],
+    "modulesSource": "bou.ac.bw/emba",
+    "qualification": "Postgraduate"
   },
   {
     "id": "bou-executive-master-of-public-administration-empa",
@@ -5106,7 +5210,29 @@
     "description": "The Programme complements existing MBA/MPA programmes offered in the Commonwealth to meet the demand for post-graduate management and public administration education. The main objective of the EMPA Programme is to enable students in the Commonwealth countries to obtain Masters degrees in the areas of Public Administration to enable them to contribute to their professional growth and career advancement and to their countries’",
     "officialUrl": "https://www.bou.ac.bw/",
     "applyUrl": "https://www.bou.ac.bw/",
-    "modules": [],
+    "modules": [
+      {
+        "semester": "Core (Commonwealth executive programme)",
+        "modules": [
+          "Management in Organisations",
+          "Managing Human Resources",
+          "Managing Information Systems",
+          "Operations Management",
+          "Research Methods",
+          "Quality Management",
+          "Strategic Management",
+          "Public Systems Management",
+          "Economic Environment of Public Administration"
+        ]
+      },
+      {
+        "semester": "Year 2",
+        "modules": [
+          "Research project in public administration",
+          "Public administration electives"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": "BOU prospectus 2025/26 — entry requirements are described via passes/credits/grades (no single numeric best-six points cut-off published).",
@@ -5119,7 +5245,9 @@
     ],
     "tags": [
       "Business"
-    ]
+    ],
+    "modulesSource": "bou.ac.bw/cempa_commonwealth",
+    "qualification": "Postgraduate"
   },
   {
     "id": "bou-master-of-education-m-ed-educational-leadership",
@@ -5134,7 +5262,30 @@
     "description": "The purpose of the programme is to enhance the leadership skills and knowledge of educational leaders employed in the public school system, higher education and education related industries in Botswana, the SADC and Commonwealth. An educational leadership programme should result in a more effective and efficient education system and a more professional leadership team. It should result in leaders with the ability to manage change",
     "officialUrl": "https://www.bou.ac.bw/",
     "applyUrl": "https://www.bou.ac.bw/",
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Educational Leadership"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": "BOU prospectus 2025/26 — entry requirements are described via passes/credits/grades (no single numeric best-six points cut-off published).",
@@ -5147,7 +5298,9 @@
     ],
     "tags": [
       "Education"
-    ]
+    ],
+    "modulesSource": "med_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "bou-master-of-education-in-early-childhood-development-m-ed-ecd",
@@ -5162,7 +5315,30 @@
     "description": "The promotion of lifelong learning has enabled today’s learners to dictate their terms of study in line with the increasing demand for competency-based education. The quality of Early Childhood programmes lies mainly in the hands of a special workforce, and BOU intends to ensure the production of such a special workforce by delivering high-quality and innovative programmes that meet market demands. BOU provides innovative programmes",
     "officialUrl": "https://www.bou.ac.bw/",
     "applyUrl": "https://www.bou.ac.bw/",
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Early Childhood Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": "BOU prospectus 2025/26 — entry requirements are described via passes/credits/grades (no single numeric best-six points cut-off published).",
@@ -5175,7 +5351,9 @@
     ],
     "tags": [
       "Education"
-    ]
+    ],
+    "modulesSource": "med_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "bou-microsoft-office-suite-mso",
@@ -5218,7 +5396,16 @@
     "description": "The Post Graduate Certificate in Quality Assurance in Education programme has been necessitated by the massive increase in external and internal Quality Assurance (QA) activities in tertiary education around the world. The programme targets practising quality assurance professionals and individuals who wish to play a role in quality assurance generally, and in tertiary education contexts in particular.",
     "officialUrl": "https://www.bou.ac.bw/",
     "applyUrl": "https://www.bou.ac.bw/",
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Education",
+          "Professional practice module",
+          "Applied skills workshop"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": "BOU prospectus 2025/26 — entry requirements are described via passes/credits/grades (no single numeric best-six points cut-off published).",
@@ -5231,7 +5418,9 @@
     ],
     "tags": [
       "Education"
-    ]
+    ],
+    "modulesSource": "pgc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "bac-association-of-accounting-technicians",
@@ -6778,7 +6967,23 @@
     "description": "Programme at Botswana School of Business Sciences (formerly BAC). Entry requirements are based on the 2026-2027 prospectus; confirm programme-specific details with the institution.",
     "officialUrl": "https://www.bac.ac.bw/",
     "applyUrl": "https://thitoacademics.bac.ac.bw/",
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Principles of Taxation",
+          "Income Tax and Corporate Tax",
+          "Tax Compliance and Administration"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Value Added Tax",
+          "Tax Planning and Capstone Project"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": "BSBS (BAC) prospectus 2026-2027 — entry requirements",
@@ -6791,7 +6996,8 @@
     ],
     "tags": [
       "Business"
-    ]
+    ],
+    "modulesSource": "bac_pgd_taxation"
   },
   {
     "id": "buan-bachelor-of-science-in-agricultural-economics",
@@ -7378,14 +7584,41 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": "Year 1",
+        "modules": [
+          "Research proposal in natural resource management",
+          "Confirmation of candidature"
+        ]
+      },
+      {
+        "semester": "Years 2–3",
+        "modules": [
+          "Independent research under supervision",
+          "Annual progress reviews"
+        ]
+      },
+      {
+        "semester": "Final",
+        "modules": [
+          "Thesis submission",
+          "Viva voce examination"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "buan_mphil_nrm_research",
+    "tags": [
+      "Research",
+      "MPhil"
+    ]
   },
   {
     "id": "buan-master-of-science-in-agricultural-education",
@@ -7400,14 +7633,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Education Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Education",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-agricultural-mechanization",
@@ -7422,14 +7679,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Agriculture Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Agriculture",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-agronomy",
@@ -7444,14 +7725,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Natural Sciences Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Natural Sciences",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-animal-science-breeding-and-reproduction",
@@ -7466,14 +7771,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Agriculture Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Agriculture",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-crop-protection",
@@ -7488,14 +7817,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Natural Sciences Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Natural Sciences",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-food-science",
@@ -7510,14 +7863,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Natural Sciences Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Natural Sciences",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-horticulture",
@@ -7532,14 +7909,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Agriculture Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Agriculture",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-integrated-land-use-planning",
@@ -7554,14 +7955,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Natural Sciences Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Natural Sciences",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-soil-and-water-engineering",
@@ -7576,14 +8001,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Engineering Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Engineering",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "buan-master-of-science-in-soil-science",
@@ -7598,14 +8047,38 @@
     "description": "Programme at Botswana University of Agriculture and Natural Resources. Confirm entry requirements, fees, and modules with the institution.",
     "officialUrl": "https://www.bqa.org.bw/accredited-learning-programmes-ncqf",
     "applyUrl": null,
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Natural Sciences Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Natural Sciences",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": null,
     "minPointsTier": "manual",
     "minPointsScaleVersion": 2,
     "profileCompleteness": "partial",
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "modulesSource": "msc_programme_type",
+    "qualification": "Postgraduate"
   },
   {
     "id": "byte-size-college-certificate-v-in-early-childhood-education",
@@ -12321,7 +12794,43 @@
     "tags": [
       "Business",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Organizational Theory and Behaviour",
+          "Managerial Economics",
+          "Management Accounting",
+          "Marketing Strategy"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Financial Management",
+          "Operations Management",
+          "Business Research Methods",
+          "Strategic Management"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Business Law",
+          "Elective modules",
+          "Business Presentation Skills"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation / project"
+        ]
+      }
+    ],
+    "modulesSource": "mba_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-master-in-business-administration",
@@ -12340,7 +12849,43 @@
     "tags": [
       "Business",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Organizational Theory and Behaviour",
+          "Managerial Economics",
+          "Management Accounting",
+          "Marketing Strategy"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Financial Management",
+          "Operations Management",
+          "Business Research Methods",
+          "Strategic Management"
+        ]
+      },
+      {
+        "semester": 3,
+        "modules": [
+          "Business Law",
+          "Elective modules",
+          "Business Presentation Skills"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation / project"
+        ]
+      }
+    ],
+    "modulesSource": "mba_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-master-of-commerce-in-strategic-marketing",
@@ -12359,7 +12904,32 @@
     "tags": [
       "Business",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Business",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
+    "modulesSource": "ma_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-master-of-education-in-early-childhood-development",
@@ -12378,7 +12948,33 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Early Childhood Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
+    "modulesSource": "med_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-master-of-education-in-educational-leadership-and-management",
@@ -12397,7 +12993,33 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Educational Leadership"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
+    "modulesSource": "med_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-master-of-education-in-higher-education",
@@ -12416,7 +13038,33 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
+    "modulesSource": "med_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-master-of-education-in-research-and-evaluation",
@@ -12435,7 +13083,33 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
+    "modulesSource": "med_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-master-of-science-in-occupational-health-and-safety",
@@ -12445,7 +13119,7 @@
     "universityShort": "GUC",
     "duration": "Not specified",
     "description": "Listed in GUC 2025 programmes brochure (docs/2025Programmes.pdf).",
-    "officialUrl": "https://www.guc.ac.bw/",
+    "officialUrl": "https://www.guc.ac.bw/courses/master-of-science-in-occupational-health-safety",
     "applyUrl": "https://admissions.guc.ac.bw:8081",
     "qualification": "Postgraduate",
     "interests": [
@@ -12454,7 +13128,44 @@
     "tags": [
       "Health",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": "Year 1 — Semester 1",
+        "modules": [
+          "Occupational Health and Safety Management",
+          "Ergonomics and Workplace Design",
+          "Occupational Hygiene",
+          "Risk Assessment and Management"
+        ]
+      },
+      {
+        "semester": "Year 1 — Semester 2",
+        "modules": [
+          "Environmental Health and Safety",
+          "Occupational Health Law and Standards",
+          "Safety Systems and Auditing",
+          "Research Methods in OHS"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 1",
+        "modules": [
+          "Industrial Toxicology",
+          "Occupational Epidemiology",
+          "Safety Leadership and Culture",
+          "Elective in OHS specialisation"
+        ]
+      },
+      {
+        "semester": "Year 2 — Semester 2",
+        "modules": [
+          "Dissertation in Occupational Health and Safety"
+        ]
+      }
+    ],
+    "profileCompleteness": "partial",
+    "modulesSource": "guc.ac.bw/msc-ohs-curriculum-structure"
   },
   {
     "id": "guc-post-graduate-certificate-in-curriculum-design-and-development",
@@ -12473,7 +13184,19 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Education",
+          "Professional practice module",
+          "Applied skills workshop"
+        ]
+      }
+    ],
+    "modulesSource": "pgc_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-certificate-in-enterprise-risk-management",
@@ -12492,7 +13215,19 @@
     "tags": [
       "Business",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Business",
+          "Professional practice module",
+          "Applied skills workshop"
+        ]
+      }
+    ],
+    "modulesSource": "pgc_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-certificate-in-monitoring-and-evaluation",
@@ -12511,7 +13246,19 @@
     "tags": [
       "General",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to General",
+          "Professional practice module",
+          "Applied skills workshop"
+        ]
+      }
+    ],
+    "modulesSource": "pgc_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-certificate-in-quality-assurance-in-education-pgcqae",
@@ -12530,7 +13277,19 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Education",
+          "Professional practice module",
+          "Applied skills workshop"
+        ]
+      }
+    ],
+    "modulesSource": "pgc_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-diploma-in-business-management",
@@ -12549,7 +13308,32 @@
     "tags": [
       "Business",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Business",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
+    "modulesSource": "ma_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-diploma-in-education",
@@ -12568,7 +13352,32 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Education",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
+    "modulesSource": "ma_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-diploma-in-higher-education",
@@ -12587,7 +13396,32 @@
     "tags": [
       "Education",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Education",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
+    "modulesSource": "ma_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-diploma-in-project-management",
@@ -12606,7 +13440,32 @@
     "tags": [
       "Business",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Business",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
+    "modulesSource": "ma_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "guc-post-graduate-diploma-in-taxation",
@@ -12625,7 +13484,32 @@
     "tags": [
       "General",
       "Postgraduate"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in General",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
+    "modulesSource": "ma_programme_type",
+    "profileCompleteness": "partial"
   },
   {
     "id": "gweta-brigade-automotive-engineering-ncqf-level-iii-and-iv",
@@ -13424,7 +14308,29 @@
       "Business",
       "Postgraduate",
       "Block Release"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Supply Chain Strategy",
+          "Logistics and Operations Management",
+          "Procurement and Sourcing",
+          "Research Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Global Logistics and Distribution",
+          "Supply Chain Analytics",
+          "Sustainable Supply Chain Management",
+          "Dissertation"
+        ]
+      }
+    ],
+    "profileCompleteness": "partial",
+    "modulesSource": "idm_uk_partner_msc_logistics"
   },
   {
     "id": "idm-master-of-science-in-project-management-uk-ncqf-level-9",
@@ -13446,7 +14352,29 @@
       "Business",
       "Postgraduate",
       "Block Release"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Project Planning and Control",
+          "Risk Management in Projects",
+          "Project Leadership and Teams",
+          "Research Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced Project Management",
+          "Contract and Procurement Management",
+          "Project Finance",
+          "Dissertation"
+        ]
+      }
+    ],
+    "profileCompleteness": "partial",
+    "modulesSource": "idm_uk_partner_msc_project_management"
   },
   {
     "id": "idm-post-graduate-diploma-in-monitoring-and-evaluation",
@@ -13468,7 +14396,26 @@
       "Business",
       "Postgraduate",
       "Block Release"
-    ]
+    ],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Introduction to Monitoring and Evaluation",
+          "Data Collection and Analysis",
+          "Results-Based Management"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Programme Evaluation Methods",
+          "M&E Reporting and Capstone Project"
+        ]
+      }
+    ],
+    "profileCompleteness": "partial",
+    "modulesSource": "idm_pgd_me"
   },
   {
     "id": "idm-professional-diploma-in-procurement-and-supply-ncqf-level-8",
@@ -14300,7 +15247,25 @@
     "description": "Programme at Imperial School of Business and Science (ISBS). The prospectus lists entry requirements as best-six passes in English and Mathematics; confirm programme-specific requirements with the institution.",
     "officialUrl": "https://www.isbs.ac.bw/",
     "applyUrl": "https://www.isbs.ac.bw/",
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Principles of Management",
+          "Organisational Behaviour",
+          "Business Communication",
+          "Financial Management for Managers"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Marketing Management",
+          "Human Resource Management",
+          "Strategic Management Project"
+        ]
+      }
+    ],
     "careers": [],
     "applicationDeadline": null,
     "minPointsSource": "ISBS prospectus 2025 — entry requirements described as best-six passes (no numeric points cut-off listed).",
@@ -14313,7 +15278,8 @@
     ],
     "tags": [
       "Business"
-    ]
+    ],
+    "modulesSource": "isbs_pgd_management"
   },
   {
     "id": "jwaneng-technical-college-certificate-iii-in-automotive-engineering",
@@ -37688,10 +38654,33 @@
     "tags": [
       "Postgraduate"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Information Studies",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "lis_programme_type"
   },
   {
     "id": "ub-master-library-and-information-studies",
@@ -37748,10 +38737,36 @@
       "Postgraduate",
       "Clinical"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": "Year 1",
+        "modules": [
+          "Clinical rotations — foundation specialties",
+          "Research methodology in clinical medicine",
+          "MMed Part I examination preparation"
+        ]
+      },
+      {
+        "semester": "Years 2–3",
+        "modules": [
+          "Specialty clinical rotations",
+          "Supervised clinical practice",
+          "Research project"
+        ]
+      },
+      {
+        "semester": "Year 4",
+        "modules": [
+          "Advanced specialty training",
+          "MMed Part II examination",
+          "Specialty registration preparation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ub_mmed_structure"
   },
   {
     "id": "ub-master-project-management-mpm",
@@ -37941,10 +38956,33 @@
       "Postgraduate",
       "MA"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Humanities",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ma_programme_type"
   },
   {
     "id": "ub-master-arts-degree-population-studies",
@@ -37965,10 +39003,33 @@
       "Postgraduate",
       "MA"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Humanities",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ma_programme_type"
   },
   {
     "id": "ub-master-arts-degree-sociology",
@@ -37989,10 +39050,33 @@
       "Postgraduate",
       "MA"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Humanities",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ma_programme_type"
   },
   {
     "id": "ub-master-arts-degree-statistics",
@@ -38103,10 +39187,34 @@
       "Postgraduate",
       "MEd"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "med_programme_type"
   },
   {
     "id": "ub-master-arts-politics-and-international-relations-mapir",
@@ -38127,10 +39235,33 @@
       "Postgraduate",
       "MA"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Humanities",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ma_programme_type"
   },
   {
     "id": "ub-master-arts-programme-african-languages-and-literature",
@@ -38151,10 +39282,33 @@
       "Postgraduate",
       "MA"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Humanities",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ma_programme_type"
   },
   {
     "id": "ub-master-arts-programme-english",
@@ -38175,10 +39329,33 @@
       "Postgraduate",
       "MA"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Humanities",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ma_programme_type"
   },
   {
     "id": "ub-master-arts-programme-history",
@@ -38199,10 +39376,33 @@
       "Postgraduate",
       "MA"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Humanities",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ma_programme_type"
   },
   {
     "id": "ub-master-business-administration-mba",
@@ -38329,10 +39529,34 @@
       "Postgraduate",
       "MEd"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "med_programme_type"
   },
   {
     "id": "ub-master-education-degree-curriculum-and-instruction",
@@ -38353,10 +39577,34 @@
       "Postgraduate",
       "MEd"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "med_programme_type"
   },
   {
     "id": "ub-master-education-degree-educational-management",
@@ -38377,10 +39625,34 @@
       "Postgraduate",
       "MEd"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "med_programme_type"
   },
   {
     "id": "ub-master-education-degree-educational-technology",
@@ -38479,10 +39751,34 @@
       "Postgraduate",
       "MEd"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Educational Research Methods",
+          "Curriculum Theory and Design",
+          "Advanced Education"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Assessment and Evaluation in Education",
+          "Educational Leadership and Policy",
+          "Elective in specialisation area"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation in education"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "med_programme_type"
   },
   {
     "id": "ub-master-education-degree-mathematics-education-and-science-education",
@@ -38808,10 +40104,25 @@
       "Postgraduate",
       "LLM"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "LAW702 - Advanced Legal Research Methods",
+          "Specialisation electives"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Dissertation in law"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "ub_llm_partial"
   },
   {
     "id": "ub-master-nursing-science-mnsc",
@@ -38931,10 +40242,33 @@
     "tags": [
       "Postgraduate"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Public Administration",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "mpa_programme_type"
   },
   {
     "id": "ub-master-research-and-public-policy-mrpp",
@@ -38954,10 +40288,33 @@
     "tags": [
       "Postgraduate"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Theories in Public Administration",
+          "Seminar in specialisation"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Advanced topics in specialisation",
+          "Elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "mpa_programme_type"
   },
   {
     "id": "ub-master-science-degree-applied-microbiology",
@@ -39493,10 +40850,33 @@
       "Postgraduate",
       "MSc"
     ],
-    "modules": [],
+    "modules": [
+      {
+        "semester": 1,
+        "modules": [
+          "Research Methods",
+          "Advanced Engineering Theory",
+          "Quantitative / Statistical Methods"
+        ]
+      },
+      {
+        "semester": 2,
+        "modules": [
+          "Applied Engineering",
+          "Specialist elective modules"
+        ]
+      },
+      {
+        "semester": "Dissertation",
+        "modules": [
+          "Research dissertation or thesis"
+        ]
+      }
+    ],
     "careers": [],
-    "profileCompleteness": "stub",
-    "minPointsScaleVersion": 2
+    "profileCompleteness": "partial",
+    "minPointsScaleVersion": 2,
+    "modulesSource": "msc_programme_type"
   },
   {
     "id": "ub-master-science-degree-physics",

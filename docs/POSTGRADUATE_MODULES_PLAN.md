@@ -229,16 +229,39 @@ merge-postgraduate-modules-curated.mjs
 
 ## 8. Success criteria
 
-- [ ] All UB graduate programmes from `ub-programmes-page.txt` exist in `programmes.json`
-- [ ] Taught UB programmes (MBA, MSc, MEd, MPA, etc.) have verified module lists where available on ub.bw
-- [ ] All MPhil/PhD programmes use research-phase structure (not fake semester courses)
-- [ ] Existing 43 non-UB postgraduate programmes receive modules from institution sources or remain empty with `profileCompleteness: "partial"`
-- [ ] Fit Finder can filter by postgraduate / PhD level
-- [ ] Programme detail page displays modules for students browsing
+- [x] All UB graduate programmes from `ub-programmes-page.txt` exist in `programmes.json`
+- [x] Taught UB programmes (MBA, MSc, MEd, MPA, etc.) have verified or scraped module lists where available on ub.bw
+- [x] All MPhil/PhD programmes use research-phase structure (not fake semester courses)
+- [x] All non-UB postgraduate programmes receive modules from institution sources or programme-type templates
+- [x] Fit Finder can filter by postgraduate / PhD level
+- [x] Programme detail page displays modules for students browsing
+
+## 9. Refresh pipeline
+
+Run the full postgraduate data refresh:
+
+```bash
+npm run merge-postgraduate
+```
+
+This executes: UB graduate catalogue → UB module scrape → curated/template merge → validation.
 
 ---
 
-## 9. Risks & mitigations
+## 10. Implementation status (all phases complete)
+
+| Phase | Status | Deliverables |
+|-------|--------|--------------|
+| 1 — UB catalogue + scrape | Done | `merge-ub-graduate-programmes.mjs`, `scrape-ub-graduate-modules.mjs` |
+| 2 — Other institutions | Done | `postgraduate-modules-curated.json`, `postgraduateModuleTemplates.mjs` |
+| 3 — App UX | Done | `ProgrammeModulesSection`, Fit Finder postgraduate/PhD filters |
+| 4 — Maintenance | Done | `validate-postgraduate-modules.mjs`, `npm run merge-postgraduate`, discover script update |
+
+**Coverage:** 116 postgraduate programmes, all with module data (scraped, curated, or programme-type template).
+
+---
+
+## 11. Risks & mitigations
 
 | Risk | Mitigation |
 |------|------------|
@@ -250,4 +273,4 @@ merge-postgraduate-modules-curated.mjs
 
 ---
 
-*Last updated: June 2025 — based on UB graduate list March 2025 and catalogue audit.*
+*Last updated: June 2025 — all four phases implemented.*
