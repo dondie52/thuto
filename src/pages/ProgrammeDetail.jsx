@@ -26,6 +26,7 @@ import {
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
+import ProgrammeModulesSection from "../components/ProgrammeModulesSection.jsx";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -250,6 +251,8 @@ export default function ProgrammeDetail() {
         )}
       </section>
 
+      <ProgrammeModulesSection programme={programme} />
+
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Entry requirements</h2>
         <ul className="mt-3 list-inside list-disc text-sm text-slate-700">
@@ -300,6 +303,8 @@ export default function ProgrammeDetail() {
           ) : null}
         </div>
       </section>
+
+      <ProgrammeModulesSection programme={programme} />
 
       <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 shadow-sm">
         <div className="flex flex-wrap items-center gap-2">

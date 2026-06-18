@@ -17,7 +17,7 @@ const uniPath = path.join(root, "public/data/universities.json");
 const outPath = path.join(__dirname, "data", "drafts", "university-resources-draft.json");
 
 const PRIORITY_PATH_RE =
-  /admission|apply|prospectus|download|study|fees|calendar|almanac|brochure|undergraduate|enrol/i;
+  /admission|apply|prospectus|download|study|fees|calendar|almanac|brochure|undergraduate|graduate|postgraduate|mphil|phd|enrol/i;
 const NEGATIVE_RE = /cv|curriculum-vitae|annual-report|staff|newsletter|privacy|logo/i;
 const DOC_EXT_RE = /\.(pdf|docx?)(\?|#|$)/i;
 

@@ -29,6 +29,8 @@ export const QUALIFICATION_LEVEL_OPTIONS = [
   { value: "certificate", label: "Certificate" },
   { value: "diploma", label: "Diploma" },
   { value: "degree", label: "Degree" },
+  { value: "postgraduate", label: "Postgraduate (Masters, PGD)" },
+  { value: "phd", label: "PhD / MPhil (research)" },
   { value: "professional", label: "Professional / short course" },
 ];
 
@@ -247,6 +249,13 @@ function inferQualificationLevel(programme) {
   const explicit = normalizeText(programme.qualification);
   const text = normalizeText(programme.name);
   const combined = `${explicit} ${text}`;
+  if (/mphil|phd|doctorate|doctoral/.test(combined)) return "phd";
+  if (
+    explicit.includes("postgraduate") ||
+    /master|mba|m\.sc|m\.ed|m\.a\b|llm|post.?grad|pgd|pgde|executive master/.test(combined)
+  ) {
+    return "postgraduate";
+  }
   if (combined.includes("certificate")) return "certificate";
   if (combined.includes("diploma")) return "diploma";
   if (combined.includes("degree") || combined.includes("bachelor") || /\bba\b|\bbsc\b|\bbeng\b|\bbcom\b/.test(combined)) {
