@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { UNIVERSITY_CATEGORY_META, UNIVERSITY_CATEGORY_ORDER } from "../../lib/universitiesData.js";
+import { categorizeUniversity, UNIVERSITY_CATEGORY_META, UNIVERSITY_CATEGORY_ORDER } from "../../lib/universitiesData.js";
 
 /**
  * @param {{
@@ -33,7 +33,8 @@ export default function InstitutionMultiSelect({
     const map = new Map();
     for (const category of UNIVERSITY_CATEGORY_ORDER) map.set(category, []);
     for (const uni of filtered) {
-      const category = uni.category && map.has(uni.category) ? uni.category : "universities";
+      const category = categorizeUniversity(uni);
+      if (!map.has(category)) continue;
       map.get(category).push(uni);
     }
     return map;

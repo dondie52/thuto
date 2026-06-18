@@ -18,9 +18,9 @@ const REMOTE_URL = (import.meta.env.VITE_UNIVERSITIES_REMOTE_URL || "").trim();
 
 export const UNIVERSITY_CATEGORY_ORDER = [
   "universities",
-  "technical-colleges",
+  "technical-colleges-brigades",
   "specialised-academics",
-  "brigades",
+  "short-courses",
 ];
 
 export const UNIVERSITY_CATEGORY_META = {
@@ -28,17 +28,18 @@ export const UNIVERSITY_CATEGORY_META = {
     label: "Universities",
     description: "Institutions with broader degree and diploma pathways, including the major universities and university colleges.",
   },
-  "technical-colleges": {
-    label: "Technical Colleges",
-    description: "Technical and vocational colleges focused on diplomas, certificates, and NCC-style pathways.",
+  "technical-colleges-brigades": {
+    label: "Technical Colleges & Brigades",
+    description:
+      "Technical colleges, brigades, and other TVET providers offering certificates, diplomas, NCC-style pathways, and trade qualifications.",
   },
   "specialised-academics": {
     label: "Specialised Academics",
     description: "Single-industry institutions such as colleges of education, health and nursing schools, culinary academies, and focused professional institutes.",
   },
-  brigades: {
-    label: "Brigades",
-    description: "Brigade and brigade-style vocational training institutions.",
+  "short-courses": {
+    label: "Short Courses",
+    description: "Institutions that only offer short courses and skills programmes, with a maximum duration of six months.",
   },
 };
 
@@ -67,66 +68,67 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   tebelopele: "specialised-academics",
   "byte-size-college": "universities",
   "awil-college": "universities",
-  gtc: "technical-colleges",
+  gtc: "technical-colleges-brigades",
   bcet: "specialised-academics",
-  fctve: "technical-colleges",
-  oodi: "technical-colleges",
-  realic: "technical-colleges",
-  "palapye-technical-college": "technical-colleges",
-  "jwaneng-technical-college": "technical-colleges",
-  "botswana-accountancy-training": "specialised-academics",
+  fctve: "technical-colleges-brigades",
+  oodi: "technical-colleges-brigades",
+  realic: "technical-colleges-brigades",
+  "palapye-technical-college": "technical-colleges-brigades",
+  "jwaneng-technical-college": "technical-colleges-brigades",
+  "maun-technical-college": "technical-colleges-brigades",
+  "selebi-phikwe-technical-college": "technical-colleges-brigades",
+  "botswana-accountancy-training": "short-courses",
   bohss: "specialised-academics",
   "fire-college": "specialised-academics",
   lcibs: "specialised-academics",
   ihs: "specialised-academics",
   "pillar-of-success": "specialised-academics",
   "kanye-sda-nursing": "specialised-academics",
-  "bosa-bosele": "specialised-academics",
+  "bosa-bosele": "short-courses",
   "tlokweng-coe": "specialised-academics",
   "serowe-coe": "specialised-academics",
   "molepolole-coe": "specialised-academics",
-  "roads-training-centre": "specialised-academics",
-  "dawn-training": "specialised-academics",
-  "cep-training": "specialised-academics",
-  learneasy: "specialised-academics",
-  stargems: "specialised-academics",
+  "roads-training-centre": "short-courses",
+  "dawn-training": "short-courses",
+  "cep-training": "short-courses",
+  learneasy: "short-courses",
+  stargems: "short-courses",
   gcca: "specialised-academics",
-  "insurance-training-institute": "specialised-academics",
-  crackit: "specialised-academics",
+  "insurance-training-institute": "short-courses",
+  crackit: "short-courses",
   "assembly-bible-college": "specialised-academics",
   bibf: "specialised-academics",
   "tonota-coe": "specialised-academics",
   "bamalete-nursing": "specialised-academics",
-  aafm: "specialised-academics",
-  "africa-insurance-training-institute": "specialised-academics",
-  "delta-training-academy": "specialised-academics",
+  aafm: "short-courses",
+  "africa-insurance-training-institute": "short-courses",
+  "delta-training-academy": "short-courses",
   "naledi-training-institute": "specialised-academics",
   "elsimate-institute": "specialised-academics",
   "nampol-college-of-education": "specialised-academics",
-  "chobe-brigade": "technical-colleges",
+  "chobe-brigade": "technical-colleges-brigades",
   "inchrist-bible-institute-university": "specialised-academics",
-  krda: "brigades",
+  krda: "technical-colleges-brigades",
   "real-bible-school": "specialised-academics",
 };
 
 /**
  * @param {Record<string, unknown>} university
- * @returns {'universities' | 'technical-colleges' | 'specialised-academics' | 'brigades'}
+ * @returns {'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'short-courses'}
  */
 export function categorizeUniversity(university) {
   const mapped = UNIVERSITY_CATEGORY_BY_ID[university.id];
   if (mapped) return mapped;
 
   const name = String(university.name || "").toLowerCase();
-  if (name.includes("brigade")) return "brigades";
-  if (name.includes("technical")) return "technical-colleges";
+  if (name.includes("brigade") || name.includes("technical")) return "technical-colleges-brigades";
   if (name.includes("university")) return "universities";
   return "specialised-academics";
 }
 
 /**
  * @param {Record<string, unknown>[]} universities
- * @returns {{ key: 'universities' | 'technical-colleges' | 'specialised-academics' | 'brigades', label: string, description: string, items: Record<string, unknown>[] }[]}
+ * @returns {{ key: 'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'short-courses', label: string, description: string, items: Record<string, unknown>[] }[]}
  */
 export function groupUniversitiesByCategory(universities) {
   return UNIVERSITY_CATEGORY_ORDER.map((key) => ({
