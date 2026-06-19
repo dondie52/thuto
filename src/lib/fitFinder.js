@@ -245,7 +245,7 @@ export function getAdmissionCompatibility(programme, profile = {}) {
   return evaluateProgramme(programme, grades, total);
 }
 
-function inferQualificationLevel(programme) {
+export function inferQualificationLevel(programme) {
   const explicit = normalizeText(programme.qualification);
   const text = normalizeText(programme.name);
   const combined = `${explicit} ${text}`;

@@ -69,6 +69,11 @@ const cards = [
     body: "Latest internship windows copied from official posts—apply on the original channel.",
   },
   {
+    to: "/postgraduate-studies",
+    title: "Post Graduate Studies",
+    body: "Browse postgraduate programmes and scholarship updates. Other news lives in the feed.",
+  },
+  {
     to: "/study",
     title: "BGCSE Study",
     body: "Revision links via Learning Passport, free resources, and which programmes need each subject.",

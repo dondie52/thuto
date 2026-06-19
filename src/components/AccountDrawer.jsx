@@ -8,6 +8,7 @@ function ToolIcon({ name }) {
     universities: <path strokeLinecap="round" strokeLinejoin="round" d="M4 10l8-5 8 5M5.5 10h13M7 10v8M12 10v8M17 10v8M4.5 18h15M3.5 21h17" />,
     sponsorships: <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M16 7.5a3.5 3.5 0 00-3.5-2H10a3 3 0 000 6h4a3 3 0 010 6h-2.5a3.5 3.5 0 01-3.5-2" />,
     internships: <path strokeLinecap="round" strokeLinejoin="round" d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7M5 8h14v10.5A1.5 1.5 0 0117.5 20h-11A1.5 1.5 0 015 18.5V8zM5 12h14" />,
+    postgraduate: <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zM12 14l6.33-3.516M12 14l-6.33-3.516M12 14v7" />,
     saved: <path strokeLinecap="round" strokeLinejoin="round" d="M6 4.75A2.75 2.75 0 018.75 2h6.5A2.75 2.75 0 0118 4.75V21l-6-3.5L6 21V4.75z" />,
     compare: <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16M17 4v16M4 8h6M14 8h6M5 8l2 5 2-5M15 8l2 5 2-5" />,
     fit: <path strokeLinecap="round" strokeLinejoin="round" d="M10.75 18.5a7.75 7.75 0 117.75-7.75 7.75 7.75 0 01-7.75 7.75zM16.5 16.5L21 21M8.5 10.75l1.5 1.5 3.25-3.5" />,
@@ -30,6 +31,7 @@ const primaryToolItems = [
   { to: "/universities", label: "Tertiary Institutions", description: "Institutions, locations, and application windows", icon: "universities" },
   { to: "/sponsorships", label: "Sponsorships", description: "Government sponsorship, private funding, and grants", icon: "sponsorships" },
   { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },
+  { to: "/postgraduate-studies", label: "Post Graduate Studies", description: "Programmes and scholarship updates", icon: "postgraduate" },
   { to: "/saved", label: "Saved Programmes", description: "Your shortlisted options", icon: "saved" },
   { to: "/compare", label: "Compare Programmes", description: "Review up to three options side by side", icon: "compare" },
 ];

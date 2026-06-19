@@ -3,6 +3,7 @@ export const PAGE_CONTENT_META = [
   { pageKey: "home", label: "App home" },
   { pageKey: "sponsorships", label: "Sponsorships" },
   { pageKey: "internships", label: "Internships" },
+  { pageKey: "postgraduateStudies", label: "Post Graduate Studies" },
   { pageKey: "study", label: "BGCSE Study" },
   { pageKey: "support", label: "Support" },
   { pageKey: "disclaimer", label: "Disclaimer" },
@@ -125,6 +126,7 @@ export const PAGE_CONTENT_DEFAULTS = {
         { to: "/universities", title: "Tertiary Institutions", body: "Institutions, locations, and application windows." },
         { to: "/sponsorships", title: "Sponsorships & funding", body: "Government sponsorship steps, private sponsor posts, and other funding routes." },
         { to: "/internships", title: "Internships", body: "Latest internship windows copied from official posts - apply on the original channel." },
+        { to: "/postgraduate-studies", title: "Post Graduate Studies", body: "Browse postgraduate programmes and scholarship updates. Other news lives in the feed." },
         { to: "/study", title: "BGCSE Study", body: "Revision links via Learning Passport, free resources, and which programmes need each subject." },
       ],
     },
@@ -231,6 +233,31 @@ export const PAGE_CONTENT_DEFAULTS = {
       title: "Verify on the official source",
       body: "Deadlines and requirements can change after a post goes live. Always confirm on the employer's website or social page before you apply.",
       linkLabel: "Private sponsorship posts",
+    },
+  },
+  postgraduateStudies: {
+    hero: {
+      kicker: "Post Graduate Studies",
+      title: "Masters, PGD, and doctoral planning",
+      body: "This section keeps two essentials in one place: postgraduate programmes in the directory and scholarship updates from the feed. Deadlines, events, graduate programme notices, and other news stay in Scroll Feed.",
+    },
+    programmes: {
+      kicker: "Directory",
+      heading: "Programmes",
+      body: "Browse Masters, postgraduate diplomas, certificates, and research degrees listed across Botswana institutions. Entry is usually based on a prior degree rather than BGCSE points.",
+      ctaLabel: "Browse postgraduate programmes",
+    },
+    scholarships: {
+      kicker: "Funding",
+      heading: "Scholarship updates",
+      body: "Published scholarship posts from the moderated feed, newest first.",
+      emptyTitle: "No scholarship posts yet",
+      emptyBody: "When a scholarship update is published to the feed, it will appear here.",
+    },
+    feedNote: {
+      title: "Everything else is in the feed",
+      body: "Internships, deadlines, graduate programme notices, events, and campus updates are shared through Scroll Feed so you do not have to check multiple sections.",
+      linkLabel: "Open Scroll Feed",
     },
   },
   support: {

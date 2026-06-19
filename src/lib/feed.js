@@ -354,6 +354,27 @@ export async function fetchFeedPosts({ mode = "for_you", limit = 30, cursor = nu
 }
 
 /**
+ * @param {string} category
+ * @param {{ limit?: number }} [options]
+ */
+export async function fetchFeedPostsByCategory(category, { limit = 20 } = {}) {
+  const supabase = getSupabase();
+  if (!supabase || !category) return [];
+
+  const { data: posts, error } = await supabase
+    .from("feed_posts")
+    .select(FEED_POST_COLUMNS)
+    .eq("status", "published")
+    .eq("category", category)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return hydrateFeedPosts(supabase, posts || [], null);
+}
+
+/**
  * @param {string} authorId
  * @param {{ limit?: number, cursor?: { publishedAt?: string, id?: string } }} [options]
  */

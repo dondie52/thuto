@@ -13,6 +13,7 @@ import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
+import { inferQualificationLevel } from "../lib/fitFinder.js";
 import {
   getProgrammeCareers,
 } from "../lib/programmeInsights.js";
@@ -37,6 +38,7 @@ function patchSearchParams(prev, patch) {
   if (next.get("uni") === "All" || !next.get("uni")) next.delete("uni");
   if (next.get("field") === "All" || !next.get("field")) next.delete("field");
   if (next.get("qualify") !== "1") next.delete("qualify");
+  if (!next.get("level")) next.delete("level");
   return next;
 }
 
@@ -73,6 +75,7 @@ export default function Programmes() {
   const maxPtsRaw = searchParams.get("maxPts") ?? "";
   const sort = searchParams.get("sort") ?? "name_asc";
   const qualifyPoints = searchParams.get("qualify") === "1";
+  const level = searchParams.get("level") ?? "";
 
   const minPts = minPtsRaw === "" ? null : Number(minPtsRaw);
   const maxPts = maxPtsRaw === "" ? null : Number(maxPtsRaw);
@@ -143,6 +146,12 @@ export default function Programmes() {
     if (qualifyPoints && predTotal != null) {
       list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints <= predTotal);
     }
+    if (level === "postgraduate") {
+      list = list.filter((p) => {
+        const programmeLevel = inferQualificationLevel(p);
+        return programmeLevel === "postgraduate" || programmeLevel === "phd";
+      });
+    }
 
     const sorted = [...list];
     if (sort === "name_desc") sorted.sort((a, b) => b.name.localeCompare(a.name));
@@ -167,7 +176,7 @@ export default function Programmes() {
     } else sorted.sort((a, b) => a.name.localeCompare(b.name));
 
     return sorted;
-  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, pointsRangeInvalid, sort, qualifyPoints, predTotal]);
+  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, pointsRangeInvalid, sort, qualifyPoints, predTotal, level]);
 
   const hasActiveFilters =
     (searchParams.get("q") ?? "").trim() !== "" ||
@@ -176,9 +185,11 @@ export default function Programmes() {
     (searchParams.get("minPts") ?? "") !== "" ||
     (searchParams.get("maxPts") ?? "") !== "" ||
     sort !== "name_asc" ||
-    qualifyPoints;
+    qualifyPoints ||
+    level === "postgraduate";
 
   const activeFilterChips = [
+    level === "postgraduate" ? "Postgraduate programmes" : null,
     uni !== "All" ? `University: ${uni}` : null,
     field !== "All" ? `Field: ${field}` : null,
     minPtsRaw !== "" ? `From ${minPtsRaw} pts` : null,
@@ -200,8 +211,22 @@ export default function Programmes() {
   return (
     <div className={`space-y-6 ${compareIds.length > 0 ? "pb-28 sm:pb-8" : ""}`}>
       <div>
-        <h1 className="font-display text-2xl font-bold text-brand-900">Programmes</h1>
-        <p className="mt-2 text-sm text-slate-600">Search by programme or university. Open a result for requirements, careers, and course detail.</p>
+        <h1 className="font-display text-2xl font-bold text-brand-900">
+          {level === "postgraduate" ? "Postgraduate programmes" : "Programmes"}
+        </h1>
+        <p className="mt-2 text-sm text-slate-600">
+          {level === "postgraduate"
+            ? "Masters, postgraduate diplomas, certificates, and research degrees across Botswana institutions."
+            : "Search by programme or university. Open a result for requirements, careers, and course detail."}
+        </p>
+        {level === "postgraduate" ? (
+          <Link
+            to="/postgraduate-studies"
+            className="focus-ring mt-2 inline-flex text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
+          >
+            Back to Post Graduate Studies
+          </Link>
+        ) : null}
       </div>
 
       {error ? (
