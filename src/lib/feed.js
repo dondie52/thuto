@@ -1,4 +1,5 @@
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
+import { isPremiumActive } from "./premium.js";
 
 export { isSupabaseConfigured };
 
@@ -100,6 +101,7 @@ function normalizePost(post, { images = [], comments = [], reactions = [], viewe
     authorUniversityName: post.author_university_name || "",
     authorUniversityStatus: post.author_university_status || "",
     authorDistinction: post.author_distinction || "",
+    authorIsPro: Boolean(post.author_is_pro),
     authorInstitutionCategory: post.author_institution_category || "",
     targetInstitutionIds: Array.isArray(post.target_institution_ids) ? post.target_institution_ids : [],
     isOfficial: Boolean(post.is_official),
@@ -242,10 +244,40 @@ async function uploadFeedImages(supabase, user, files) {
 }
 
 const FEED_POST_COLUMNS =
-  "id,author_id,author_display_name,author_username,author_avatar_url,author_university_id,author_university_name,author_university_status,author_distinction,author_institution_category,target_institution_ids,is_official,is_national,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at";
+  "id,author_id,author_display_name,author_username,author_avatar_url,author_university_id,author_university_name,author_university_status,author_distinction,author_is_pro,author_institution_category,target_institution_ids,is_official,is_national,category,title,body,link_url,status,moderation_decision,moderation_reason,moderation_categories,moderation_score,ai_model,report_count,admin_note,published_at,created_at,updated_at,removed_at";
+
+async function enrichAuthorProStatus(supabase, posts) {
+  const authorIds = [
+    ...new Set(
+      (posts || [])
+        .filter((post) => post?.author_id && typeof post.author_is_pro !== "boolean")
+        .map((post) => post.author_id),
+    ),
+  ];
+  if (!authorIds.length) return posts;
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, premium_status, premium_until")
+    .in("id", authorIds);
+  if (error) {
+    console.warn("Could not enrich feed author Pro status:", error.message);
+    return posts;
+  }
+
+  const proByAuthor = new Map(
+    (data || []).map((profile) => [profile.id, isPremiumActive(profile)]),
+  );
+
+  return (posts || []).map((post) => ({
+    ...post,
+    author_is_pro:
+      typeof post.author_is_pro === "boolean" ? post.author_is_pro : Boolean(proByAuthor.get(post.author_id)),
+  }));
+}
 
 async function hydrateFeedPosts(supabase, posts, viewerUserId = null) {
-  const ids = (posts || []).map((post) => post.id);
+  const enrichedPosts = await enrichAuthorProStatus(supabase, posts || []);
+  const ids = enrichedPosts.map((post) => post.id);
   if (!ids.length) return [];
 
   const [imagesResult, commentsResult, reactionsResult] = await Promise.all([
@@ -271,7 +303,7 @@ async function hydrateFeedPosts(supabase, posts, viewerUserId = null) {
   const commentsByPost = groupBy(commentsResult.data, "post_id");
   const reactionsByPost = groupBy(reactionsResult.data, "post_id");
 
-  return posts
+  return enrichedPosts
     .filter(
       (post) =>
         post.status === "published" ||

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ExpandableText from "./ExpandableText.jsx";
+import ProVerificationBadge from "./ProVerificationBadge.jsx";
 import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS, shareFeedPostUrl } from "../lib/feed.js";
 import { profilePath } from "../lib/profileLinks.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
@@ -496,6 +497,7 @@ export default function FeedPostCard({
                   <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">{displayName}</h3>
                 )}
                 {isOfficial ? <OfficialBadge /> : null}
+                {post.authorIsPro && !isOfficial ? <ProVerificationBadge className="h-4 w-4" /> : null}
                 {!isPublished && isOwnPost ? (
                   <span className="rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-900">
                     {postStatusLabel(post.status)}
