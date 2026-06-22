@@ -215,6 +215,46 @@ export function AuthProvider({ children }) {
     return data;
   }
 
+  async function changePassword({ currentPassword, newPassword }) {
+    const supabase = getSupabase();
+    if (!supabase) {
+      throw new Error("Password changes are unavailable until Supabase is configured.");
+    }
+    const email = session?.user?.email;
+    if (!email) {
+      throw new Error("Sign in to change your password.");
+    }
+    setAuthError("");
+    const { error: verifyError } = await supabase.auth.signInWithPassword({
+      email,
+      password: currentPassword,
+    });
+    if (verifyError) {
+      throw new Error("Current password is incorrect.");
+    }
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      setAuthError(error.message);
+      throw error;
+    }
+    return true;
+  }
+
+  async function requestPasswordReset(email) {
+    const supabase = getSupabase();
+    if (!supabase) {
+      throw new Error("Password reset is unavailable until Supabase is configured.");
+    }
+    setAuthError("");
+    const redirectTo = `${window.location.origin}/auth?mode=login`;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) {
+      setAuthError(error.message);
+      throw error;
+    }
+    return true;
+  }
+
   async function logout() {
     const supabase = getSupabase();
     setAuthError("");
@@ -240,10 +280,12 @@ export function AuthProvider({ children }) {
       isProfileLoading,
       isSuperuser,
       isSuperuserLoading,
+      changePassword,
       logout,
       profile,
       refreshProfile,
       refreshSuperuserStatus,
+      requestPasswordReset,
       saveProfile,
       session,
       signIn,

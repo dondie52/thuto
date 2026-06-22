@@ -26,7 +26,7 @@ function ToolIcon({ name }) {
 }
 
 const primaryToolItems = [
-  { to: "/profile", label: "Profile", description: "Your account, shortlist, and predictor summary", icon: "profile" },
+  { to: "/profile", label: "Profile", description: "Account, security, billing, and preferences", icon: "profile" },
   { to: "/universities", label: "Tertiary Institutions", description: "Institutions, locations, and application windows", icon: "universities" },
   { to: "/sponsorships", label: "Sponsorships", description: "Government sponsorship, private funding, and grants", icon: "sponsorships" },
   { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },
