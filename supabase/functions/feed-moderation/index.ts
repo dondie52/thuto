@@ -206,6 +206,7 @@ type AuthorSnapshot = {
   universityName: string | null;
   universityStatus: string | null;
   distinction: string | null;
+  isPro: boolean;
 };
 
 const UNIVERSITY_CATEGORY_IDS = new Set([
@@ -286,13 +287,18 @@ async function getAuthorSnapshot(
   const userId = String(user.id || "");
   const { data: profile } = await adminClient
     .from("profiles")
-    .select("full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction")
+    .select("full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, premium_status, premium_until")
     .eq("id", userId)
     .maybeSingle();
 
   const profileName = cleanText(profile?.full_name, 80);
   const displayName = profileName || toDisplayName(user);
   const universityId = cleanText(profile?.university_id, 120) || null;
+  const premiumStatus = String(profile?.premium_status || "free");
+  const premiumUntil = profile?.premium_until ? new Date(String(profile.premium_until)) : null;
+  const isPro =
+    premiumStatus === "active" &&
+    (!premiumUntil || (Number.isFinite(premiumUntil.getTime()) && premiumUntil.getTime() > Date.now()));
 
   return {
     displayName,
@@ -305,6 +311,7 @@ async function getAuthorSnapshot(
         ? profile.university_status
         : null,
     distinction: cleanText(profile?.bio, 150) || cleanText(profile?.distinction, 120) || null,
+    isPro,
   };
 }
 
@@ -318,6 +325,7 @@ function authorSnapshotFields(snapshot: AuthorSnapshot) {
     author_university_name: snapshot.universityName,
     author_university_status: snapshot.universityStatus,
     author_distinction: snapshot.distinction,
+    author_is_pro: snapshot.isPro,
   };
 }
 

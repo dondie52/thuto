@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ExpandableText from "./ExpandableText.jsx";
+import ProVerificationBadge from "./ProVerificationBadge.jsx";
 import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS, shareFeedPostUrl } from "../lib/feed.js";
-import { feedRelevanceLabel } from "../lib/feedRanking.js";
 import { profilePath } from "../lib/profileLinks.js";
-import { formatAuthorUniversity } from "../lib/profile.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const OFFICIAL_DISPLAY_NAME = "Thuto Admin";
@@ -135,21 +134,6 @@ function PostAvatar({ isOfficial, displayName, avatarUrl }) {
       aria-hidden
     >
       {avatarInitial(displayName)}
-    </div>
-  );
-}
-
-function AuthorMetaLine({ universityName, universityStatus, distinction, timeLabel, isOfficial }) {
-  const universityLine = formatAuthorUniversity({ universityName, universityStatus });
-  const parts = [];
-  if (isOfficial && timeLabel) parts.push(`Official - ${timeLabel}`);
-  else if (timeLabel) parts.push(timeLabel);
-  if (universityLine) parts.push(universityLine);
-
-  return (
-    <div className="mt-0.5 space-y-0.5">
-      {parts.length ? <p className="break-words text-xs text-stone-500">{parts.join(" - ")}</p> : null}
-      {distinction ? <p className="break-words text-xs font-medium text-brand-800/90">{distinction}</p> : null}
     </div>
   );
 }
@@ -357,7 +341,6 @@ function CommentSection({
  *   onReport: (params: { postId: string, targetType: string, targetId: string }) => void,
  *   isFollowingAuthor?: boolean,
  *   onToggleFollow?: (post: object) => void,
- *   showRelevance?: boolean,
  *   isSaved?: boolean,
  *   onSave?: (post: object) => void,
  * }} props
@@ -373,7 +356,6 @@ export default function FeedPostCard({
   reportedTargetKeys = {},
   isFollowingAuthor = false,
   onToggleFollow,
-  showRelevance = false,
   isSaved = false,
   onSave,
   onReact,
@@ -402,7 +384,6 @@ export default function FeedPostCard({
   const visibleReactionCounts = reactionOptions.filter((reaction) => reaction.count > 0);
   const reactButtonLabel = activeReaction ? activeReaction.shortLabel : "Like";
   const reactButtonActive = Boolean(activeReaction);
-  const relevanceLabel = showRelevance ? feedRelevanceLabel(post.relevanceReason) : "";
 
   useEffect(() => {
     if (!reactionPickerOpen) return undefined;
@@ -505,9 +486,9 @@ export default function FeedPostCard({
           <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
         )}
         <div className="min-w-0 flex-1">
-          <div className="flex min-w-0 flex-wrap items-start justify-between gap-2">
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex min-w-0 items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                 {authorProfilePath ? (
                   <Link to={authorProfilePath} className="focus-ring min-w-0 break-words text-base font-extrabold text-brand-950 hover:underline">
                     {displayName}
@@ -515,32 +496,18 @@ export default function FeedPostCard({
                 ) : (
                   <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">{displayName}</h3>
                 )}
-                {!isOfficial && post.authorUsername ? (
-                  authorProfilePath ? (
-                    <Link to={authorProfilePath} className="text-xs font-semibold text-stone-500 hover:underline">
-                      @{post.authorUsername}
-                    </Link>
-                  ) : (
-                    <span className="text-xs font-semibold text-stone-500">@{post.authorUsername}</span>
-                  )
-                ) : null}
                 {isOfficial ? <OfficialBadge /> : null}
+                {post.authorIsPro && !isOfficial ? <ProVerificationBadge className="h-4 w-4" /> : null}
                 {!isPublished && isOwnPost ? (
                   <span className="rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-900">
                     {postStatusLabel(post.status)}
                   </span>
                 ) : null}
               </div>
-              <AuthorMetaLine
-                universityName={post.authorUniversityName}
-                universityStatus={post.authorUniversityStatus}
-                distinction={post.authorDistinction}
-                timeLabel={timeLabel}
-                isOfficial={isOfficial}
-              />
-              {relevanceLabel ? (
-                <p className="mt-1 text-[11px] font-medium text-brand-700/90">{relevanceLabel}</p>
+              {post.authorDistinction ? (
+                <p className="mt-0.5 break-words text-xs font-medium text-brand-800/90">{post.authorDistinction}</p>
               ) : null}
+              {timeLabel ? <p className="mt-0.5 text-xs text-stone-500">{timeLabel}</p> : null}
             </div>
             <div className="flex shrink-0 flex-col items-end gap-2">
               <span className="max-w-full rounded-full bg-brand-700 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">

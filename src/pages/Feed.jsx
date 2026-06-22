@@ -607,7 +607,6 @@ export default function Feed() {
             commentsExpanded={Boolean(expandedComments[post.id])}
             commentDraft={commentDrafts[post.id]}
             isCommentSubmitting={commentSubmittingFor === post.id}
-            showRelevance={feedMode === "for_you"}
             isFollowingAuthor={followingIds.has(post.authorId)}
             isSaved={savedPostIds.has(post.id)}
             onToggleFollow={handleToggleFollow}
