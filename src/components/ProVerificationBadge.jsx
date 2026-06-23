@@ -1,18 +1,40 @@
+import { useId } from "react";
+
 /**
- * Green verification badge for Pro accounts on the feed.
+ * Thuto Pro verification seal — branded teal shield, distinct from other platforms.
  */
-export default function ProVerificationBadge({ className = "h-6 w-6", title = "Pro verified" }) {
+export default function ProVerificationBadge({ className = "size-7", title = "Pro verified" }) {
+  const gradientId = useId();
+
   return (
-    <span className="inline-flex shrink-0 align-middle" title={title}>
-      <svg className={className} viewBox="0 0 24 24" aria-hidden>
+    <span
+      className={["inline-flex shrink-0 items-center justify-center self-center drop-shadow-sm", className].join(" ")}
+      title={title}
+    >
+      <svg className="size-full" viewBox="0 0 24 24" aria-hidden>
+        <defs>
+          <linearGradient id={gradientId} x1="5" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#2dd4bf" />
+            <stop offset="0.45" stopColor="#14b8a6" />
+            <stop offset="1" stopColor="#0f766e" />
+          </linearGradient>
+        </defs>
         <path
-          fill="#0F766E"
-          d="M12 2.25l1.35 2.73 3.02.44-2.18 2.13.52 3.01L12 9.02l-2.7 1.42.52-3.01-2.18-2.13 3.02-.44L12 2.25z"
+          fill={`url(#${gradientId})`}
+          d="M12 1.75 19.25 4.9v7.05c0 4.55-4.05 8.55-7.25 10.45-3.2-1.9-7.25-5.9-7.25-10.45V4.9L12 1.75z"
         />
-        <circle cx="12" cy="12" r="5.75" fill="#34D399" />
         <path
           fill="#fff"
-          d="M10.15 12.55 8.9 11.3l-1.05 1.05 2.3 2.3 4.9-4.9-1.05-1.05-3.8 3.8z"
+          fillOpacity="0.22"
+          d="M12 4.35 16.55 6.45v5.45c0 2.95-2.45 5.75-4.55 7.15V4.35z"
+        />
+        <path
+          fill="none"
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.35"
+          d="M8.35 12.15 10.75 14.55 15.85 9.1"
         />
       </svg>
       <span className="sr-only">{title}</span>

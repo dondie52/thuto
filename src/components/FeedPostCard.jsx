@@ -489,15 +489,17 @@ export default function FeedPostCard({
           <div className="flex min-w-0 items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
               <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-                {authorProfilePath ? (
-                  <Link to={authorProfilePath} className="focus-ring min-w-0 break-words text-base font-extrabold text-brand-950 hover:underline">
-                    {displayName}
-                  </Link>
-                ) : (
-                  <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">{displayName}</h3>
-                )}
+                <span className="inline-flex min-w-0 max-w-full items-center gap-1.5">
+                  {authorProfilePath ? (
+                    <Link to={authorProfilePath} className="focus-ring min-w-0 break-words text-base font-extrabold text-brand-950 hover:underline">
+                      {displayName}
+                    </Link>
+                  ) : (
+                    <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">{displayName}</h3>
+                  )}
+                  {post.authorIsPro && !isOfficial ? <ProVerificationBadge /> : null}
+                </span>
                 {isOfficial ? <OfficialBadge /> : null}
-                {post.authorIsPro && !isOfficial ? <ProVerificationBadge /> : null}
                 {!isPublished && isOwnPost ? (
                   <span className="rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-900">
                     {postStatusLabel(post.status)}
