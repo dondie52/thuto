@@ -1,7 +1,7 @@
 /**
- * Small green verification badge for Pro accounts on the feed.
+ * Green verification badge for Pro accounts on the feed.
  */
-export default function ProVerificationBadge({ className = "h-4 w-4", title = "Pro verified" }) {
+export default function ProVerificationBadge({ className = "h-6 w-6", title = "Pro verified" }) {
   return (
     <span className="inline-flex shrink-0 align-middle" title={title}>
       <svg className={className} viewBox="0 0 24 24" aria-hidden>
