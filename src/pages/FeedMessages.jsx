@@ -72,7 +72,7 @@ export default function FeedMessages() {
           <Link to="/auth?mode=login&next=%2Ffeed%2Fmessages" className="font-semibold underline">
             Sign in
           </Link>{" "}
-          to read and send messages.
+          to continue.
         </div>
       </div>
     );
@@ -80,10 +80,7 @@ export default function FeedMessages() {
 
   return (
     <div className="space-y-4 px-4 pt-2">
-      <div>
-        <h1 className="font-display text-xl font-semibold text-brand-900">Messages</h1>
-        <p className="mt-1 text-sm text-stone-600">Private chats with classmates on Thuto.</p>
-      </div>
+      <h1 className="font-display text-xl font-semibold text-brand-900">Messages</h1>
 
       {error ? (
         <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">

@@ -78,10 +78,7 @@ export default function FeedSearch() {
 
   return (
     <div className="space-y-4 px-4 pt-2">
-      <div>
-        <h1 className="font-display text-xl font-semibold text-brand-900">Search feed</h1>
-        <p className="mt-1 text-sm text-stone-600">Find posts, classmates, and university updates.</p>
-      </div>
+      <h1 className="font-display text-xl font-semibold text-brand-900">Search feed</h1>
 
       <form onSubmit={handleSubmit} className="relative">
         <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-brand-700">
@@ -103,7 +100,7 @@ export default function FeedSearch() {
           <Link to="/auth?mode=login&next=%2Ffeed%2Fsearch" className="font-semibold underline">
             Sign in
           </Link>{" "}
-          to message people you find in search.
+          to continue.
         </div>
       ) : null}
 

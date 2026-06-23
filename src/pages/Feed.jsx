@@ -573,12 +573,6 @@ export default function Feed() {
             {posts.length} {posts.length === 1 ? "post" : "posts"}
           </span>
         </div>
-        {feedMode === "for_you" && user ? (
-          <p className="text-sm text-stone-600">
-            Ranked for your institutions, interests, and the people you follow.
-          </p>
-        ) : null}
-
         {isLoading ? (
           <div className="py-8 text-center text-sm text-stone-500">
             Loading the feed...

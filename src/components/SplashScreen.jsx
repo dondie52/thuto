@@ -13,16 +13,16 @@ export default function SplashScreen({ exiting = false }) {
       <div className="splash-mesh splash-mesh-one" aria-hidden="true" />
       <div className="splash-mesh splash-mesh-two" aria-hidden="true" />
       <div className="relative z-10 flex w-full max-w-sm flex-col items-center">
-        <div className="splash-halo absolute top-10 h-56 w-56 rounded-full bg-brand-300/30 blur-3xl" aria-hidden="true" />
+        <div className="splash-halo absolute top-6 h-24 w-24 rounded-full bg-brand-300/30 blur-3xl" aria-hidden="true" />
         <img
           src={thutoLogoSrc}
           alt="Thuto"
-          className="splash-logo relative h-48 w-48 object-contain drop-shadow-[0_28px_55px_rgba(15,118,110,0.28)] sm:h-56 sm:w-56"
-          width="224"
-          height="224"
+          className="splash-logo relative h-16 w-16 object-contain drop-shadow-[0_12px_24px_rgba(15,118,110,0.22)] sm:h-20 sm:w-20"
+          width="80"
+          height="80"
           decoding="async"
         />
-        <p className="mt-8 text-xs font-bold uppercase tracking-[0.32em] text-brand-700">Thuto</p>
+        <p className="mt-6 text-xs font-bold uppercase tracking-[0.32em] text-brand-700">Thuto</p>
         <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-brand-900 sm:text-4xl">
           Your university companion
         </h1>
