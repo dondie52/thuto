@@ -139,7 +139,7 @@ export default function FeedNotifications() {
           <Link to="/auth?mode=login&next=%2Ffeed%2Fnotifications" className="font-semibold underline">
             Sign in
           </Link>{" "}
-          to see follows, mentions, and post updates.
+          to continue.
         </div>
       </div>
     );
@@ -148,10 +148,7 @@ export default function FeedNotifications() {
   return (
     <div className="space-y-4 px-4 pt-2">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-display text-xl font-semibold text-brand-900">Notifications</h1>
-          <p className="mt-1 text-sm text-stone-600">Follows, tags, reactions, and connection requests.</p>
-        </div>
+        <h1 className="font-display text-xl font-semibold text-brand-900">Notifications</h1>
         {items.some((item) => !item.readAt) ? (
           <button
             type="button"
