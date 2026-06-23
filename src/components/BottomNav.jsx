@@ -23,7 +23,6 @@ const links = [
   {
     to: "/feed",
     label: "Feed",
-    center: true,
     icon: (
       <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 7-7 11-7-11 7-7z" />
@@ -52,13 +51,7 @@ const links = [
   },
 ];
 
-function linkClass({ isActive, center }) {
-  if (center) {
-    return [
-      "focus-ring flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-[9px] font-semibold leading-none transition-all duration-200",
-      isActive ? "bg-brand-700 text-white shadow-sm" : "bg-brand-600 text-white hover:bg-brand-700",
-    ].join(" ");
-  }
+function linkClass({ isActive }) {
   return [
     "focus-ring flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-[9px] font-semibold leading-none transition-all duration-200",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-stone-500 hover:bg-stone-100 hover:text-brand-800",
@@ -73,8 +66,8 @@ export default function BottomNav() {
     >
       <div className="mx-auto max-w-lg rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md">
         <div className="grid grid-cols-5 gap-0.5 px-1 py-1">
-          {links.map(({ to, label, end, icon, center }) => (
-            <NavLink key={to} to={to} end={end} className={(state) => linkClass({ ...state, center })}>
+          {links.map(({ to, label, end, icon }) => (
+            <NavLink key={to} to={to} end={end} className={linkClass}>
               {icon}
               <span className="max-w-full truncate whitespace-nowrap">{label}</span>
             </NavLink>
