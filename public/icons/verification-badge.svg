@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Verified">
+  <path
+    fill="#1a8934"
+    d="M9.57 2.92Q12 0.5 14.43 2.92Q17.75 2.04 18.65 5.35Q21.96 6.25 21.08 9.57Q23.5 12 21.08 14.43Q21.96 17.75 18.65 18.65Q17.75 21.96 14.43 21.08Q12 23.5 9.57 21.08Q6.25 21.96 5.35 18.65Q2.04 17.75 2.92 14.43Q0.5 12 2.92 9.57Q2.04 6.25 5.35 5.35Q6.25 2.04 9.57 2.92Z"
+  />
+  <circle cx="12" cy="12" r="8.25" fill="#2cc157" />
+  <path
+    fill="none"
+    stroke="#fff"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2.25"
+    d="M8.15 12.35 10.75 14.95 16.15 8.95"
+  />
+</svg>

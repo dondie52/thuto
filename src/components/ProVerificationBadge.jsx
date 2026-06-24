@@ -1,40 +1,25 @@
-import { useId } from "react";
-
 /**
- * Thuto Pro verification seal — branded teal shield, distinct from other platforms.
+ * Pro verification seal — scalloped green badge with checkmark.
  */
 export default function ProVerificationBadge({ className = "size-7", title = "Pro verified" }) {
-  const gradientId = useId();
-
   return (
     <span
-      className={["inline-flex shrink-0 items-center justify-center self-center drop-shadow-sm", className].join(" ")}
+      className={["inline-flex shrink-0 items-center justify-center self-center", className].join(" ")}
       title={title}
     >
       <svg className="size-full" viewBox="0 0 24 24" aria-hidden>
-        <defs>
-          <linearGradient id={gradientId} x1="5" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#2dd4bf" />
-            <stop offset="0.45" stopColor="#14b8a6" />
-            <stop offset="1" stopColor="#0f766e" />
-          </linearGradient>
-        </defs>
         <path
-          fill={`url(#${gradientId})`}
-          d="M12 1.75 19.25 4.9v7.05c0 4.55-4.05 8.55-7.25 10.45-3.2-1.9-7.25-5.9-7.25-10.45V4.9L12 1.75z"
+          fill="#1a8934"
+          d="M9.57 2.92Q12 0.5 14.43 2.92Q17.75 2.04 18.65 5.35Q21.96 6.25 21.08 9.57Q23.5 12 21.08 14.43Q21.96 17.75 18.65 18.65Q17.75 21.96 14.43 21.08Q12 23.5 9.57 21.08Q6.25 21.96 5.35 18.65Q2.04 17.75 2.92 14.43Q0.5 12 2.92 9.57Q2.04 6.25 5.35 5.35Q6.25 2.04 9.57 2.92Z"
         />
-        <path
-          fill="#fff"
-          fillOpacity="0.22"
-          d="M12 4.35 16.55 6.45v5.45c0 2.95-2.45 5.75-4.55 7.15V4.35z"
-        />
+        <circle cx="12" cy="12" r="8.25" fill="#2cc157" />
         <path
           fill="none"
           stroke="#fff"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth="2.35"
-          d="M8.35 12.15 10.75 14.55 15.85 9.1"
+          strokeWidth="2.25"
+          d="M8.15 12.35 10.75 14.95 16.15 8.95"
         />
       </svg>
       <span className="sr-only">{title}</span>
