@@ -1,7 +1,7 @@
 /**
  * Pro verification seal — scalloped green badge with checkmark.
  */
-export default function ProVerificationBadge({ className = "size-7", title = "Pro verified" }) {
+export default function ProVerificationBadge({ className = "size-[18px]", title = "Pro verified" }) {
   return (
     <span
       className={["inline-flex shrink-0 items-center justify-center self-center", className].join(" ")}
