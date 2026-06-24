@@ -1,6 +1,6 @@
-# Thuto (BUC)
+# Thuto (BTC)
 
-Progressive Web App MVP: Botswana University Companion - admission predictor, programme fit guidance,
+Progressive Web App MVP: Botswana Tertiary Companion - admission predictor, programme fit guidance,
 assistant, programmes, and universities using local JSON first.
 
 ## Prerequisites

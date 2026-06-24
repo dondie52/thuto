@@ -13,7 +13,7 @@ export const PAGE_CONTENT_META = [
 export const PAGE_CONTENT_DEFAULTS = {
   landing: {
     hero: {
-      kicker: "Thuto - Botswana University Companion",
+      kicker: "Thuto - Botswana Tertiary Companion",
       title: "Check what your BGCSE results may qualify you for",
       body: "Start with real or estimated grades, see possible programme matches, and spot requirements to confirm before applications open.",
       primaryCtaLabel: "Check eligibility",
@@ -100,7 +100,7 @@ export const PAGE_CONTENT_DEFAULTS = {
     },
     footer: {
       brand: "Thuto",
-      tagline: "Botswana University Companion",
+      tagline: "Botswana Tertiary Companion",
       signedInCta: "Open full app",
       guestCta: "See app features",
       note: "Thuto does not process applications or payments. Eligibility and programme details in the app are indicative; confirm with each university.",
@@ -108,7 +108,7 @@ export const PAGE_CONTENT_DEFAULTS = {
   },
   home: {
     hero: {
-      kicker: "Thuto - BUC",
+      kicker: "Thuto - BTC",
       title: "Check what your BGCSE results may qualify you for",
       body: "Start with your grades, get indicative programme matches, and use the result to build a shortlist before you confirm details with each institution.",
       ctaLabel: "Check eligibility",
@@ -237,7 +237,7 @@ export const PAGE_CONTENT_DEFAULTS = {
     hero: {
       kicker: "Support",
       title: "Support and feedback",
-      body: "Share what is confusing, missing, or useful as Thuto grows into a stronger university companion.",
+      body: "Share what is confusing, missing, or useful as Thuto grows into a stronger tertiary companion.",
     },
     form: {
       topicLabel: "Topic",
@@ -264,7 +264,7 @@ export const PAGE_CONTENT_DEFAULTS = {
   disclaimer: {
     heading: "Disclaimer",
     paragraphs: [
-      "Thuto (Botswana University Companion) provides programme information and rough eligibility estimates for planning purposes only. Minimum points, subject rules, fees, and deadlines in the app may be incomplete, out of date, or simplified compared with official university sources.",
+      "Thuto (Botswana Tertiary Companion) provides programme information and rough eligibility estimates for planning purposes only. Minimum points, subject rules, fees, and deadlines in the app may be incomplete, out of date, or simplified compared with official university sources.",
       "Nothing in Thuto constitutes an offer of admission, legal advice, or a substitute for each institution's official prospectus, website, or admissions office. You are responsible for verifying every requirement before you apply or pay any fees.",
       "Thuto is an independent educational directory and is not affiliated, endorsed, or partnered with any listed university or examination council. While we strive to keep admission requirements and deadlines accurate, institutional details change frequently. Application dates and portals are provided solely for convenience. Users must verify all critical dates and submit official applications directly via the verified institutional websites opened through this application.",
       "Thuto accepts no liability for missed deadlines, outdated information, or application errors. Always confirm dates and requirements on the institution's official website before you apply.",
@@ -282,7 +282,7 @@ export const PAGE_CONTENT_DEFAULTS = {
   },
   privacy: {
     heading: "Privacy",
-    intro: "Thuto (Botswana University Companion) is a client-side web app. This page describes what we may collect when you use specific features.",
+    intro: "Thuto (Botswana Tertiary Companion) is a client-side web app. This page describes what we may collect when you use specific features.",
     sections: [
       {
         heading: "Community submissions",
