@@ -4,7 +4,7 @@ export default function SplashScreen({ exiting = false }) {
   return (
     <div
       className={[
-        "fixed inset-0 z-50 grid place-items-center overflow-hidden bg-[#effcf9] px-6 text-center transition-opacity duration-500 ease-out",
+        "fixed inset-0 z-50 grid place-items-center overflow-hidden bg-[var(--thuto-surface)] px-6 text-center transition-opacity duration-500 ease-out",
         exiting ? "pointer-events-none opacity-0" : "opacity-100",
       ].join(" ")}
       role="status"
@@ -24,7 +24,7 @@ export default function SplashScreen({ exiting = false }) {
         />
         <p className="mt-6 text-xs font-bold uppercase tracking-[0.32em] text-brand-700">Thuto</p>
         <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-brand-900 sm:text-4xl">
-          Your university companion
+          Your tertiary companion
         </h1>
         <p className="mt-3 max-w-xs text-sm leading-6 text-stone-600">
           Preparing Botswana programme guidance, eligibility tools, and saved choices.

@@ -52,7 +52,7 @@ export default function Layout() {
             </div>
           </div>
           <p className="mt-1.5 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
-            Botswana University Companion
+            Botswana Tertiary Companion
           </p>
         </div>
       </header>

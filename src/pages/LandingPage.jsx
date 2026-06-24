@@ -14,7 +14,7 @@ import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
 export default function LandingPage() {
-  useDocumentTitle("Thuto - Botswana University Companion");
+  useDocumentTitle("Thuto - Botswana Tertiary Companion");
   const { hash } = useLocation();
   const { content } = usePageContent("landing", PAGE_CONTENT_DEFAULTS.landing);
 

@@ -1,6 +1,6 @@
 ---
 name: Thuto
-description: Botswana university companion for programme eligibility, comparison, and saved choices.
+description: Botswana tertiary companion for programme eligibility, comparison, and saved choices.
 colors:
   surface: "#f3f1ec"
   surface-elevated: "#faf9f6"

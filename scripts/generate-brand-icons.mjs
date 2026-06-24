@@ -12,8 +12,8 @@ const root = path.join(__dirname, "..");
 const svgPath = path.join(root, "public/icons/thuto-mark.svg");
 const outDir = path.join(root, "public/icons");
 
-/** Matches SplashScreen background and PWA manifest background_color. */
-const SPLASH_BG = "#effcf9";
+/** Matches SplashScreen background (--thuto-surface) and PWA manifest background_color. */
+const SPLASH_BG = "#f3f1ec";
 
 /**
  * In-app splash uses a 64px mark (h-16). OS launch splashes scale the full icon canvas to

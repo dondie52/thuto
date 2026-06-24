@@ -26,7 +26,7 @@ export default function BrandMark({ className = "" }) {
       <span className="flex flex-col leading-none">
         <span className="font-display text-lg font-semibold tracking-tight text-brand-900">Thuto</span>
         <span className="mt-1 hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-500 sm:block">
-          BUC
+          BTC
         </span>
       </span>
     </Link>

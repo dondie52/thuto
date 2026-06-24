@@ -112,7 +112,7 @@ function mergeFeaturedWithLocal(pool, calendarDayKey, aiOrder) {
 }
 
 export default function Home() {
-  useDocumentTitle("Thuto - Your Botswana University Companion");
+  useDocumentTitle("Thuto - Your Botswana Tertiary Companion");
   const { content } = usePageContent("home", PAGE_CONTENT_DEFAULTS.home);
   const [urgentUnis, setUrgentUnis] = useState([]);
   const [calendarDayKey, setCalendarDayKey] = useState(() => localCalendarDateKey());
@@ -290,7 +290,7 @@ export default function Home() {
           className="pointer-events-none absolute -bottom-8 left-1/4 h-32 w-64 rounded-full bg-teal-300/10 blur-2xl"
           aria-hidden
         />
-        <p className="relative text-xs font-semibold uppercase tracking-[0.2em] text-brand-200">Thuto · BUC</p>
+        <p className="relative text-xs font-semibold uppercase tracking-[0.2em] text-brand-200">Thuto · BTC</p>
         <h1 className="relative mt-3 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
           {content.hero?.title}
         </h1>

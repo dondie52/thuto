@@ -36,7 +36,7 @@ export function CTA() {
         </div>
         <FadeUp delay={86} style={{ position: "absolute", left: layout.safeX, right: layout.safeX, bottom: 104 }}>
           <div>
-            <div style={{ color: colors.lightTeal, fontSize: 27, fontWeight: 900 }}>Thuto · Botswana University Companion</div>
+            <div style={{ color: colors.lightTeal, fontSize: 27, fontWeight: 900 }}>Thuto · Botswana Tertiary Companion</div>
             <div style={{ marginTop: 14, color: "rgba(255,255,255,0.58)", fontSize: 20, lineHeight: 1.32, fontWeight: 600 }}>
               Eligibility is indicative only. Confirm final requirements with each institution.
             </div>

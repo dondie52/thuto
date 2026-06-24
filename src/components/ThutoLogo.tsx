@@ -30,7 +30,7 @@ export function ThutoLogo({ dark = false, scale = 1 }: ThutoLogoProps) {
           Thuto
         </div>
         <div style={{ marginTop: 7, fontFamily: fonts.body, fontSize: 18, fontWeight: 800, letterSpacing: 3, color: dark ? colors.lightTeal : colors.teal }}>
-          BUC
+          BTC
         </div>
       </div>
     </div>

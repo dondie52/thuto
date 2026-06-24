@@ -30,11 +30,11 @@ export default defineConfig({
         "programme-themes/*.jpg",
       ],
       manifest: {
-        name: "Thuto - Botswana University Companion",
+        name: "Thuto - Botswana Tertiary Companion",
         short_name: "Thuto",
         description: "Check programme eligibility, explore universities and courses.",
         theme_color: "#14746e",
-        background_color: "#effcf9",
+        background_color: "#f3f1ec",
         display: "standalone",
         start_url: ".",
         scope: ".",

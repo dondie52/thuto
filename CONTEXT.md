@@ -6,7 +6,7 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 ## Product identity
 
-- **Name**: Thuto (short for *Botswana University Companion* — “BUC” in README).
+- **Name**: Thuto (short for *Botswana Tertiary Companion* — “BTC” in README).
 - **Audience**: Students exploring Botswana undergraduate programmes, admission points, and application logistics.
 - **Form factor**: **Progressive Web App (PWA)** — installable, offline-friendly static build; no required backend for core flows.
 - **Stack**: **Vite 5** + **React 18** + **React Router 6** + **Tailwind CSS 3**; optional **Supabase** for community features.
