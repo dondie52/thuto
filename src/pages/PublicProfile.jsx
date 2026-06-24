@@ -224,23 +224,21 @@ export default function PublicProfile() {
         </p>
       ) : null}
 
-      <section className="rounded-2xl border border-brand-100 bg-white p-4 shadow-sm">
+      <section className="bg-white p-4">
         <div className="flex items-start gap-4">
           {profile.avatarUrl ? (
-            <img src={profile.avatarUrl} alt="" className="h-20 w-20 rounded-full object-cover ring-2 ring-brand-100" />
+            <img src={profile.avatarUrl} alt="" className="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-brand-100" />
           ) : (
-            <span className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-700 text-2xl font-bold text-white">
+            <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-brand-700 text-2xl font-bold text-white">
               {profileInitial(profile.fullName)}
             </span>
           )}
           <div className="min-w-0 flex-1">
-            <h1 className="inline-flex min-w-0 items-center gap-1.5 font-display text-xl font-semibold text-brand-900">
-              <span className="min-w-0 break-words">{profile.fullName}</span>
-              {profile.isPro ? <ProVerificationBadge /> : null}
+            <h1 className="flex min-w-0 items-center gap-1.5 font-display text-xl font-semibold text-brand-900">
+              <span className="truncate">{profile.fullName}</span>
+              {profile.isPro ? <ProVerificationBadge className="size-[18px] shrink-0" /> : null}
             </h1>
-            <p className="text-sm font-semibold text-stone-500">@{profile.username}</p>
-            {profile.universityLine ? <p className="mt-1 text-sm text-brand-800">{profile.universityLine}</p> : null}
-            <div className="mt-3 flex flex-wrap gap-4 text-sm text-stone-600">
+            <div className="mt-1 flex flex-wrap gap-4 text-sm text-stone-600">
               <span>
                 <span className="font-semibold text-brand-900">{counts.followers}</span> followers
               </span>
@@ -248,11 +246,20 @@ export default function PublicProfile() {
                 <span className="font-semibold text-brand-900">{counts.following}</span> following
               </span>
             </div>
+            {profile.universityLine ? <p className="mt-1 text-sm text-brand-800">{profile.universityLine}</p> : null}
           </div>
         </div>
 
-        {profile.bio ? <p className="mt-4 text-sm leading-relaxed text-stone-700">{profile.bio}</p> : null}
-        {profile.distinction ? <p className="mt-2 text-sm text-stone-600">{profile.distinction}</p> : null}
+        {profile.bio || profile.distinction ? (
+          <div className="mt-4 space-y-2">
+            {profile.bio ? (
+              <p className="text-sm leading-relaxed text-stone-700">{profile.bio}</p>
+            ) : null}
+            {profile.distinction ? (
+              <p className="text-sm text-stone-500">{profile.distinction}</p>
+            ) : null}
+          </div>
+        ) : null}
         {profile.fieldsOfInterest.length ? (
           <div className="mt-3 flex flex-wrap gap-2">
             {profile.fieldsOfInterest.map((field) => (
