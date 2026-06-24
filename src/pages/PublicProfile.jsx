@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import FeedPostCard from "../components/FeedPostCard.jsx";
+import ProVerificationBadge from "../components/ProVerificationBadge.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import {
@@ -233,7 +234,10 @@ export default function PublicProfile() {
             </span>
           )}
           <div className="min-w-0 flex-1">
-            <h1 className="font-display text-xl font-semibold text-brand-900">{profile.fullName}</h1>
+            <h1 className="inline-flex min-w-0 items-center gap-1.5 font-display text-xl font-semibold text-brand-900">
+              <span className="min-w-0 break-words">{profile.fullName}</span>
+              {profile.isPro ? <ProVerificationBadge /> : null}
+            </h1>
             <p className="text-sm font-semibold text-stone-500">@{profile.username}</p>
             {profile.universityLine ? <p className="mt-1 text-sm text-brand-800">{profile.universityLine}</p> : null}
             <div className="mt-3 flex flex-wrap gap-4 text-sm text-stone-600">

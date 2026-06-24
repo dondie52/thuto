@@ -1,9 +1,10 @@
 import { fetchPostsByAuthor } from "./feed.js";
+import { isPremiumActive } from "./premium.js";
 import { getSupabase } from "./supabase.js";
 import { formatAuthorUniversity } from "./profile.js";
 
 const PROFILE_COLUMNS =
-  "id,full_name,username,bio,avatar_url,university_id,university_name,university_status,distinction,fields_of_interest,message_privacy";
+  "id,full_name,username,bio,avatar_url,university_id,university_name,university_status,distinction,fields_of_interest,message_privacy,premium_status,premium_until";
 
 function assertSupabase() {
   const supabase = getSupabase();
@@ -26,6 +27,7 @@ function normalizePublicProfile(row) {
       universityStatus: row.university_status,
     }),
     messagePrivacy: row.message_privacy || "everyone",
+    isPro: isPremiumActive(row),
   };
 }
 

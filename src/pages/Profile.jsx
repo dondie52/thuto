@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileEditForm from "../components/ProfileEditForm.jsx";
+import ProVerificationBadge from "../components/ProVerificationBadge.jsx";
 import AccountActivitySummary from "../components/profile/AccountActivitySummary.jsx";
 import ChangePasswordForm from "../components/profile/ChangePasswordForm.jsx";
 import NotificationPreferences from "../components/profile/NotificationPreferences.jsx";
@@ -142,17 +143,24 @@ export default function Profile() {
             title="Personal information"
             description="Update your name, photo, bio, universities, and interests."
           >
-            {profile?.avatar_url || profile?.university_name || profile?.distinction ? (
-              <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl bg-brand-50/80 px-3 py-3 text-sm text-brand-900">
+            <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl bg-brand-50/80 px-3 py-3 text-sm text-brand-900">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt=""
                     className="h-12 w-12 rounded-full object-cover ring-2 ring-white"
                   />
-                ) : null}
+                ) : (
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-700 text-lg font-bold text-white">
+                    {(profile.full_name || user.email || "S").trim().charAt(0).toUpperCase() || "S"}
+                  </span>
+                )}
                 <div className="min-w-0">
-                  <p className="font-semibold">{profile.full_name || user.email}</p>
+                  <p className="inline-flex min-w-0 items-center gap-1.5 font-semibold">
+                    <span className="min-w-0 break-words">{profile.full_name || user.email}</span>
+                    {isPremium ? <ProVerificationBadge /> : null}
+                  </p>
+                  {profile.username ? <p className="text-xs font-semibold text-stone-500">@{profile.username}</p> : null}
                   {formatAuthorUniversity({
                     universityName: profile.university_name,
                     universityStatus: profile.university_status,
@@ -167,7 +175,6 @@ export default function Profile() {
                   {profile.distinction ? <p className="text-xs text-stone-600">{profile.distinction}</p> : null}
                 </div>
               </div>
-            ) : null}
             <ProfileEditForm profile={profile} onSave={saveProfile} disabled={isProfileLoading} />
           </ProfileSection>
 
