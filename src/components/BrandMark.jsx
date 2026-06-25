@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-/** Public path to the primary Thuto mark (SVG). Used by the header, splash, and PWA precache. */
+/** Public path to the primary Thuto mark (SVG). Used by the header and PWA precache. */
 export const thutoLogoSrc = `${import.meta.env.BASE_URL}icons/thuto-mark.svg`;
 
 export default function BrandMark({ className = "" }) {

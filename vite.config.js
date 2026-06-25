@@ -34,7 +34,7 @@ export default defineConfig({
         short_name: "Thuto",
         description: "Check programme eligibility, explore universities and courses.",
         theme_color: "#14746e",
-        background_color: "#f3f1ec",
+        background_color: "#134e4a",
         display: "standalone",
         start_url: ".",
         scope: ".",
