@@ -1,6 +1,6 @@
 /**
  * Regenerate raster brand icons from public/icons/thuto-mark.svg.
- * Full-bleed green squircle with white T (Facebook-style app icon).
+ * Full-bleed teal squircle with white T and cyan accent (home screen / PWA icon).
  */
 import fs from "node:fs/promises";
 import path from "node:path";

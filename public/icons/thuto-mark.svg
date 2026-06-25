@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Thuto">
-  <rect width="64" height="64" rx="14" fill="#134e4a"/>
+  <rect width="64" height="64" rx="14" fill="#1A4D44"/>
   <path fill="#ffffff" d="M14 16h36v10H37v24H27V26H14V16z"/>
+  <path
+    fill="#A8F0E6"
+    fill-opacity="0.5"
+    d="M25.5 44.2c1.8-1.6 4.2-2 6.5-2s4.7.4 6.5 2c.8.7 1 1.7.6 2.6l-1.4 3.1c-.4.9-1.3 1.5-2.3 1.5h-6.8c-1 0-1.9-.6-2.3-1.5l-1.4-3.1c-.4-.9-.2-1.9.6-2.6z"
+  />
 </svg>
