@@ -47,6 +47,7 @@ const CONTROL_LINKS = [
   { to: "/universities", label: "Universities", description: "Check institution pages, resources, and application windows." },
   { to: "/sponsorships", label: "Sponsorships", description: "Review public sponsorship cards from live opportunity data." },
   { to: "/internships", label: "Internships", description: "Review internship cards from live opportunity data." },
+  { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Review postgraduate programmes hub and scholarship posts." },
   { to: "/settings", label: "Settings", description: "Open account settings for the current operator." },
 ];
 
@@ -1620,6 +1621,7 @@ export default function Admin() {
               >
                 <option value="private_sponsorship">Private sponsorship</option>
                 <option value="internship">Internship</option>
+                <option value="postgraduate_scholarship">Postgraduate scholarship</option>
               </select>
             </label>
             <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">

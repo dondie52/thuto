@@ -2,7 +2,7 @@ import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 
 export { isSupabaseConfigured };
 
-/** @typedef {'private_sponsorship' | 'internship'} OpportunityCategory */
+/** @typedef {'private_sponsorship' | 'internship' | 'postgraduate_scholarship'} OpportunityCategory */
 
 /** @typedef {{
  *   id: string,
@@ -19,6 +19,7 @@ export { isSupabaseConfigured };
 export const OPPORTUNITY_CATEGORY = {
   PRIVATE_SPONSORSHIP: "private_sponsorship",
   INTERNSHIP: "internship",
+  POSTGRADUATE_SCHOLARSHIP: "postgraduate_scholarship",
 };
 
 /**
@@ -31,9 +32,12 @@ function normalizeRow(row) {
   if (typeof r.id !== "string" || typeof r.title !== "string" || typeof r.body !== "string") {
     return null;
   }
-  const category = r.category === OPPORTUNITY_CATEGORY.INTERNSHIP
-    ? OPPORTUNITY_CATEGORY.INTERNSHIP
-    : OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP;
+  const category =
+    r.category === OPPORTUNITY_CATEGORY.INTERNSHIP
+      ? OPPORTUNITY_CATEGORY.INTERNSHIP
+      : r.category === OPPORTUNITY_CATEGORY.POSTGRADUATE_SCHOLARSHIP
+        ? OPPORTUNITY_CATEGORY.POSTGRADUATE_SCHOLARSHIP
+        : OPPORTUNITY_CATEGORY.PRIVATE_SPONSORSHIP;
 
   return {
     id: r.id,
