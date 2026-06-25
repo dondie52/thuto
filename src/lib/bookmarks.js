@@ -1,5 +1,15 @@
 const STORAGE_KEY = "thuto.bookmarkedProgrammeIds";
-const MAX_BOOKMARKS = 10;
+export const MAX_BOOKMARKS_LEGACY = 10;
+
+/**
+ * @param {number} [max]
+ */
+function resolveMax(max) {
+  if (typeof max === "number" && Number.isFinite(max) && max > 0) {
+    return max === Infinity ? MAX_BOOKMARKS_LEGACY : max;
+  }
+  return 2;
+}
 
 /**
  * @returns {string[]}
@@ -24,17 +34,21 @@ function setBookmarkIds(ids) {
 }
 
 /**
- * Most-recent first. If already at max, drops the oldest bookmark.
  * @param {string} programmeId
- * @returns {string[]} new ordered ids
+ * @param {number} [max]
+ * @returns {{ ids: string[], added: boolean, atLimit: boolean }}
  */
-export function addBookmark(programmeId) {
+export function addBookmark(programmeId, max) {
+  const limit = resolveMax(max);
   const id = String(programmeId).trim();
-  if (!id) return getBookmarkIds();
+  if (!id) return { ids: getBookmarkIds(), added: false, atLimit: false };
   const current = getBookmarkIds().filter((x) => x !== id);
-  const next = [id, ...current].slice(0, MAX_BOOKMARKS);
+  if (current.length >= limit) {
+    return { ids: getBookmarkIds(), added: false, atLimit: true };
+  }
+  const next = [id, ...current].slice(0, limit);
   setBookmarkIds(next);
-  return next;
+  return { ids: next, added: true, atLimit: false };
 }
 
 /**
@@ -50,17 +64,18 @@ export function removeBookmark(programmeId) {
 
 /**
  * @param {string} programmeId
- * @returns {boolean} true if now bookmarked
+ * @param {number} [max]
+ * @returns {{ bookmarked: boolean, atLimit?: boolean }}
  */
-export function toggleBookmark(programmeId) {
+export function toggleBookmark(programmeId, max) {
   const id = String(programmeId).trim();
-  if (!id) return false;
+  if (!id) return { bookmarked: false };
   if (getBookmarkIds().includes(id)) {
     removeBookmark(id);
-    return false;
+    return { bookmarked: false };
   }
-  addBookmark(id);
-  return true;
+  const result = addBookmark(id, max);
+  return { bookmarked: result.added, atLimit: result.atLimit };
 }
 
 /**
@@ -72,4 +87,11 @@ export function isBookmarked(programmeId) {
   return getBookmarkIds().includes(id);
 }
 
-export { MAX_BOOKMARKS, STORAGE_KEY };
+/**
+ * @param {number} [max]
+ */
+export function getBookmarkLimit(max) {
+  return resolveMax(max);
+}
+
+export { STORAGE_KEY };

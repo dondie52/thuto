@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { trackApplyClick } from "../lib/analytics.js";
 import { externalHostname, safeExternalUrl } from "../lib/urlSafety.js";
 
 export default function ExternalRedirect() {
@@ -25,6 +26,9 @@ export default function ExternalRedirect() {
   }
 
   function handleContinue() {
+    const programmeId = searchParams.get("programme") || undefined;
+    const institutionId = searchParams.get("institution") || undefined;
+    trackApplyClick({ programmeId, institutionId, destinationUrl: href });
     window.open(href, "_blank", "noopener,noreferrer");
   }
 

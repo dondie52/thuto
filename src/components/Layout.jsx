@@ -1,6 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { useAuth } from "../lib/auth.jsx";
+import { getEntitlements } from "../lib/entitlements.js";
 import AccountDrawer from "./AccountDrawer.jsx";
-import BrandMark from "./BrandMark.jsx";
+import AdBanner from "./AdBanner.jsx";
 import BottomNav from "./BottomNav.jsx";
 import OnboardingRedirect from "./OnboardingRedirect.jsx";
 import { FEED_CHROME_CLASSES, useFeedRoute } from "../lib/feedChrome.jsx";
@@ -25,6 +27,8 @@ function navLinkClass({ isActive }) {
 
 export default function Layout() {
   const isFeedRoute = useFeedRoute();
+  const { profile } = useAuth();
+  const { showAds } = getEntitlements(profile);
 
   return (
     <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6">
@@ -62,6 +66,11 @@ export default function Layout() {
           isFeedRoute ? "pb-6 pt-0" : "py-6 sm:py-8",
         ].join(" ")}
       >
+        {showAds && !isFeedRoute ? (
+          <div className="mb-4">
+            <AdBanner />
+          </div>
+        ) : null}
         <Outlet />
       </main>
       <BottomNav />

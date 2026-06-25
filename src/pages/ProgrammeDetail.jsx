@@ -9,8 +9,18 @@ import {
 import { useBookmarks } from "../hooks/useBookmarks.js";
 import { useCompareSelection } from "../hooks/useCompareSelection.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
+import { getEntitlements } from "../lib/entitlements.js";
+import { trackProgrammeView } from "../lib/analytics.js";
+import { buildTrackedApplyUrl } from "../lib/applyLinks.js";
+import { getCareerSalaryEstimate } from "../lib/careerSalaries.js";
+import { fetchVerifiedInstitutionIds } from "../lib/partner.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
+import UpgradePrompt from "../components/UpgradePrompt.jsx";
+import DocumentsChecklist from "../components/DocumentsChecklist.jsx";
+import PdfExportButton from "../components/PdfExportButton.jsx";
+import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
@@ -46,7 +56,11 @@ export default function ProgrammeDetail() {
   const [university, setUniversity] = useState(null);
   const [error, setError] = useState(null);
   const { toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } =
+    useCompareSelection();
+  const { profile } = useAuth();
+  const entitlements = getEntitlements(profile);
+  const [verifiedInstitutionIds, setVerifiedInstitutionIds] = useState(() => new Set());
 
   useEffect(() => {
     let cancelled = false;
@@ -70,6 +84,14 @@ export default function ProgrammeDetail() {
       cancelled = true;
     };
   }, [id]);
+
+  useEffect(() => {
+    fetchVerifiedInstitutionIds().then(setVerifiedInstitutionIds);
+  }, []);
+
+  useEffect(() => {
+    if (programme) trackProgrammeView(programme);
+  }, [programme?.id]);
 
   const similarProgrammes = useMemo(() => {
     return getSimilarProgrammes(programme, allProgrammes, 3);
@@ -113,7 +135,10 @@ export default function ProgrammeDetail() {
 
   const inCompare = isSelected(programme.id);
   const compareToggleDisabled = !inCompare && !canAdd;
-  const applyHref = safeExternalUrl(programme.applyUrl);
+  const applyHref = buildTrackedApplyUrl(programme.applyUrl, {
+    programmeId: programme.id,
+    institutionId: university?.id,
+  });
   const officialHref = safeExternalUrl(programme.officialUrl);
 
   const hasApplicationBlock =
@@ -127,7 +152,8 @@ export default function ProgrammeDetail() {
     programme.sponsorshipTier === "core" || university?.sponsorshipTier === "core";
   const aboutSummary = getProgrammeAboutSummary(programme);
   const interests = getProgrammeInterests(programme);
-  const careers = getProgrammeCareers(programme);
+  const careers = getProgrammeCareers(programme).slice(0, entitlements.careersPerProgramme);
+  const careersHiddenCount = Math.max(0, getProgrammeCareers(programme).length - careers.length);
   const relatedSubjects = getProgrammeRelatedSubjects(programme);
   const fitCompatible = isFitFinderCompatible(programme);
 
@@ -177,11 +203,15 @@ export default function ProgrammeDetail() {
                 ]
                   .filter(Boolean)
                   .join(" ")}
-                title={compareToggleDisabled ? "Compare allows at most 3 programmes" : undefined}
+                title={compareToggleDisabled ? `Compare allows at most ${compareMax} programmes` : undefined}
               >
                 {inCompare ? "In compare" : "Add to compare"}
               </button>
-              {eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
+              {eligibility && entitlements.acceptanceChance ? (
+                <EligibilityPill eligibility={eligibility} />
+              ) : eligibility ? (
+                <UpgradePrompt feature="acceptance chance" className="max-w-xs" />
+              ) : null}
             </div>
           </div>
           {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
@@ -223,6 +253,8 @@ export default function ProgrammeDetail() {
                   href={applyHref}
                   variant="programmePrimary"
                   institutionName={programme.university || university?.name}
+                  programmeId={programme.id}
+                  institutionId={university?.id}
                   useInterstitial
                 >
                   Apply / admissions
@@ -276,7 +308,33 @@ export default function ProgrammeDetail() {
         <h2 className="font-display text-lg font-semibold text-brand-900">Smart programme guide</h2>
         <div className="mt-3 grid gap-4 text-sm sm:grid-cols-2">
           <InsightBlock title="Best for students interested in" items={interests} empty="Interest tags are not listed yet." />
-          <InsightBlock title="Related careers" items={careers} empty="Career examples are not listed yet." />
+          <InsightBlock
+            title="Related careers"
+            items={careers}
+            empty="Career examples are not listed yet."
+            footer={
+              careersHiddenCount > 0 ? (
+                <p className="mt-2 text-xs text-slate-500">
+                  +{careersHiddenCount} more with Pro
+                  {entitlements.showSalaryEstimates ? null : " and salary estimates"}
+                  . <Link to="/upgrade" className="font-semibold text-brand-700 underline">Upgrade</Link>
+                </p>
+              ) : null
+            }
+            renderItem={
+              entitlements.showSalaryEstimates
+                ? (career) => {
+                    const salary = getCareerSalaryEstimate(career);
+                    return (
+                      <span>
+                        {career}
+                        {salary ? <span className="block text-xs text-slate-500">{salary.label}</span> : null}
+                      </span>
+                    );
+                  }
+                : undefined
+            }
+          />
           <InsightBlock title="Subjects that help" items={relatedSubjects} empty="Related subjects are not listed yet." />
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Fit Finder compatible</p>
@@ -305,6 +363,26 @@ export default function ProgrammeDetail() {
       </section>
 
       <ProgrammeModulesSection programme={programme} />
+
+      {entitlements.documentsChecklist ? <DocumentsChecklist programme={programme} /> : null}
+
+      {entitlements.pdfDownload ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Download &amp; share</h2>
+          <p className="mt-1 text-sm text-slate-600">Send a programme summary to parents or teachers.</p>
+          <div className="mt-3">
+            <PdfExportButton programme={programme} university={university} />
+          </div>
+        </section>
+      ) : null}
+
+      {university?.id && verifiedInstitutionIds.has(university.id) ? (
+        <LeadInquiryForm
+          institutionId={university.id}
+          programmeId={programme.id}
+          institutionName={university.name}
+        />
+      ) : null}
 
       <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 shadow-sm">
         <div className="flex flex-wrap items-center gap-2">
@@ -445,7 +523,7 @@ function ProgrammeAboutSummary({ summary, programmeId }) {
   );
 }
 
-function InsightBlock({ title, items, empty }) {
+function InsightBlock({ title, items, empty, footer, renderItem }) {
   return (
     <div>
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
@@ -453,13 +531,14 @@ function InsightBlock({ title, items, empty }) {
         <ul className="mt-2 flex flex-wrap gap-2">
           {items.slice(0, 6).map((item) => (
             <li key={item} className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-900">
-              {item}
+              {renderItem ? renderItem(item) : item}
             </li>
           ))}
         </ul>
       ) : (
         <p className="mt-1 text-slate-500">{empty}</p>
       )}
+      {footer}
     </div>
   );
 }

@@ -31,6 +31,8 @@ const VARIANT_CLASS = {
  *   documentNotice?: boolean,
  *   className?: string,
  *   showDomain?: boolean,
+ *   programmeId?: string,
+ *   institutionId?: string,
  * }} props
  */
 export default function ExternalSiteLink({
@@ -42,6 +44,8 @@ export default function ExternalSiteLink({
   documentNotice = false,
   className = "",
   showDomain = false,
+  programmeId = "",
+  institutionId = "",
 }) {
   const safeHref = safeExternalUrl(href);
   const [notice, setNotice] = useState("");
@@ -78,7 +82,10 @@ export default function ExternalSiteLink({
   if (!safeHref) return null;
 
   if (useInterstitial) {
-    const goPath = externalGoPath(safeHref);
+    const goPath = externalGoPath(safeHref, {
+      programmeId: programmeId || undefined,
+      institutionId: institutionId || undefined,
+    });
     return (
       <span className="inline-flex flex-col gap-1">
         <Link

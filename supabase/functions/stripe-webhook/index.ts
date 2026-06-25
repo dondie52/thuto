@@ -1,18 +1,7 @@
 import Stripe from "https://esm.sh/stripe@14.21.0?target=deno";
 import { jsonResponse } from "../_shared/cors.ts";
-import { getStripe } from "../_shared/stripe.ts";
+import { getStripe, planPremiumUntil } from "../_shared/stripe.ts";
 import { getSupabaseAdmin } from "../_shared/supabaseAdmin.ts";
-
-/** Application season pass covers Apr–Aug; access ends 31 August. */
-function seasonPassUntil() {
-  const now = new Date();
-  const month = now.getMonth();
-  let endYear = now.getFullYear();
-  if (month > 7) {
-    endYear += 1;
-  }
-  return new Date(endYear, 7, 31, 23, 59, 59).toISOString();
-}
 
 async function activatePremium(
   userId: string,
@@ -21,11 +10,14 @@ async function activatePremium(
   status: "active" | "past_due" | "canceled" = "active",
 ) {
   const admin = getSupabaseAdmin();
+  const normalizedPlan =
+    plan === "season_pass" ? "yearly" : plan === "annual" ? "five_year" : plan;
+
   await admin
     .from("profiles")
     .update({
       premium_status: status,
-      premium_plan: status === "active" ? plan : null,
+      premium_plan: status === "active" ? normalizedPlan : null,
       premium_until: status === "active" ? until : until,
       updated_at: new Date().toISOString(),
     })
@@ -34,7 +26,7 @@ async function activatePremium(
   await admin.from("analytics_events").insert({
     user_id: userId,
     event_name: status === "active" ? "premium_activated" : `premium_${status}`,
-    metadata: { plan },
+    metadata: { plan: normalizedPlan, original_plan: plan },
   });
 }
 
@@ -74,11 +66,11 @@ Deno.serve(async (req) => {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
         const userId = session.metadata?.supabase_user_id || session.client_reference_id;
-        const planId = session.metadata?.plan_id || "monthly";
+        const planId = session.metadata?.plan_id || "yearly";
         if (!userId) break;
 
         if (session.mode === "payment") {
-          await activatePremium(userId, planId, seasonPassUntil());
+          await activatePremium(userId, planId, planPremiumUntil(planId));
         } else if (session.subscription) {
           const sub = await stripe.subscriptions.retrieve(String(session.subscription));
           await activatePremium(userId, planId, subscriptionUntil(sub));

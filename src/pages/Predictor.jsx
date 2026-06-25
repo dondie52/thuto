@@ -10,6 +10,8 @@ import ProgrammePredictorResults from "../components/ProgrammePredictorResults.j
 import CertificateImportCard from "../components/CertificateImportCard.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
+import { getEntitlements } from "../lib/entitlements.js";
+import UpgradePrompt from "../components/UpgradePrompt.jsx";
 import { hasPredictorAccess } from "../lib/onboarding.js";
 import { filterSubjectsBySyllabus } from "../lib/syllabus.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
@@ -35,6 +37,7 @@ function buildShareText(breakdownTotal, results) {
 export default function Predictor() {
   useDocumentTitle("Admission Predictor | Thuto");
   const { user, profile } = useAuth();
+  const { gradeImport } = getEntitlements(profile);
   const [programmes, setProgrammes] = useState([]);
   const [loadError, setLoadError] = useState(null);
   const [shareFeedback, setShareFeedback] = useState(null);
@@ -188,7 +191,11 @@ export default function Predictor() {
         </div>
       ) : (
         <>
-          <CertificateImportCard onUseGrades={handleImportedRows} />
+          {gradeImport ? (
+            <CertificateImportCard onUseGrades={handleImportedRows} />
+          ) : (
+            <UpgradePrompt feature="PDF and photo grade import" />
+          )}
 
           <PredictorGradeSection
             rows={rows}

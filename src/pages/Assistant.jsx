@@ -12,7 +12,7 @@ import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { scrollElementIntoView } from "../lib/motion.js";
-import { getAssistantUsageToday } from "../lib/premium.js";
+import { getAssistantUsageToday, recordAssistantUsage } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
 const speechRecognition =
@@ -185,6 +185,21 @@ export default function Assistant() {
   async function sendQuestion(value) {
     const clean = String(value || "").trim();
     if (!clean || isSending) return;
+
+    const usage = getAssistantUsageToday(profile);
+    if (usage.count >= usage.limit) {
+      setError("Daily AI limit reached. Upgrade to Pro for unlimited questions.");
+      return;
+    }
+
+    if (canUseGemini && navigator.onLine) {
+      const allowed = recordAssistantUsage(profile);
+      if (!allowed) {
+        setError("Daily AI limit reached. Upgrade to Pro for unlimited questions.");
+        return;
+      }
+    }
+
     setQuestion("");
     setLastQuestion(clean);
     setError(null);
@@ -317,7 +332,7 @@ export default function Assistant() {
         </p>
         {canUseGemini ? (
           <p className="mt-2 text-xs text-slate-500">
-            AI questions today: {getAssistantUsageToday(isPremium).count} / {getAssistantUsageToday(isPremium).limit}
+            AI questions today: {getAssistantUsageToday(profile).count} / {getAssistantUsageToday(profile).limit}
             {!isPremium ? (
               <>
                 {" "}

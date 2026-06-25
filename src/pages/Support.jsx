@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SupportHub from "../components/SupportHub.jsx";
 import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
@@ -47,6 +48,8 @@ export default function Support() {
         <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">{content.hero?.title}</h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">{content.hero?.body}</p>
       </div>
+
+      <SupportHub />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <form className="space-y-3" onSubmit={submitFeedback}>

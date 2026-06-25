@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
+import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
+import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { fetchVerifiedInstitutionIds } from "../lib/partner.js";
+import { trackInstitutionView } from "../lib/analytics.js";
+import { buildTrackedApplyUrl } from "../lib/applyLinks.js";
 import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from "../lib/urlSafety.js";
@@ -139,6 +144,7 @@ export default function UniversityDetail() {
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
   const [fieldFilter, setFieldFilter] = useState("All");
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -158,6 +164,14 @@ export default function UniversityDetail() {
       ac.abort();
     };
   }, [id]);
+
+  useEffect(() => {
+    fetchVerifiedInstitutionIds().then((ids) => setIsVerified(ids.has(id)));
+  }, [id]);
+
+  useEffect(() => {
+    if (university) trackInstitutionView(university);
+  }, [university?.id]);
 
   useEffect(() => {
     let cancelled = false;
@@ -213,7 +227,10 @@ export default function UniversityDetail() {
             <UniversityInitialsBadge university={university} size="md" />
           </div>
           <div className="min-w-0">
-            <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{university.name}</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{university.name}</h1>
+              {isVerified ? <InstitutionVerificationBadge /> : null}
+            </div>
             <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
           </div>
         </div>
@@ -248,6 +265,10 @@ export default function UniversityDetail() {
           <UniversityApplicationBlock university={university} compact={false} profileLink={false} />
         </div>
       </section>
+
+      {isVerified ? (
+        <LeadInquiryForm institutionId={university.id} institutionName={university.name} />
+      ) : null}
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">

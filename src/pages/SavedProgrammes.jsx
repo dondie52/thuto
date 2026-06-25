@@ -18,7 +18,8 @@ function compareHrefFirstSaved(ids) {
 export default function SavedProgrammes() {
   useDocumentTitle("Saved programmes | Thuto");
   const { ids, toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } =
+    useCompareSelection();
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
 
@@ -125,7 +126,7 @@ export default function SavedProgrammes() {
                         disabled={compareDisabled}
                         onChange={() => toggleCompare(p.id)}
                         aria-label={`Select ${p.name} for compare`}
-                        title={compareDisabled ? "Compare allows at most 3 programmes" : undefined}
+                        title={compareDisabled ? `Compare allows at most ${compareMax} programmes` : undefined}
                       />
                     </label>
                   </div>

@@ -5,11 +5,13 @@ Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supa
 ## 1. Stripe Dashboard (test mode first)
 
 1. Create a **Product** named `Thuto Pro`.
-2. Create three **Prices**:
-   - **Monthly** recurring (e.g. BWP 29/month) → copy Price ID → `STRIPE_PRICE_MONTHLY`
-   - **Annual** recurring (e.g. BWP 199/year) → `STRIPE_PRICE_ANNUAL`
-   - **Application season pass** one-time (e.g. BWP 59, Apr–Aug window) → `STRIPE_PRICE_SEASON`
-3. Enable **Customer Portal** (Settings → Billing → Customer portal) for subscription management.
+2. Create two **one-time Prices**:
+   - **Pro Yearly** (e.g. BWP 59) → copy Price ID → `STRIPE_PRICE_YEARLY`
+   - **Pro 5-Year** (e.g. BWP 199) → `STRIPE_PRICE_FIVE_YEAR`
+3. (Optional legacy) Keep old price IDs mapped for grandfathered subscribers:
+   - `STRIPE_PRICE_SEASON` → redirects to yearly in webhook
+   - `STRIPE_PRICE_ANNUAL` → redirects to five_year in webhook
+   - `STRIPE_PRICE_MONTHLY` → subscription only for legacy monthly users
 4. Add a **Webhook** endpoint:
    - URL: `https://<project-ref>.supabase.co/functions/v1/stripe-webhook`
    - Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`
@@ -17,7 +19,7 @@ Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supa
 
 ## 2. Supabase
 
-1. Apply migration `supabase/migrations/20260522000000_profiles_and_premium.sql` (CLI `supabase db push` or SQL editor).
+1. Apply migrations including `supabase/migrations/20260625120000_revenue_model_and_partners.sql`.
 2. Deploy edge functions:
    ```bash
    supabase functions deploy create-checkout-session
@@ -28,41 +30,29 @@ Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supa
    ```bash
    supabase secrets set STRIPE_SECRET_KEY=sk_test_...
    supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...
-   supabase secrets set STRIPE_PRICE_MONTHLY=price_...
-   supabase secrets set STRIPE_PRICE_ANNUAL=price_...
-   supabase secrets set STRIPE_PRICE_SEASON=price_...
-   supabase secrets set SITE_URL=https://dondie52.github.io/thuto
+   supabase secrets set STRIPE_PRICE_YEARLY=price_...
+   supabase secrets set STRIPE_PRICE_FIVE_YEAR=price_...
+   supabase secrets set SITE_URL=https://your-thuto-origin
    ```
-   `SITE_URL` must match your deployed app origin (no trailing slash), including GitHub Pages base path if applicable.
 
-## 3. GitHub Actions / local `.env`
-
-| Variable | Where |
-|----------|--------|
-| `VITE_SUPABASE_URL` | GitHub secret + `.env` |
-| `VITE_SUPABASE_ANON_KEY` | GitHub secret + `.env` |
-| `VITE_STRIPE_PUBLISHABLE_KEY` | Optional display-only; checkout uses hosted Stripe pages |
-
-`deploy.yml` already passes Supabase vars; add `VITE_STRIPE_PUBLISHABLE_KEY` if you surface Stripe.js later.
-
-## 4. End-to-end test (test mode)
+## 3. End-to-end test (test mode)
 
 1. Sign up on `/auth`.
-2. Open `/upgrade` → choose a plan → complete Stripe test card `4242 4242 4242 4242`.
-3. Land on `/upgrade/success` → **Refresh status** on Profile.
-4. Confirm `profiles.premium_status = active` in Supabase Table Editor.
-5. Compare page allows **5** programmes when premium.
-6. Open **Manage subscription** on Settings → Stripe portal opens.
-7. Cancel in portal → webhook sets status to `canceled`.
+2. Open `/upgrade` → choose **Pro Yearly P59** or **Pro 5-Year P199** → complete Stripe test card `4242 4242 4242 4242`.
+3. Land on `/upgrade/success` → refresh profile.
+4. Confirm `profiles.premium_status = active` and `premium_plan` is `yearly` or `five_year`.
+5. Verify Pro limits: 3 compare, unlimited saves, acceptance chance visible, no ads.
+6. Free account: 2 saves, 2 compare, 3 AI questions/day, banner ad on app pages.
+
+## 4. University B2B (partner portal)
+
+1. Seed `institution_partners` and `institution_users` for pilot institutions.
+2. Partners log in at `/partner` to edit profiles and view analytics/leads.
+3. Verified institutions show badge on `/universities` and `/universities/:id`.
+4. Featured placements: insert rows into `featured_placements` for sponsored inventory.
 
 ## 5. Go live
 
 1. Swap Stripe keys to live mode; update webhook URL and secrets.
-2. Update Privacy and Disclaimer (already note Thuto Premium vs university fees).
-3. Remove test-only banners if any remain.
-
-## Monetization beyond base Pro
-
-- Nudge **Application Season Pass** on `/upgrade` (default “Most Popular” badge).
-- **Monthly** and **annual** for students who want ongoing access outside the season window.
-- Future: family plan, AI add-on packs, sponsored listings (separate Stripe products).
+2. Update Privacy and Disclaimer for one-time Pro payment terms.
+3. Communicate migration for legacy monthly/season_pass subscribers.

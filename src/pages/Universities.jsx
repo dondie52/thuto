@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
+import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
 import {
   fetchUniversities,
   groupUniversitiesByCategory,
@@ -8,6 +9,8 @@ import {
   UNIVERSITY_CATEGORY_ORDER,
 } from "../lib/universitiesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { fetchVerifiedInstitutionIds, fetchActiveFeaturedPlacements } from "../lib/partner.js";
+import { trackInstitutionView } from "../lib/analytics.js";
 import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
@@ -53,7 +56,7 @@ function sortInstitutions(items, sort) {
 }
 
 
-function InstitutionCard({ university }) {
+function InstitutionCard({ university, verified, sponsored }) {
   const websiteHref = safeExternalUrl(university.website);
 
   return (
@@ -73,12 +76,15 @@ function InstitutionCard({ university }) {
                 {university.name}
               </Link>
             </h3>
-            <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <p className="text-sm font-medium text-brand-600">{university.location}</p>
+              {verified ? <InstitutionVerificationBadge /> : null}
+            </div>
           </div>
         </div>
-        {university.featured ? (
+        {university.featured || sponsored ? (
           <span className="mt-2 inline-flex w-fit rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900">
-            Featured institution
+            {sponsored ? "Sponsored" : "Featured institution"}
           </span>
         ) : null}
         <p className="mt-3 flex-1 line-clamp-4 text-sm leading-relaxed text-slate-600">{university.description}</p>
@@ -116,6 +122,8 @@ export default function Universities() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [universities, setUniversities] = useState([]);
   const [error, setError] = useState(null);
+  const [verifiedIds, setVerifiedIds] = useState(() => new Set());
+  const [featuredInstitutionIds, setFeaturedInstitutionIds] = useState(() => new Set());
   /** @type {'remote' | 'bundled' | 'live' | null} */
   const [dataSource, setDataSource] = useState(null);
 
@@ -148,6 +156,15 @@ export default function Universities() {
     };
   }, []);
 
+  useEffect(() => {
+    Promise.all([fetchVerifiedInstitutionIds(), fetchActiveFeaturedPlacements()]).then(([verified, placements]) => {
+      setVerifiedIds(verified);
+      setFeaturedInstitutionIds(
+        new Set(placements.filter((p) => p.entity_type === "institution").map((p) => p.entity_id)),
+      );
+    });
+  }, []);
+
   const groupedUniversities = useMemo(() => {
     let groups = groupUniversitiesByCategory(universities);
     if (institutionType !== "all") {
@@ -156,10 +173,14 @@ export default function Universities() {
     return groups
       .map((group) => ({
         ...group,
-        items: sortInstitutions(group.items, sort),
+        items: sortInstitutions(group.items, sort).sort((a, b) => {
+          const aBoost = (a.featured ? 1 : 0) + (featuredInstitutionIds.has(a.id) ? 2 : 0);
+          const bBoost = (b.featured ? 1 : 0) + (featuredInstitutionIds.has(b.id) ? 2 : 0);
+          return bBoost - aBoost;
+        }),
       }))
       .filter((group) => group.items.length > 0);
-  }, [universities, institutionType, sort]);
+  }, [universities, institutionType, sort, featuredInstitutionIds]);
 
   const visibleCount = useMemo(
     () => groupedUniversities.reduce((total, group) => total + group.items.length, 0),
@@ -279,7 +300,12 @@ export default function Universities() {
 
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {group.items.map((university) => (
-                <InstitutionCard key={university.id} university={university} />
+                <InstitutionCard
+                  key={university.id}
+                  university={university}
+                  verified={verifiedIds.has(university.id)}
+                  sponsored={featuredInstitutionIds.has(university.id)}
+                />
               ))}
             </ul>
           </section>

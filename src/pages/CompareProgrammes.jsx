@@ -289,8 +289,8 @@ function CompareIntro({ children }) {
 
 export default function CompareProgrammes() {
   useDocumentTitle("Compare programmes | Thuto");
-  const { isPremium } = useAuth();
-  const compareMax = getCompareMax(isPremium);
+  const { profile } = useAuth();
+  const compareMax = getCompareMax(profile);
   const [searchParams, setSearchParams] = useSearchParams();
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [error, setError] = useState(null);
@@ -337,21 +337,21 @@ export default function CompareProgrammes() {
     if (!allProgrammes.length) return [];
     return effectiveIds.filter((id) => !byId.has(id));
   }, [effectiveIds, byId, allProgrammes.length]);
-  const isOverLimit = foundRequestedIds.length > 3;
+  const isOverLimit = foundRequestedIds.length > compareMax;
 
   useEffect(() => {
     if (!allProgrammes.length) return;
     setChosenCompareIds((current) => {
-      const stillAvailable = current.filter((id) => foundRequestedIds.includes(id)).slice(0, 3);
-      if (stillAvailable.length >= Math.min(foundRequestedIds.length, 3)) return stillAvailable;
+      const stillAvailable = current.filter((id) => foundRequestedIds.includes(id)).slice(0, compareMax);
+      if (stillAvailable.length >= Math.min(foundRequestedIds.length, compareMax)) return stillAvailable;
       const next = [...stillAvailable];
       for (const id of foundRequestedIds) {
-        if (next.length >= 3) break;
+        if (next.length >= compareMax) break;
         if (!next.includes(id)) next.push(id);
       }
       return next;
     });
-  }, [allProgrammes.length, foundRequestedIds]);
+  }, [allProgrammes.length, foundRequestedIds, compareMax]);
 
   const displayMessage = useMemo(() => {
     if (error) return error;
@@ -366,7 +366,7 @@ export default function CompareProgrammes() {
 
   const selected = useMemo(() => {
     if (displayMessage) return [];
-    const ids = isOverLimit ? chosenCompareIds : foundRequestedIds.slice(0, 3);
+    const ids = isOverLimit ? chosenCompareIds : foundRequestedIds.slice(0, compareMax);
     return ids.map((id) => byId.get(id)).filter(Boolean);
   }, [foundRequestedIds, byId, displayMessage, isOverLimit, chosenCompareIds]);
 
@@ -406,20 +406,20 @@ export default function CompareProgrammes() {
     (id) => {
       setChosenCompareIds((current) => {
         if (current.includes(id)) return current.filter((x) => x !== id);
-        if (current.length >= 3) return current;
+        if (current.length >= compareMax) return current;
         return [...current, id];
       });
     },
-    [],
+    [compareMax],
   );
 
   const applyChosenProgrammes = useCallback(() => {
-    const next = chosenCompareIds.filter((id) => byId.has(id)).slice(0, 3);
+    const next = chosenCompareIds.filter((id) => byId.has(id)).slice(0, compareMax);
     setCompareIds(next);
     setStoredCompareIds(next);
     if (next.length === 0) setSearchParams({});
     else setSearchParams({ ids: next.join(",") });
-  }, [chosenCompareIds, byId, setSearchParams]);
+  }, [chosenCompareIds, byId, setSearchParams, compareMax]);
 
   const showDeadlineRow = selected.some((p) => p.applicationDeadline);
   const showApplyRow = selected.some((p) => safeExternalUrl(p.applyUrl));
@@ -475,7 +475,7 @@ export default function CompareProgrammes() {
           <div>
             <CompareIntro>
               <p className="mt-2 max-w-[32ch] text-sm leading-6 text-stone-600 sm:max-w-xl">
-                Side-by-side facts for up to three programmes. Share this page from your browser; the selected programmes are saved in the URL.
+                Side-by-side facts for up to {compareMax} programmes. Share this page from your browser; the selected programmes are saved in the URL.
               </p>
             </CompareIntro>
             <div className="mt-4 grid gap-2 sm:flex sm:flex-wrap" aria-label="Selected institutions">
@@ -500,14 +500,14 @@ export default function CompareProgrammes() {
       </CompareShell>
 
       {isOverLimit ? (
-        <CompareShell className="p-4 sm:p-5" labelledBy="choose-three-heading">
+        <CompareShell className="p-4 sm:p-5" labelledBy="choose-compare-heading">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <h2 id="choose-three-heading" className="font-display text-lg font-bold text-brand-900">
-                Choose three programmes
+              <h2 id="choose-compare-heading" className="font-display text-lg font-bold text-brand-900">
+                Choose {compareMax} programmes
               </h2>
               <p className="mt-1 max-w-2xl text-sm leading-6 text-stone-700">
-                You can compare three programmes at a time. Choose the three you want to keep in this comparison.
+                You can compare {compareMax} programmes at a time. Choose the ones you want to keep in this comparison.
               </p>
             </div>
             <button
@@ -516,14 +516,14 @@ export default function CompareProgrammes() {
               disabled={chosenCompareIds.length < 2}
               className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-600"
             >
-              Compare selected ({chosenCompareIds.length}/3)
+              Compare selected ({chosenCompareIds.length}/{compareMax})
             </button>
           </div>
           <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {foundRequestedIds.map((id) => {
               const programme = byId.get(id);
               const checked = chosenCompareIds.includes(id);
-              const disabled = !checked && chosenCompareIds.length >= 3;
+              const disabled = !checked && chosenCompareIds.length >= compareMax;
               return (
                 <button
                   key={id}

@@ -49,7 +49,8 @@ export default function Programmes() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } =
+    useCompareSelection();
 
   const predTotal = readPredictorSession().total;
 
@@ -412,7 +413,7 @@ export default function Programmes() {
                     disabled={compareDisabled}
                     onChange={() => toggleCompare(p.id)}
                     aria-label={`Select ${p.name} for compare`}
-                    title={compareDisabled ? "Compare allows at most 3 programmes" : undefined}
+                    title={compareDisabled ? `Compare allows at most ${compareMax} programmes` : undefined}
                   />
                 </label>
               </div>
