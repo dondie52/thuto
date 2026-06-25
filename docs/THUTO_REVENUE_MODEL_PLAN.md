@@ -57,7 +57,7 @@ Students stay free-first. Universities pay for accuracy, trust, visibility, and 
 
 ### Phase 0 — Foundations ✅
 
-**Migration:** `supabase/migrations/20260625120000_revenue_model_and_partners.sql`
+**Migration:** `supabase/migrations/20260625150000_revenue_model_and_partners.sql`
 
 - `institution_partners`, `institution_users`, `institution_claims`
 - `featured_placements`, `institution_leads`, `institution_analytics_daily`
