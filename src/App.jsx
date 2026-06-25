@@ -1,6 +1,5 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
-import SplashScreen from "./components/SplashScreen.jsx";
 import { useRouteSeo } from "./hooks/useRouteSeo.js";
 import { AuthProvider } from "./lib/auth.jsx";
 
@@ -47,9 +46,6 @@ const Partner = lazy(() => import("./pages/Partner.jsx"));
 const ExternalRedirect = lazy(() => import("./pages/ExternalRedirect.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
-const splashEnterMs = 520;
-const splashExitMs = 180;
-
 function PageFallback() {
   return (
     <div className="grid min-h-dvh place-items-center bg-[var(--thuto-surface)] px-4" role="status" aria-label="Loading page">
@@ -60,38 +56,8 @@ function PageFallback() {
   );
 }
 
-function shouldShowBrandedSplash() {
-  if (typeof window === "undefined") return false;
-  const isStandalone =
-    window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-  if (isStandalone) return true;
-  return window.sessionStorage.getItem("thuto:splash-seen") !== "1";
-}
-
-function getInitialSplashPhase() {
-  return shouldShowBrandedSplash() ? "enter" : "hidden";
-}
-
 export default function App() {
-  const [splashPhase, setSplashPhase] = useState(getInitialSplashPhase);
   useRouteSeo();
-
-  useEffect(() => {
-    if (splashPhase === "hidden") return undefined;
-    const isStandalone =
-      window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-    if (!isStandalone) window.sessionStorage.setItem("thuto:splash-seen", "1");
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const enterMs = prefersReducedMotion ? 120 : splashEnterMs;
-    const exitMs = prefersReducedMotion ? 60 : splashExitMs;
-    const exitTimer = window.setTimeout(() => setSplashPhase("exit"), enterMs);
-    const hideTimer = window.setTimeout(() => setSplashPhase("hidden"), enterMs + exitMs);
-
-    return () => {
-      window.clearTimeout(exitTimer);
-      window.clearTimeout(hideTimer);
-    };
-  }, [splashPhase]);
 
   return (
     <AuthProvider>
@@ -146,7 +112,6 @@ export default function App() {
           </Route>
         </Routes>
       </Suspense>
-      {splashPhase !== "hidden" && <SplashScreen exiting={splashPhase === "exit"} />}
     </AuthProvider>
   );
 }

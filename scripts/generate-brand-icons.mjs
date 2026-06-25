@@ -1,6 +1,6 @@
 /**
  * Regenerate raster brand icons from public/icons/thuto-mark.svg.
- * Keeps the PWA install / launch splash aligned with the in-app splash (T mark, no legacy logo art).
+ * Keeps the PWA install / launch splash aligned with the Thuto mark (no legacy logo art).
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -12,13 +12,12 @@ const root = path.join(__dirname, "..");
 const svgPath = path.join(root, "public/icons/thuto-mark.svg");
 const outDir = path.join(root, "public/icons");
 
-/** Matches SplashScreen background (--thuto-surface) and PWA manifest background_color. */
+/** Matches --thuto-surface and PWA manifest background_color. */
 const SPLASH_BG = "#f3f1ec";
 
 /**
- * In-app splash uses a 64px mark (h-16). OS launch splashes scale the full icon canvas to
- * ~40–50% of the viewport, so a full-bleed mark looks huge. Padding the launch icons keeps
- * the standalone splash visually aligned with SplashScreen.jsx.
+ * OS launch splashes scale the full icon canvas to ~40–50% of the viewport, so a full-bleed
+ * mark looks huge. Padding the launch icons keeps the standalone splash visually balanced.
  */
 const LAUNCH_MARK_RATIO = 64 / 192;
 
