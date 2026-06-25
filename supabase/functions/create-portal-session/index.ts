@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
       .maybeSingle();
 
     if (!profile?.stripe_customer_id) {
-      return jsonResponse({ error: "No billing account found. Subscribe to Premium first." }, 400, req);
+      return jsonResponse({ error: "No billing account found. Purchase Thuto Pro first." }, 400, req);
     }
 
     const stripe = getStripe();

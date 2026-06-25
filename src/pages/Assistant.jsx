@@ -12,7 +12,7 @@ import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { scrollElementIntoView } from "../lib/motion.js";
-import { getAssistantUsageToday } from "../lib/premium.js";
+import { getAssistantUsageToday, recordAssistantUsage } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
 const speechRecognition =
@@ -185,6 +185,12 @@ export default function Assistant() {
   async function sendQuestion(value) {
     const clean = String(value || "").trim();
     if (!clean || isSending) return;
+
+    if (canUseGemini && !recordAssistantUsage(isPremium)) {
+      setError(`You have reached today's limit of ${getAssistantUsageToday(isPremium).limit} AI questions on the free plan. Upgrade to Pro for unlimited questions.`);
+      return;
+    }
+
     setQuestion("");
     setLastQuestion(clean);
     setError(null);
@@ -325,9 +331,11 @@ export default function Assistant() {
                 <Link to="/upgrade" className="font-semibold text-brand-700 underline">
                   Pro
                 </Link>{" "}
-                raises the daily limit
+                unlocks unlimited questions
               </>
-            ) : null}
+            ) : (
+              " · Unlimited on Pro"
+            )}
           </p>
         ) : null}
       </header>

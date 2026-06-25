@@ -288,8 +288,8 @@ export default function AccountDrawer() {
                   <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Pro</p>
                   <p className="mt-1 text-xs leading-relaxed text-stone-600">
                     {isPremium
-                      ? "PDF downloads, WhatsApp support, and unlimited tools are unlocked."
-                      : "Download programme breakdowns, get WhatsApp support, and unlock unlimited tools to finalise your applications."}
+                      ? "Alerts, PDF downloads, acceptance chance, and unlimited AI are unlocked."
+                      : "One-time Pro from P59/year — no monthly billing. Alerts, PDFs, and unlimited AI."}
                   </p>
                   <Link
                     to={isPremium ? "/settings" : "/upgrade"}

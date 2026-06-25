@@ -1,5 +1,4 @@
 const STORAGE_KEY = "thuto.bookmarkedProgrammeIds";
-const MAX_BOOKMARKS = 10;
 
 /**
  * @returns {string[]}
@@ -24,17 +23,28 @@ function setBookmarkIds(ids) {
 }
 
 /**
- * Most-recent first. If already at max, drops the oldest bookmark.
- * @param {string} programmeId
- * @returns {string[]} new ordered ids
+ * @param {number} maxBookmarks
  */
-export function addBookmark(programmeId) {
+export function getBookmarkLimit(maxBookmarks) {
+  return Number.isFinite(maxBookmarks) ? maxBookmarks : Number.MAX_SAFE_INTEGER;
+}
+
+/**
+ * Most-recent first. Respects tier limit for free users.
+ * @param {string} programmeId
+ * @param {number} [maxBookmarks]
+ * @returns {{ ids: string[], added: boolean }}
+ */
+export function addBookmark(programmeId, maxBookmarks = Number.MAX_SAFE_INTEGER) {
+  const limit = getBookmarkLimit(maxBookmarks);
   const id = String(programmeId).trim();
-  if (!id) return getBookmarkIds();
-  const current = getBookmarkIds().filter((x) => x !== id);
-  const next = [id, ...current].slice(0, MAX_BOOKMARKS);
+  if (!id) return { ids: getBookmarkIds(), added: false };
+  const current = getBookmarkIds();
+  if (current.includes(id)) return { ids: current, added: true };
+  if (current.length >= limit) return { ids: current, added: false };
+  const next = [id, ...current.filter((x) => x !== id)].slice(0, limit);
   setBookmarkIds(next);
-  return next;
+  return { ids: next, added: true };
 }
 
 /**
@@ -50,17 +60,17 @@ export function removeBookmark(programmeId) {
 
 /**
  * @param {string} programmeId
+ * @param {number} [maxBookmarks]
  * @returns {boolean} true if now bookmarked
  */
-export function toggleBookmark(programmeId) {
+export function toggleBookmark(programmeId, maxBookmarks = Number.MAX_SAFE_INTEGER) {
   const id = String(programmeId).trim();
   if (!id) return false;
   if (getBookmarkIds().includes(id)) {
     removeBookmark(id);
     return false;
   }
-  addBookmark(id);
-  return true;
+  return addBookmark(id, maxBookmarks).added;
 }
 
 /**
@@ -72,4 +82,4 @@ export function isBookmarked(programmeId) {
   return getBookmarkIds().includes(id);
 }
 
-export { MAX_BOOKMARKS, STORAGE_KEY };
+export { STORAGE_KEY };

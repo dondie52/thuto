@@ -51,7 +51,7 @@ const cards = [
   {
     to: "/compare",
     title: "Compare programmes",
-    body: "Select up to three programmes and open a shareable side-by-side table.",
+    body: "Compare up to two programmes on Free, or three with Pro, in a shareable side-by-side table.",
   },
   {
     to: "/universities",

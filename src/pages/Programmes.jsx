@@ -12,6 +12,7 @@ import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import {
   getProgrammeCareers,
@@ -61,7 +62,8 @@ export default function Programmes() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
+  const { entitlements } = useEntitlements();
 
   const predTotal = readPredictorSession().total;
 
@@ -435,7 +437,7 @@ export default function Programmes() {
         {filteredSorted.map((p) => {
           const rowEligibility = eligibilityById.get(p.id);
           const compareDisabled = !isSelected(p.id) && !canAdd;
-          const careers = getProgrammeCareers(p).slice(0, 2);
+          const careers = getProgrammeCareers(p).slice(0, entitlements.careersPerProgramme);
           return (
             <li key={p.id} className="flex items-stretch">
               <ProgrammeThemeAccent programme={p} />
@@ -448,7 +450,7 @@ export default function Programmes() {
                     disabled={compareDisabled}
                     onChange={() => toggleCompare(p.id)}
                     aria-label={`Select ${p.name} for compare`}
-                    title={compareDisabled ? "Compare allows at most 3 programmes" : undefined}
+                    title={compareDisabled ? `Compare allows at most ${compareMax} programmes` : undefined}
                   />
                 </label>
               </div>
@@ -466,7 +468,9 @@ export default function Programmes() {
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
-                    {rowEligibility ? <EligibilityPill eligibility={rowEligibility} /> : null}
+                    {entitlements.acceptanceChance && rowEligibility ? (
+                      <EligibilityPill eligibility={rowEligibility} />
+                    ) : null}
                     <span className="text-xs font-medium text-brand-700">
                       {programmeHasAdmissionPoints(p) ? `Min ${p.minPoints} pts` : "Min pts not listed"} →
                     </span>
