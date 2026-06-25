@@ -111,10 +111,13 @@ function mergeFeaturedWithLocal(pool, calendarDayKey, aiOrder) {
   return { list: merged.slice(0, 3), source: aiUsedCount >= 2 ? "gemini" : "local" };
 }
 
+const URGENT_DEADLINES_PREVIEW = 5;
+
 export default function Home() {
   useDocumentTitle("Thuto - Your Botswana Tertiary Companion");
   const { content } = usePageContent("home", PAGE_CONTENT_DEFAULTS.home);
   const [urgentUnis, setUrgentUnis] = useState([]);
+  const [showAllDeadlines, setShowAllDeadlines] = useState(false);
   const [calendarDayKey, setCalendarDayKey] = useState(() => localCalendarDateKey());
   const fallbackFunding = fundingSpotlightForDay(calendarDayKey);
   /** @type {Array<{ id: string, name: string, university?: string, minPoints?: number | null, teaser?: string }>} */
@@ -240,6 +243,8 @@ export default function Home() {
     !geminiScholarship && fallbackFunding.cardBackground
       ? resolveProgrammeThemeUrl(fallbackFunding.cardBackground)
       : "";
+  const visibleUrgentUnis = showAllDeadlines ? urgentUnis : urgentUnis.slice(0, URGENT_DEADLINES_PREVIEW);
+  const hasMoreDeadlines = urgentUnis.length > URGENT_DEADLINES_PREVIEW;
 
   return (
     <div className="space-y-10">
@@ -254,7 +259,7 @@ export default function Home() {
             university’s official site.
           </p>
           <ul className="mt-3 space-y-2 text-sm">
-            {urgentUnis.map((u) => (
+            {visibleUrgentUnis.map((u) => (
               <li
                 key={u.id}
                 className="flex flex-wrap items-baseline justify-between gap-2 border-t border-amber-200/70 pt-2 first:border-t-0 first:pt-0"
@@ -271,6 +276,15 @@ export default function Home() {
               </li>
             ))}
           </ul>
+          {hasMoreDeadlines && !showAllDeadlines ? (
+            <button
+              type="button"
+              onClick={() => setShowAllDeadlines(true)}
+              className="focus-ring mt-2 rounded text-xs font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
+            >
+              See all deadlines ({urgentUnis.length})
+            </button>
+          ) : null}
           <p className="mt-3 text-[10px] leading-snug text-amber-900/80">{APPLICATION_DATES_DISCLAIMER}</p>
           <Link
             to="/universities"
