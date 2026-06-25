@@ -22,6 +22,9 @@ export default function LandingFooter({ content }) {
             <a href="#about" className="font-medium text-slate-700 hover:text-brand-800">
               About
             </a>
+            <Link to="/partners" className="font-medium text-slate-700 hover:text-brand-800">
+              Partners
+            </Link>
             <Link to="/sponsorships" className="font-medium text-slate-700 hover:text-brand-800">
               Sponsorships
             </Link>

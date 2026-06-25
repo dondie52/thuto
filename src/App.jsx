@@ -43,6 +43,7 @@ const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
 const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
 const UpgradeCancel = lazy(() => import("./pages/UpgradeCancel.jsx"));
 const Partner = lazy(() => import("./pages/Partner.jsx"));
+const Partners = lazy(() => import("./pages/Partners.jsx"));
 const ExternalRedirect = lazy(() => import("./pages/ExternalRedirect.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
@@ -105,6 +106,7 @@ export default function App() {
             <Route path="/upgrade/success" element={<UpgradeSuccess />} />
             <Route path="/upgrade/cancel" element={<UpgradeCancel />} />
             <Route path="/partner" element={<Partner />} />
+            <Route path="/partners" element={<Partners />} />
             <Route path="/go" element={<ExternalRedirect />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/privacy" element={<Privacy />} />

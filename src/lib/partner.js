@@ -41,6 +41,29 @@ export async function fetchInstitutionPartner(institutionId) {
 }
 
 /**
+ * Verified partners for marketing surfaces (logo wall on /partners).
+ * @returns {Promise<Array<{ institutionId: string, tier: string, verifiedAt: string | null }>>}
+ */
+export async function fetchVerifiedPartnersForMarketing() {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from("institution_partners")
+    .select("institution_id, tier, verified_at")
+    .not("verified_at", "is", null)
+    .order("verified_at", { ascending: false });
+  if (error) {
+    console.warn("Verified partners fetch failed:", error.message);
+    return [];
+  }
+  return (data || []).map((row) => ({
+    institutionId: row.institution_id,
+    tier: row.tier,
+    verifiedAt: row.verified_at,
+  }));
+}
+
+/**
  * @returns {Promise<Set<string>>}
  */
 export async function fetchVerifiedInstitutionIds() {

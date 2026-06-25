@@ -30,6 +30,11 @@ import {
   isSupportFeedbackUnavailableError,
   updateSupportFeedbackStatus,
 } from "../lib/supportFeedback.js";
+import {
+  fetchPartnerInquiries,
+  isPartnerInquiriesUnavailableError,
+  updatePartnerInquiryStatus,
+} from "../lib/partnerInquiries.js";
 import { safeExternalUrl, isAllowedExternalResourceUrl } from "../lib/urlSafety.js";
 
 const ADMIN_TABS = [
@@ -38,6 +43,7 @@ const ADMIN_TABS = [
   { key: "pages", label: "Page content" },
   { key: "opportunities", label: "Opportunities" },
   { key: "feedback", label: "Feedback" },
+  { key: "partners", label: "Partners" },
   { key: "premium", label: "Premium" },
 ];
 
@@ -46,6 +52,7 @@ const CONTROL_LINKS = [
   { to: "/programmes", label: "Programme catalogue", description: "Inspect programme data exactly as students see it." },
   { to: "/universities", label: "Universities", description: "Check institution pages, resources, and application windows." },
   { to: "/sponsorships", label: "Sponsorships", description: "Review public sponsorship cards from live opportunity data." },
+  { to: "/partners", label: "Partners page", description: "Review the public partner marketing page and inquiry form." },
   { to: "/internships", label: "Internships", description: "Review internship cards from live opportunity data." },
   { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Review postgraduate programmes hub and scholarship posts." },
   { to: "/settings", label: "Settings", description: "Open account settings for the current operator." },
@@ -386,6 +393,9 @@ export default function Admin() {
   const [feedbackRows, setFeedbackRows] = useState([]);
   const [feedbackLoaded, setFeedbackLoaded] = useState(false);
   const [feedbackWarning, setFeedbackWarning] = useState("");
+  const [partnerInquiryRows, setPartnerInquiryRows] = useState([]);
+  const [partnerInquiriesLoaded, setPartnerInquiriesLoaded] = useState(false);
+  const [partnerInquiriesWarning, setPartnerInquiriesWarning] = useState("");
   const [universityForm, setUniversityForm] = useState(EMPTY_UNIVERSITY_FORM);
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
   const [editingOpportunityId, setEditingOpportunityId] = useState("");
@@ -447,6 +457,23 @@ export default function Admin() {
     }
   }
 
+  async function loadPartnerInquiryRows() {
+    setPartnerInquiriesWarning("");
+    try {
+      setPartnerInquiryRows(await fetchPartnerInquiries({ limit: 40 }));
+    } catch (err) {
+      if (isPartnerInquiriesUnavailableError(err)) {
+        setPartnerInquiryRows([]);
+        setError("");
+        setPartnerInquiriesWarning(err.message || "Partner inquiries are unavailable in this Supabase project right now.");
+        return;
+      }
+      setError(err.message || "Could not load partner inquiries.");
+    } finally {
+      setPartnerInquiriesLoaded(true);
+    }
+  }
+
   useEffect(() => {
     let cancelled = false;
     async function loadForSuperuser() {
@@ -455,6 +482,9 @@ export default function Admin() {
         setFeedbackRows([]);
         setFeedbackWarning("");
         setFeedbackLoaded(false);
+        setPartnerInquiryRows([]);
+        setPartnerInquiriesWarning("");
+        setPartnerInquiriesLoaded(false);
         return;
       }
       setFeedbackLoaded(false);
@@ -471,6 +501,11 @@ export default function Admin() {
     if (activeTab !== "feedback" || !configured || !user?.id || !isSuperuser || feedbackLoaded) return;
     loadFeedbackRows();
   }, [activeTab, configured, feedbackLoaded, isSuperuser, user?.id]);
+
+  useEffect(() => {
+    if (activeTab !== "partners" || !configured || !user?.id || !isSuperuser || partnerInquiriesLoaded) return;
+    loadPartnerInquiryRows();
+  }, [activeTab, configured, isSuperuser, partnerInquiriesLoaded, user?.id]);
 
   const reviewQueue = useMemo(() => {
     if (!overview) return [];
@@ -870,6 +905,26 @@ export default function Admin() {
         return;
       }
       setError(err.message || "Could not update feedback.");
+    } finally {
+      setBusyTarget("");
+    }
+  }
+
+  async function handlePartnerInquiryStatus(id, status) {
+    setBusyTarget(`partner-inquiry:${id}`);
+    setError("");
+    setNotice("");
+    try {
+      await updatePartnerInquiryStatus(id, status);
+      setNotice("Partner inquiry status updated.");
+      await loadPartnerInquiryRows();
+    } catch (err) {
+      if (isPartnerInquiriesUnavailableError(err)) {
+        setError("");
+        setPartnerInquiriesWarning(err.message || "Partner inquiries are unavailable in this Supabase project right now.");
+        return;
+      }
+      setError(err.message || "Could not update partner inquiry.");
     } finally {
       setBusyTarget("");
     }
@@ -1838,6 +1893,62 @@ export default function Admin() {
           </div>
         ) : (
           <p className="mt-3 text-sm text-stone-500">No support feedback rows yet.</p>
+        )}
+      </section>
+
+      <section className={`${activeTab === "partners" ? "block" : "hidden"} rounded-3xl border border-brand-100 bg-white p-4 shadow-sm`}>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-xl font-semibold text-brand-950">Partner inquiries</h2>
+          <button
+            type="button"
+            onClick={loadPartnerInquiryRows}
+            className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+          >
+            Refresh inquiries
+          </button>
+        </div>
+        {partnerInquiriesWarning ? (
+          <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            <p>{partnerInquiriesWarning}</p>
+            <p className="mt-2 text-amber-800/90">
+              Once the partner inquiries migration is applied in Supabase, refresh this tab and submissions from /partners will appear here.
+            </p>
+          </div>
+        ) : partnerInquiryRows.length ? (
+          <div className="mt-3 grid gap-3">
+            {partnerInquiryRows.map((row) => (
+              <article key={row.id} className="rounded-2xl bg-stone-50 p-3">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-brand-950">
+                      {row.organization} · {labelize(row.partner_type)}
+                    </p>
+                    <p className="mt-1 text-xs text-stone-500">
+                      {row.name} / {row.email} / {formatDate(row.created_at)}
+                    </p>
+                  </div>
+                  <select
+                    value={row.status}
+                    disabled={busyTarget === `partner-inquiry:${row.id}`}
+                    onChange={(event) => handlePartnerInquiryStatus(row.id, event.target.value)}
+                    className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium text-stone-800 disabled:opacity-60"
+                  >
+                    <option value="new">New</option>
+                    <option value="reviewing">Reviewing</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </div>
+                {row.message ? (
+                  <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-stone-700">{row.message}</p>
+                ) : (
+                  <p className="mt-3 text-sm text-stone-500">No message provided.</p>
+                )}
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-stone-500">No partner inquiry rows yet.</p>
         )}
       </section>
 
