@@ -19,7 +19,10 @@ Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supa
 
 ## 2. Supabase
 
-1. Apply migrations including `supabase/migrations/20260522000000_profiles_and_premium.sql` and `supabase/migrations/20260625140000_subscription_restructure.sql`.
+1. Apply migrations including:
+   - `supabase/migrations/20260522000000_profiles_and_premium.sql`
+   - `supabase/migrations/20260625140000_subscription_restructure.sql`
+   - `supabase/migrations/20260625120000_revenue_model_and_partners.sql`
 2. Deploy edge functions:
    ```bash
    supabase functions deploy create-checkout-session
@@ -67,3 +70,17 @@ Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supa
 - **Thuto Free**: banner ads, limited saves/compare/AI, community support.
 - **Thuto Pro**: one-time **P59/year** or **P199/5-year** — no monthly subscription.
 - Future: family plan, sponsored listings (separate Stripe products).
+
+## 6. University B2B partners
+
+1. Apply `supabase/migrations/20260625120000_revenue_model_and_partners.sql` after the subscription restructure migration.
+2. Seed pilot data:
+   ```sql
+   insert into institution_partners (institution_id, tier, verified_at)
+   values ('ub', 'verified', now());
+   insert into institution_users (user_id, institution_id, role, verified_admin_at)
+   values ('<staff-user-uuid>', 'ub', 'owner', now());
+   ```
+3. Partners manage profiles at `/partner` (claim flow for new institutions).
+4. Featured placements: insert rows into `featured_placements` with `starts_at` / `ends_at`.
+5. Run `select public.rollup_institution_analytics();` daily (cron) to populate partner dashboards.

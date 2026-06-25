@@ -30,6 +30,10 @@ import {
   isFitFinderCompatible,
 } from "../lib/programmeInsights.js";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
+import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
+import { trackProgrammeView } from "../lib/analytics.js";
+import { buildTrackedApplyUrl } from "../lib/applyLinks.js";
+import { fetchVerifiedInstitutionIds } from "../lib/partner.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
 import ProgrammeModulesSection from "../components/ProgrammeModulesSection.jsx";
@@ -51,6 +55,7 @@ export default function ProgrammeDetail() {
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [university, setUniversity] = useState(null);
   const [error, setError] = useState(null);
+  const [verifiedInstitutionIds, setVerifiedInstitutionIds] = useState(() => new Set());
   const { toggle, isBookmarked, atLimit, maxBookmarks } = useBookmarks();
   const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
   const { entitlements } = useEntitlements();
@@ -77,6 +82,14 @@ export default function ProgrammeDetail() {
       cancelled = true;
     };
   }, [id]);
+
+  useEffect(() => {
+    fetchVerifiedInstitutionIds().then(setVerifiedInstitutionIds);
+  }, []);
+
+  useEffect(() => {
+    if (programme) trackProgrammeView(programme);
+  }, [programme?.id]);
 
   const similarProgrammes = useMemo(() => {
     return getSimilarProgrammes(programme, allProgrammes, 3);
@@ -120,7 +133,10 @@ export default function ProgrammeDetail() {
 
   const inCompare = isSelected(programme.id);
   const compareToggleDisabled = !inCompare && !canAdd;
-  const applyHref = safeExternalUrl(programme.applyUrl);
+  const applyHref = buildTrackedApplyUrl(programme.applyUrl, {
+    programmeId: programme.id,
+    institutionId: university?.id,
+  });
   const officialHref = safeExternalUrl(programme.officialUrl);
 
   const hasApplicationBlock =
@@ -247,6 +263,8 @@ export default function ProgrammeDetail() {
                   href={applyHref}
                   variant="programmePrimary"
                   institutionName={programme.university || university?.name}
+                  programmeId={programme.id}
+                  institutionId={university?.id}
                   useInterstitial
                 >
                   Apply / admissions
@@ -401,6 +419,14 @@ export default function ProgrammeDetail() {
       ) : (
         <UpgradePrompt feature="pdfDownload" message="Download and share programme summaries with Thuto Pro." />
       )}
+
+      {university?.id && verifiedInstitutionIds.has(university.id) ? (
+        <LeadInquiryForm
+          institutionId={university.id}
+          programmeId={programme.id}
+          institutionName={university.name}
+        />
+      ) : null}
 
       {similarProgrammes.length > 0 ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">

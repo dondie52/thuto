@@ -43,6 +43,7 @@ const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
 const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
 const UpgradeCancel = lazy(() => import("./pages/UpgradeCancel.jsx"));
+const Partner = lazy(() => import("./pages/Partner.jsx"));
 const ExternalRedirect = lazy(() => import("./pages/ExternalRedirect.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
@@ -135,6 +136,9 @@ export default function App() {
             <Route path="/study/:subjectId" element={<StudySubject />} />
             <Route path="/support" element={<Support />} />
             <Route path="/upgrade" element={<Upgrade />} />
+            <Route path="/upgrade/success" element={<UpgradeSuccess />} />
+            <Route path="/upgrade/cancel" element={<UpgradeCancel />} />
+            <Route path="/partner" element={<Partner />} />
             <Route path="/go" element={<ExternalRedirect />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/privacy" element={<Privacy />} />

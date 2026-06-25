@@ -7,6 +7,7 @@ import {
   clearCompareIds as clearCompareIdsStorage,
 } from "../lib/compareSelection.js";
 import { getCompareMax } from "../lib/premium.js";
+import { trackLimitHit } from "../lib/analytics.js";
 
 const CHANGE_EVENT = "thuto-compare-selection";
 
@@ -55,11 +56,12 @@ export function useCompareSelection() {
   const toggle = useCallback(
     (id) => {
       const result = toggleCompareIdStorage(id, max);
+      if (result === null && !ids.includes(id)) trackLimitHit("compare");
       refresh();
       dispatchChange();
       return result;
     },
-    [max, refresh],
+    [max, refresh, ids],
   );
 
   const clear = useCallback(() => {

@@ -155,6 +155,21 @@ export default function Settings() {
         </section>
       ) : null}
 
+      {user ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+          <h2 className="font-display text-xl font-semibold text-brand-900">University staff</h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">
+            Claim and manage your institution&apos;s verified profile, programmes, analytics, and leads.
+          </p>
+          <Link
+            to="/partner"
+            className="mt-4 inline-flex rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50"
+          >
+            Open partner portal
+          </Link>
+        </section>
+      ) : null}
+
       {isPremium && user ? (
         <section className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 shadow-sm">
           <h2 className="font-display text-xl font-semibold text-emerald-950">Cloud backup</h2>
