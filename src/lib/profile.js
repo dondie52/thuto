@@ -92,7 +92,7 @@ function safeFileName(name) {
  * @property {string | null} stripe_customer_id
  * @property {string} payment_provider
  * @property {'free' | 'active' | 'past_due' | 'canceled'} premium_status
- * @property {'monthly' | 'annual' | 'season_pass' | null} premium_plan
+ * @property {'yearly' | 'five_year' | 'monthly' | 'annual' | 'season_pass' | null} premium_plan
  * @property {string | null} premium_until
  */
 

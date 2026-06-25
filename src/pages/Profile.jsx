@@ -217,7 +217,7 @@ export default function Profile() {
                   <p className="mt-1 text-sm text-slate-600">Active until {premiumUntil}.</p>
                 ) : (
                   <p className="mt-1 text-sm text-slate-600">
-                    Cloud sync, deadline alerts, and compare up to five programmes with Pro.
+                    Upgrade to Pro for unlimited saves, deadline alerts, acceptance chance, and compare up to 3 programmes.
                   </p>
                 )}
               </div>
@@ -229,7 +229,7 @@ export default function Profile() {
                     onClick={handleManageBilling}
                     className="rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50 disabled:opacity-60"
                   >
-                    {billingLoading ? "Opening portal..." : "Manage subscription"}
+                    {billingLoading ? "Opening portal..." : "Manage billing"}
                   </button>
                 ) : (
                   <Link
@@ -253,14 +253,14 @@ export default function Profile() {
           <ProfileSection
             id="billing"
             title="Billing details"
-            description="Review payment methods, invoices, and subscription changes in the Stripe customer portal."
+            description="Review payment history and receipts in the Stripe customer portal."
           >
             <div className="space-y-4">
               <dl className="space-y-2 text-sm">
                 <div className="flex items-center justify-between gap-3">
                   <dt className="text-slate-500">Billing status</dt>
                   <dd className="font-semibold text-brand-900">
-                    {isPremium ? "Active subscriber" : "No active subscription"}
+                    {isPremium ? "Pro active" : "No active Pro plan"}
                   </dd>
                 </div>
                 {isPremium && premiumUntil ? (

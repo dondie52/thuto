@@ -8,7 +8,9 @@ import { usePredictorGradeInput } from "../hooks/usePredictorGradeInput.js";
 import PredictorGradeSection from "../components/PredictorGradeSection.jsx";
 import ProgrammePredictorResults from "../components/ProgrammePredictorResults.jsx";
 import CertificateImportCard from "../components/CertificateImportCard.jsx";
+import UpgradePrompt from "../components/UpgradePrompt.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 import { useAuth } from "../lib/auth.jsx";
 import { hasPredictorAccess } from "../lib/onboarding.js";
 import { filterSubjectsBySyllabus } from "../lib/syllabus.js";
@@ -35,6 +37,7 @@ function buildShareText(breakdownTotal, results) {
 export default function Predictor() {
   useDocumentTitle("Admission Predictor | Thuto");
   const { user, profile } = useAuth();
+  const { entitlements } = useEntitlements();
   const [programmes, setProgrammes] = useState([]);
   const [loadError, setLoadError] = useState(null);
   const [shareFeedback, setShareFeedback] = useState(null);
@@ -188,7 +191,14 @@ export default function Predictor() {
         </div>
       ) : (
         <>
-          <CertificateImportCard onUseGrades={handleImportedRows} />
+          {entitlements.gradeImport ? (
+            <CertificateImportCard onUseGrades={handleImportedRows} />
+          ) : (
+            <UpgradePrompt
+              feature="gradeImport"
+              message="Upload a certificate photo or PDF to auto-fill grades with Thuto Pro. Free accounts can type grades manually below."
+            />
+          )}
 
           <PredictorGradeSection
             rows={rows}

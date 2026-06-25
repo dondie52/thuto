@@ -26,18 +26,10 @@ type GeminiResponse = {
   };
 };
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-api-version, accept, accept-profile, prefer, range",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+import { corsHeaders, jsonResponse } from "../_shared/cors.ts";
+import { getSupabaseUserClient } from "../_shared/supabaseAdmin.ts";
 
-function jsonResponse(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
-}
+const FREE_DAILY_LIMIT = 3;
 
 function cleanText(value: unknown, max = 4000) {
   return String(value || "").trim().slice(0, max);
@@ -110,7 +102,7 @@ function normalizeGeminiPayload(text: string) {
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders(request) });
   }
 
   if (request.method !== "POST") {
@@ -190,6 +182,25 @@ Deno.serve(async (request) => {
   const question = cleanText(body.question, 1200);
   if (!question) {
     return jsonResponse({ error: "Question is required" }, 400);
+  }
+
+  const authHeader = request.headers.get("Authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    const supabaseUser = getSupabaseUserClient(authHeader);
+    const { data: userData } = await supabaseUser.auth.getUser();
+    if (userData?.user?.id) {
+      const { data: quota, error: quotaError } = await supabaseUser.rpc("consume_assistant_question", {
+        p_limit: FREE_DAILY_LIMIT,
+      });
+      if (!quotaError && quota && quota.allowed === false && quota.reason === "daily_limit") {
+        return jsonResponse(
+          {
+            error: `Daily AI question limit reached (${quota.limit}/day on Free). Upgrade to Thuto Pro for unlimited questions.`,
+          },
+          429,
+        );
+      }
+    }
   }
 
   const model = Deno.env.get("GEMINI_MODEL") || "gemini-2.5-flash";

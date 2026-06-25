@@ -3,6 +3,7 @@ import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
 import OnboardingRedirect from "./OnboardingRedirect.jsx";
+import SubscriptionAdSlot from "./SubscriptionAdSlot.jsx";
 import { FEED_CHROME_CLASSES, useFeedRoute } from "../lib/feedChrome.jsx";
 
 const desktopLinks = [
@@ -63,6 +64,7 @@ export default function Layout() {
         ].join(" ")}
       >
         <Outlet />
+        <SubscriptionAdSlot />
       </main>
       <BottomNav />
     </div>

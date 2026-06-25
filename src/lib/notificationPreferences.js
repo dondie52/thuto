@@ -5,6 +5,7 @@ const DEFAULTS = {
   directMessages: true,
   feedActivity: true,
   deadlineReminders: true,
+  sponsorshipAlerts: true,
 };
 
 /**
@@ -51,5 +52,10 @@ export const NOTIFICATION_PREFERENCE_OPTIONS = [
     key: "deadlineReminders",
     label: "Deadline reminders",
     description: "Application and programme deadline alerts for your shortlist.",
+  },
+  {
+    key: "sponsorshipAlerts",
+    label: "Sponsorship alerts",
+    description: "DTEF and sponsorship deadline notices for programmes you follow.",
   },
 ];

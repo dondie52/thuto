@@ -1881,9 +1881,12 @@ export default function Admin() {
                         className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium text-stone-800"
                       >
                         <option value="">No plan</option>
-                        <option value="season_pass">Season</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="annual">Annual</option>
+                        <option value="">None</option>
+                        <option value="yearly">Yearly (P59)</option>
+                        <option value="five_year">5-Year (P199)</option>
+                        <option value="season_pass">Season (legacy)</option>
+                        <option value="monthly">Monthly (legacy)</option>
+                        <option value="annual">Annual (legacy)</option>
                       </select>
                       <input
                         type="date"

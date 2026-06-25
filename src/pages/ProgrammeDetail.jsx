@@ -11,7 +11,13 @@ import { useCompareSelection } from "../hooks/useCompareSelection.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
+import CareersList from "../components/CareersList.jsx";
+import DocumentsChecklist from "../components/DocumentsChecklist.jsx";
+import ProgrammePdfActions from "../components/ProgrammePdfActions.jsx";
+import UpgradePrompt from "../components/UpgradePrompt.jsx";
+import AdBanner from "../components/AdBanner.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
@@ -45,8 +51,9 @@ export default function ProgrammeDetail() {
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [university, setUniversity] = useState(null);
   const [error, setError] = useState(null);
-  const { toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd } = useCompareSelection();
+  const { toggle, isBookmarked, atLimit, maxBookmarks } = useBookmarks();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
+  const { entitlements } = useEntitlements();
 
   useEffect(() => {
     let cancelled = false;
@@ -133,6 +140,7 @@ export default function ProgrammeDetail() {
 
   return (
     <article className="space-y-6 pb-24 sm:pb-6">
+      {entitlements.showAds ? <AdBanner /> : null}
       <Link to={programmesListHref} className="inline-block text-sm font-medium text-brand-700 hover:underline">
         ← Programmes
       </Link>
@@ -177,14 +185,30 @@ export default function ProgrammeDetail() {
                 ]
                   .filter(Boolean)
                   .join(" ")}
-                title={compareToggleDisabled ? "Compare allows at most 3 programmes" : undefined}
+                title={compareToggleDisabled ? `Compare allows at most ${compareMax} programmes` : undefined}
               >
                 {inCompare ? "In compare" : "Add to compare"}
               </button>
-              {eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
+              {entitlements.acceptanceChance && eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
             </div>
           </div>
-          {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
+          {!entitlements.acceptanceChance && eligibility ? (
+            <div className="mt-3">
+              <UpgradePrompt feature="acceptanceChance" compact />
+            </div>
+          ) : null}
+          {entitlements.acceptanceChance && eligibility?.reason ? (
+            <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p>
+          ) : null}
+          {!isBookmarked(programme.id) && atLimit ? (
+            <p className="mt-3 text-xs text-amber-900">
+              Free plan allows {maxBookmarks} saved programmes.{" "}
+              <Link to="/upgrade" className="font-semibold underline">
+                Upgrade to Pro
+              </Link>{" "}
+              for unlimited saves.
+            </p>
+          ) : null}
           <ProgrammeAboutSummary summary={aboutSummary} programmeId={programme.id} />
           <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
             <div>
@@ -276,7 +300,7 @@ export default function ProgrammeDetail() {
         <h2 className="font-display text-lg font-semibold text-brand-900">Smart programme guide</h2>
         <div className="mt-3 grid gap-4 text-sm sm:grid-cols-2">
           <InsightBlock title="Best for students interested in" items={interests} empty="Interest tags are not listed yet." />
-          <InsightBlock title="Related careers" items={careers} empty="Career examples are not listed yet." />
+          <InsightBlock title="Related careers" items={careers.slice(0, entitlements.careersPerProgramme)} empty="Career examples are not listed yet." />
           <InsightBlock title="Subjects that help" items={relatedSubjects} empty="Related subjects are not listed yet." />
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Fit Finder compatible</p>
@@ -350,17 +374,33 @@ export default function ProgrammeDetail() {
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Career prospects</h2>
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {careers.map((c) => (
-            <li key={c} className="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-900">
-              {c}
-            </li>
-          ))}
-        </ul>
-        {!careers.length && (
-          <p className="text-sm text-slate-500">Career prospects are being prepared for this programme.</p>
-        )}
+        <div className="mt-3">
+          <CareersList
+            careers={careers}
+            maxCareers={entitlements.careersPerProgramme}
+            showSalary={entitlements.showSalaryEstimates}
+            empty="Career prospects are being prepared for this programme."
+          />
+        </div>
       </section>
+
+      {entitlements.documentsChecklist ? (
+        <DocumentsChecklist programme={programme} />
+      ) : (
+        <UpgradePrompt feature="documentsChecklist" message="See which documents you need to apply with Thuto Pro's application checklist." />
+      )}
+
+      {entitlements.pdfDownload ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Download &amp; share</h2>
+          <p className="mt-1 text-sm text-slate-600">Send a programme summary to parents, teachers, or sponsors.</p>
+          <div className="mt-3">
+            <ProgrammePdfActions programme={programme} university={university} />
+          </div>
+        </section>
+      ) : (
+        <UpgradePrompt feature="pdfDownload" message="Download and share programme summaries with Thuto Pro." />
+      )}
 
       {similarProgrammes.length > 0 ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">

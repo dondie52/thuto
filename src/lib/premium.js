@@ -1,10 +1,18 @@
-/** @typedef {'compare' | 'assistant' | 'cloud_sync' | 'deadline_alerts'} PremiumFeature */
+/** @typedef {'compare' | 'assistant' | 'cloud_sync' | 'deadline_alerts' | 'documents_checklist' | 'pdf_download' | 'grade_import' | 'acceptance_chance' | 'sponsorship_alerts' | 'message_anyone'} PremiumFeature */
 
-export const COMPARE_MAX_FREE = 3;
-export const COMPARE_MAX_PREMIUM = 5;
+import { FREE_ENTITLEMENTS, PRO_ENTITLEMENTS } from "./entitlements.js";
 
-export const ASSISTANT_DAILY_LIMIT_FREE = 5;
-export const ASSISTANT_DAILY_LIMIT_PREMIUM = 40;
+export { FREE_ENTITLEMENTS, PRO_ENTITLEMENTS, FREE_VS_PRO_FEATURES } from "./entitlements.js";
+
+/** @deprecated Use entitlements.compareMax */
+export const COMPARE_MAX_FREE = FREE_ENTITLEMENTS.compareMax;
+/** @deprecated Use entitlements.compareMax */
+export const COMPARE_MAX_PREMIUM = PRO_ENTITLEMENTS.compareMax;
+
+/** @deprecated Use entitlements.assistantDailyLimit */
+export const ASSISTANT_DAILY_LIMIT_FREE = FREE_ENTITLEMENTS.assistantDailyLimit;
+/** @deprecated Use entitlements.assistantDailyLimit */
+export const ASSISTANT_DAILY_LIMIT_PREMIUM = PRO_ENTITLEMENTS.assistantDailyLimit;
 
 const ASSISTANT_USAGE_KEY = "thuto.assistantDailyUsage";
 
@@ -22,7 +30,14 @@ export function isPremiumActive(profile) {
  * @param {boolean} isPremium
  */
 export function getCompareMax(isPremium) {
-  return isPremium ? COMPARE_MAX_PREMIUM : COMPARE_MAX_FREE;
+  return isPremium ? PRO_ENTITLEMENTS.compareMax : FREE_ENTITLEMENTS.compareMax;
+}
+
+/**
+ * @param {boolean} isPremium
+ */
+export function getMaxBookmarks(isPremium) {
+  return isPremium ? PRO_ENTITLEMENTS.maxSavedProgrammes : FREE_ENTITLEMENTS.maxSavedProgrammes;
 }
 
 /**
@@ -30,15 +45,28 @@ export function getCompareMax(isPremium) {
  * @param {{ isPremium?: boolean }} options
  */
 export function canUsePremiumFeature(feature, { isPremium = false } = {}) {
+  const entitlements = isPremium ? PRO_ENTITLEMENTS : FREE_ENTITLEMENTS;
   switch (feature) {
     case "compare":
-      return isPremium;
+      return entitlements.compareMax > FREE_ENTITLEMENTS.compareMax;
     case "assistant":
-      return isPremium;
+      return entitlements.assistantDailyLimit > FREE_ENTITLEMENTS.assistantDailyLimit;
     case "cloud_sync":
       return isPremium;
     case "deadline_alerts":
-      return isPremium;
+      return entitlements.deadlineAlerts;
+    case "documents_checklist":
+      return entitlements.documentsChecklist;
+    case "pdf_download":
+      return entitlements.pdfDownload;
+    case "grade_import":
+      return entitlements.gradeImport;
+    case "acceptance_chance":
+      return entitlements.acceptanceChance;
+    case "sponsorship_alerts":
+      return entitlements.sponsorshipAlerts;
+    case "message_anyone":
+      return entitlements.messageAnyone;
     default:
       return false;
   }
@@ -48,7 +76,8 @@ export function canUsePremiumFeature(feature, { isPremium = false } = {}) {
  * @param {boolean} isPremium
  */
 export function getAssistantDailyLimit(isPremium) {
-  return isPremium ? ASSISTANT_DAILY_LIMIT_PREMIUM : ASSISTANT_DAILY_LIMIT_FREE;
+  const limit = isPremium ? PRO_ENTITLEMENTS.assistantDailyLimit : FREE_ENTITLEMENTS.assistantDailyLimit;
+  return Number.isFinite(limit) ? limit : Number.MAX_SAFE_INTEGER;
 }
 
 function todayKey() {
@@ -59,17 +88,17 @@ function todayKey() {
  * @param {boolean} isPremium
  */
 export function getAssistantUsageToday(isPremium) {
-  if (typeof window === "undefined") return { count: 0, limit: getAssistantDailyLimit(isPremium) };
+  const limit = getAssistantDailyLimit(isPremium);
+  if (typeof window === "undefined") return { count: 0, limit };
   try {
     const raw = localStorage.getItem(ASSISTANT_USAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : null;
-    const limit = getAssistantDailyLimit(isPremium);
     if (!parsed || parsed.date !== todayKey()) {
       return { count: 0, limit };
     }
     return { count: Number(parsed.count) || 0, limit };
   } catch {
-    return { count: 0, limit: getAssistantDailyLimit(isPremium) };
+    return { count: 0, limit };
   }
 }
 
@@ -78,7 +107,9 @@ export function getAssistantUsageToday(isPremium) {
  * @returns {boolean} true if under limit after increment attempt
  */
 export function recordAssistantUsage(isPremium) {
-  const { count, limit } = getAssistantUsageToday(isPremium);
+  const limit = getAssistantDailyLimit(isPremium);
+  if (!Number.isFinite(limit)) return true;
+  const { count } = getAssistantUsageToday(isPremium);
   if (count >= limit) return false;
   try {
     localStorage.setItem(
@@ -107,41 +138,48 @@ export function formatPremiumUntil(profile) {
 
 export const PREMIUM_PLANS = [
   {
-    id: "season_pass",
-    name: "Application Season Pass",
-    priceLabel: "P59 one-time",
-    description: "Apr-Aug Application window.One Payment.Save 60%",
+    id: "yearly",
+    name: "Yearly Pro",
+    priceLabel: "P59 / year",
+    description: "One payment for a full year of Pro. Most popular for application season.",
     badge: "Most Popular",
     highlighted: true,
   },
   {
-    id: "monthly",
-    name: "Monthly",
-    priceLabel: "P29 / month",
-    description: "Flexible month-to-month access to all Pro tools.",
-    badge: null,
-    highlighted: false,
-  },
-  {
-    id: "annual",
-    name: "Annual",
-    priceLabel: "P199 / year",
-    description: "Best long term value,Save 43%",
-    badge: null,
+    id: "five_year",
+    name: "5-Year Pro",
+    priceLabel: "P199 / 5 years",
+    description: "Pay once, stay covered through school and early tertiary years. Save 33%.",
+    badge: "Save 33%",
     highlighted: false,
   },
 ];
 
-/** @param {'monthly' | 'annual' | 'season_pass'} planId */
+/** @param {'yearly' | 'five_year'} planId */
 export function getPlanCheckoutLabel(planId) {
   switch (planId) {
-    case "season_pass":
-      return "Upgrade to Pro – P59";
-    case "monthly":
-      return "Subscribe – P29/mo";
-    case "annual":
-      return "Subscribe – P199/yr";
+    case "yearly":
+      return "Get Pro — P59/year";
+    case "five_year":
+      return "Get Pro — P199/5 years";
     default:
-      return "Subscribe";
+      return "Get Thuto Pro";
+  }
+}
+
+/** @param {string | null | undefined} planId */
+export function formatPlanLabel(planId) {
+  switch (planId) {
+    case "yearly":
+    case "season_pass":
+      return "Yearly Pro";
+    case "five_year":
+      return "5-Year Pro";
+    case "monthly":
+      return "Monthly (legacy)";
+    case "annual":
+      return "Annual (legacy)";
+    default:
+      return planId || "Pro";
   }
 }

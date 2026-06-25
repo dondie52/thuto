@@ -6,6 +6,8 @@ import { OPPORTUNITY_CATEGORY } from "../lib/opportunityPosts.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
+import UpgradePrompt from "../components/UpgradePrompt.jsx";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 
 const FUNDING_ROUTE = {
   GOVERNMENT: "government",
@@ -223,6 +225,7 @@ function FundingRoutePanel({ routeId, content, contacts, steps, portalUrl }) {
 
 export default function Sponsorships() {
   useDocumentTitle("Sponsorships | Thuto");
+  const { entitlements } = useEntitlements();
   const { content } = usePageContent("sponsorships", PAGE_CONTENT_DEFAULTS.sponsorships);
   const [activeRoute, setActiveRoute] = useState(null);
   const detailRef = useRef(null);
@@ -269,6 +272,13 @@ export default function Sponsorships() {
           </div>
         </div>
       </div>
+
+      {!entitlements.sponsorshipAlerts ? (
+        <UpgradePrompt
+          feature="sponsorshipAlerts"
+          message="Sponsorship deadlines are listed in the app on Free. Thuto Pro adds WhatsApp, SMS, and push alerts."
+        />
+      ) : null}
 
       <div className="grid gap-3 sm:grid-cols-3" role="group" aria-label="Funding routes">
         {fundingRoutes.map((route) => {
