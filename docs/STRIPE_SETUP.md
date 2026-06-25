@@ -22,7 +22,7 @@ Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supa
 1. Apply migrations including:
    - `supabase/migrations/20260522000000_profiles_and_premium.sql`
    - `supabase/migrations/20260625140000_subscription_restructure.sql`
-   - `supabase/migrations/20260625120000_revenue_model_and_partners.sql`
+   - `supabase/migrations/20260625150000_revenue_model_and_partners.sql`
 2. Deploy edge functions:
    ```bash
    supabase functions deploy create-checkout-session
