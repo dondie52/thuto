@@ -95,8 +95,10 @@ export const PAGE_CONTENT_DEFAULTS = {
     about: {
       heading: "About Thuto",
       paragraphs: [
-        "Thuto helps Botswana students use their BGCSE results to explore programmes they may qualify for before applying.",
-        "Thuto does not process applications, accept payments, or replace official admissions offices. Use it to prepare questions and a shortlist - then confirm every detail on each institution's website or admissions desk.",
+        "Thuto is a Botswana-built social education technology platform designed to provide accurate information about tertiary education in Africa.",
+        "We help prospective students explore higher education options, predict their admission chances, and make confident decisions about their future, all in one place. From discovering the right programme to comparing institutions and connecting with opportunities and other students, Thuto puts the information and tools every student needs directly in their hands.",
+        "We believe no student should miss out on the right opportunity simply because they didn't have access to the right information.",
+        "For institutions and partners, Thuto represents direct access to Botswana's next generation of qualified, motivated students, already researching, already deciding.",
       ],
     },
     footer: {
