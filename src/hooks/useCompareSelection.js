@@ -28,8 +28,8 @@ function dispatchChange() {
  * }}
  */
 export function useCompareSelection() {
-  const { profile } = useAuth();
-  const max = getCompareMax(profile);
+  const { isPremium } = useAuth();
+  const max = getCompareMax(isPremium);
   const [ids, setIds] = useState(() => getCompareIds(max));
 
   const refresh = useCallback(() => {

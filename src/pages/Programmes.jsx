@@ -12,10 +12,12 @@ import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import {
   getProgrammeCareers,
 } from "../lib/programmeInsights.js";
+import { matchesQualificationFilter } from "../lib/programmeQualification.js";
 
 const SORT_OPTIONS = [
   { value: "name_asc", label: "Name (A–Z)" },
@@ -37,20 +39,31 @@ function patchSearchParams(prev, patch) {
   if (next.get("uni") === "All" || !next.get("uni")) next.delete("uni");
   if (next.get("field") === "All" || !next.get("field")) next.delete("field");
   if (next.get("qualify") !== "1") next.delete("qualify");
+  if (!next.get("level")) next.delete("level");
   return next;
 }
 
 export default function Programmes() {
-  useDocumentTitle("Programmes | Thuto");
   const [searchParams, setSearchParams] = useSearchParams();
+  const level = searchParams.get("level") ?? "";
+  const levelFilter = level === "postgraduate" || level === "phd" || level === "pg" ? level : "";
+  useDocumentTitle(
+    levelFilter === "postgraduate"
+      ? "Master's Programmes | Thuto"
+      : levelFilter === "phd"
+        ? "PhD Programmes | Thuto"
+        : levelFilter === "pg"
+          ? "Postgraduate Programmes | Thuto"
+          : "Programmes | Thuto",
+  );
   const location = useLocation();
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } =
-    useCompareSelection();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
+  const { entitlements } = useEntitlements();
 
   const predTotal = readPredictorSession().total;
 
@@ -144,6 +157,9 @@ export default function Programmes() {
     if (qualifyPoints && predTotal != null) {
       list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints <= predTotal);
     }
+    if (levelFilter) {
+      list = list.filter((p) => matchesQualificationFilter(p, levelFilter));
+    }
 
     const sorted = [...list];
     if (sort === "name_desc") sorted.sort((a, b) => b.name.localeCompare(a.name));
@@ -168,7 +184,7 @@ export default function Programmes() {
     } else sorted.sort((a, b) => a.name.localeCompare(b.name));
 
     return sorted;
-  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, pointsRangeInvalid, sort, qualifyPoints, predTotal]);
+  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, pointsRangeInvalid, sort, qualifyPoints, predTotal, levelFilter]);
 
   const hasActiveFilters =
     (searchParams.get("q") ?? "").trim() !== "" ||
@@ -177,7 +193,8 @@ export default function Programmes() {
     (searchParams.get("minPts") ?? "") !== "" ||
     (searchParams.get("maxPts") ?? "") !== "" ||
     sort !== "name_asc" ||
-    qualifyPoints;
+    qualifyPoints ||
+    levelFilter;
 
   const activeFilterChips = [
     uni !== "All" ? `University: ${uni}` : null,
@@ -186,6 +203,9 @@ export default function Programmes() {
     maxPtsRaw !== "" ? `Up to ${maxPtsRaw} pts` : null,
     sort !== "name_asc" ? SORT_OPTIONS.find((option) => option.value === sort)?.label : null,
     qualifyPoints ? (predTotal != null ? `Within ${predTotal} pts` : "Predictor points") : null,
+    levelFilter === "postgraduate" ? "Master's / taught postgraduate" : null,
+    levelFilter === "phd" ? "PhD / research" : null,
+    levelFilter === "pg" ? "All postgraduate" : null,
   ].filter(Boolean);
 
   function clearFilters() {
@@ -201,8 +221,25 @@ export default function Programmes() {
   return (
     <div className={`space-y-6 ${compareIds.length > 0 ? "pb-28 sm:pb-8" : ""}`}>
       <div>
-        <h1 className="font-display text-2xl font-bold text-brand-900">Programmes</h1>
-        <p className="mt-2 text-sm text-slate-600">Search by programme or university. Open a result for requirements, careers, and course detail.</p>
+        <h1 className="font-display text-2xl font-bold text-brand-900">
+          {levelFilter === "postgraduate"
+            ? "Master's and taught postgraduate programmes"
+            : levelFilter === "phd"
+              ? "PhD and research programmes"
+              : levelFilter === "pg"
+                ? "Postgraduate programmes"
+                : "Programmes"}
+        </h1>
+        <p className="mt-2 text-sm text-slate-600">
+          {levelFilter
+            ? "Postgraduate catalogue — entry routes and requirements differ from BGCSE undergraduate planning. Confirm every detail with the institution."
+            : "Search by programme or university. Open a result for requirements, careers, and course detail."}
+        </p>
+        {levelFilter ? (
+          <Link to="/postgraduate-studies" className="mt-2 inline-flex text-sm font-semibold text-brand-800 underline">
+            Back to Postgraduate Studies
+          </Link>
+        ) : null}
       </div>
 
       {error ? (
@@ -400,7 +437,7 @@ export default function Programmes() {
         {filteredSorted.map((p) => {
           const rowEligibility = eligibilityById.get(p.id);
           const compareDisabled = !isSelected(p.id) && !canAdd;
-          const careers = getProgrammeCareers(p).slice(0, 2);
+          const careers = getProgrammeCareers(p).slice(0, entitlements.careersPerProgramme);
           return (
             <li key={p.id} className="flex items-stretch">
               <ProgrammeThemeAccent programme={p} />
@@ -431,7 +468,9 @@ export default function Programmes() {
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
-                    {rowEligibility ? <EligibilityPill eligibility={rowEligibility} /> : null}
+                    {entitlements.acceptanceChance && rowEligibility ? (
+                      <EligibilityPill eligibility={rowEligibility} />
+                    ) : null}
                     <span className="text-xs font-medium text-brand-700">
                       {programmeHasAdmissionPoints(p) ? `Min ${p.minPoints} pts` : "Min pts not listed"} →
                     </span>

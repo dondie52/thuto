@@ -9,11 +9,11 @@ export function getStripe() {
 export function getPriceId(planId: string): string | null {
   const map: Record<string, string | undefined> = {
     yearly: Deno.env.get("STRIPE_PRICE_YEARLY") || Deno.env.get("STRIPE_PRICE_SEASON"),
-    five_year: Deno.env.get("STRIPE_PRICE_FIVE_YEAR") || Deno.env.get("STRIPE_PRICE_ANNUAL"),
-    // Grandfathered plans
+    five_year: Deno.env.get("STRIPE_PRICE_FIVE_YEAR"),
+    // Legacy plans (grandfathered subscribers / admin)
     monthly: Deno.env.get("STRIPE_PRICE_MONTHLY"),
     annual: Deno.env.get("STRIPE_PRICE_ANNUAL"),
-    season_pass: Deno.env.get("STRIPE_PRICE_SEASON"),
+    season_pass: Deno.env.get("STRIPE_PRICE_SEASON") || Deno.env.get("STRIPE_PRICE_YEARLY"),
   };
   return map[planId] || null;
 }
@@ -23,24 +23,14 @@ export function getSiteUrl() {
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
-export function planPremiumUntil(planId: string): string {
-  const now = new Date();
-  if (planId === "five_year" || planId === "annual") {
-    const end = new Date(now);
-    end.setFullYear(end.getFullYear() + 5);
-    return end.toISOString();
+export function planAccessUntil(planId: string): string {
+  const until = new Date();
+  if (planId === "five_year") {
+    until.setFullYear(until.getFullYear() + 5);
+  } else if (planId === "monthly") {
+    until.setMonth(until.getMonth() + 1);
+  } else {
+    until.setFullYear(until.getFullYear() + 1);
   }
-  if (planId === "yearly" || planId === "season_pass") {
-    const end = new Date(now);
-    end.setFullYear(end.getFullYear() + 1);
-    return end.toISOString();
-  }
-  if (planId === "monthly") {
-    const end = new Date(now);
-    end.setMonth(end.getMonth() + 1);
-    return end.toISOString();
-  }
-  const end = new Date(now);
-  end.setFullYear(end.getFullYear() + 1);
-  return end.toISOString();
+  return until.toISOString();
 }

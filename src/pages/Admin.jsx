@@ -47,6 +47,7 @@ const CONTROL_LINKS = [
   { to: "/universities", label: "Universities", description: "Check institution pages, resources, and application windows." },
   { to: "/sponsorships", label: "Sponsorships", description: "Review public sponsorship cards from live opportunity data." },
   { to: "/internships", label: "Internships", description: "Review internship cards from live opportunity data." },
+  { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Review postgraduate programmes hub and scholarship posts." },
   { to: "/settings", label: "Settings", description: "Open account settings for the current operator." },
 ];
 
@@ -1620,6 +1621,7 @@ export default function Admin() {
               >
                 <option value="private_sponsorship">Private sponsorship</option>
                 <option value="internship">Internship</option>
+                <option value="postgraduate_scholarship">Postgraduate scholarship</option>
               </select>
             </label>
             <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
@@ -1879,6 +1881,7 @@ export default function Admin() {
                         className="focus-ring rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium text-stone-800"
                       >
                         <option value="">No plan</option>
+                        <option value="">None</option>
                         <option value="yearly">Yearly (P59)</option>
                         <option value="five_year">5-Year (P199)</option>
                         <option value="season_pass">Season (legacy)</option>

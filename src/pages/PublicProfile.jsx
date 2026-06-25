@@ -35,7 +35,7 @@ function connectLabel(status) {
 export default function PublicProfile() {
   const { username: routeUsername } = useParams();
   const navigate = useNavigate();
-  const { user, profile: ownProfile, supabaseConfigured } = useAuth();
+  const { user, profile: ownProfile, supabaseConfigured, isPremium } = useAuth();
   const [profile, setProfile] = useState(null);
   const [counts, setCounts] = useState({ followers: 0, following: 0 });
   const [posts, setPosts] = useState([]);
@@ -308,6 +308,16 @@ export default function PublicProfile() {
               Message
             </button>
           </div>
+        ) : null}
+
+        {user && !isPremium && !isOwnProfile ? (
+          <p className="mt-2 text-xs text-slate-600">
+            Free accounts can message people who follow you or accepted connections.{" "}
+            <Link to="/upgrade" className="font-semibold text-brand-700 underline">
+              Pro
+            </Link>{" "}
+            lets you message anyone.
+          </p>
         ) : null}
 
         {!user ? (

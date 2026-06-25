@@ -1,12 +1,18 @@
-/** @typedef {'compare' | 'assistant' | 'cloud_sync' | 'deadline_alerts' | 'grade_import' | 'acceptance_chance' | 'documents_checklist' | 'pdf_download'} PremiumFeature */
+/** @typedef {'compare' | 'assistant' | 'cloud_sync' | 'deadline_alerts' | 'documents_checklist' | 'pdf_download' | 'grade_import' | 'acceptance_chance' | 'sponsorship_alerts' | 'message_anyone'} PremiumFeature */
 
-import { ENTITLEMENTS, getEntitlements } from "./entitlements.js";
+import { FREE_ENTITLEMENTS, PRO_ENTITLEMENTS } from "./entitlements.js";
 
-export const COMPARE_MAX_FREE = ENTITLEMENTS.free.compareMax;
-export const COMPARE_MAX_PREMIUM = ENTITLEMENTS.pro.compareMax;
+export { FREE_ENTITLEMENTS, PRO_ENTITLEMENTS, FREE_VS_PRO_FEATURES } from "./entitlements.js";
 
-export const ASSISTANT_DAILY_LIMIT_FREE = ENTITLEMENTS.free.assistantDailyLimit;
-export const ASSISTANT_DAILY_LIMIT_PREMIUM = ENTITLEMENTS.pro.assistantDailyLimit;
+/** @deprecated Use entitlements.compareMax */
+export const COMPARE_MAX_FREE = FREE_ENTITLEMENTS.compareMax;
+/** @deprecated Use entitlements.compareMax */
+export const COMPARE_MAX_PREMIUM = PRO_ENTITLEMENTS.compareMax;
+
+/** @deprecated Use entitlements.assistantDailyLimit */
+export const ASSISTANT_DAILY_LIMIT_FREE = FREE_ENTITLEMENTS.assistantDailyLimit;
+/** @deprecated Use entitlements.assistantDailyLimit */
+export const ASSISTANT_DAILY_LIMIT_PREMIUM = PRO_ENTITLEMENTS.assistantDailyLimit;
 
 const ASSISTANT_USAGE_KEY = "thuto.assistantDailyUsage";
 
@@ -21,56 +27,57 @@ export function isPremiumActive(profile) {
 }
 
 /**
- * @param {import('./auth.jsx').Profile | null | undefined} profile
+ * @param {boolean} isPremium
  */
-export function getCompareMax(profile) {
-  return getEntitlements(profile).compareMax;
+export function getCompareMax(isPremium) {
+  return isPremium ? PRO_ENTITLEMENTS.compareMax : FREE_ENTITLEMENTS.compareMax;
 }
 
-/** @deprecated Use getCompareMax(profile) */
-export function getCompareMaxFromPremium(isPremium) {
-  return isPremium ? COMPARE_MAX_PREMIUM : COMPARE_MAX_FREE;
+/**
+ * @param {boolean} isPremium
+ */
+export function getMaxBookmarks(isPremium) {
+  return isPremium ? PRO_ENTITLEMENTS.maxSavedProgrammes : FREE_ENTITLEMENTS.maxSavedProgrammes;
 }
 
 /**
  * @param {PremiumFeature} feature
- * @param {{ profile?: import('./auth.jsx').Profile | null, isPremium?: boolean }} options
+ * @param {{ isPremium?: boolean }} options
  */
-export function canUsePremiumFeature(feature, { profile = null, isPremium = false } = {}) {
-  const ent = profile ? getEntitlements(profile) : isPremium ? ENTITLEMENTS.pro : ENTITLEMENTS.free;
+export function canUsePremiumFeature(feature, { isPremium = false } = {}) {
+  const entitlements = isPremium ? PRO_ENTITLEMENTS : FREE_ENTITLEMENTS;
   switch (feature) {
     case "compare":
-      return ent.compareMax > ENTITLEMENTS.free.compareMax;
+      return entitlements.compareMax > FREE_ENTITLEMENTS.compareMax;
     case "assistant":
-      return ent.assistantDailyLimit > ENTITLEMENTS.free.assistantDailyLimit;
+      return entitlements.assistantDailyLimit > FREE_ENTITLEMENTS.assistantDailyLimit;
     case "cloud_sync":
-      return ent.maxSavedProgrammes === Infinity;
+      return isPremium;
     case "deadline_alerts":
-      return ent.deadlineAlerts;
-    case "grade_import":
-      return ent.gradeImport;
-    case "acceptance_chance":
-      return ent.acceptanceChance;
+      return entitlements.deadlineAlerts;
     case "documents_checklist":
-      return ent.documentsChecklist;
+      return entitlements.documentsChecklist;
     case "pdf_download":
-      return ent.pdfDownload;
+      return entitlements.pdfDownload;
+    case "grade_import":
+      return entitlements.gradeImport;
+    case "acceptance_chance":
+      return entitlements.acceptanceChance;
+    case "sponsorship_alerts":
+      return entitlements.sponsorshipAlerts;
+    case "message_anyone":
+      return entitlements.messageAnyone;
     default:
       return false;
   }
 }
 
 /**
- * @param {import('./auth.jsx').Profile | null | undefined} profile
+ * @param {boolean} isPremium
  */
-export function getAssistantDailyLimit(profile) {
-  const limit = getEntitlements(profile).assistantDailyLimit;
-  return limit === Infinity ? 999999 : limit;
-}
-
-/** @deprecated */
-export function getAssistantDailyLimitFromPremium(isPremium) {
-  return isPremium ? ASSISTANT_DAILY_LIMIT_PREMIUM : ASSISTANT_DAILY_LIMIT_FREE;
+export function getAssistantDailyLimit(isPremium) {
+  const limit = isPremium ? PRO_ENTITLEMENTS.assistantDailyLimit : FREE_ENTITLEMENTS.assistantDailyLimit;
+  return Number.isFinite(limit) ? limit : Number.MAX_SAFE_INTEGER;
 }
 
 function todayKey() {
@@ -78,11 +85,10 @@ function todayKey() {
 }
 
 /**
- * @param {import('./auth.jsx').Profile | null | undefined} profile
+ * @param {boolean} isPremium
  */
-export function getAssistantUsageToday(profile) {
-  const isPremium = isPremiumActive(profile);
-  const limit = getAssistantDailyLimit(profile);
+export function getAssistantUsageToday(isPremium) {
+  const limit = getAssistantDailyLimit(isPremium);
   if (typeof window === "undefined") return { count: 0, limit };
   try {
     const raw = localStorage.getItem(ASSISTANT_USAGE_KEY);
@@ -97,13 +103,13 @@ export function getAssistantUsageToday(profile) {
 }
 
 /**
- * @param {import('./auth.jsx').Profile | null | undefined} profile
+ * @param {boolean} isPremium
  * @returns {boolean} true if under limit after increment attempt
  */
-export function recordAssistantUsage(profile) {
-  const limit = getAssistantDailyLimit(profile);
-  if (limit >= 999999) return true;
-  const { count } = getAssistantUsageToday(profile);
+export function recordAssistantUsage(isPremium) {
+  const limit = getAssistantDailyLimit(isPremium);
+  if (!Number.isFinite(limit)) return true;
+  const { count } = getAssistantUsageToday(isPremium);
   if (count >= limit) return false;
   try {
     localStorage.setItem(
@@ -133,53 +139,47 @@ export function formatPremiumUntil(profile) {
 export const PREMIUM_PLANS = [
   {
     id: "yearly",
-    name: "Pro Yearly",
-    priceLabel: "P59 one-time",
-    description: "One payment for 12 months of Pro — application season and beyond.",
+    name: "Yearly Pro",
+    priceLabel: "P59 / year",
+    description: "One payment for a full year of Pro. Most popular for application season.",
     badge: "Most Popular",
     highlighted: true,
-    durationLabel: "1 year access",
   },
   {
     id: "five_year",
-    name: "Pro 5-Year",
-    priceLabel: "P199 one-time",
-    description: "Best long-term value — five years of Pro for less than P40/year.",
+    name: "5-Year Pro",
+    priceLabel: "P199 / 5 years",
+    description: "Pay once, stay covered through school and early tertiary years. Save 33%.",
     badge: "Save 33%",
     highlighted: false,
-    durationLabel: "5 years access",
   },
 ];
 
-/** @typedef {'yearly' | 'five_year' | 'monthly' | 'annual' | 'season_pass'} PremiumPlanId */
-
-/** @param {PremiumPlanId} planId */
+/** @param {'yearly' | 'five_year'} planId */
 export function getPlanCheckoutLabel(planId) {
   switch (planId) {
     case "yearly":
-    case "season_pass":
-      return "Upgrade to Pro – P59";
+      return "Get Pro — P59/year";
     case "five_year":
-    case "annual":
-      return "Upgrade to Pro – P199";
-    case "monthly":
-      return "Subscribe – P29/mo";
+      return "Get Pro — P199/5 years";
     default:
-      return "Upgrade to Pro";
+      return "Get Thuto Pro";
   }
 }
 
-export const FREE_VS_PRO_FEATURES = [
-  { feature: "Careers per programme", free: "1", pro: "Up to 5 + salary estimates" },
-  { feature: "Saved programmes", free: "2", pro: "Unlimited" },
-  { feature: "Compare programmes", free: "2", pro: "3" },
-  { feature: "AI assistant", free: "3/day", pro: "Unlimited" },
-  { feature: "Acceptance chance", free: "Hidden", pro: "Shown" },
-  { feature: "Grade import (PDF/photo)", free: "No", pro: "Yes" },
-  { feature: "Documents checklist", free: "No", pro: "Yes" },
-  { feature: "Deadline alerts", free: "In-app dates only", pro: "Push / SMS / WhatsApp" },
-  { feature: "Ads", free: "Banner ads", pro: "No ads" },
-  { feature: "Support", free: "Community + FAQ", pro: "Email + WhatsApp" },
-  { feature: "PDF download & share", free: "No", pro: "Yes" },
-  { feature: "Verification badge", free: "No", pro: "On feed profile" },
-];
+/** @param {string | null | undefined} planId */
+export function formatPlanLabel(planId) {
+  switch (planId) {
+    case "yearly":
+    case "season_pass":
+      return "Yearly Pro";
+    case "five_year":
+      return "5-Year Pro";
+    case "monthly":
+      return "Monthly (legacy)";
+    case "annual":
+      return "Annual (legacy)";
+    default:
+      return planId || "Pro";
+  }
+}

@@ -1,38 +1,28 @@
-/** Indicative monthly salary bands (BWP) by career keyword — Pro-only display. */
+/** Indicative monthly salary ranges (BWP) for careers common in Botswana tertiary programmes. */
 const SALARY_BANDS = [
-  { keywords: ["engineer", "engineering", "developer", "software", "it ", "technology"], min: 12000, max: 28000 },
-  { keywords: ["nurse", "nursing", "health", "medical", "doctor", "clinical"], min: 8000, max: 22000 },
-  { keywords: ["account", "finance", "bank", "audit", "economist"], min: 9000, max: 20000 },
-  { keywords: ["teacher", "education", "lecturer"], min: 7000, max: 15000 },
-  { keywords: ["law", "legal", "attorney", "advocate"], min: 10000, max: 25000 },
-  { keywords: ["manager", "management", "administrator", "executive"], min: 10000, max: 30000 },
-  { keywords: ["marketing", "sales", "communication", "media"], min: 7000, max: 18000 },
-  { keywords: ["agriculture", "farm", "environment"], min: 6000, max: 14000 },
+  { pattern: /engineer|engineering|technician|mechanic|electrician/i, label: "P8,000–P18,000/month" },
+  { pattern: /nurse|nursing|midwife|health|medical|pharmacy|clinical/i, label: "P7,500–P16,000/month" },
+  { pattern: /teacher|teaching|education|lecturer|tutor/i, label: "P6,500–P14,000/month" },
+  { pattern: /accountant|accounting|finance|auditor|bank/i, label: "P8,000–P20,000/month" },
+  { pattern: /lawyer|legal|attorney|paralegal/i, label: "P9,000–P22,000/month" },
+  { pattern: /developer|software|programmer|data|analyst|it |information technology/i, label: "P9,000–P25,000/month" },
+  { pattern: /manager|management|business|marketing|sales|entrepreneur/i, label: "P7,000–P18,000/month" },
+  { pattern: /social work|community|counsell/i, label: "P5,500–P12,000/month" },
+  { pattern: /agricultur|farm|horticultur/i, label: "P5,000–P11,000/month" },
+  { pattern: /journalist|media|communication|public relations/i, label: "P6,000–P14,000/month" },
 ];
 
-const DEFAULT_BAND = { min: 6000, max: 15000 };
+const DEFAULT_BAND = "P5,500–P15,000/month";
 
 /**
  * @param {string} career
- * @returns {{ min: number, max: number, label: string } | null}
+ * @returns {string}
  */
 export function getCareerSalaryEstimate(career) {
-  const text = String(career || "").toLowerCase();
-  if (!text.trim()) return null;
-
+  const text = String(career || "").trim();
+  if (!text) return DEFAULT_BAND;
   for (const band of SALARY_BANDS) {
-    if (band.keywords.some((kw) => text.includes(kw))) {
-      return {
-        min: band.min,
-        max: band.max,
-        label: `P${band.min.toLocaleString()}–P${band.max.toLocaleString()}/month (indicative)`,
-      };
-    }
+    if (band.pattern.test(text)) return band.label;
   }
-
-  return {
-    min: DEFAULT_BAND.min,
-    max: DEFAULT_BAND.max,
-    label: `P${DEFAULT_BAND.min.toLocaleString()}–P${DEFAULT_BAND.max.toLocaleString()}/month (indicative)`,
-  };
+  return DEFAULT_BAND;
 }

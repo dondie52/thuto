@@ -24,7 +24,7 @@ async function parseFunctionInvokeError(error, data, fallbackMessage) {
 }
 
 /**
- * @param {'yearly' | 'five_year' | 'monthly' | 'annual' | 'season_pass'} planId
+ * @param {'yearly' | 'five_year'} planId
  * @returns {Promise<string>} Stripe Checkout URL
  */
 export async function startPremiumCheckout(planId) {

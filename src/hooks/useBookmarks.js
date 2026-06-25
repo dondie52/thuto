@@ -1,27 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../lib/auth.jsx";
-import { getEntitlements } from "../lib/entitlements.js";
-import {
-  getBookmarkIds,
-  getBookmarkLimit,
-  STORAGE_KEY,
-  toggleBookmark as toggleBookmarkStorage,
-} from "../lib/bookmarks.js";
-import { trackLimitHit } from "../lib/analytics.js";
+import { getMaxBookmarks } from "../lib/premium.js";
+import { getBookmarkIds, STORAGE_KEY, toggleBookmark as toggleBookmarkStorage } from "../lib/bookmarks.js";
 
 /**
  * @returns {{
  *   ids: string[],
- *   toggle: (id: string) => { bookmarked: boolean, atLimit?: boolean },
+ *   toggle: (id: string) => boolean,
  *   isBookmarked: (id: string) => boolean,
- *   max: number,
+ *   maxBookmarks: number,
+ *   canAdd: boolean,
  *   atLimit: boolean,
  * }}
  */
 export function useBookmarks() {
-  const { profile } = useAuth();
-  const { maxSavedProgrammes } = getEntitlements(profile);
-  const max = getBookmarkLimit(maxSavedProgrammes);
+  const { isPremium } = useAuth();
+  const maxBookmarks = getMaxBookmarks(isPremium);
   const [ids, setIds] = useState(() => getBookmarkIds());
 
   const refresh = useCallback(() => {
@@ -38,16 +32,22 @@ export function useBookmarks() {
 
   const toggle = useCallback(
     (id) => {
-      const result = toggleBookmarkStorage(id, maxSavedProgrammes);
-      if (result.atLimit) trackLimitHit("bookmarks");
+      const nowBookmarked = toggleBookmarkStorage(id, maxBookmarks);
       refresh();
-      return result;
+      return nowBookmarked;
     },
-    [maxSavedProgrammes, refresh],
+    [maxBookmarks, refresh],
   );
 
   const check = useCallback((id) => ids.includes(id), [ids]);
-  const atLimit = maxSavedProgrammes !== Infinity && ids.length >= max;
+  const canAdd = useMemo(
+    () => !Number.isFinite(maxBookmarks) || ids.length < maxBookmarks,
+    [ids.length, maxBookmarks],
+  );
+  const atLimit = useMemo(
+    () => Number.isFinite(maxBookmarks) && ids.length >= maxBookmarks,
+    [ids.length, maxBookmarks],
+  );
 
-  return { ids, toggle, isBookmarked: check, refresh, max, atLimit };
+  return { ids, toggle, isBookmarked: check, refresh, maxBookmarks, canAdd, atLimit };
 }

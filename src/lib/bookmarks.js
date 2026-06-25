@@ -1,15 +1,4 @@
 const STORAGE_KEY = "thuto.bookmarkedProgrammeIds";
-export const MAX_BOOKMARKS_LEGACY = 10;
-
-/**
- * @param {number} [max]
- */
-function resolveMax(max) {
-  if (typeof max === "number" && Number.isFinite(max) && max > 0) {
-    return max === Infinity ? MAX_BOOKMARKS_LEGACY : max;
-  }
-  return 2;
-}
 
 /**
  * @returns {string[]}
@@ -34,21 +23,28 @@ function setBookmarkIds(ids) {
 }
 
 /**
- * @param {string} programmeId
- * @param {number} [max]
- * @returns {{ ids: string[], added: boolean, atLimit: boolean }}
+ * @param {number} maxBookmarks
  */
-export function addBookmark(programmeId, max) {
-  const limit = resolveMax(max);
+export function getBookmarkLimit(maxBookmarks) {
+  return Number.isFinite(maxBookmarks) ? maxBookmarks : Number.MAX_SAFE_INTEGER;
+}
+
+/**
+ * Most-recent first. Respects tier limit for free users.
+ * @param {string} programmeId
+ * @param {number} [maxBookmarks]
+ * @returns {{ ids: string[], added: boolean }}
+ */
+export function addBookmark(programmeId, maxBookmarks = Number.MAX_SAFE_INTEGER) {
+  const limit = getBookmarkLimit(maxBookmarks);
   const id = String(programmeId).trim();
-  if (!id) return { ids: getBookmarkIds(), added: false, atLimit: false };
-  const current = getBookmarkIds().filter((x) => x !== id);
-  if (current.length >= limit) {
-    return { ids: getBookmarkIds(), added: false, atLimit: true };
-  }
-  const next = [id, ...current].slice(0, limit);
+  if (!id) return { ids: getBookmarkIds(), added: false };
+  const current = getBookmarkIds();
+  if (current.includes(id)) return { ids: current, added: true };
+  if (current.length >= limit) return { ids: current, added: false };
+  const next = [id, ...current.filter((x) => x !== id)].slice(0, limit);
   setBookmarkIds(next);
-  return { ids: next, added: true, atLimit: false };
+  return { ids: next, added: true };
 }
 
 /**
@@ -64,18 +60,17 @@ export function removeBookmark(programmeId) {
 
 /**
  * @param {string} programmeId
- * @param {number} [max]
- * @returns {{ bookmarked: boolean, atLimit?: boolean }}
+ * @param {number} [maxBookmarks]
+ * @returns {boolean} true if now bookmarked
  */
-export function toggleBookmark(programmeId, max) {
+export function toggleBookmark(programmeId, maxBookmarks = Number.MAX_SAFE_INTEGER) {
   const id = String(programmeId).trim();
-  if (!id) return { bookmarked: false };
+  if (!id) return false;
   if (getBookmarkIds().includes(id)) {
     removeBookmark(id);
-    return { bookmarked: false };
+    return false;
   }
-  const result = addBookmark(id, max);
-  return { bookmarked: result.added, atLimit: result.atLimit };
+  return addBookmark(id, maxBookmarks).added;
 }
 
 /**
@@ -85,13 +80,6 @@ export function isBookmarked(programmeId) {
   const id = String(programmeId).trim();
   if (!id) return false;
   return getBookmarkIds().includes(id);
-}
-
-/**
- * @param {number} [max]
- */
-export function getBookmarkLimit(max) {
-  return resolveMax(max);
 }
 
 export { STORAGE_KEY };

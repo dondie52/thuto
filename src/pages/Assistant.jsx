@@ -186,18 +186,9 @@ export default function Assistant() {
     const clean = String(value || "").trim();
     if (!clean || isSending) return;
 
-    const usage = getAssistantUsageToday(profile);
-    if (usage.count >= usage.limit) {
-      setError("Daily AI limit reached. Upgrade to Pro for unlimited questions.");
+    if (canUseGemini && !recordAssistantUsage(isPremium)) {
+      setError(`You have reached today's limit of ${getAssistantUsageToday(isPremium).limit} AI questions on the free plan. Upgrade to Pro for unlimited questions.`);
       return;
-    }
-
-    if (canUseGemini && navigator.onLine) {
-      const allowed = recordAssistantUsage(profile);
-      if (!allowed) {
-        setError("Daily AI limit reached. Upgrade to Pro for unlimited questions.");
-        return;
-      }
     }
 
     setQuestion("");
@@ -332,7 +323,7 @@ export default function Assistant() {
         </p>
         {canUseGemini ? (
           <p className="mt-2 text-xs text-slate-500">
-            AI questions today: {getAssistantUsageToday(profile).count} / {getAssistantUsageToday(profile).limit}
+            AI questions today: {getAssistantUsageToday(isPremium).count} / {getAssistantUsageToday(isPremium).limit}
             {!isPremium ? (
               <>
                 {" "}
@@ -340,9 +331,11 @@ export default function Assistant() {
                 <Link to="/upgrade" className="font-semibold text-brand-700 underline">
                   Pro
                 </Link>{" "}
-                raises the daily limit
+                unlocks unlimited questions
               </>
-            ) : null}
+            ) : (
+              " · Unlimited on Pro"
+            )}
           </p>
         ) : null}
       </header>

@@ -9,17 +9,16 @@ import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 
-function compareHrefFirstSaved(ids) {
-  const slice = ids.slice(0, 3);
+function compareHrefFirstSaved(ids, max) {
+  const slice = ids.slice(0, max);
   if (slice.length < 2) return null;
   return `/compare?ids=${encodeURIComponent(slice.join(","))}`;
 }
 
 export default function SavedProgrammes() {
   useDocumentTitle("Saved programmes | Thuto");
-  const { ids, toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } =
-    useCompareSelection();
+  const { ids, toggle, isBookmarked, maxBookmarks, atLimit } = useBookmarks();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
 
@@ -46,19 +45,30 @@ export default function SavedProgrammes() {
   }, [programmes]);
 
   const explicitCompareHref = compareSelectionHref(compareIds);
-  const fallbackCompareHref = compareIds.length === 0 ? compareHrefFirstSaved(ids) : null;
+  const fallbackCompareHref = compareIds.length === 0 ? compareHrefFirstSaved(ids, compareMax) : null;
 
   return (
     <div className={`space-y-6 ${compareIds.length > 0 ? "pb-28 sm:pb-8" : ""}`}>
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Saved programmes</h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Shortlist up to 3 programmes on the free tier.{" "}
+          {Number.isFinite(maxBookmarks) ? (
+            <>
+              Shortlist up to {maxBookmarks} programmes on the free plan.{" "}
+            </>
+          ) : (
+            <>Save unlimited programmes with Thuto Pro cloud sync. </>
+          )}
           <Link to="/upgrade" className="font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950">
             Upgrade to Thuto Pro
           </Link>{" "}
-          to unlock unlimited saved choices and cloud syncing. Tick saved programmes to build a compare list (up to 3).
+          for unlimited saves. Compare up to {compareMax} programmes side by side.
         </p>
+        {atLimit ? (
+          <p className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+            You have reached the free save limit ({maxBookmarks}). Remove a programme or upgrade to Pro.
+          </p>
+        ) : null}
       </div>
 
       {error && (
@@ -126,7 +136,7 @@ export default function SavedProgrammes() {
                         disabled={compareDisabled}
                         onChange={() => toggleCompare(p.id)}
                         aria-label={`Select ${p.name} for compare`}
-                        title={compareDisabled ? `Compare allows at most ${compareMax} programmes` : undefined}
+                        title={compareDisabled ? "Compare allows at most 3 programmes" : undefined}
                       />
                     </label>
                   </div>

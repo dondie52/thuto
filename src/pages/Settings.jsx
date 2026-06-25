@@ -85,7 +85,7 @@ export default function Settings() {
           </div>
           {isPremium && premiumUntil ? (
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-slate-500">Renews / ends</dt>
+              <dt className="text-slate-500">Access until</dt>
               <dd className="font-semibold text-brand-900">{premiumUntil}</dd>
             </div>
           ) : null}
@@ -118,7 +118,7 @@ export default function Settings() {
                 onClick={handleManageBilling}
                 className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:opacity-60"
               >
-                {billingLoading ? "Opening portal..." : "Manage subscription"}
+                {billingLoading ? "Opening portal..." : "Manage billing"}
               </button>
             ) : (
               <Link

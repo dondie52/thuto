@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { evaluateProgramme, readPredictorSession, SUBJECT_FIELDS } from "../lib/admissions.js";
+import AdBanner from "../components/AdBanner.jsx";
+import CareersList from "../components/CareersList.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
+import UpgradePrompt from "../components/UpgradePrompt.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 import { useAuth } from "../lib/auth.jsx";
 import { compareSelectionHref, getCompareIds, setCompareIds } from "../lib/compareSelection.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
@@ -157,6 +161,9 @@ function MobileCompareCards({
   feeLow,
   feeHigh,
   showDeadlineRow,
+  showAcceptanceChance,
+  careersPerProgramme,
+  showSalary,
 }) {
   return (
     <div className="grid gap-4 md:hidden">
@@ -206,7 +213,12 @@ function MobileCompareCards({
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              {eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
+              {showAcceptanceChance && eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
+              {!showAcceptanceChance && eligibility ? (
+                <Link to="/upgrade" className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800 underline">
+                  Pro: see acceptance chance
+                </Link>
+              ) : null}
               <button
                 type="button"
                 onClick={() => removeProgrammeFromUrl(p.id)}
@@ -253,7 +265,14 @@ function MobileCompareCards({
                   {feeText ?? EMPTY_MARK}
                 </ValueWithBadge>
               </MobileFactRow>
-              <MobileFactRow label="Careers">{(p.careers || []).length ? (p.careers || []).join(", ") : EMPTY_MARK}</MobileFactRow>
+              <MobileFactRow label="Careers">
+                <CareersList
+                  careers={p.careers || p.careerOpportunities || []}
+                  maxCareers={careersPerProgramme}
+                  showSalary={showSalary}
+                  empty={EMPTY_MARK}
+                />
+              </MobileFactRow>
             </dl>
           </article>
         );
@@ -289,8 +308,9 @@ function CompareIntro({ children }) {
 
 export default function CompareProgrammes() {
   useDocumentTitle("Compare programmes | Thuto");
-  const { profile } = useAuth();
-  const compareMax = getCompareMax(profile);
+  const { isPremium } = useAuth();
+  const { entitlements } = useEntitlements();
+  const compareMax = getCompareMax(isPremium);
   const [searchParams, setSearchParams] = useSearchParams();
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [error, setError] = useState(null);
@@ -351,7 +371,7 @@ export default function CompareProgrammes() {
       }
       return next;
     });
-  }, [allProgrammes.length, foundRequestedIds, compareMax]);
+  }, [allProgrammes.length, compareMax, foundRequestedIds]);
 
   const displayMessage = useMemo(() => {
     if (error) return error;
@@ -368,7 +388,7 @@ export default function CompareProgrammes() {
     if (displayMessage) return [];
     const ids = isOverLimit ? chosenCompareIds : foundRequestedIds.slice(0, compareMax);
     return ids.map((id) => byId.get(id)).filter(Boolean);
-  }, [foundRequestedIds, byId, displayMessage, isOverLimit, chosenCompareIds]);
+  }, [foundRequestedIds, byId, compareMax, displayMessage, isOverLimit, chosenCompareIds]);
 
   const minPointsList = selected.map((p) => p.minPoints).filter((n) => Number.isFinite(n));
   const minPtsLow = minPointsList.length ? Math.min(...minPointsList) : null;
@@ -419,7 +439,7 @@ export default function CompareProgrammes() {
     setStoredCompareIds(next);
     if (next.length === 0) setSearchParams({});
     else setSearchParams({ ids: next.join(",") });
-  }, [chosenCompareIds, byId, setSearchParams, compareMax]);
+  }, [chosenCompareIds, byId, setSearchParams]);
 
   const showDeadlineRow = selected.some((p) => p.applicationDeadline);
   const showApplyRow = selected.some((p) => safeExternalUrl(p.applyUrl));
@@ -470,6 +490,7 @@ export default function CompareProgrammes() {
 
   return (
     <div className="w-full max-w-[calc(100vw-2rem)] space-y-5 md:relative md:left-1/2 md:w-[min(calc(100vw-3rem),72rem)] md:max-w-none md:-translate-x-1/2">
+      {entitlements.showAds ? <AdBanner /> : null}
       <CompareShell>
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -507,7 +528,7 @@ export default function CompareProgrammes() {
                 Choose {compareMax} programmes
               </h2>
               <p className="mt-1 max-w-2xl text-sm leading-6 text-stone-700">
-                You can compare {compareMax} programmes at a time. Choose the ones you want to keep in this comparison.
+                You can compare {compareMax} programmes at a time on your current plan. Choose the ones you want to keep in this comparison.
               </p>
             </div>
             <button
@@ -580,6 +601,9 @@ export default function CompareProgrammes() {
         feeLow={feeLow}
         feeHigh={feeHigh}
         showDeadlineRow={showDeadlineRow}
+        showAcceptanceChance={entitlements.acceptanceChance}
+        careersPerProgramme={entitlements.careersPerProgramme}
+        showSalary={entitlements.showSalaryEstimates}
       />
 
       <div className="hidden overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-card backdrop-blur motion-safe:animate-compare-in motion-reduce:animate-none md:block">
@@ -600,7 +624,12 @@ export default function CompareProgrammes() {
                           <span className="font-display text-sm font-bold leading-snug text-brand-900">{p.name}</span>
                           <span className="mt-1 block text-xs font-normal leading-5 text-stone-600">{p.university}</span>
                         </div>
-                        {el ? <EligibilityPill eligibility={el} /> : null}
+                        {entitlements.acceptanceChance && el ? <EligibilityPill eligibility={el} /> : null}
+                        {!entitlements.acceptanceChance && el ? (
+                          <Link to="/upgrade" className="text-xs font-semibold text-brand-700 underline">
+                            Pro: acceptance chance
+                          </Link>
+                        ) : null}
                         <div className="grid grid-cols-2 gap-2">
                           <ExternalAction href={safeExternalUrl(p.applyUrl)} institutionName={p.university}>
                             Apply
@@ -762,7 +791,12 @@ export default function CompareProgrammes() {
               <th className={`${ROW_HEADER_CLASS} align-top`}>Careers</th>
               {selected.map((p) => (
                 <td key={p.id} className={`${CELL_CLASS} leading-6 text-stone-800`}>
-                  {(p.careers || []).length ? (p.careers || []).join(", ") : EMPTY_MARK}
+                  <CareersList
+                    careers={p.careers || p.careerOpportunities || []}
+                    maxCareers={entitlements.careersPerProgramme}
+                    showSalary={entitlements.showSalaryEstimates}
+                    empty={EMPTY_MARK}
+                  />
                 </td>
               ))}
             </tr>

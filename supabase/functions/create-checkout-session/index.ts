@@ -2,7 +2,8 @@ import { corsHeaders, jsonResponse } from "../_shared/cors.ts";
 import { getPriceId, getSiteUrl, getStripe } from "../_shared/stripe.ts";
 import { getSupabaseAdmin, getSupabaseUserClient } from "../_shared/supabaseAdmin.ts";
 
-const VALID_PLANS = new Set(["yearly", "five_year", "monthly", "annual", "season_pass"]);
+const VALID_PLANS = new Set(["yearly", "five_year"]);
+const LEGACY_SUBSCRIPTION_PLANS = new Set(["monthly", "annual"]);
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -27,7 +28,7 @@ Deno.serve(async (req) => {
 
     const body = await req.json().catch(() => ({}));
     const planId = String(body?.planId || "").trim();
-    if (!VALID_PLANS.has(planId)) {
+    if (!VALID_PLANS.has(planId) && !LEGACY_SUBSCRIPTION_PLANS.has(planId)) {
       return jsonResponse({ error: "Invalid plan" }, 400, req);
     }
 
@@ -59,8 +60,7 @@ Deno.serve(async (req) => {
     }
 
     const siteUrl = getSiteUrl();
-    const isSubscription = planId === "monthly";
-    const isOneTime = planId === "yearly" || planId === "five_year" || planId === "season_pass";
+    const isSubscription = LEGACY_SUBSCRIPTION_PLANS.has(planId);
 
     const session = await stripe.checkout.sessions.create({
       customer: customerId,

@@ -1,6 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0?target=deno";
 import { jsonResponse } from "../_shared/cors.ts";
-import { getStripe, planPremiumUntil } from "../_shared/stripe.ts";
+import { getStripe, planAccessUntil } from "../_shared/stripe.ts";
 import { getSupabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
 async function activatePremium(
@@ -10,15 +10,13 @@ async function activatePremium(
   status: "active" | "past_due" | "canceled" = "active",
 ) {
   const admin = getSupabaseAdmin();
-  const normalizedPlan =
-    plan === "season_pass" ? "yearly" : plan === "annual" ? "five_year" : plan;
-
+  const normalizedPlan = plan === "season_pass" ? "yearly" : plan;
   await admin
     .from("profiles")
     .update({
       premium_status: status,
       premium_plan: status === "active" ? normalizedPlan : null,
-      premium_until: status === "active" ? until : until,
+      premium_until: until,
       updated_at: new Date().toISOString(),
     })
     .eq("id", userId);
@@ -26,7 +24,7 @@ async function activatePremium(
   await admin.from("analytics_events").insert({
     user_id: userId,
     event_name: status === "active" ? "premium_activated" : `premium_${status}`,
-    metadata: { plan: normalizedPlan, original_plan: plan },
+    metadata: { plan: normalizedPlan },
   });
 }
 
@@ -70,7 +68,7 @@ Deno.serve(async (req) => {
         if (!userId) break;
 
         if (session.mode === "payment") {
-          await activatePremium(userId, planId, planPremiumUntil(planId));
+          await activatePremium(userId, planId, planAccessUntil(planId));
         } else if (session.subscription) {
           const sub = await stripe.subscriptions.retrieve(String(session.subscription));
           await activatePremium(userId, planId, subscriptionUntil(sub));

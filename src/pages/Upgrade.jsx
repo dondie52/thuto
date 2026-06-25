@@ -238,8 +238,8 @@ export default function Upgrade() {
               ))}
             </div>
             <p className="text-xs leading-relaxed text-slate-500">
-              University application and tuition fees are not processed by Thuto. Pro is billed via Stripe for Thuto
-              features only.
+              One-time payment — no recurring monthly billing. University application and tuition fees are not processed by
+              Thuto. Pro is billed via Stripe for Thuto features only.
             </p>
           </section>
         ) : null}
@@ -251,17 +251,17 @@ export default function Upgrade() {
               <table className="w-full min-w-[28rem] text-left text-sm">
                 <thead>
                   <tr className="border-b border-brand-100 text-xs uppercase tracking-wide text-slate-500">
-                    <th className="py-2 pr-3">Feature</th>
-                    <th className="py-2 pr-3">Free</th>
-                    <th className="py-2">Pro</th>
+                    <th className="py-2 pr-3 font-semibold">Feature</th>
+                    <th className="py-2 pr-3 font-semibold">Free</th>
+                    <th className="py-2 font-semibold">Pro</th>
                   </tr>
                 </thead>
                 <tbody>
                   {FREE_VS_PRO_FEATURES.map((row) => (
-                    <tr key={row.feature} className="border-b border-brand-50">
-                      <td className="py-2 pr-3 font-medium text-brand-900">{row.feature}</td>
-                      <td className="py-2 pr-3 text-slate-600">{row.free}</td>
-                      <td className="py-2 text-brand-800">{row.pro}</td>
+                    <tr key={row.feature} className="border-b border-brand-50 align-top">
+                      <th className="py-2.5 pr-3 font-medium text-brand-900">{row.feature}</th>
+                      <td className="py-2.5 pr-3 text-slate-600">{row.free}</td>
+                      <td className="py-2.5 text-brand-800">{row.pro}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -303,7 +303,7 @@ export default function Upgrade() {
             onClick={() => handleCheckout("yearly")}
             className="focus-ring w-full rounded-xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:opacity-60"
           >
-            {loadingPlan === "yearly" ? "Starting checkout..." : "Upgrade to Pro – P59"}
+            {loadingPlan === "yearly" ? "Starting checkout..." : "Get Pro — P59/year"}
           </button>
         </div>
       ) : null}

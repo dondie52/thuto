@@ -9,19 +9,15 @@ import {
 import { useBookmarks } from "../hooks/useBookmarks.js";
 import { useCompareSelection } from "../hooks/useCompareSelection.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
-import { useAuth } from "../lib/auth.jsx";
-import { getEntitlements } from "../lib/entitlements.js";
-import { trackProgrammeView } from "../lib/analytics.js";
-import { buildTrackedApplyUrl } from "../lib/applyLinks.js";
-import { getCareerSalaryEstimate } from "../lib/careerSalaries.js";
-import { fetchVerifiedInstitutionIds } from "../lib/partner.js";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
-import UpgradePrompt from "../components/UpgradePrompt.jsx";
+import CareersList from "../components/CareersList.jsx";
 import DocumentsChecklist from "../components/DocumentsChecklist.jsx";
-import PdfExportButton from "../components/PdfExportButton.jsx";
-import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
+import ProgrammePdfActions from "../components/ProgrammePdfActions.jsx";
+import UpgradePrompt from "../components/UpgradePrompt.jsx";
+import AdBanner from "../components/AdBanner.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
@@ -34,6 +30,10 @@ import {
   isFitFinderCompatible,
 } from "../lib/programmeInsights.js";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
+import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
+import { trackProgrammeView } from "../lib/analytics.js";
+import { buildTrackedApplyUrl } from "../lib/applyLinks.js";
+import { fetchVerifiedInstitutionIds } from "../lib/partner.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
 import ProgrammeModulesSection from "../components/ProgrammeModulesSection.jsx";
@@ -55,12 +55,10 @@ export default function ProgrammeDetail() {
   const [allProgrammes, setAllProgrammes] = useState([]);
   const [university, setUniversity] = useState(null);
   const [error, setError] = useState(null);
-  const { toggle, isBookmarked } = useBookmarks();
-  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } =
-    useCompareSelection();
-  const { profile } = useAuth();
-  const entitlements = getEntitlements(profile);
   const [verifiedInstitutionIds, setVerifiedInstitutionIds] = useState(() => new Set());
+  const { toggle, isBookmarked, atLimit, maxBookmarks } = useBookmarks();
+  const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
+  const { entitlements } = useEntitlements();
 
   useEffect(() => {
     let cancelled = false;
@@ -152,13 +150,13 @@ export default function ProgrammeDetail() {
     programme.sponsorshipTier === "core" || university?.sponsorshipTier === "core";
   const aboutSummary = getProgrammeAboutSummary(programme);
   const interests = getProgrammeInterests(programme);
-  const careers = getProgrammeCareers(programme).slice(0, entitlements.careersPerProgramme);
-  const careersHiddenCount = Math.max(0, getProgrammeCareers(programme).length - careers.length);
+  const careers = getProgrammeCareers(programme);
   const relatedSubjects = getProgrammeRelatedSubjects(programme);
   const fitCompatible = isFitFinderCompatible(programme);
 
   return (
     <article className="space-y-6 pb-24 sm:pb-6">
+      {entitlements.showAds ? <AdBanner /> : null}
       <Link to={programmesListHref} className="inline-block text-sm font-medium text-brand-700 hover:underline">
         ← Programmes
       </Link>
@@ -207,14 +205,26 @@ export default function ProgrammeDetail() {
               >
                 {inCompare ? "In compare" : "Add to compare"}
               </button>
-              {eligibility && entitlements.acceptanceChance ? (
-                <EligibilityPill eligibility={eligibility} />
-              ) : eligibility ? (
-                <UpgradePrompt feature="acceptance chance" className="max-w-xs" />
-              ) : null}
+              {entitlements.acceptanceChance && eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
             </div>
           </div>
-          {eligibility?.reason ? <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p> : null}
+          {!entitlements.acceptanceChance && eligibility ? (
+            <div className="mt-3">
+              <UpgradePrompt feature="acceptanceChance" compact />
+            </div>
+          ) : null}
+          {entitlements.acceptanceChance && eligibility?.reason ? (
+            <p className="mt-3 text-sm text-slate-600">{eligibility.reason}</p>
+          ) : null}
+          {!isBookmarked(programme.id) && atLimit ? (
+            <p className="mt-3 text-xs text-amber-900">
+              Free plan allows {maxBookmarks} saved programmes.{" "}
+              <Link to="/upgrade" className="font-semibold underline">
+                Upgrade to Pro
+              </Link>{" "}
+              for unlimited saves.
+            </p>
+          ) : null}
           <ProgrammeAboutSummary summary={aboutSummary} programmeId={programme.id} />
           <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
             <div>
@@ -308,33 +318,7 @@ export default function ProgrammeDetail() {
         <h2 className="font-display text-lg font-semibold text-brand-900">Smart programme guide</h2>
         <div className="mt-3 grid gap-4 text-sm sm:grid-cols-2">
           <InsightBlock title="Best for students interested in" items={interests} empty="Interest tags are not listed yet." />
-          <InsightBlock
-            title="Related careers"
-            items={careers}
-            empty="Career examples are not listed yet."
-            footer={
-              careersHiddenCount > 0 ? (
-                <p className="mt-2 text-xs text-slate-500">
-                  +{careersHiddenCount} more with Pro
-                  {entitlements.showSalaryEstimates ? null : " and salary estimates"}
-                  . <Link to="/upgrade" className="font-semibold text-brand-700 underline">Upgrade</Link>
-                </p>
-              ) : null
-            }
-            renderItem={
-              entitlements.showSalaryEstimates
-                ? (career) => {
-                    const salary = getCareerSalaryEstimate(career);
-                    return (
-                      <span>
-                        {career}
-                        {salary ? <span className="block text-xs text-slate-500">{salary.label}</span> : null}
-                      </span>
-                    );
-                  }
-                : undefined
-            }
-          />
+          <InsightBlock title="Related careers" items={careers.slice(0, entitlements.careersPerProgramme)} empty="Career examples are not listed yet." />
           <InsightBlock title="Subjects that help" items={relatedSubjects} empty="Related subjects are not listed yet." />
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Fit Finder compatible</p>
@@ -363,26 +347,6 @@ export default function ProgrammeDetail() {
       </section>
 
       <ProgrammeModulesSection programme={programme} />
-
-      {entitlements.documentsChecklist ? <DocumentsChecklist programme={programme} /> : null}
-
-      {entitlements.pdfDownload ? (
-        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Download &amp; share</h2>
-          <p className="mt-1 text-sm text-slate-600">Send a programme summary to parents or teachers.</p>
-          <div className="mt-3">
-            <PdfExportButton programme={programme} university={university} />
-          </div>
-        </section>
-      ) : null}
-
-      {university?.id && verifiedInstitutionIds.has(university.id) ? (
-        <LeadInquiryForm
-          institutionId={university.id}
-          programmeId={programme.id}
-          institutionName={university.name}
-        />
-      ) : null}
 
       <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 shadow-sm">
         <div className="flex flex-wrap items-center gap-2">
@@ -428,17 +392,41 @@ export default function ProgrammeDetail() {
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Career prospects</h2>
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {careers.map((c) => (
-            <li key={c} className="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-900">
-              {c}
-            </li>
-          ))}
-        </ul>
-        {!careers.length && (
-          <p className="text-sm text-slate-500">Career prospects are being prepared for this programme.</p>
-        )}
+        <div className="mt-3">
+          <CareersList
+            careers={careers}
+            maxCareers={entitlements.careersPerProgramme}
+            showSalary={entitlements.showSalaryEstimates}
+            empty="Career prospects are being prepared for this programme."
+          />
+        </div>
       </section>
+
+      {entitlements.documentsChecklist ? (
+        <DocumentsChecklist programme={programme} />
+      ) : (
+        <UpgradePrompt feature="documentsChecklist" message="See which documents you need to apply with Thuto Pro's application checklist." />
+      )}
+
+      {entitlements.pdfDownload ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Download &amp; share</h2>
+          <p className="mt-1 text-sm text-slate-600">Send a programme summary to parents, teachers, or sponsors.</p>
+          <div className="mt-3">
+            <ProgrammePdfActions programme={programme} university={university} />
+          </div>
+        </section>
+      ) : (
+        <UpgradePrompt feature="pdfDownload" message="Download and share programme summaries with Thuto Pro." />
+      )}
+
+      {university?.id && verifiedInstitutionIds.has(university.id) ? (
+        <LeadInquiryForm
+          institutionId={university.id}
+          programmeId={programme.id}
+          institutionName={university.name}
+        />
+      ) : null}
 
       {similarProgrammes.length > 0 ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
@@ -523,7 +511,7 @@ function ProgrammeAboutSummary({ summary, programmeId }) {
   );
 }
 
-function InsightBlock({ title, items, empty, footer, renderItem }) {
+function InsightBlock({ title, items, empty }) {
   return (
     <div>
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
@@ -531,14 +519,13 @@ function InsightBlock({ title, items, empty, footer, renderItem }) {
         <ul className="mt-2 flex flex-wrap gap-2">
           {items.slice(0, 6).map((item) => (
             <li key={item} className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-900">
-              {renderItem ? renderItem(item) : item}
+              {item}
             </li>
           ))}
         </ul>
       ) : (
         <p className="mt-1 text-slate-500">{empty}</p>
       )}
-      {footer}
     </div>
   );
 }
