@@ -5,6 +5,7 @@ import { useAuth } from "../lib/auth.jsx";
 function ToolIcon({ name }) {
   const icons = {
     profile: <path strokeLinecap="round" strokeLinejoin="round" d="M12 12a4 4 0 100-8 4 4 0 000 8zM4.5 21a7.5 7.5 0 0115 0" />,
+    programmes: <path strokeLinecap="round" strokeLinejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />,
     universities: <path strokeLinecap="round" strokeLinejoin="round" d="M4 10l8-5 8 5M5.5 10h13M7 10v8M12 10v8M17 10v8M4.5 18h15M3.5 21h17" />,
     sponsorships: <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M16 7.5a3.5 3.5 0 00-3.5-2H10a3 3 0 000 6h4a3 3 0 010 6h-2.5a3.5 3.5 0 01-3.5-2" />,
     internships: <path strokeLinecap="round" strokeLinejoin="round" d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7M5 8h14v10.5A1.5 1.5 0 0117.5 20h-11A1.5 1.5 0 015 18.5V8zM5 12h14" />,
@@ -27,7 +28,7 @@ function ToolIcon({ name }) {
 }
 
 const primaryToolItems = [
-  { to: "/profile", label: "Profile", description: "Account, security, billing, and preferences", icon: "profile" },
+  { to: "/programmes", label: "Programmes", description: "Browse degrees, diplomas, and certificates", icon: "programmes" },
   { to: "/universities", label: "Tertiary Institutions", description: "Institutions, locations, and application windows", icon: "universities" },
   { to: "/sponsorships", label: "Sponsorships", description: "Government sponsorship, private funding, and grants", icon: "sponsorships" },
   { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },

@@ -21,7 +21,7 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 ### App shell (`Layout`)
 
-- **Bottom navigation** (mobile): Home, Predictor, Feed, Programmes, Ask. Saved programmes remains available outside the bottom nav.
+- **Bottom navigation** (mobile): Home, Predictor, Feed, Ask, Profile. Programmes lives in the account drawer (and desktop top nav). Saved programmes remains available outside the bottom nav.
 - **Legal / trust**: Disclaimer and Privacy routes.
 
 ### Home (`/app`)
