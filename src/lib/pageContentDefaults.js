@@ -9,6 +9,7 @@ export const PAGE_CONTENT_META = [
   { pageKey: "disclaimer", label: "Disclaimer" },
   { pageKey: "privacy", label: "Privacy" },
   { pageKey: "upgrade", label: "Upgrade" },
+  { pageKey: "partners", label: "Partners" },
 ];
 
 export const PAGE_CONTENT_DEFAULTS = {
@@ -100,6 +101,12 @@ export const PAGE_CONTENT_DEFAULTS = {
         "We believe no student should miss out on the right opportunity simply because they didn't have access to the right information.",
         "For institutions and partners, Thuto represents direct access to Botswana's next generation of qualified, motivated students, already researching, already deciding.",
       ],
+    },
+    partnersTeaser: {
+      heading: "Partner with Thuto",
+      body: "Universities, employers, and education organisations can reach motivated students already researching their next step.",
+      ctaLabel: "Explore partnerships",
+      to: "/partners",
     },
     footer: {
       brand: "Thuto",
@@ -367,6 +374,102 @@ export const PAGE_CONTENT_DEFAULTS = {
         { key: "whatsapp", icon: "whatsapp", text: "Certificate photo/PDF import for grade auto-fill" },
         { key: "unlimited", icon: "spark", text: "Unlimited AI, saves, messaging anyone, and ad-free experience" },
       ],
+    },
+  },
+  partners: {
+    hero: {
+      kicker: "Thuto Partner Network",
+      title: "Join the Thuto Partner Network",
+      body: "Thuto is a Botswana-built social education technology platform. We give institutions, employers, and education partners direct access to students already researching programmes, comparing options, and deciding their next step.",
+      primaryCtaLabel: "Book a demo",
+      secondaryCtaLabel: "Claim your institution",
+      image: "programme-themes/landing-hero-bw.jpg",
+    },
+    logos: {
+      heading: "Institutions on Thuto",
+      body: "Verified partners manage their own profiles. Other listings are informational until claimed.",
+      featuredUniversityIds: ["ub", "biust", "buan", "botho", "bac", "bou", "limkokwing"],
+    },
+    why: {
+      heading: "Why partner with Thuto",
+      items: [
+        {
+          title: "Qualified student leads",
+          body: "Reach students exploring programmes that match their results and subject choices.",
+          icon: "leads",
+        },
+        {
+          title: "Verified profiles",
+          body: "Control how your institution appears with a self-service profile and programme editor.",
+          icon: "verified",
+        },
+        {
+          title: "Real-time analytics",
+          body: "Track profile views, programme interest, and apply clicks from the partner dashboard.",
+          icon: "analytics",
+        },
+        {
+          title: "Featured placement",
+          body: "Stand out in the Thuto directory and on landing surfaces during active campaigns.",
+          icon: "spotlight",
+        },
+      ],
+    },
+    who: {
+      heading: "Who can partner with Thuto",
+      items: [
+        {
+          title: "Universities & colleges",
+          body: "Claim your profile, publish accurate programme data, and capture student interest.",
+          icon: "university",
+        },
+        {
+          title: "TVET & training institutions",
+          body: "Reach applicants comparing technical and vocational routes across Botswana.",
+          icon: "tvet",
+        },
+        {
+          title: "Employers & bursary sponsors",
+          body: "Share funding windows and connect with students planning their study path.",
+          icon: "employer",
+        },
+        {
+          title: "NGOs & youth programmes",
+          body: "Support underserved learners with accurate tertiary information in one place.",
+          icon: "ngo",
+        },
+        {
+          title: "Schools & counsellors",
+          body: "Help learners build shortlists and compare requirements before applications open.",
+          icon: "school",
+        },
+      ],
+    },
+    mission: {
+      heading: "Our goal",
+      highlight: "no student misses the right opportunity",
+      body: "because they lacked access to the right information. Partner with Thuto to put accurate tertiary guidance directly in students' hands.",
+      stats: [
+        { value: "55+", label: "institutions listed" },
+        { value: "Verified", label: "partner profiles" },
+        { value: "Leads", label: "for growth tier" },
+      ],
+    },
+    pricing: {
+      heading: "Partner tiers",
+      body: "Start with a verified profile during our pilot. Contact us for Insights, Spotlight, and Growth packages.",
+      comparisonHeading: "Compare partner tiers",
+      ctaLabel: "Talk to our team",
+    },
+    inquiry: {
+      heading: "Book a demo",
+      body: "Tell us about your organisation and we will follow up with a walkthrough of the partner portal.",
+    },
+    cta: {
+      heading: "Ready to reach Botswana's next generation of students?",
+      body: "Claim your institution profile or book a demo to explore analytics, featured placement, and lead capture.",
+      primaryCtaLabel: "Book a demo",
+      secondaryCtaLabel: "Claim your institution",
     },
   },
 };

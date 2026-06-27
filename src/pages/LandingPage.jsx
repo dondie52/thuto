@@ -8,6 +8,7 @@ import Features from "../components/landing/Features.jsx";
 import UseCaseShowcase from "../components/landing/UseCaseShowcase.jsx";
 import UniversitiesSection from "../components/landing/UniversitiesSection.jsx";
 import CTA from "../components/landing/CTA.jsx";
+import PartnersTeaser from "../components/landing/PartnersTeaser.jsx";
 import AboutSection from "../components/landing/AboutSection.jsx";
 import LandingFooter from "../components/landing/LandingFooter.jsx";
 import { usePageContent } from "../hooks/usePageContent.js";
@@ -34,6 +35,7 @@ export default function LandingPage() {
       <UseCaseShowcase content={content.examples} />
       <UniversitiesSection content={content.universities} />
       <CTA content={content.cta} />
+      <PartnersTeaser content={content.partnersTeaser} />
       <AboutSection content={content.about} />
       <LandingFooter content={content.footer} />
     </div>
