@@ -1,4 +1,5 @@
 import { getSupabase } from "./supabase.js";
+import { fetchProStatusMap } from "./proStatus.js";
 
 function assertSupabase() {
   const supabase = getSupabase();
@@ -25,6 +26,7 @@ function normalizeConversation(row) {
     otherName: row.other_display_name || "Student",
     otherUsername: row.other_username || "",
     otherAvatarUrl: row.other_avatar_url || "",
+    otherIsPro: Boolean(row.other_is_pro),
     lastMessage: row.last_message || "",
     lastMessageAt: row.last_message_at,
     unreadCount: row.unread_count || 0,
@@ -71,7 +73,16 @@ export async function fetchConversations({ limit = 30 } = {}) {
   await currentUserId();
 
   const { data, error } = await supabase.rpc("list_my_conversations", { p_limit: limit });
-  if (!error) return (data || []).map(normalizeConversation);
+  if (!error) {
+    const rows = data || [];
+    const proByUser = await fetchProStatusMap(rows.map((row) => row.other_user_id));
+    return rows.map((row) =>
+      normalizeConversation({
+        ...row,
+        other_is_pro: Boolean(proByUser.get(row.other_user_id)),
+      }),
+    );
+  }
 
   if (isMissingTableError(error)) return [];
   throw error;

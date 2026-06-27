@@ -1,5 +1,6 @@
 import { getSupabase } from "./supabase.js";
 import { formatAuthorUniversity } from "./profile.js";
+import { profileRowIsPro, PROFILE_PRO_FIELDS } from "./proStatus.js";
 
 function assertSupabase() {
   const supabase = getSupabase();
@@ -27,10 +28,11 @@ function normalizePerson(row) {
       universityName: profile.university_name,
       universityStatus: profile.university_status,
     }),
+    isPro: profileRowIsPro(profile),
   };
 }
 
-const PROFILE_COLUMNS = "id,full_name,username,bio,avatar_url,university_name,university_status";
+const PROFILE_COLUMNS = `id,full_name,username,bio,avatar_url,university_name,university_status,${PROFILE_PRO_FIELDS}`;
 
 /**
  * @param {string} query
