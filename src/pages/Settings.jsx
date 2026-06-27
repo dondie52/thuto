@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import DeleteAccountForm from "../components/profile/DeleteAccountForm.jsx";
 import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY } from "../lib/admissions.js";
 import { STORAGE_KEY as BOOKMARK_STORAGE_KEY } from "../lib/bookmarks.js";
 import { openBillingPortal } from "../lib/billing.js";
@@ -184,6 +185,18 @@ export default function Settings() {
           >
             Sync now
           </button>
+        </section>
+      ) : null}
+
+      {user ? (
+        <section className="rounded-2xl border border-red-200 bg-red-50/80 p-4 shadow-sm">
+          <h2 className="font-display text-xl font-semibold text-red-950">Delete account</h2>
+          <p className="mt-2 text-sm leading-relaxed text-red-900">
+            Permanently remove your account, profile, saved programmes, and other synced data. This cannot be undone.
+          </p>
+          <div className="mt-4">
+            <DeleteAccountForm />
+          </div>
         </section>
       ) : null}
 

@@ -4,6 +4,7 @@ import ProfileEditForm from "../components/ProfileEditForm.jsx";
 import ProVerificationBadge from "../components/ProVerificationBadge.jsx";
 import AccountActivitySummary from "../components/profile/AccountActivitySummary.jsx";
 import ChangePasswordForm from "../components/profile/ChangePasswordForm.jsx";
+import DeleteAccountForm from "../components/profile/DeleteAccountForm.jsx";
 import NotificationPreferences from "../components/profile/NotificationPreferences.jsx";
 import ProfileSection from "../components/profile/ProfileSection.jsx";
 import ProfileSectionNav from "../components/profile/ProfileSectionNav.jsx";
@@ -394,6 +395,16 @@ export default function Profile() {
               </div>
             </div>
           </ProfileSection>
+
+          <section className="rounded-2xl border border-red-200 bg-red-50/50 p-4 shadow-sm">
+            <h2 className="font-display text-lg font-semibold text-red-900">Delete account</h2>
+            <p className="mt-1 text-sm text-red-800/90">
+              Permanently remove your Thuto account, profile, and synced data from our servers.
+            </p>
+            <div className="mt-4">
+              <DeleteAccountForm />
+            </div>
+          </section>
 
           <section className="rounded-2xl border border-red-200 bg-red-50/50 p-4 shadow-sm">
             <h2 className="font-display text-lg font-semibold text-red-900">Sign out</h2>

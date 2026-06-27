@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { deleteAccount as deleteAccountRequest } from "./account.js";
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 import { isPremiumActive } from "./premium.js";
 import { normalizeProfileRow, updateUserProfile } from "./profile.js";
@@ -271,6 +272,15 @@ export function AuthProvider({ children }) {
     setIsSuperuserLoading(false);
   }
 
+  async function deleteAccount({ password }) {
+    setAuthError("");
+    await deleteAccountRequest({ password });
+    setSession(null);
+    setProfile(null);
+    setIsSuperuser(false);
+    setIsSuperuserLoading(false);
+  }
+
   const isPremium = useMemo(() => isPremiumActive(profile), [profile]);
 
   const value = useMemo(
@@ -281,6 +291,7 @@ export function AuthProvider({ children }) {
       isSuperuser,
       isSuperuserLoading,
       changePassword,
+      deleteAccount,
       logout,
       profile,
       refreshProfile,
