@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileEditForm from "../components/ProfileEditForm.jsx";
-import ProVerificationBadge from "../components/ProVerificationBadge.jsx";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import AccountActivitySummary from "../components/profile/AccountActivitySummary.jsx";
 import ChangePasswordForm from "../components/profile/ChangePasswordForm.jsx";
 import NotificationPreferences from "../components/profile/NotificationPreferences.jsx";
@@ -156,10 +156,11 @@ export default function Profile() {
                   </span>
                 )}
                 <div className="min-w-0">
-                  <p className="inline-flex min-w-0 items-center gap-1.5 font-semibold">
-                    <span className="min-w-0 break-words">{profile.full_name || user.email}</span>
-                    {isPremium ? <ProVerificationBadge /> : null}
-                  </p>
+                  <UserDisplayName
+                    name={profile.full_name || user.email}
+                    isPro={isPremium}
+                    nameClassName="min-w-0 break-words font-semibold"
+                  />
                   {profile.username ? <p className="text-xs font-semibold text-stone-500">@{profile.username}</p> : null}
                   {formatAuthorUniversity({
                     universityName: profile.university_name,

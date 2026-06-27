@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import { respondConnectionRequest } from "../lib/connections.js";
@@ -9,7 +10,7 @@ import {
   fetchNotifications,
   markAllNotificationsRead,
   markNotificationsRead,
-  notificationSummary,
+  notificationActionText,
 } from "../lib/notifications.js";
 
 function profileInitial(name) {
@@ -210,7 +211,20 @@ export default function FeedNotifications() {
                 </span>
               )}
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-brand-900">{notificationSummary(item)}</p>
+                <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                  {item.actorUsername ? (
+                    <Link
+                      to={profilePath(item.actorUsername) || "#"}
+                      onClick={(event) => event.stopPropagation()}
+                      className="focus-ring min-w-0"
+                    >
+                      <UserDisplayName name={item.actorName} isPro={item.actorIsPro} nameClassName="text-sm font-semibold text-brand-900" />
+                    </Link>
+                  ) : (
+                    <UserDisplayName name={item.actorName} isPro={item.actorIsPro} nameClassName="text-sm font-semibold text-brand-900" />
+                  )}
+                </div>
+                <p className="mt-0.5 text-sm text-brand-900">{notificationActionText(item)}</p>
                 <p className="mt-1 text-xs text-stone-500">{formatWhen(item.createdAt)}</p>
               </div>
               {!item.readAt ? <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-brand-600" aria-hidden /> : null}

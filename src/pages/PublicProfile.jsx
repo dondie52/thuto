@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import FeedPostCard from "../components/FeedPostCard.jsx";
-import ProVerificationBadge from "../components/ProVerificationBadge.jsx";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import {
@@ -234,9 +234,13 @@ export default function PublicProfile() {
             </span>
           )}
           <div className="min-w-0 flex-1">
-            <h1 className="flex min-w-0 items-center gap-1 font-display text-base font-semibold text-brand-900">
-              <span className="truncate">{profile.fullName}</span>
-              {profile.isPro ? <ProVerificationBadge className="size-4 shrink-0" /> : null}
+            <h1 className="min-w-0 font-display text-2xl font-bold text-brand-900 sm:text-3xl">
+              <UserDisplayName
+                name={profile.fullName}
+                isPro={profile.isPro}
+                className="max-w-full"
+                badgeClassName="size-4 shrink-0"
+              />
             </h1>
             <div className="mt-0.5 flex flex-wrap gap-3 text-xs text-stone-600">
               <span>
