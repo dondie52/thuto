@@ -31,7 +31,7 @@ function useDebouncedValue(value, delayMs = 350) {
 
 export default function ThutoCenter() {
   useDocumentTitle("Thuto Center | Thuto");
-  const { user, profile, supabaseConfigured } = useAuth();
+  const { user, profile, supabaseConfigured, isLoading: isAuthLoading, isProfileLoading } = useAuth();
   const { isPremium } = useEntitlements();
   const configured = supabaseConfigured && isSupabaseConfigured();
   const prefilledUniversity = useRef(false);
@@ -77,12 +77,14 @@ export default function ThutoCenter() {
     setFilters((prev) => ({ ...prev, universityId: profile.university_id }));
   }, [profile?.university_id]);
 
+  const readyToLoad = configured && !isAuthLoading && (!user?.id || !isProfileLoading);
+
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
-      if (!configured) {
-        setInitialLoading(false);
+      if (!readyToLoad) {
+        if (!configured) setInitialLoading(false);
         return;
       }
 
@@ -121,7 +123,7 @@ export default function ThutoCenter() {
     return () => {
       cancelled = true;
     };
-  }, [configured, user?.id, queryKey]);
+  }, [readyToLoad, configured, user?.id, queryKey]);
 
   const pendingCount = useMemo(
     () => myUploads.filter((doc) => doc.status === "pending_review").length,
