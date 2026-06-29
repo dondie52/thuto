@@ -21,17 +21,18 @@ export default function OnboardingRedirect() {
   const { user, profile, isProfileLoading, supabaseConfigured } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const profileNeedsOnboarding = Boolean(profile && needsOnboarding(profile));
 
   useEffect(() => {
     if (!supabaseConfigured || !user || isProfileLoading) return;
-    if (!needsOnboarding(profile)) return;
+    if (!profileNeedsOnboarding) return;
 
     const path = location.pathname;
     if (EXEMPT_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))) return;
 
     const next = safeInternalPath(`${path}${location.search}`) || "/app";
     navigate(`/onboarding?next=${encodeURIComponent(next)}`, { replace: true });
-  }, [user, profile, isProfileLoading, supabaseConfigured, location.pathname, location.search, navigate]);
+  }, [user, profileNeedsOnboarding, isProfileLoading, supabaseConfigured, location.pathname, location.search, navigate]);
 
   return null;
 }
