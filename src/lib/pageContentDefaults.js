@@ -129,6 +129,7 @@ export const PAGE_CONTENT_DEFAULTS = {
       items: [
         { to: "/predictor", title: "Check eligibility", body: "Start with real or estimated BGCSE grades and see which programmes you may qualify for." },
         { to: "/fit-finder", title: "Programme fit finder", body: "Match your grades and interests to programmes - strong picks, alternatives, and stretch ideas." },
+        { to: "/center", title: "Thuto Center", body: "Upload notes and past papers, or unlock campus study materials from other Botswana students." },
         { to: "/feed", title: "Scroll Feed", body: "Browse useful student posts, opportunities, questions, tips, and notices after AI moderation." },
         { to: "/programmes", title: "Programmes", body: "Browse courses, entry requirements, modules, and career ideas." },
         { to: "/saved", title: "Saved programmes", body: "Shortlist favourites on this device and jump back to them anytime." },

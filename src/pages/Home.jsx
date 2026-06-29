@@ -118,6 +118,23 @@ function mergeFeaturedWithLocal(pool, calendarDayKey, aiOrder) {
 
 const URGENT_DEADLINES_PREVIEW = 5;
 
+const THUTO_CENTER_HOME_CARD = {
+  to: "/center",
+  title: "Thuto Center",
+  body: "Upload notes and past papers, or unlock campus study materials from other Botswana students.",
+};
+
+/** Ensure Thuto Center stays visible even when home cards come from CMS overrides. */
+function resolveHomeCards(cmsItems, fallbackItems) {
+  const base = Array.isArray(cmsItems) && cmsItems.length > 0 ? [...cmsItems] : [...fallbackItems];
+  if (base.some((item) => item?.to === THUTO_CENTER_HOME_CARD.to)) return base;
+
+  const feedIndex = base.findIndex((item) => item?.to === "/feed");
+  const insertAt = feedIndex >= 0 ? feedIndex : Math.min(2, base.length);
+  base.splice(insertAt, 0, THUTO_CENTER_HOME_CARD);
+  return base;
+}
+
 export default function Home() {
   useDocumentTitle("Thuto - Your Botswana Tertiary Companion");
   const { content } = usePageContent("home", PAGE_CONTENT_DEFAULTS.home);
@@ -450,7 +467,7 @@ export default function Home() {
       <section className="space-y-4">
         <h2 className="font-display text-xl font-semibold tracking-tight text-brand-900">{content.cards?.heading}</h2>
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {(content.cards?.items || cards).map(({ to, title, body }, i) => (
+          {resolveHomeCards(content.cards?.items, cards).map(({ to, title, body }, i) => (
             <li
               key={to}
               className="animate-fade-up"
