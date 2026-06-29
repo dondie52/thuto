@@ -19,6 +19,7 @@ import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
+import ThutoCenterPromo from "../components/ThutoCenterPromo.jsx";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
@@ -270,6 +271,8 @@ export default function Home() {
 
   return (
     <div className="space-y-10">
+      <ThutoCenterPromo />
+
       {urgentUnis.length > 0 && (
         <div
           className="animate-fade-up rounded-2xl border border-amber-200/90 bg-gradient-to-br from-amber-50 to-amber-100/80 p-4 shadow-card"

@@ -10,7 +10,7 @@ const desktopLinks = [
   { to: "/app", label: "Home", end: true },
   { to: "/predictor", label: "Predictor" },
   { to: "/feed", label: "Feed" },
-  { to: "/center", label: "Center" },
+  { to: "/center", label: "Thuto Center" },
   { to: "/programmes", label: "Programmes" },
   { to: "/compare", label: "Compare" },
   { to: "/saved", label: "Saved" },
@@ -42,7 +42,7 @@ export default function Layout() {
         <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pb-0 pt-3" : "py-3"].join(" ")}>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
             <BrandMark className="min-w-0 justify-self-start" />
-            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 sm:flex" aria-label="Primary desktop">
+            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto sm:flex" aria-label="Primary desktop">
               {desktopLinks.map(({ to, label, end }) => (
                 <NavLink key={to} to={to} end={end} className={navLinkClass}>
                   {label}

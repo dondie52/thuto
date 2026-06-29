@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ThutoCenterPromo from "../components/ThutoCenterPromo.jsx";
 import { useAuth } from "../lib/auth.jsx";
 import { startPremiumCheckout, isBillingConfigured } from "../lib/billing.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
@@ -157,8 +158,14 @@ export default function Upgrade() {
             )}
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
-                to="/profile"
+                to="/center"
                 className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
+              >
+                Open Thuto Center
+              </Link>
+              <Link
+                to="/profile"
+                className="rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50"
               >
                 View profile
               </Link>
@@ -194,6 +201,8 @@ export default function Upgrade() {
             ))}
           </ul>
         </section>
+
+        <ThutoCenterPromo compact />
 
         {showCheckout ? (
           <section className="space-y-3">

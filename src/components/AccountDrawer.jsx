@@ -36,9 +36,9 @@ function ToolIcon({ name }) {
 }
 
 const primaryToolItems = [
+  { to: "/center", label: "Thuto Center", description: "Campus notes, past papers, and study materials from students", icon: "center" },
   { to: "/programmes", label: "Programmes", description: "Browse degrees, diplomas, and certificates", icon: "programmes" },
   { to: "/universities", label: "Tertiary Institutions", description: "Institutions, locations, and application windows", icon: "universities" },
-  { to: "/center", label: "Thuto Center", description: "Campus notes, past papers, and study materials from students", icon: "center" },
   { to: "/sponsorships", label: "Sponsorships", description: "Government sponsorship, private funding, and grants", icon: "sponsorships" },
   { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },
   { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Master's, PhD programmes, and postgraduate scholarships", icon: "postgraduate" },
@@ -305,15 +305,23 @@ export default function AccountDrawer() {
                   <p className="mt-1 text-sm font-semibold text-stone-900">Thuto Pro</p>
                   <p className="mt-1 text-xs leading-relaxed text-stone-600">
                     {isPremium
-                      ? "Alerts, PDF downloads, acceptance chance, and unlimited AI are unlocked."
-                      : "One-time Pro from P59/year — no monthly billing. Alerts, PDFs, and unlimited AI."}
+                      ? "Alerts, PDF downloads, Thuto Center instant access, acceptance chance, and unlimited AI are unlocked."
+                      : "One-time Pro from P59/year — no monthly billing. Alerts, PDFs, Thuto Center, and unlimited AI."}
                   </p>
-                  <Link
-                    to={isPremium ? "/settings" : "/upgrade"}
-                    className="focus-ring mt-3 inline-flex min-h-[40px] w-full items-center justify-center rounded-xl bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
-                  >
-                    {isPremium ? "Manage plan" : "Upgrade to Pro"}
-                  </Link>
+                  <div className="mt-3 grid gap-2">
+                    <Link
+                      to="/center"
+                      className="focus-ring inline-flex min-h-[40px] w-full items-center justify-center rounded-xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-800 transition hover:bg-brand-50"
+                    >
+                      Open Thuto Center
+                    </Link>
+                    <Link
+                      to={isPremium ? "/settings" : "/upgrade"}
+                      className="focus-ring inline-flex min-h-[40px] w-full items-center justify-center rounded-xl bg-brand-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-900"
+                    >
+                      {isPremium ? "Manage plan" : "Upgrade to Pro"}
+                    </Link>
+                  </div>
                 </div>
               )}
 
