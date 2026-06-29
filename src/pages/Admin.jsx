@@ -49,6 +49,7 @@ const ADMIN_TABS = [
 
 const CONTROL_LINKS = [
   { to: "/admin/feed", label: "Feed moderation", description: "Approve, reject, remove, restore, and review reports." },
+  { to: "/admin/center", label: "Thuto Center moderation", description: "Review student uploads, approve unlock credits, and handle copyright reports." },
   { to: "/programmes", label: "Programme catalogue", description: "Inspect programme data exactly as students see it." },
   { to: "/universities", label: "Universities", description: "Check institution pages, resources, and application windows." },
   { to: "/sponsorships", label: "Sponsorships", description: "Review public sponsorship cards from live opportunity data." },
