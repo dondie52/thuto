@@ -34,6 +34,11 @@ const cards = [
     body: "Match your grades and interests to programmes - strong picks, alternatives, and stretch ideas.",
   },
   {
+    to: "/center",
+    title: "Thuto Center",
+    body: "Upload notes and past papers, or unlock campus study materials from other Botswana students.",
+  },
+  {
     to: "/feed",
     title: "Scroll Feed",
     body: "Browse useful student posts, opportunities, questions, tips, and notices after AI moderation.",

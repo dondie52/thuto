@@ -18,6 +18,8 @@ export const FREE_ENTITLEMENTS = Object.freeze({
   pdfDownload: false,
   verificationBadge: false,
   messageAnyone: false,
+  centerInstantAccess: false,
+  centerUpload: true,
 });
 
 export const PRO_ENTITLEMENTS = Object.freeze({
@@ -36,6 +38,8 @@ export const PRO_ENTITLEMENTS = Object.freeze({
   pdfDownload: true,
   verificationBadge: true,
   messageAnyone: true,
+  centerInstantAccess: true,
+  centerUpload: true,
 });
 
 /**
@@ -77,4 +81,5 @@ export const FREE_VS_PRO_FEATURES = [
   { feature: "PDF downloads", free: "Not included", pro: "Download & share programme PDFs" },
   { feature: "Verification badge", free: "Not included", pro: "Verified profile on Thuto feed" },
   { feature: "Messaging", free: "Followers & connections only", pro: "Message anyone" },
+  { feature: "Thuto Center downloads", free: "Unlock with upload credits (3 per approval)", pro: "Instant access to all campus materials" },
 ];

@@ -10,6 +10,7 @@ const FEATURE_LABELS = {
   maxSavedProgrammes: "unlimited saved programmes",
   compareMax: "more programme comparisons",
   messageAnyone: "messaging anyone on Thuto",
+  centerInstantAccess: "instant Thuto Center downloads",
 };
 
 /**

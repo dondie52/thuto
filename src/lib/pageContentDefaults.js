@@ -8,6 +8,7 @@ export const PAGE_CONTENT_META = [
   { pageKey: "support", label: "Support" },
   { pageKey: "disclaimer", label: "Disclaimer" },
   { pageKey: "privacy", label: "Privacy" },
+  { pageKey: "thutoCenterPolicy", label: "Thuto Center policy" },
   { pageKey: "upgrade", label: "Upgrade" },
   { pageKey: "partners", label: "Partners" },
 ];
@@ -338,6 +339,13 @@ export const PAGE_CONTENT_DEFAULTS = {
         ],
       },
       {
+        heading: "Thuto Center",
+        paragraphs: [
+          "If you use Thuto Center, uploaded files, document metadata, unlock credits, helpful votes, policy acceptances, and download counts may be stored in Supabase.",
+          "Your display name and university affiliation may appear on materials you upload. Downloads are logged for abuse prevention. See the Thuto Center Botswana policy for copyright and takedown rules.",
+        ],
+      },
+      {
         heading: "Device storage",
         paragraphs: [
           "Bookmarks, compare selections, predictor inputs, and rate limits for the share form may be stored in your browser. This stays on your device unless you clear site data.",
@@ -373,6 +381,7 @@ export const PAGE_CONTENT_DEFAULTS = {
         { key: "pdf", icon: "pdf", text: "Download & share programme summaries for parents and teachers" },
         { key: "whatsapp", icon: "whatsapp", text: "Certificate photo/PDF import for grade auto-fill" },
         { key: "unlimited", icon: "spark", text: "Unlimited AI, saves, messaging anyone, and ad-free experience" },
+        { key: "center", icon: "pdf", text: "Instant Thuto Center downloads — notes and past papers from other students" },
       ],
     },
   },

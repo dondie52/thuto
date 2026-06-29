@@ -45,6 +45,11 @@ const UpgradeCancel = lazy(() => import("./pages/UpgradeCancel.jsx"));
 const Partner = lazy(() => import("./pages/Partner.jsx"));
 const Partners = lazy(() => import("./pages/Partners.jsx"));
 const ExternalRedirect = lazy(() => import("./pages/ExternalRedirect.jsx"));
+const AdminThutoCenter = lazy(() => import("./pages/AdminThutoCenter.jsx"));
+const ThutoCenter = lazy(() => import("./pages/ThutoCenter.jsx"));
+const ThutoCenterUpload = lazy(() => import("./pages/ThutoCenterUpload.jsx"));
+const ThutoCenterDocument = lazy(() => import("./pages/ThutoCenterDocument.jsx"));
+const ThutoCenterPolicy = lazy(() => import("./pages/ThutoCenterPolicy.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
 function PageFallback() {
@@ -82,6 +87,7 @@ export default function App() {
             </Route>
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/feed" element={<AdminFeed />} />
+            <Route path="/admin/center" element={<AdminThutoCenter />} />
             <Route path="/assistant" element={<Assistant />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/onboarding" element={<Onboarding />} />
@@ -101,6 +107,10 @@ export default function App() {
             <Route path="/postgraduate-studies" element={<PostgraduateStudies />} />
             <Route path="/study" element={<Study />} />
             <Route path="/study/:subjectId" element={<StudySubject />} />
+            <Route path="/center" element={<ThutoCenter />} />
+            <Route path="/center/upload" element={<ThutoCenterUpload />} />
+            <Route path="/center/policy" element={<ThutoCenterPolicy />} />
+            <Route path="/center/:documentId" element={<ThutoCenterDocument />} />
             <Route path="/support" element={<Support />} />
             <Route path="/upgrade" element={<Upgrade />} />
             <Route path="/upgrade/success" element={<UpgradeSuccess />} />
