@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import {
@@ -64,10 +65,12 @@ function PersonRow({ person, isFollowing, connectionStatus, onFollow, onConnect,
       <div className="min-w-0 flex-1">
         {path ? (
           <Link to={path} className="focus-ring block truncate font-semibold text-brand-900 hover:underline">
-            {person.fullName}
+            <UserDisplayName name={person.fullName} isPro={person.isPro} className="max-w-full" />
           </Link>
         ) : (
-          <p className="truncate font-semibold text-brand-900">{person.fullName}</p>
+          <p className="truncate font-semibold text-brand-900">
+            <UserDisplayName name={person.fullName} isPro={person.isPro} className="max-w-full" />
+          </p>
         )}
         <p className="truncate text-xs text-stone-500">
           {person.username ? `@${person.username}` : "Student"}

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import { fetchConversations, fetchMessages, markConversationRead, sendMessage } from "../lib/messaging.js";
@@ -17,6 +18,7 @@ export default function FeedMessageThread() {
   const { reloadBadges } = useOutletContext() || {};
   const [messages, setMessages] = useState([]);
   const [peerName, setPeerName] = useState("Chat");
+  const [peerIsPro, setPeerIsPro] = useState(false);
   const [draft, setDraft] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
@@ -36,7 +38,10 @@ export default function FeedMessageThread() {
       ]);
       setMessages(threadMessages);
       const match = conversations.find((item) => item.id === conversationId);
-      if (match) setPeerName(match.otherName);
+      if (match) {
+        setPeerName(match.otherName);
+        setPeerIsPro(Boolean(match.otherIsPro));
+      }
       await markConversationRead(conversationId);
       reloadBadges?.();
     } catch (err) {
@@ -90,7 +95,11 @@ export default function FeedMessageThread() {
         <Link to="/feed/messages" className="focus-ring rounded-full border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800">
           Back
         </Link>
-        <h1 className="font-display text-lg font-semibold text-brand-900">{peerName}</h1>
+        <UserDisplayName
+          name={peerName}
+          isPro={peerIsPro}
+          nameClassName="font-display text-lg font-semibold text-brand-900"
+        />
       </div>
 
       {error ? (

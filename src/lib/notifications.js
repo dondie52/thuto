@@ -1,4 +1,5 @@
 import { getSupabase } from "./supabase.js";
+import { fetchProStatusMap } from "./proStatus.js";
 
 function assertSupabase() {
   const supabase = getSupabase();
@@ -26,6 +27,7 @@ function normalizeNotification(row) {
     actorName: row.actor_display_name || "Someone",
     actorUsername: row.actor_username || "",
     actorAvatarUrl: row.actor_avatar_url || "",
+    actorIsPro: Boolean(row.actor_is_pro),
     targetType: row.target_type || "",
     targetId: row.target_id || "",
     body: row.body || "",
@@ -72,7 +74,16 @@ export async function fetchNotifications({ limit = 40 } = {}) {
     if (isMissingTableError(error)) return [];
     throw error;
   }
-  return (data || []).map(normalizeNotification);
+
+  const rows = data || [];
+  const proByActor = await fetchProStatusMap(rows.map((row) => row.actor_id));
+
+  return rows.map((row) =>
+    normalizeNotification({
+      ...row,
+      actor_is_pro: Boolean(proByActor.get(row.actor_id)),
+    }),
+  );
 }
 
 /**
@@ -102,6 +113,18 @@ export async function markAllNotificationsRead() {
     .eq("user_id", userId)
     .is("read_at", null);
   if (error && !isMissingTableError(error)) throw error;
+}
+
+export function notificationActionText(item) {
+  if (item.type === "follow") return "Started following you";
+  if (item.type === "connection_request") return "Sent you a connection request";
+  if (item.type === "connection_accepted") return "Accepted your connection request";
+  if (item.type === "comment") return "Commented on your post";
+  if (item.type === "reaction") return "Reacted to your post";
+  if (item.type === "mention") return "Mentioned you in a post";
+  if (item.type === "message") return "Sent you a message";
+  if (item.type === "post") return "Shared a new post";
+  return item.body || "New activity on your feed";
 }
 
 export function notificationSummary(item) {

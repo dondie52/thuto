@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileEditForm from "../components/ProfileEditForm.jsx";
-import ProVerificationBadge from "../components/ProVerificationBadge.jsx";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import AccountActivitySummary from "../components/profile/AccountActivitySummary.jsx";
 import ChangePasswordForm from "../components/profile/ChangePasswordForm.jsx";
+import DeleteAccountForm from "../components/profile/DeleteAccountForm.jsx";
 import NotificationPreferences from "../components/profile/NotificationPreferences.jsx";
 import ProfileSection from "../components/profile/ProfileSection.jsx";
 import ProfileSectionNav from "../components/profile/ProfileSectionNav.jsx";
@@ -156,10 +157,11 @@ export default function Profile() {
                   </span>
                 )}
                 <div className="min-w-0">
-                  <p className="inline-flex min-w-0 items-center gap-1.5 font-semibold">
-                    <span className="min-w-0 break-words">{profile.full_name || user.email}</span>
-                    {isPremium ? <ProVerificationBadge /> : null}
-                  </p>
+                  <UserDisplayName
+                    name={profile.full_name || user.email}
+                    isPro={isPremium}
+                    nameClassName="min-w-0 break-words font-semibold"
+                  />
                   {profile.username ? <p className="text-xs font-semibold text-stone-500">@{profile.username}</p> : null}
                   {formatAuthorUniversity({
                     universityName: profile.university_name,
@@ -394,6 +396,16 @@ export default function Profile() {
               </div>
             </div>
           </ProfileSection>
+
+          <section className="rounded-2xl border border-red-200 bg-red-50/50 p-4 shadow-sm">
+            <h2 className="font-display text-lg font-semibold text-red-900">Delete account</h2>
+            <p className="mt-1 text-sm text-red-800/90">
+              Permanently remove your Thuto account, profile, and synced data from our servers.
+            </p>
+            <div className="mt-4">
+              <DeleteAccountForm />
+            </div>
+          </section>
 
           <section className="rounded-2xl border border-red-200 bg-red-50/50 p-4 shadow-sm">
             <h2 className="font-display text-lg font-semibold text-red-900">Sign out</h2>

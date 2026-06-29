@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
+import UserDisplayName from "./UserDisplayName.jsx";
 
 function ToolIcon({ name }) {
   const icons = {
@@ -231,7 +232,13 @@ export default function AccountDrawer() {
                   to={profileLinkTo}
                   className="focus-ring min-w-0 flex-1 truncate font-display text-lg font-semibold text-brand-900 transition hover:text-brand-700"
                 >
-                  {profileDisplayName}
+                  <UserDisplayName
+                    name={profileDisplayName}
+                    isPro={isSignedIn && isPremium}
+                    className="max-w-full"
+                    nameClassName="truncate font-display text-lg font-semibold"
+                    badgeClassName="size-4"
+                  />
                 </Link>
                 {isSuperuser ? (
                   <span className="shrink-0 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-800">

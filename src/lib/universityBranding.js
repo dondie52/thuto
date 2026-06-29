@@ -145,6 +145,14 @@ export function resolveUniversityId(university) {
   return "";
 }
 
+function pickEmbeddedAcronym(label) {
+  const acronyms = label
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter((word) => /^[A-Z0-9]{2,6}$/.test(word));
+  return acronyms[0] || "";
+}
+
 export function deriveUniversityInitials(university) {
   const shortName = String(university?.shortName || "").trim();
   if (shortName) return shortName.toUpperCase();
@@ -152,12 +160,13 @@ export function deriveUniversityInitials(university) {
   const label = String(university?.name || "").trim();
   if (!label) return "UNI";
 
-  const upperAcronym = label
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => (word === word.toUpperCase() && word.length <= 6 ? word : ""))
-    .filter(Boolean);
-  if (upperAcronym.length) return upperAcronym[0].slice(0, 6);
+  const embeddedAcronym = pickEmbeddedAcronym(label);
+  if (embeddedAcronym) return embeddedAcronym.slice(0, 6);
+
+  const id = resolveUniversityId(university);
+  const aliasAcronyms = UNIVERSITY_ALIASES_BY_ID[id] || [];
+  const knownAcronym = aliasAcronyms.map((alias) => pickEmbeddedAcronym(alias)).find(Boolean);
+  if (knownAcronym) return knownAcronym.slice(0, 6);
 
   const initials = label
     .replace(/[()&]/g, " ")

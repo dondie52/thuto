@@ -1,5 +1,6 @@
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 import { isPremiumActive } from "./premium.js";
+import { applyAuthorProFlags, fetchProStatusMap } from "./proStatus.js";
 
 export { isSupabaseConfigured };
 
@@ -143,6 +144,7 @@ function normalizePost(post, { images = [], comments = [], reactions = [], viewe
       authorUniversityName: comment.author_university_name || "",
       authorUniversityStatus: comment.author_university_status || "",
       authorDistinction: comment.author_distinction || "",
+      authorIsPro: Boolean(comment.author_is_pro),
       body: comment.body || "",
       status: comment.status || "published",
       moderationReason: comment.moderation_reason || "",
@@ -254,24 +256,16 @@ async function enrichAuthorProStatus(supabase, posts) {
         .map((post) => post.author_id),
     ),
   ];
-  if (!authorIds.length) return posts;
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("id, premium_status, premium_until")
-    .in("id", authorIds);
-  if (error) {
-    console.warn("Could not enrich feed author Pro status:", error.message);
-    return posts;
-  }
+  const proByAuthor = authorIds.length ? await fetchProStatusMap(authorIds) : new Map();
+  return applyAuthorProFlags(posts, proByAuthor);
+}
 
-  const proByAuthor = new Map(
-    (data || []).map((profile) => [profile.id, isPremiumActive(profile)]),
-  );
-
-  return (posts || []).map((post) => ({
-    ...post,
-    author_is_pro:
-      typeof post.author_is_pro === "boolean" ? post.author_is_pro : Boolean(proByAuthor.get(post.author_id)),
+async function enrichCommentProStatus(_supabase, comments) {
+  const authorIds = [...new Set((comments || []).map((comment) => comment?.author_id).filter(Boolean))];
+  const proByAuthor = authorIds.length ? await fetchProStatusMap(authorIds) : new Map();
+  return (comments || []).map((comment) => ({
+    ...comment,
+    author_is_pro: Boolean(proByAuthor.get(comment.author_id)),
   }));
 }
 
@@ -299,8 +293,10 @@ async function hydrateFeedPosts(supabase, posts, viewerUserId = null) {
   if (commentsResult.error) throw commentsResult.error;
   if (reactionsResult.error) throw reactionsResult.error;
 
+  const enrichedComments = await enrichCommentProStatus(supabase, commentsResult.data || []);
+
   const imagesByPost = groupBy(imagesResult.data, "post_id");
-  const commentsByPost = groupBy(commentsResult.data, "post_id");
+  const commentsByPost = groupBy(enrichedComments, "post_id");
   const reactionsByPost = groupBy(reactionsResult.data, "post_id");
 
   return enrichedPosts

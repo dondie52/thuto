@@ -237,6 +237,7 @@ function ensureUniversityRecord(universities, target, canonicalId) {
     if (!existing.phone && target.phone) existing.phone = target.phone;
     if (!existing.location && target.location) existing.location = target.location;
     if (!existing.applyUrl && target.website) existing.applyUrl = target.website;
+    if (!existing.shortName && target.nameShort) existing.shortName = target.nameShort;
     if (!existing.description) existing.description = `Tertiary provider in Botswana. Verify programme details with the institution.`;
     if (!existing.sponsorshipTier) existing.sponsorshipTier = "standard";
     return { added: false, record: existing };
@@ -245,6 +246,7 @@ function ensureUniversityRecord(universities, target, canonicalId) {
   const record = {
     id: canonicalId,
     name: target.nameCanonical,
+    ...(target.nameShort ? { shortName: target.nameShort } : {}),
     location: target.location || "Botswana",
     description: `Tertiary provider in Botswana. Verify programme details with the institution.`,
     website: target.website || null,

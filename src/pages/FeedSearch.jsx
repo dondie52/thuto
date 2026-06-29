@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import { searchFeed } from "../lib/feedSearch.js";
@@ -146,10 +147,12 @@ export default function FeedSearch() {
                 <div className="min-w-0 flex-1">
                   {path ? (
                     <Link to={path} className="focus-ring block truncate font-semibold text-brand-900 hover:underline">
-                      {person.fullName}
+                      <UserDisplayName name={person.fullName} isPro={person.isPro} className="max-w-full" />
                     </Link>
                   ) : (
-                    <p className="truncate font-semibold text-brand-900">{person.fullName}</p>
+                    <p className="truncate font-semibold text-brand-900">
+                      <UserDisplayName name={person.fullName} isPro={person.isPro} className="max-w-full" />
+                    </p>
                   )}
                   <p className="truncate text-xs text-stone-500">
                     {person.username ? `@${person.username}` : "Student"}
@@ -190,7 +193,13 @@ export default function FeedSearch() {
                 <p className="mt-2 font-semibold text-brand-900">{post.title || post.body.slice(0, 80)}</p>
                 <p className="mt-1 line-clamp-2 text-sm text-stone-600">{post.body}</p>
                 <p className="mt-2 text-xs text-stone-500">
-                  by {post.authorDisplayName}
+                  by{" "}
+                  <UserDisplayName
+                    name={post.authorDisplayName}
+                    isPro={post.authorIsPro}
+                    badgeClassName="size-3.5"
+                    className="inline-flex align-middle"
+                  />
                   {post.authorUsername ? ` (@${post.authorUsername})` : ""}
                 </p>
               </Link>

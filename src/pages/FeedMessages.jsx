@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import UserDisplayName from "../components/UserDisplayName.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import { fetchConversations } from "../lib/messaging.js";
@@ -120,7 +121,12 @@ export default function FeedMessages() {
             )}
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
-                <p className="truncate font-semibold text-brand-900">{conversation.otherName}</p>
+                <UserDisplayName
+                  name={conversation.otherName}
+                  isPro={conversation.otherIsPro}
+                  nameClassName="font-semibold text-brand-900"
+                  className="min-w-0 flex-1"
+                />
                 <span className="shrink-0 text-xs text-stone-500">{formatWhen(conversation.lastMessageAt)}</span>
               </div>
               <p className="truncate text-sm text-stone-600">{conversation.lastMessage || "Start the conversation"}</p>

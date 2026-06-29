@@ -135,7 +135,7 @@ export default function UniversitiesSection({ content }) {
   }
 
   function institutionLabel(university) {
-    return university.shortName || deriveUniversityInitials(university);
+    return university.name || deriveUniversityInitials(university);
   }
 
   return (
@@ -174,16 +174,16 @@ export default function UniversitiesSection({ content }) {
                 <li key={u.id}>
                   <Link
                     to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
-                    className="logo-card flex h-24 min-w-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
+                    className="logo-card flex h-28 min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
                     onMouseEnter={liftCard}
                     onMouseLeave={settleCard}
                     onFocus={liftCard}
                     onBlur={settleCard}
                   >
-                    <span className="flex min-h-0 flex-1 items-center justify-center">
-                      <UniversityInitialsBadge university={u} size="lg" />
+                    <span className="flex flex-1 items-center justify-center">
+                      <UniversityInitialsBadge university={u} size="md" />
                     </span>
-                    <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{institutionLabel(u)}</span>
+                    <span className="mt-2 block truncate text-center text-[11px] font-semibold leading-tight text-slate-700">{institutionLabel(u)}</span>
                   </Link>
                 </li>
               ))}
@@ -203,7 +203,7 @@ export default function UniversitiesSection({ content }) {
                     <li key={`${u.id}-${index}`} aria-hidden={duplicate}>
                       <Link
                         to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
-                        className="logo-card group flex h-28 w-40 shrink-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
+                        className="logo-card group flex h-32 w-40 shrink-0 flex-col rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
                         tabIndex={duplicate ? -1 : undefined}
                         aria-hidden={duplicate}
                         onMouseEnter={liftCard}
@@ -211,10 +211,10 @@ export default function UniversitiesSection({ content }) {
                         onFocus={liftCard}
                         onBlur={settleCard}
                       >
-                        <span className="flex min-h-0 flex-1 items-center justify-center">
-                          <UniversityInitialsBadge university={u} size="xl" />
+                        <span className="flex flex-1 items-center justify-center">
+                          <UniversityInitialsBadge university={u} size="lg" />
                         </span>
-                        <span className="mt-2 block truncate text-center text-[11px] font-bold text-slate-700">{institutionLabel(u)}</span>
+                        <span className="mt-2 block truncate text-center text-[11px] font-semibold leading-tight text-slate-700">{institutionLabel(u)}</span>
                       </Link>
                     </li>
                   );

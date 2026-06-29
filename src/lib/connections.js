@@ -1,5 +1,6 @@
 import { getSupabase } from "./supabase.js";
 import { formatAuthorUniversity } from "./profile.js";
+import { profileRowIsPro, PROFILE_PRO_FIELDS } from "./proStatus.js";
 
 function assertSupabase() {
   const supabase = getSupabase();
@@ -144,7 +145,7 @@ export async function fetchConnectionStatusMap(userIds = []) {
   return result;
 }
 
-const PROFILE_COLUMNS = "id,full_name,username,bio,avatar_url,university_name,university_status";
+const PROFILE_COLUMNS = `id,full_name,username,bio,avatar_url,university_name,university_status,${PROFILE_PRO_FIELDS}`;
 
 function normalizeConnectionPerson(row) {
   if (!row) return null;
@@ -158,6 +159,7 @@ function normalizeConnectionPerson(row) {
       universityName: row.university_name,
       universityStatus: row.university_status,
     }),
+    isPro: profileRowIsPro(row),
   };
 }
 
