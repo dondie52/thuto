@@ -19,6 +19,13 @@ function ToolIcon({ name }) {
     moderation: <path strokeLinecap="round" strokeLinejoin="round" d="M5 5.5A2.5 2.5 0 017.5 3h9A2.5 2.5 0 0119 5.5v13L15.5 16h-8A2.5 2.5 0 015 13.5v-8zM8.5 8h7M8.5 11.5h4M15 11l1 1 2-2" />,
     settings: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25A3.75 3.75 0 1112 15.75 3.75 3.75 0 0112 8.25zM19 12a7.2 7.2 0 00-.08-1l2-1.55-2-3.46-2.35.94a7.65 7.65 0 00-1.73-1L14.5 3h-5l-.34 2.93a7.65 7.65 0 00-1.73 1L5.08 5.99l-2 3.46 2 1.55a7.2 7.2 0 000 2l-2 1.55 2 3.46 2.35-.94a7.65 7.65 0 001.73 1L9.5 21h5l.34-2.93a7.65 7.65 0 001.73-1l2.35.94 2-3.46-2-1.55c.05-.33.08-.66.08-1z" />,
     support: <path strokeLinecap="round" strokeLinejoin="round" d="M5 5.5A3.5 3.5 0 018.5 2h7A3.5 3.5 0 0119 5.5v5A3.5 3.5 0 0115.5 14H11l-5 5v-5.25A3.5 3.5 0 015 10.5v-5zM9 7h6M9 10h4" />,
+    center: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+      />
+    ),
   };
 
   return (
@@ -31,6 +38,7 @@ function ToolIcon({ name }) {
 const primaryToolItems = [
   { to: "/programmes", label: "Programmes", description: "Browse degrees, diplomas, and certificates", icon: "programmes" },
   { to: "/universities", label: "Tertiary Institutions", description: "Institutions, locations, and application windows", icon: "universities" },
+  { to: "/center", label: "Thuto Center", description: "Campus notes, past papers, and study materials from students", icon: "center" },
   { to: "/sponsorships", label: "Sponsorships", description: "Government sponsorship, private funding, and grants", icon: "sponsorships" },
   { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },
   { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Master's, PhD programmes, and postgraduate scholarships", icon: "postgraduate" },
@@ -48,6 +56,7 @@ const moreToolItems = [
 const superuserToolItems = [
   { to: "/admin", label: "Control Room", description: "Operations overview, opportunities, and premium tools", icon: "admin" },
   { to: "/admin/feed", label: "Feed Moderation", description: "Approve, reject, restore, and review reports", icon: "moderation" },
+  { to: "/admin/center", label: "Thuto Center Moderation", description: "Review uploads, award unlock credits, and handle reports", icon: "center" },
 ];
 
 function itemClass({ isActive }) {
