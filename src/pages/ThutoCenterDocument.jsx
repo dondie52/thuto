@@ -69,7 +69,7 @@ export default function ThutoCenterDocument() {
     return () => {
       cancelled = true;
     };
-  }, [documentId, user?.id, profile, isPremium]);
+  }, [documentId, user?.id, isPremium, profile?.premium_until, profile?.premium_status]);
 
   async function handleUnlock() {
     setBusy("unlock");

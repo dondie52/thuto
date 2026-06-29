@@ -4,7 +4,15 @@ import { useAuth } from "../lib/auth.jsx";
 import { needsOnboarding } from "../lib/onboarding.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
 
-const EXEMPT_PREFIXES = ["/auth", "/onboarding", "/login", "/signup", "/privacy", "/disclaimer"];
+const EXEMPT_PREFIXES = [
+  "/auth",
+  "/onboarding",
+  "/login",
+  "/signup",
+  "/privacy",
+  "/disclaimer",
+  "/center",
+];
 
 /**
  * Redirects signed-in users without a username to onboarding.

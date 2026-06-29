@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CenterDocumentCard from "../components/CenterDocumentCard.jsx";
 import UpgradePrompt from "../components/UpgradePrompt.jsx";
@@ -18,11 +18,23 @@ import {
   isSupabaseConfigured,
 } from "../lib/thutoCenter.js";
 
+function useDebouncedValue(value, delayMs = 350) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebounced(value), delayMs);
+    return () => window.clearTimeout(timer);
+  }, [value, delayMs]);
+
+  return debounced;
+}
+
 export default function ThutoCenter() {
   useDocumentTitle("Thuto Center | Thuto");
   const { user, profile, supabaseConfigured } = useAuth();
   const { isPremium } = useEntitlements();
   const configured = supabaseConfigured && isSupabaseConfigured();
+  const prefilledUniversity = useRef(false);
 
   const [universities, setUniversities] = useState([]);
   const [documents, setDocuments] = useState([]);
@@ -30,39 +42,60 @@ export default function ThutoCenter() {
   const [unlockedIds, setUnlockedIds] = useState(() => new Set());
   const [credits, setCredits] = useState({ balance: 0, lifetimeEarned: 0, lifetimeSpent: 0 });
   const [filters, setFilters] = useState({
-    universityId: profile?.university_id || "",
+    universityId: "",
     faculty: "",
     courseCode: "",
     documentType: "",
     search: "",
   });
-  const [loading, setLoading] = useState(true);
+  const debouncedSearch = useDebouncedValue(filters.search);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState("");
+  const hasLoadedOnce = useRef(false);
+
+  const queryFilters = useMemo(
+    () => ({
+      universityId: filters.universityId,
+      faculty: filters.faculty,
+      courseCode: filters.courseCode,
+      documentType: filters.documentType,
+      search: debouncedSearch,
+    }),
+    [filters.universityId, filters.faculty, filters.courseCode, filters.documentType, debouncedSearch],
+  );
+
+  const queryKey = useMemo(() => JSON.stringify(queryFilters), [queryFilters]);
 
   useEffect(() => {
     fetchUniversities().then(setUniversities).catch(() => setUniversities([]));
   }, []);
 
   useEffect(() => {
-    if (profile?.university_id && !filters.universityId) {
-      setFilters((prev) => ({ ...prev, universityId: profile.university_id }));
-    }
-  }, [profile?.university_id, filters.universityId]);
+    if (!profile?.university_id || prefilledUniversity.current) return;
+    prefilledUniversity.current = true;
+    setFilters((prev) => ({ ...prev, universityId: profile.university_id }));
+  }, [profile?.university_id]);
 
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
       if (!configured) {
-        setLoading(false);
+        setInitialLoading(false);
         return;
       }
 
-      setLoading(true);
+      if (hasLoadedOnce.current) {
+        setIsRefreshing(true);
+      } else {
+        setInitialLoading(true);
+      }
       setError("");
+
       try {
         const [docs, mine, unlocks, creditRow] = await Promise.all([
-          fetchCenterDocuments(filters),
+          fetchCenterDocuments(queryFilters),
           user?.id ? fetchMyCenterDocuments() : Promise.resolve([]),
           user?.id ? fetchUnlockedDocumentIds() : Promise.resolve(new Set()),
           user?.id ? fetchCenterCredits() : Promise.resolve({ balance: 0, lifetimeEarned: 0, lifetimeSpent: 0 }),
@@ -72,11 +105,15 @@ export default function ThutoCenter() {
           setMyUploads(mine);
           setUnlockedIds(unlocks);
           setCredits(creditRow);
+          hasLoadedOnce.current = true;
         }
       } catch (err) {
         if (!cancelled) setError(err.message || "Could not load Thuto Center.");
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setInitialLoading(false);
+          setIsRefreshing(false);
+        }
       }
     }
 
@@ -84,7 +121,7 @@ export default function ThutoCenter() {
     return () => {
       cancelled = true;
     };
-  }, [configured, user?.id, filters]);
+  }, [configured, user?.id, queryKey]);
 
   const pendingCount = useMemo(
     () => myUploads.filter((doc) => doc.status === "pending_review").length,
@@ -160,7 +197,10 @@ export default function ThutoCenter() {
       ) : null}
 
       <section className="space-y-3 rounded-2xl border border-stone-200 bg-white p-4">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Find materials</h2>
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Find materials</h2>
+          {isRefreshing ? <span className="text-xs text-stone-500">Updating…</span> : null}
+        </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="block text-sm">
             <span className="mb-1 block font-medium text-stone-700">University</span>
@@ -232,7 +272,7 @@ export default function ThutoCenter() {
 
       {error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p> : null}
 
-      {loading ? (
+      {initialLoading ? (
         <p className="text-sm text-stone-500" role="status">
           Loading campus materials…
         </p>
