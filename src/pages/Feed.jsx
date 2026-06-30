@@ -365,8 +365,11 @@ export default function Feed() {
   }
 
   return (
-    <div className="pt-2">
-      <div className="space-y-4 px-4">
+    <div>
+      {(configured === false ||
+        (configured && user && profileIncomplete) ||
+        (configured && !isAuthLoading && !user)) && (
+        <div className="space-y-2 px-4 pb-2">
       {!configured ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900">
           Feed needs Supabase environment variables, the scroll-feed migration, and the feed-moderation Edge Function
@@ -377,7 +380,7 @@ export default function Feed() {
       {configured && user && profileIncomplete ? (
         <Link
           to="/onboarding?next=%2Ffeed"
-          className="focus-ring mb-4 block rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-900 hover:bg-brand-100/80"
+          className="focus-ring block rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-900 hover:bg-brand-100/80"
         >
           Complete your profile
         </Link>
@@ -397,8 +400,10 @@ export default function Feed() {
           </Link>
         </div>
       ) : null}
+        </div>
+      )}
 
-      <section className="-mx-4 border-b border-stone-200/70 px-4 pb-3 pt-1 sm:pb-4">
+      <section className="border-b border-stone-200/70 px-4 py-1.5">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {profile?.avatar_url ? (
             <img
@@ -542,26 +547,23 @@ export default function Feed() {
         </div>
       </section>
 
-      <div className="space-y-3 pt-3">
-        {isLoading ? (
-          <div className="py-8 text-center text-sm text-stone-500">
-            Loading the feed...
-          </div>
-        ) : null}
+      {isLoading ? (
+        <div className="px-4 py-4 text-center text-sm text-stone-500">
+          Loading the feed...
+        </div>
+      ) : null}
 
-        {!isLoading && !posts.length ? (
-          <div className="py-10 text-center">
-            <p className="font-display text-xl font-semibold text-brand-900">No posts yet</p>
-            <p className="mt-2 text-sm text-stone-600">
-              {user ? "Be the first to share an update, or check back after you submit one for review." : "Sign in and post the first student update."}
-            </p>
-          </div>
-        ) : null}
-      </div>
-      </div>
+      {!isLoading && !posts.length ? (
+        <div className="px-4 py-8 text-center">
+          <p className="font-display text-xl font-semibold text-brand-900">No posts yet</p>
+          <p className="mt-2 text-sm text-stone-600">
+            {user ? "Be the first to share an update, or check back after you submit one for review." : "Sign in and post the first student update."}
+          </p>
+        </div>
+      ) : null}
 
       {!isLoading && posts.length ? (
-        <section className="mt-3 divide-y divide-stone-200/80 border-y border-stone-200/80 bg-white">
+        <section className="divide-y divide-stone-200/80 border-b border-stone-200/80 bg-white">
         {posts.map((post) => (
           <FeedPostCard
             key={post.id}

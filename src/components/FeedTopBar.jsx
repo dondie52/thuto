@@ -52,7 +52,7 @@ function IconBell({ className = "h-5 w-5" }) {
 function NavIconButton({ to, label, isActive, icon, badge = 0, onClick }) {
   const badgeLabel = badge > 99 ? "99+" : String(badge);
   const className = [
-    "focus-ring relative flex h-11 w-11 items-center justify-center rounded-full transition-colors",
+    "focus-ring relative flex h-10 w-10 items-center justify-center rounded-full transition-colors",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-brand-800 hover:bg-brand-100/70",
   ].join(" ");
 
@@ -83,9 +83,9 @@ function NavIconButton({ to, label, isActive, icon, badge = 0, onClick }) {
 }
 
 /**
- * @param {{ onRefresh?: () => void, messageCount?: number, notificationCount?: number }} props
+ * @param {{ embedded?: boolean, onRefresh?: () => void, messageCount?: number, notificationCount?: number }} props
  */
-export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCount = 0 }) {
+export default function FeedTopBar({ embedded = false, onRefresh, messageCount = 0, notificationCount = 0 }) {
   const location = useLocation();
   const navigate = useNavigate();
   const path = location.pathname.replace(/\/$/, "");
@@ -101,8 +101,15 @@ export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCo
   }
 
   return (
-    <section className={`feed-top-bar border-b border-brand-100/80 px-4 py-2.5 ${FEED_CHROME_CLASSES}`}>
-      <div className="grid grid-cols-5 gap-2">
+    <section
+      className={
+        embedded
+          ? "feed-top-bar -mx-4 px-4 pb-1 pt-0.5"
+          : `feed-top-bar border-b border-brand-100/80 px-4 py-1.5 ${FEED_CHROME_CLASSES}`
+      }
+      aria-label="Feed actions"
+    >
+      <div className="flex items-center justify-between">
         <NavIconButton
           label={isFeedHome ? "Refresh feed" : "Back to feed"}
           isActive={isFeedHome}
