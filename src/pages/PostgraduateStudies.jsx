@@ -25,13 +25,8 @@ export default function PostgraduateStudies() {
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-2xl border border-brand-200 bg-gradient-to-br from-white via-brand-50/50 to-brand-100/30 p-5 shadow-sm sm:p-6">
-        <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-300/25 blur-2xl" aria-hidden />
-        <div className="relative min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{content.hero?.kicker}</p>
-          <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">{content.hero?.title}</h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">{content.hero?.body}</p>
-        </div>
+      <div>
+        <h1 className="font-display text-2xl font-bold text-brand-900">Postgraduate Studies</h1>
       </div>
 
       <section aria-labelledby="pg-programmes-heading">
