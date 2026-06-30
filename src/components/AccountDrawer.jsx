@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
+import { drawerPrimaryToolItems } from "../lib/toolNavLinks.js";
 import UserDisplayName from "./UserDisplayName.jsx";
 
 function ToolIcon({ name }) {
@@ -35,16 +36,7 @@ function ToolIcon({ name }) {
   );
 }
 
-const primaryToolItems = [
-  { to: "/center", label: "Thuto Center", description: "Campus notes, past papers, and study materials from students", icon: "center" },
-  { to: "/programmes", label: "Programmes", description: "Browse degrees, diplomas, and certificates", icon: "programmes" },
-  { to: "/universities", label: "Tertiary Institutions", description: "Institutions, locations, and application windows", icon: "universities" },
-  { to: "/sponsorships", label: "Sponsorships", description: "Government sponsorship, private funding, and grants", icon: "sponsorships" },
-  { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },
-  { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Master's, PhD programmes, and postgraduate scholarships", icon: "postgraduate" },
-  { to: "/saved", label: "Saved Programmes", description: "Your shortlisted options", icon: "saved" },
-  { to: "/compare", label: "Compare Programmes", description: "Review up to three options side by side", icon: "compare" },
-];
+const primaryToolItems = drawerPrimaryToolItems;
 
 const moreToolItems = [
   { to: "/study", label: "BGCSE Study", description: "Revision links and subject-to-programme bridges", icon: "study" },
