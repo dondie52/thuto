@@ -40,7 +40,9 @@ export default function ThutoCenterUpload() {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    fetchUniversities().then(setUniversities).catch(() => setUniversities([]));
+    fetchUniversities()
+      .then(({ list }) => setUniversities(list))
+      .catch(() => setUniversities([]));
   }, []);
 
   useEffect(() => {
