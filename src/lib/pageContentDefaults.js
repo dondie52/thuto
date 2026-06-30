@@ -118,28 +118,16 @@ export const PAGE_CONTENT_DEFAULTS = {
     },
   },
   home: {
-    hero: {
-      kicker: "Thuto - BTC",
-      title: "Check what your BGCSE results may qualify you for",
-      body: "Start with your grades, get indicative programme matches, and use the result to build a shortlist before you confirm details with each institution.",
-      ctaLabel: "Check eligibility",
+    featuredUniversities: {
+      heading: "Featured institutions",
+      body: "Partner universities and sponsored spots on Thuto.",
+      fallbackIds: ["ub", "biust", "buan", "botho", "bac", "bou", "limkokwing"],
     },
-    cards: {
-      heading: "Get started",
-      items: [
-        { to: "/predictor", title: "Check eligibility", body: "Start with real or estimated BGCSE grades and see which programmes you may qualify for." },
-        { to: "/fit-finder", title: "Programme fit finder", body: "Match your grades and interests to programmes - strong picks, alternatives, and stretch ideas." },
-        { to: "/center", title: "Thuto Center", body: "Upload notes and past papers, or unlock campus study materials from other Botswana students." },
-        { to: "/feed", title: "Scroll Feed", body: "Browse useful student posts, opportunities, questions, tips, and notices after AI moderation." },
-        { to: "/programmes", title: "Programmes", body: "Browse courses, entry requirements, modules, and career ideas." },
-        { to: "/saved", title: "Saved programmes", body: "Shortlist favourites on this device and jump back to them anytime." },
-        { to: "/compare", title: "Compare programmes", body: "Select up to two programmes on Free, or three on Pro, in a shareable side-by-side table." },
-        { to: "/universities", title: "Tertiary Institutions", body: "Institutions, locations, and application windows." },
-        { to: "/sponsorships", title: "Sponsorships & funding", body: "Government sponsorship steps, private sponsor posts, and other funding routes." },
-        { to: "/internships", title: "Internships", body: "Latest internship windows copied from official posts - apply on the original channel." },
-        { to: "/postgraduate-studies", title: "Postgraduate Studies", body: "Master's and PhD programmes, plus scholarship updates for postgraduate students." },
-        { to: "/study", title: "BGCSE Study", body: "Revision links via Learning Passport, free resources, and which programmes need each subject." },
-      ],
+    centerCreators: {
+      heading: "Best Thuto Centre creators",
+      body: "Top study materials from students helping their campus.",
+      emptyTitle: "Creators coming soon",
+      emptyBody: "Upload notes or past papers to Thuto Centre to be featured here.",
     },
   },
   study: {

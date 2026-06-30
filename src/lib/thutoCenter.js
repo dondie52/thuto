@@ -128,6 +128,24 @@ export async function fetchCenterDocuments({
   return (data || []).map((row) => normalizeDocument(row));
 }
 
+export async function fetchTopCenterSpotlights(limit = 3) {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+  try {
+    const { data, error } = await supabase
+      .from("center_documents")
+      .select(DOCUMENT_SELECT)
+      .eq("status", "published")
+      .order("helpful_count", { ascending: false })
+      .order("download_count", { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data || []).map((row) => normalizeDocument(row));
+  } catch {
+    return [];
+  }
+}
+
 export async function fetchCenterDocument(documentId) {
   const supabase = assertSupabase();
   const { data, error } = await supabase
