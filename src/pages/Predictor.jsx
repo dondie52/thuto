@@ -183,7 +183,7 @@ export default function Predictor() {
             Tell us whether you are on BGCSE, IGCSE, AS Level, or O-Level so we can match the right grading scale.
           </p>
           <Link
-            to="/onboarding?next=%2Fpredictor"
+            to="/onboarding?next=%2Fpredictor&step=academics"
             className="focus-ring mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
           >
             Set up academics
