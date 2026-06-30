@@ -261,6 +261,17 @@ const SHORT_COURSE_IDS = new Set([
   "aafm",
   "africa-insurance-training-institute",
   "delta-training-academy",
+  "ed-tech-africa",
+  "kalahari-training-institute",
+  "rutegang-training-college",
+]);
+
+const BIBLICAL_THEOLOGICAL_IDS = new Set([
+  "assembly-bible-college",
+  "inchrist-bible-institute-university",
+  "real-bible-school",
+  "kago-international-serminary-college",
+  "azusa-academy-of-excellence",
 ]);
 
 function inferInstitutionCategory(institutionId: string | null) {
@@ -268,6 +279,7 @@ function inferInstitutionCategory(institutionId: string | null) {
   if (!id) return null;
   if (UNIVERSITY_CATEGORY_IDS.has(id)) return "universities";
   if (SHORT_COURSE_IDS.has(id)) return "short-courses";
+  if (BIBLICAL_THEOLOGICAL_IDS.has(id)) return "biblical-theological-studies";
   if (TECHNICAL_COLLEGE_IDS.has(id) || id.includes("brigade") || id.includes("technical")) {
     return "technical-colleges-brigades";
   }
