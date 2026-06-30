@@ -38,7 +38,7 @@ export default function Layout() {
             : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
         ].join(" ")}
       >
-        <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pb-0 pt-3" : "py-3"].join(" ")}>
+        <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pb-1 pt-3" : "py-3"].join(" ")}>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
             <BrandMark className="min-w-0 justify-self-start" />
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto sm:flex" aria-label="Primary desktop">
@@ -52,7 +52,7 @@ export default function Layout() {
               <AccountDrawer />
             </div>
           </div>
-          <p className="mt-1.5 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
+          <p className="mt-1 text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden">
             Botswana Tertiary Companion
           </p>
         </div>
