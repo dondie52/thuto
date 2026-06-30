@@ -404,8 +404,8 @@ export default function Feed() {
         </div>
       ) : null}
 
-      <section className="mb-1 rounded-[1.35rem] bg-white/90 p-3 shadow-[0_8px_24px_rgba(15,118,110,0.08)] sm:mb-2 sm:p-4">
-        <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+      <section className="-mx-4 border-b border-stone-200/70 px-4 pb-3 pt-1 sm:pb-4">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
@@ -424,7 +424,7 @@ export default function Feed() {
                 <button
                   type="button"
                   onClick={() => setShowComposerDetails(true)}
-                  className="focus-ring min-h-11 min-w-0 flex-1 rounded-full border border-stone-200 bg-stone-50 px-4 text-left text-sm font-medium text-stone-700 shadow-inner hover:bg-white"
+                  className="focus-ring min-h-11 min-w-0 flex-1 rounded-full bg-stone-100/90 px-4 text-left text-sm font-medium text-stone-600 hover:bg-stone-100"
                 >
                   Start a post
                 </button>
@@ -548,7 +548,7 @@ export default function Feed() {
         </div>
       </section>
 
-      <div className="space-y-3">
+      <div className="space-y-3 pt-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 rounded-full bg-white/90 p-1 shadow-sm">
             <button
