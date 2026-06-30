@@ -40,6 +40,7 @@ function patchSearchParams(prev, patch) {
   }
   if (next.get("type") === "all" || !next.get("type")) next.delete("type");
   if (next.get("sort") === "name_asc") next.delete("sort");
+  if (!next.get("q")?.trim()) next.delete("q");
   return next;
 }
 
@@ -124,11 +125,10 @@ export default function Universities() {
   const [error, setError] = useState(null);
   const [verifiedIds, setVerifiedIds] = useState(() => new Set());
   const [featuredInstitutionIds, setFeaturedInstitutionIds] = useState(() => new Set());
-  /** @type {'remote' | 'bundled' | 'live' | null} */
-  const [dataSource, setDataSource] = useState(null);
 
   const institutionType = searchParams.get("type") ?? "all";
   const sort = searchParams.get("sort") ?? "name_asc";
+  const nameQuery = (searchParams.get("q") ?? "").trim();
 
   const setPatch = useCallback(
     (patch) => {
@@ -141,11 +141,8 @@ export default function Universities() {
     let cancelled = false;
     const ac = new AbortController();
     fetchUniversities({ signal: ac.signal })
-      .then(({ list, source }) => {
-        if (!cancelled) {
-          setUniversities(list);
-          setDataSource(source);
-        }
+      .then(({ list }) => {
+        if (!cancelled) setUniversities(list);
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
@@ -165,8 +162,14 @@ export default function Universities() {
     });
   }, []);
 
+  const filteredUniversities = useMemo(() => {
+    if (!nameQuery) return universities;
+    const needle = nameQuery.toLowerCase();
+    return universities.filter((university) => String(university.name || "").toLowerCase().includes(needle));
+  }, [universities, nameQuery]);
+
   const groupedUniversities = useMemo(() => {
-    let groups = groupUniversitiesByCategory(universities);
+    let groups = groupUniversitiesByCategory(filteredUniversities);
     if (institutionType !== "all") {
       groups = groups.filter((group) => group.key === institutionType);
     }
@@ -180,7 +183,7 @@ export default function Universities() {
         }),
       }))
       .filter((group) => group.items.length > 0);
-  }, [universities, institutionType, sort, featuredInstitutionIds]);
+  }, [filteredUniversities, institutionType, sort, featuredInstitutionIds]);
 
   const visibleCount = useMemo(
     () => groupedUniversities.reduce((total, group) => total + group.items.length, 0),
@@ -188,7 +191,7 @@ export default function Universities() {
   );
 
   const count = universities.length;
-  const hasActiveFilters = institutionType !== "all" || sort !== "name_asc";
+  const hasActiveFilters = institutionType !== "all" || sort !== "name_asc" || nameQuery !== "";
 
   const activeTypeLabel =
     institutionType === "all"
@@ -203,17 +206,6 @@ export default function Universities() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Tertiary Institutions</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          {count === 0
-            ? "Loading institutions..."
-            : `${count} institution${count === 1 ? "" : "s"} in Thuto — ${
-                dataSource === "live"
-                  ? "live superuser edits merged with bundled profiles; verify with each provider."
-                  : dataSource === "remote"
-                    ? "application windows merged from the live feed and bundled profiles; verify with each provider."
-                    : "sample listings; verify details with each provider."
-              }`}
-        </p>
       </div>
 
       {error && (
@@ -223,6 +215,19 @@ export default function Universities() {
       )}
 
       <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+        <div>
+          <label htmlFor="institution-name-search" className="block text-xs font-medium text-slate-600">
+            Search a university by name
+          </label>
+          <input
+            id="institution-name-search"
+            type="search"
+            value={nameQuery}
+            onChange={(e) => setPatch({ q: e.target.value })}
+            placeholder="e.g. Botho, UB, BAC"
+            className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+          />
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="institution-type-filter" className="block text-xs font-medium text-slate-600">
@@ -270,6 +275,12 @@ export default function Universities() {
                 in <span className="font-semibold text-brand-900">{activeTypeLabel}</span>
               </>
             ) : null}
+            {nameQuery ? (
+              <>
+                {" "}
+                matching <span className="font-semibold text-brand-900">&ldquo;{nameQuery}&rdquo;</span>
+              </>
+            ) : null}
           </p>
           {hasActiveFilters ? (
             <button
@@ -313,9 +324,9 @@ export default function Universities() {
 
         {!error && count > 0 && visibleCount === 0 ? (
           <p className="rounded-2xl border border-brand-100 bg-brand-50/60 px-4 py-6 text-center text-sm text-slate-600">
-            No institutions match this filter.{" "}
+            No institutions match{nameQuery ? ` “${nameQuery}”` : " this filter"}.{" "}
             <button type="button" onClick={clearFilters} className="font-semibold text-brand-800 underline">
-              Show all types
+              {nameQuery ? "Clear search and filters" : "Show all types"}
             </button>
           </p>
         ) : null}
