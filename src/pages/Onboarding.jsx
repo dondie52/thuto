@@ -13,6 +13,7 @@ import {
   fetchGradeEntries,
   fetchTargetInstitutions,
   finishOnboarding,
+  hasPredictorAccess,
   saveGradeEntries,
   saveTargetInstitutions,
 } from "../lib/onboarding.js";
@@ -33,6 +34,8 @@ export default function Onboarding() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const nextPath = safeInternalPath(searchParams.get("next")) || "/app";
+  const academicsSetup =
+    searchParams.get("step") === "academics" || nextPath === "/predictor";
   const { user, profile, saveProfile, refreshProfile, supabaseConfigured, isProfileLoading } = useAuth();
 
   const [step, setStep] = useState("identity");
@@ -76,9 +79,19 @@ export default function Onboarding() {
   useEffect(() => {
     if (!user) return;
     if (!isProfileLoading && profile?.username && (profile.onboarding_completed_at || profile.onboarding_skipped_at)) {
+      if (academicsSetup && !hasPredictorAccess(profile)) return;
       navigate(nextPath, { replace: true });
     }
-  }, [user, profile, isProfileLoading, navigate, nextPath]);
+  }, [user, profile, isProfileLoading, navigate, nextPath, academicsSetup]);
+
+  useEffect(() => {
+    if (!profile || isProfileLoading || !academicsSetup) return;
+    if (!profile.username || hasPredictorAccess(profile)) return;
+    setStep("academics");
+    if (profile.onboarding_completed_at || profile.onboarding_skipped_at) {
+      setCompletedSteps(new Set(["identity", "social"]));
+    }
+  }, [profile, isProfileLoading, academicsSetup]);
 
   useEffect(() => {
     if (!profile) return;
@@ -196,8 +209,17 @@ export default function Onboarding() {
         markStepDone("social");
         setStep("academics");
       } else if (step === "academics") {
+        if (academicsSetup && !syllabusType) {
+          setError("Choose your syllabus to unlock the Predictor.");
+          return;
+        }
         await persistAcademics();
         markStepDone("academics");
+        if (academicsSetup) {
+          await refreshProfile();
+          navigate(nextPath, { replace: true });
+          return;
+        }
         setStep("sponsorship");
       } else {
         await persistSponsorship();
@@ -242,6 +264,10 @@ export default function Onboarding() {
   }
 
   async function handleSkipStep() {
+    if (academicsSetup && step === "academics") {
+      navigate(nextPath, { replace: true });
+      return;
+    }
     if (step === "identity") {
       await handleEnterThuto("skip");
       return;
@@ -287,10 +313,16 @@ export default function Onboarding() {
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Welcome to Thuto</p>
-        <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">Set up your profile</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">
+          {academicsSetup ? "Admission Predictor" : "Welcome to Thuto"}
+        </p>
+        <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">
+          {academicsSetup ? "Set up your academics" : "Set up your profile"}
+        </h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Add your name and username to get started. Everything else is optional and can be filled in later.
+          {academicsSetup
+            ? "Choose your syllabus so Thuto can match the right grading scale and unlock programme predictions."
+            : "Add your name and username to get started. Everything else is optional and can be filled in later."}
         </p>
       </header>
 
@@ -444,9 +476,9 @@ export default function Onboarding() {
           onClick={handleContinue}
           className="focus-ring inline-flex min-h-11 flex-1 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSaving ? "Saving..." : step === "sponsorship" ? "Finish setup" : "Continue"}
+          {isSaving ? "Saving..." : step === "sponsorship" ? "Finish setup" : academicsSetup && step === "academics" ? "Save and open Predictor" : "Continue"}
         </button>
-        {identityReady ? (
+        {identityReady && !(academicsSetup && step === "academics") ? (
           <button
             type="button"
             disabled={isSaving}
@@ -463,7 +495,7 @@ export default function Onboarding() {
             onClick={handleSkipStep}
             className="text-sm font-semibold text-brand-700 underline hover:text-brand-900 disabled:opacity-60"
           >
-            Skip for now
+            {academicsSetup && step === "academics" ? "Back to Predictor" : "Skip for now"}
           </button>
         ) : null}
       </div>
