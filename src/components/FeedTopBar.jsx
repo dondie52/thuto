@@ -53,7 +53,7 @@ function NavIconButton({ to, label, isActive, icon, badge = 0, onClick }) {
   const badgeLabel = badge > 99 ? "99+" : String(badge);
   const className = [
     "focus-ring relative flex h-11 w-11 items-center justify-center rounded-full transition-colors",
-    isActive ? "bg-brand-700 text-white shadow-sm" : "bg-white text-brand-800 shadow-sm hover:bg-brand-50",
+    isActive ? "bg-brand-700 text-white shadow-sm" : "text-brand-800 hover:bg-brand-100/70",
   ].join(" ");
 
   const content = (
@@ -109,7 +109,6 @@ export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCo
           icon={<IconRefresh />}
           onClick={handleHomeRefresh}
         />
-        <NavIconButton to="/feed/search" label="Search feed" isActive={path.startsWith("/feed/search")} icon={<IconSearch />} />
         <NavIconButton to="/feed/people" label="People" isActive={path.startsWith("/feed/people")} icon={<IconPeople />} />
         <NavIconButton
           to="/feed/messages"
@@ -125,6 +124,7 @@ export default function FeedTopBar({ onRefresh, messageCount = 0, notificationCo
           icon={<IconBell />}
           badge={notificationCount}
         />
+        <NavIconButton to="/feed/search" label="Search feed" isActive={path.startsWith("/feed/search")} icon={<IconSearch />} />
       </div>
     </section>
   );
