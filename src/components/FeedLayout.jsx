@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
+import FeedToolsNav from "./FeedToolsNav.jsx";
 import FeedTopBar from "./FeedTopBar.jsx";
 import { useAuth } from "../lib/auth.jsx";
 import { fetchUnreadMessageCount } from "../lib/messaging.js";
@@ -45,7 +46,10 @@ export default function FeedLayout() {
 
   return (
     <div className="-mx-4 min-h-[calc(100vh-7rem)] bg-gradient-to-b from-teal-50 via-white to-white sm:min-h-0">
-      <FeedTopBar onRefresh={handleRefresh} messageCount={messageCount} notificationCount={notificationCount} />
+      <div className="sticky top-0 z-20">
+        <FeedToolsNav />
+        <FeedTopBar onRefresh={handleRefresh} messageCount={messageCount} notificationCount={notificationCount} />
+      </div>
       <div className="relative z-0">
         <Outlet context={{ registerRefresh, reloadBadges: loadBadgeCounts }} />
       </div>

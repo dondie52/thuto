@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Figtree", "system-ui", "sans-serif"],
+        sans: ["IBM Plex Sans", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
         display: ["Literata", "Georgia", "serif"],
       },
       colors: {
