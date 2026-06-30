@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
 import FeedPostCard from "../components/FeedPostCard.jsx";
-import ThutoCenterPromo from "../components/ThutoCenterPromo.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import {
