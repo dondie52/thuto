@@ -371,8 +371,6 @@ export default function Feed() {
   return (
     <div className="pt-2">
       <div className="space-y-4 px-4">
-      <ThutoCenterPromo compact />
-
       {!configured ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900">
           Feed needs Supabase environment variables, the scroll-feed migration, and the feed-moderation Edge Function

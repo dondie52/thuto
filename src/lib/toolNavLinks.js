@@ -23,12 +23,6 @@ export const primaryToolNavLinks = [
   },
 ];
 
-/** Compact labels for the feed tools strip. */
-export const feedToolsNavLinks = primaryToolNavLinks.map(({ to, label }) => ({
-  to,
-  label: label === "Postgraduate Studies" ? "Postgraduate" : label,
-}));
-
 export const drawerPrimaryToolItems = [
   ...primaryToolNavLinks,
   { to: "/saved", label: "Saved Programmes", description: "Your shortlisted options", icon: "saved" },
