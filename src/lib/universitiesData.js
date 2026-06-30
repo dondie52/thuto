@@ -18,6 +18,7 @@ const REMOTE_URL = (import.meta.env.VITE_UNIVERSITIES_REMOTE_URL || "").trim();
 
 export const UNIVERSITY_CATEGORY_ORDER = [
   "universities",
+  "higher-education-etps",
   "technical-colleges-brigades",
   "specialised-academics",
   "biblical-theological-studies",
@@ -28,6 +29,11 @@ export const UNIVERSITY_CATEGORY_META = {
   universities: {
     label: "Universities",
     description: "Institutions with broader degree and diploma pathways, including the major universities and university colleges.",
+  },
+  "higher-education-etps": {
+    label: "Higher Education ETPs",
+    description:
+      "Registered higher education education and training providers offering diploma, degree, and professional pathways outside the main public universities.",
   },
   "technical-colleges-brigades": {
     label: "Technical Colleges & Brigades",
@@ -136,11 +142,17 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   "institute-of-health-and-fire-safety": "specialised-academics",
   "boswa-culinary-institute-of-botswana": "specialised-academics",
   "textile-clothing-institute-of-botswana": "specialised-academics",
+  "phronesis-international-college": "higher-education-etps",
+  "dtt-college-of-medicine": "higher-education-etps",
+  "kitso-international-college": "higher-education-etps",
+  "arthur-portland-college": "higher-education-etps",
+  "kings-college": "higher-education-etps",
+  "institute-of-labour-and-employment-studies": "higher-education-etps",
 };
 
 /**
  * @param {Record<string, unknown>} university
- * @returns {'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'biblical-theological-studies' | 'short-courses'}
+ * @returns {'universities' | 'higher-education-etps' | 'technical-colleges-brigades' | 'specialised-academics' | 'biblical-theological-studies' | 'short-courses'}
  */
 export function categorizeUniversity(university) {
   const mapped = UNIVERSITY_CATEGORY_BY_ID[university.id];
@@ -154,7 +166,7 @@ export function categorizeUniversity(university) {
 
 /**
  * @param {Record<string, unknown>[]} universities
- * @returns {{ key: 'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'biblical-theological-studies' | 'short-courses', label: string, description: string, items: Record<string, unknown>[] }[]}
+ * @returns {{ key: 'universities' | 'higher-education-etps' | 'technical-colleges-brigades' | 'specialised-academics' | 'biblical-theological-studies' | 'short-courses', label: string, description: string, items: Record<string, unknown>[] }[]}
  */
 export function groupUniversitiesByCategory(universities) {
   return UNIVERSITY_CATEGORY_ORDER.map((key) => ({

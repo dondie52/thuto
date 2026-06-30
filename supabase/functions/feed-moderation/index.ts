@@ -274,12 +274,22 @@ const BIBLICAL_THEOLOGICAL_IDS = new Set([
   "azusa-academy-of-excellence",
 ]);
 
+const HIGHER_EDUCATION_ETP_IDS = new Set([
+  "phronesis-international-college",
+  "dtt-college-of-medicine",
+  "kitso-international-college",
+  "arthur-portland-college",
+  "kings-college",
+  "institute-of-labour-and-employment-studies",
+]);
+
 function inferInstitutionCategory(institutionId: string | null) {
   const id = cleanText(institutionId, 120).toLowerCase();
   if (!id) return null;
   if (UNIVERSITY_CATEGORY_IDS.has(id)) return "universities";
   if (SHORT_COURSE_IDS.has(id)) return "short-courses";
   if (BIBLICAL_THEOLOGICAL_IDS.has(id)) return "biblical-theological-studies";
+  if (HIGHER_EDUCATION_ETP_IDS.has(id)) return "higher-education-etps";
   if (TECHNICAL_COLLEGE_IDS.has(id) || id.includes("brigade") || id.includes("technical")) {
     return "technical-colleges-brigades";
   }
