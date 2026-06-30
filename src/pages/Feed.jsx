@@ -38,7 +38,6 @@ export default function Feed() {
   const highlightPostId = (searchParams.get("post") || "").trim();
   const { user, profile, supabaseConfigured, isLoading: isAuthLoading } = useAuth();
   const configured = supabaseConfigured && isSupabaseConfigured();
-  const [feedMode, setFeedMode] = useState("for_you");
   const [posts, setPosts] = useState([]);
   const [followingIds, setFollowingIds] = useState(() => new Set());
   const [savedPostIds, setSavedPostIds] = useState(() => new Set());
@@ -49,11 +48,9 @@ export default function Feed() {
   const loadMoreRef = useRef(null);
   const cursorRef = useRef(null);
   const postsRef = useRef(posts);
-  const feedModeRef = useRef(feedMode);
   const loadingFeedRef = useRef(false);
 
   postsRef.current = posts;
-  feedModeRef.current = feedMode;
   const [commentSubmittingFor, setCommentSubmittingFor] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -90,7 +87,7 @@ export default function Feed() {
       setError("");
       try {
         const batch = await fetchFeedPosts({
-          mode: feedModeRef.current,
+          mode: "for_you",
           limit: 30,
           cursor: reset ? null : cursorRef.current,
         });
@@ -127,7 +124,7 @@ export default function Feed() {
     setPostFeedbackById({});
     setReportedTargetKeys({});
     loadFeed({ reset: true });
-  }, [user?.id, feedMode, loadFeed]);
+  }, [user?.id, loadFeed]);
 
   useEffect(() => {
     if (!registerRefresh) return undefined;
@@ -546,33 +543,6 @@ export default function Feed() {
       </section>
 
       <div className="space-y-3 pt-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 rounded-full bg-white/90 p-1 shadow-sm">
-            <button
-              type="button"
-              onClick={() => setFeedMode("for_you")}
-              className={[
-                "focus-ring rounded-full px-4 py-2 text-sm font-semibold transition",
-                feedMode === "for_you" ? "bg-brand-700 text-white" : "text-brand-800 hover:bg-brand-50",
-              ].join(" ")}
-            >
-              For you
-            </button>
-            <button
-              type="button"
-              onClick={() => setFeedMode("latest")}
-              className={[
-                "focus-ring rounded-full px-4 py-2 text-sm font-semibold transition",
-                feedMode === "latest" ? "bg-brand-700 text-white" : "text-brand-800 hover:bg-brand-50",
-              ].join(" ")}
-            >
-              Latest
-            </button>
-          </div>
-          <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-500 shadow-sm">
-            {posts.length} {posts.length === 1 ? "post" : "posts"}
-          </span>
-        </div>
         {isLoading ? (
           <div className="py-8 text-center text-sm text-stone-500">
             Loading the feed...
