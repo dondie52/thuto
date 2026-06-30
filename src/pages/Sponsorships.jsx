@@ -15,8 +15,6 @@ const FUNDING_ROUTE = {
   PRIVATE: "private",
 };
 
-const assetBase = import.meta.env.BASE_URL;
-
 function IconGovBuilding({ className = "h-6 w-6" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
@@ -246,31 +244,8 @@ export default function Sponsorships() {
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-2xl border border-brand-200 bg-gradient-to-br from-white via-brand-50/50 to-brand-100/30 p-5 shadow-sm sm:p-6">
-        <div
-          className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-300/25 blur-2xl"
-          aria-hidden
-        />
-        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{content.hero?.kicker}</p>
-            <h1 className="mt-2 font-display text-3xl font-bold text-brand-900">{content.hero?.title}</h1>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">{content.hero?.body}</p>
-          </div>
-          <div className="flex shrink-0 items-center gap-3 rounded-2xl border border-brand-100 bg-white/90 px-4 py-3 shadow-sm ring-1 ring-brand-900/5">
-            <img
-              src={`${assetBase}icons/tef-portal-mark.svg`}
-              alt=""
-              width={56}
-              height={56}
-              className="h-14 w-14 shrink-0"
-            />
-            <div className="min-w-0 text-xs leading-snug text-slate-600">
-              <p className="font-semibold text-brand-900">{content.hero?.portalTitle}</p>
-              {content.hero?.portalNote ? <p className="mt-1">{content.hero.portalNote}</p> : null}
-            </div>
-          </div>
-        </div>
+      <div>
+        <h1 className="font-display text-2xl font-bold text-brand-900">Sponsorships</h1>
       </div>
 
       {!entitlements.sponsorshipAlerts ? (
