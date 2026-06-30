@@ -20,6 +20,7 @@ export const UNIVERSITY_CATEGORY_ORDER = [
   "universities",
   "technical-colleges-brigades",
   "specialised-academics",
+  "biblical-theological-studies",
   "short-courses",
 ];
 
@@ -36,6 +37,11 @@ export const UNIVERSITY_CATEGORY_META = {
   "specialised-academics": {
     label: "Specialised Academics",
     description: "Single-industry institutions such as colleges of education, health and nursing schools, culinary academies, and focused professional institutes.",
+  },
+  "biblical-theological-studies": {
+    label: "Biblical and Theological Studies",
+    description:
+      "Seminaries, bible colleges, and faith-based institutions offering biblical, ministerial, and theological qualifications.",
   },
   "short-courses": {
     label: "Short Courses",
@@ -96,7 +102,7 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   gcca: "specialised-academics",
   "insurance-training-institute": "short-courses",
   crackit: "short-courses",
-  "assembly-bible-college": "specialised-academics",
+  "assembly-bible-college": "biblical-theological-studies",
   bibf: "specialised-academics",
   "tonota-coe": "specialised-academics",
   "bamalete-nursing": "specialised-academics",
@@ -107,14 +113,34 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   "elsimate-institute": "specialised-academics",
   "nampol-college-of-education": "specialised-academics",
   "chobe-brigade": "technical-colleges-brigades",
-  "inchrist-bible-institute-university": "specialised-academics",
+  "inchrist-bible-institute-university": "biblical-theological-studies",
   krda: "technical-colleges-brigades",
-  "real-bible-school": "specialised-academics",
+  "real-bible-school": "biblical-theological-studies",
+  "rankuke-training-institute": "specialised-academics",
+  "nhabe-tourism-training-centre": "specialised-academics",
+  "career-dreams-centre": "specialised-academics",
+  "lexie-training-investments": "specialised-academics",
+  "belvans-institute": "specialised-academics",
+  "mighty-skills-training-institute": "specialised-academics",
+  "tsl-college": "specialised-academics",
+  "ed-tech-africa": "short-courses",
+  "kalahari-training-institute": "short-courses",
+  "rutegang-training-college": "short-courses",
+  "kago-international-serminary-college": "biblical-theological-studies",
+  "azusa-academy-of-excellence": "biblical-theological-studies",
+  "botswana-wildlife-training-institute": "specialised-academics",
+  "central-college-of-modern-arts-creative-technology": "specialised-academics",
+  "serala-entrepreneurship-college": "specialised-academics",
+  "diamond-academy-of-botswana": "specialised-academics",
+  "institute-of-energy-technology-development": "specialised-academics",
+  "institute-of-health-and-fire-safety": "specialised-academics",
+  "boswa-culinary-institute-of-botswana": "specialised-academics",
+  "textile-clothing-institute-of-botswana": "specialised-academics",
 };
 
 /**
  * @param {Record<string, unknown>} university
- * @returns {'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'short-courses'}
+ * @returns {'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'biblical-theological-studies' | 'short-courses'}
  */
 export function categorizeUniversity(university) {
   const mapped = UNIVERSITY_CATEGORY_BY_ID[university.id];
@@ -128,7 +154,7 @@ export function categorizeUniversity(university) {
 
 /**
  * @param {Record<string, unknown>[]} universities
- * @returns {{ key: 'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'short-courses', label: string, description: string, items: Record<string, unknown>[] }[]}
+ * @returns {{ key: 'universities' | 'technical-colleges-brigades' | 'specialised-academics' | 'biblical-theological-studies' | 'short-courses', label: string, description: string, items: Record<string, unknown>[] }[]}
  */
 export function groupUniversitiesByCategory(universities) {
   return UNIVERSITY_CATEGORY_ORDER.map((key) => ({
