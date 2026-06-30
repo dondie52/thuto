@@ -403,7 +403,7 @@ export default function Feed() {
         </div>
       )}
 
-      <section className="border-b border-stone-200/70 px-4 py-2">
+      <section className="border-b border-stone-200/70 px-4 py-1.5">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {profile?.avatar_url ? (
             <img
