@@ -157,7 +157,7 @@ export const INSTITUTION_CAMPAIGNS = {
         programmes: ["BSc (Hons) Ecology and Evolutionary Biology"],
       },
     ],
-    activeUntil: "2026-06-15",
+    activeUntil: "2026-12-31",
   },
 };
 
