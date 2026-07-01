@@ -2556,36 +2556,6 @@
     ]
   },
   {
-    "id": "bocodol-bachelor-open-learning-studies",
-    "name": "Bachelor of Open Learning Studies",
-    "field": "Education",
-    "university": "Botswana College of Distance and Open Learning",
-    "universityShort": "BOCODOL",
-    "faculty": "Open Learning",
-    "minPoints": 24,
-    "subjectRequirements": {
-      "english": "C"
-    },
-    "duration": "4 years",
-    "durationYears": 4,
-    "officialUrl": "https://www.bocodol.ac.bw/",
-    "applyUrl": "https://www.bocodol.ac.bw/",
-    "applicationDeadline": null,
-    "minPointsScaleVersion": 2,
-    "profileCompleteness": "partial",
-    "sponsorshipTier": "standard",
-    "relatedSubjects": [
-      "English Language"
-    ],
-    "interests": [
-      "Education",
-      "Open Learning"
-    ],
-    "tags": [
-      "Education"
-    ]
-  },
-  {
     "id": "boitekanelo-b-ed-guidance-and-counselling",
     "name": "B.Ed Guidance and Counselling",
     "field": "Education",

@@ -221,7 +221,6 @@ const UNIVERSITY_CATEGORY_IDS = new Set([
   "boitekanelo",
   "new-era",
   "gips",
-  "bocodol",
   "kgale",
   "isbs",
   "idm",

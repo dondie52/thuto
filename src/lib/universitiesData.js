@@ -61,7 +61,6 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   boitekanelo: "universities",
   "new-era": "universities",
   gips: "universities",
-  bocodol: "universities",
   kgale: "universities",
   isbs: "universities",
   idm: "universities",
