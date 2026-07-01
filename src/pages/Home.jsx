@@ -11,7 +11,9 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 import HomeCenterCreators from "../components/home/HomeCenterCreators.jsx";
+import HomeDailySpotlight from "../components/home/HomeDailySpotlight.jsx";
 import HomeFeaturedUniversities from "../components/home/HomeFeaturedUniversities.jsx";
+import HomeHeroPartner from "../components/home/HomeHeroPartner.jsx";
 
 const URGENT_DEADLINES_PREVIEW = 5;
 
@@ -51,19 +53,6 @@ export default function Home() {
 
   return (
     <div className="space-y-10">
-      <HomeFeaturedUniversities
-        heading={content.featuredUniversities?.heading}
-        body={content.featuredUniversities?.body}
-        fallbackIds={content.featuredUniversities?.fallbackIds}
-      />
-
-      <HomeCenterCreators
-        heading={content.centerCreators?.heading}
-        body={content.centerCreators?.body}
-        emptyTitle={content.centerCreators?.emptyTitle}
-        emptyBody={content.centerCreators?.emptyBody}
-      />
-
       {urgentUnis.length > 0 ? (
         <div
           className="animate-fade-up rounded-2xl border border-amber-200/90 bg-gradient-to-br from-amber-50 to-amber-100/80 p-4 shadow-card"
@@ -104,6 +93,33 @@ export default function Home() {
           <p className="mt-3 text-[10px] leading-snug text-amber-900/80">{APPLICATION_DATES_DISCLAIMER}</p>
         </div>
       ) : null}
+
+      <HomeHeroPartner
+        kicker={content.hero?.kicker}
+        ctaLabel={content.hero?.ctaLabel}
+      />
+
+      <HomeDailySpotlight
+        kicker={content.dailySpotlight?.kicker}
+        heading={content.dailySpotlight?.heading}
+        body={content.dailySpotlight?.body}
+        ctaLabel={content.dailySpotlight?.ctaLabel}
+        fallbackIds={content.featuredUniversities?.fallbackIds}
+      />
+
+      <HomeFeaturedUniversities
+        heading={content.featuredUniversities?.heading}
+        body={content.featuredUniversities?.body}
+        fallbackIds={content.featuredUniversities?.fallbackIds}
+      />
+
+      <HomeCenterCreators
+        kicker={content.centerCreators?.kicker}
+        heading={content.centerCreators?.heading}
+        body={content.centerCreators?.body}
+        emptyTitle={content.centerCreators?.emptyTitle}
+        emptyBody={content.centerCreators?.emptyBody}
+      />
     </div>
   );
 }

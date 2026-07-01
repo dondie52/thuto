@@ -180,7 +180,7 @@ export async function fetchActiveFeaturedPlacements() {
   const now = new Date().toISOString();
   const { data, error } = await supabase
     .from("featured_placements")
-    .select("id, entity_type, entity_id, placement_key, institution_id")
+    .select("id, entity_type, entity_id, placement_key, institution_id, tier")
     .lte("starts_at", now)
     .gt("ends_at", now);
   if (error) return [];

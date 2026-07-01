@@ -11,10 +11,23 @@ function profileInitial(name) {
   return letter || "S";
 }
 
+const RANK_LABELS = ["Gold", "Silver", "Bronze"];
+
 /**
- * @param {{ heading?: string, body?: string, emptyTitle?: string, emptyBody?: string }} props
+ * @param {number} index
+ */
+function rankBadgeClass(index) {
+  if (index === 0) return "bg-amber-100 text-amber-950 ring-amber-200";
+  if (index === 1) return "bg-stone-200 text-stone-800 ring-stone-300";
+  if (index === 2) return "bg-orange-100 text-orange-950 ring-orange-200";
+  return "bg-brand-100 text-brand-800 ring-brand-200";
+}
+
+/**
+ * @param {{ heading?: string, body?: string, kicker?: string, emptyTitle?: string, emptyBody?: string }} props
  */
 export default function HomeCenterCreators({
+  kicker = "Winners",
   heading = "Best Thuto Centre creators",
   body = "Top study materials from students helping their campus.",
   emptyTitle = "Creators coming soon",
@@ -77,7 +90,7 @@ export default function HomeCenterCreators({
   return (
     <section className="space-y-4" aria-labelledby="home-center-creators-heading">
       <div>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-700">Spotlight</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-700">{kicker}</p>
         <h2 id="home-center-creators-heading" className="font-display text-2xl font-bold text-brand-900">
           {heading}
         </h2>
@@ -105,28 +118,49 @@ export default function HomeCenterCreators({
         <ul className="space-y-3">
           {spotlights.map(({ document, profile }, index) => {
             const displayName = profile?.full_name || profile?.username || "Thuto student";
+            const rankLabel = RANK_LABELS[index] || `#${index + 1}`;
+            const isTop = index === 0;
             return (
               <li key={document.id} className="animate-fade-up" style={{ animationDelay: `${index * 40}ms` }}>
                 <Link
                   to={`/center/${document.id}`}
-                  className="focus-ring group flex gap-3 rounded-2xl border border-stone-200/90 bg-white p-4 shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card-hover"
+                  className={[
+                    "focus-ring group flex gap-3 rounded-2xl border p-4 shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card-hover",
+                    isTop
+                      ? "border-amber-300/90 bg-gradient-to-br from-white to-amber-50/50"
+                      : "border-stone-200/90 bg-white",
+                  ].join(" ")}
                 >
                   {profile?.avatar_url ? (
                     <img
                       src={profile.avatar_url}
                       alt=""
-                      className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-brand-100"
+                      className={[
+                        "shrink-0 rounded-full object-cover ring-2",
+                        isTop ? "h-14 w-14 ring-amber-200" : "h-12 w-12 ring-brand-100",
+                      ].join(" ")}
                     />
                   ) : (
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white ring-1 ring-brand-100">
+                    <div
+                      className={[
+                        "flex shrink-0 items-center justify-center rounded-full font-bold text-white ring-2",
+                        isTop ? "h-14 w-14 bg-amber-600 text-base ring-amber-200" : "h-12 w-12 bg-brand-700 text-sm ring-brand-100",
+                      ].join(" ")}
+                    >
                       {profileInitial(displayName)}
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-                      #{index + 1} creator spotlight
-                    </p>
-                    <h3 className="mt-0.5 font-display text-base font-semibold text-brand-900 group-hover:text-brand-700">
+                    <span
+                      className={[
+                        "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ring-1 ring-inset",
+                        rankBadgeClass(index),
+                      ].join(" ")}
+                    >
+                      {isTop ? "🏆 " : ""}
+                      {rankLabel} · #{index + 1} creator
+                    </span>
+                    <h3 className="mt-1 font-display text-base font-semibold text-brand-900 group-hover:text-brand-700">
                       {displayName}
                     </h3>
                     <p className="mt-1 text-sm font-medium text-stone-700">{document.title}</p>

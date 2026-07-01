@@ -21,13 +21,16 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 ### App shell (`Layout`)
 
-- **Bottom navigation** (mobile): Home, Predictor, Feed, Ask, Profile. Programmes lives in the account drawer (and desktop top nav). Saved programmes remains available outside the bottom nav.
+- **Bottom navigation** (mobile): Home, Predictor, Feed, Ask, Profile — hidden on Home so partner content fills the screen. Programmes lives in the account drawer (and desktop top nav). Saved programmes remains available outside the bottom nav.
 - **Legal / trust**: Disclaimer and Privacy routes.
 
 ### Home (`/app`)
 
-- Hub into predictor, programmes, universities, fit finder, etc.
-- **Application deadline urgency** when university JSON includes open/close dates (see `src/lib/applicationDates.js`).
+- Primary advertising surface for partner universities (hero banner, daily spotlight slideshow, and featured institution cards).
+- **Daily spotlight** rotates spotlight-tier partners each day in a swipeable carousel with short descriptions.
+- **Best Thuto Centre creators** spotlight for top community uploaders.
+- **Application deadline urgency** shown first when university JSON includes close dates within 30 days (see `src/lib/applicationDates.js`).
+- No bottom navigation on Home — students reach other tools via the account drawer (mobile) or desktop top nav.
 
 ### BGCSE admission predictor (`/predictor`)
 
