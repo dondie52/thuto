@@ -596,36 +596,6 @@
     "shortName": "GIPS"
   },
   {
-    "id": "bocodol",
-    "name": "Botswana College of Distance and Open Learning",
-    "location": "Gaborone",
-    "description": "Distance and open learning provider serving school leavers and adult learners through blended and online delivery.",
-    "website": "https://www.bocodol.ac.bw/",
-    "phone": "+267 365 7300",
-    "applicationOpen": "2026-01-20",
-    "applicationClose": "2026-08-31",
-    "academicYearStart": "2026-09",
-    "applyUrl": "https://www.bocodol.ac.bw/",
-    "featured": false,
-    "sponsorshipTier": "standard",
-    "resources": [
-      {
-        "title": "Official website",
-        "category": "Admissions page",
-        "url": "https://www.bocodol.ac.bw/",
-        "format": "Web page",
-        "sourceLabel": "Botswana College of Distance and Open Learning"
-      },
-      {
-        "title": "Admissions information",
-        "category": "Admissions page",
-        "url": "https://www.bocodol.ac.bw/admissions",
-        "format": "Web page",
-        "sourceLabel": "Botswana College of Distance and Open Learning"
-      }
-    ]
-  },
-  {
     "id": "botswana-accountancy-training",
     "name": "Botswana Institute of Chartered Accountants Training Centre",
     "location": "Gaborone",
