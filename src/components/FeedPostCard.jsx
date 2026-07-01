@@ -20,11 +20,11 @@ function formatRelativeTime(value) {
   if (hours < 48) return `${hours}h`;
   const days = Math.floor(hours / 24);
   if (days < 14) return `${days}d`;
-  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return date.toLocaleDateString(undefined, { day: "numeric", month: "short" });
 }
 
-function categorySubreddit(category) {
-  return categoryLabel(category).replace(/\s+/g, "");
+function categoryBadgeText(category) {
+  return categoryLabel(category).toUpperCase();
 }
 
 function postStatusLabel(status) {
@@ -48,35 +48,33 @@ function feedbackClassName(tone) {
   return "border border-brand-100 bg-brand-50 text-brand-900";
 }
 
-function voteScore(post) {
-  return Object.values(post.reactionCounts || {}).reduce((sum, count) => sum + Number(count || 0), 0);
-}
-
-function IconUpvote({ filled, className = "h-3.5 w-3.5" }) {
+function IconThumbsUp({ filled, className = "h-4 w-4" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={filled ? 0 : 2} aria-hidden>
-      {filled ? (
-        <path d="M12 4l7 8h-5v8H10v-8H5l7-8z" />
-      ) : (
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 5l6 7h-4v7h-4v-7H6l6-7z" />
-      )}
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M7 11v8a1 1 0 001 1h2.5l1.2-5.4a1 1 0 01.98-.8H17a1 1 0 00.98-1.2l-1.2-6A1 1 0 0015.8 6H10a1 1 0 00-1 .8L7 11z"
+      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M7 11H4a1 1 0 00-1 1v6a1 1 0 001 1h3" />
     </svg>
   );
 }
 
-function IconDownvote({ filled, className = "h-3.5 w-3.5" }) {
+function IconThumbsDown({ filled, className = "h-4 w-4" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={filled ? 0 : 2} aria-hidden>
-      {filled ? (
-        <path d="M12 20l-7-8h5V4h4v8h5l-7 8z" />
-      ) : (
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l-6-7h4V5h4v7h4l-6 7z" />
-      )}
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17 13V5a1 1 0 00-1-1h-2.5l-1.2 5.4a1 1 0 01-.98.8H7a1 1 0 01-.98 1.2l1.2 6A1 1 0 008.2 18H14a1 1 0 001-.8l2-4.2z"
+      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M17 13h3a1 1 0 001-1V6a1 1 0 00-1-1h-3" />
     </svg>
   );
 }
 
-function IconComment({ className = "h-3.5 w-3.5" }) {
+function IconComment({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
       <path
@@ -88,16 +86,16 @@ function IconComment({ className = "h-3.5 w-3.5" }) {
   );
 }
 
-function IconShare({ className = "h-3.5 w-3.5" }) {
+function IconRepost({ className = "h-4 w-4" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" aria-hidden>
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M7 17l10-10M17 7H9m8 0v8" />
       <path strokeLinecap="round" strokeLinejoin="round" d="M6.5 10.5v7a1.5 1.5 0 001.5 1.5h7" />
     </svg>
   );
 }
 
-function IconMore({ className = "h-3.5 w-3.5" }) {
+function IconMore({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <circle cx="5" cy="12" r="1.75" />
@@ -121,18 +119,32 @@ function renderHashtagText(text) {
     );
 }
 
-function CommunityAvatar({ category, isOfficial }) {
-  const label = isOfficial ? "T" : categorySubreddit(category).charAt(0).toUpperCase() || "G";
+function PostAvatar({ isOfficial, displayName, avatarUrl }) {
+  if (isOfficial) {
+    return (
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-700 to-brand-900 text-sm font-bold text-white">
+        T
+      </div>
+    );
+  }
+  if (avatarUrl) {
+    return <img src={avatarUrl} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-stone-200" />;
+  }
   return (
     <div
-      className={[
-        "flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
-        isOfficial ? "bg-brand-800 text-white" : "bg-brand-100 text-brand-800",
-      ].join(" ")}
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-800 ring-1 ring-stone-200"
       aria-hidden
     >
-      {label}
+      {avatarInitial(displayName)}
     </div>
+  );
+}
+
+function OfficialBadge() {
+  return (
+    <span className="rounded bg-brand-800 px-1 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+      Official
+    </span>
   );
 }
 
@@ -147,12 +159,12 @@ function PostImages({ images }) {
         href={primary.publicUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-2 block w-full overflow-hidden rounded-lg border border-stone-200 bg-stone-50"
+        className="mt-2 block overflow-hidden rounded-lg border border-stone-200 bg-stone-50"
       >
         <img
           src={primary.publicUrl}
           alt={primary.altText || "Post image"}
-          className="h-auto max-h-80 w-full object-cover"
+          className="h-auto max-h-72 w-full object-cover"
           loading="lazy"
           decoding="async"
         />
@@ -185,7 +197,6 @@ function PostImages({ images }) {
 
 function InlineActionFeedback({ feedback, className = "mt-2" }) {
   if (!feedback?.message) return null;
-
   return (
     <p
       className={`${className} rounded-lg px-2.5 py-1.5 text-xs ${feedbackClassName(feedback.tone)}`}
@@ -207,41 +218,20 @@ function CommentSection({
   onReport,
   reportedTargetKeys,
 }) {
-  const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
-
   return (
     <div className="mt-2 border-t border-stone-200/80 pt-2">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-stone-400">Comments</p>
-        <button
-          type="button"
-          onClick={() => onReport({ postId: post.id, targetType: "post", targetId: post.id })}
-          disabled={postReported}
-          className={[
-            "text-[11px] font-medium",
-            postReported ? "cursor-default text-stone-400" : "text-stone-400 hover:text-red-700",
-          ].join(" ")}
-        >
-          {postReported ? "Reported" : "Report"}
-        </button>
-      </div>
-
       <InlineActionFeedback feedback={actionFeedback} />
 
       {post.comments.length ? (
         <ul className="mt-2 space-y-1.5">
           {post.comments.map((comment) => {
             const commentReported = Boolean(reportedTargetKeys?.[targetKey("comment", comment.id)]);
-
             return (
               <li key={comment.id} className="rounded-lg bg-stone-50 px-2.5 py-2">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="inline-flex min-w-0 flex-wrap items-center gap-1 text-[11px] font-semibold text-stone-700">
                       <UserDisplayName name={comment.authorDisplayName} isPro={comment.authorIsPro} badgeClassName="size-3.5" />
-                      {comment.authorUsername ? (
-                        <span className="font-normal text-stone-400">u/{comment.authorUsername}</span>
-                      ) : null}
                       <span className="font-normal text-stone-400">
                         · {formatRelativeTime(comment.publishedAt || comment.createdAt)}
                       </span>
@@ -297,9 +287,6 @@ function CommentSection({
   );
 }
 
-/**
- * Minimal Reddit-style feed post card.
- */
 export default function FeedPostCard({
   post,
   user,
@@ -313,6 +300,7 @@ export default function FeedPostCard({
   onToggleFollow,
   isSaved = false,
   onSave,
+  onDelete,
   onReact,
   onToggleComments,
   onCommentDraftChange,
@@ -325,24 +313,21 @@ export default function FeedPostCard({
   const isPublished = post.status === "published";
   const isOfficial = Boolean(post.isOfficial);
   const displayName = isOfficial ? OFFICIAL_DISPLAY_NAME : post.authorDisplayName;
-  const username = isOfficial ? "thuto" : post.authorUsername || avatarInitial(displayName).toLowerCase();
   const timeLabel = formatRelativeTime(post.publishedAt || post.createdAt);
   const commentCount = post.comments?.length || 0;
-  const score = voteScore(post);
-  const upvoted = post.viewerReaction === "like";
+  const likeCount = Number(post.reactionCounts?.like || 0);
+  const liked = post.viewerReaction === "like";
   const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
+  const authorProfilePath = !isOfficial && post.authorUsername ? profilePath(post.authorUsername) : null;
 
   useEffect(() => {
     if (!menuOpen) return undefined;
-
     function handlePointerDown(event) {
       if (!menuRef.current?.contains(event.target)) setMenuOpen(false);
     }
-
     function handleKeyDown(event) {
       if (event.key === "Escape") setMenuOpen(false);
     }
-
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -369,114 +354,153 @@ export default function FeedPostCard({
     }
   }
 
-  function handleUpvote() {
+  function handleThumbsUp() {
     onReact(post, "like");
   }
 
-  function handleDownvote() {
+  function handleThumbsDown() {
     if (post.viewerReaction) {
       onReact(post, post.viewerReaction);
     }
   }
 
-  const authorProfilePath = !isOfficial && post.authorUsername ? profilePath(post.authorUsername) : null;
-
   return (
     <article
       id={`feed-post-${post.id}`}
-      className={[
-        "min-w-0 px-3 py-2.5 text-sm",
-        !isPublished && isOwnPost ? "bg-amber-50/30" : "",
-      ].join(" ")}
+      className={["min-w-0 px-3 py-3", !isPublished && isOwnPost ? "bg-amber-50/30" : ""].join(" ")}
     >
-      <header className="flex min-w-0 items-center gap-2">
-        <CommunityAvatar category={post.category} isOfficial={isOfficial} />
+      <header className="flex min-w-0 items-start gap-2.5">
+        {authorProfilePath ? (
+          <Link to={authorProfilePath} className="focus-ring shrink-0 rounded-full">
+            <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
+          </Link>
+        ) : (
+          <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
+        )}
+
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs leading-none text-stone-500">
-            <span className="font-semibold text-stone-800">r/{categorySubreddit(post.category)}</span>
-            {timeLabel ? <span className="text-stone-400"> · {timeLabel}</span> : null}
-          </p>
-          <p className="mt-0.5 truncate text-[11px] text-stone-400">
-            {authorProfilePath ? (
-              <Link to={authorProfilePath} className="focus-ring font-medium text-stone-500 hover:text-brand-700 hover:underline">
-                u/{username}
-              </Link>
-            ) : (
-              <span className="font-medium text-stone-500">u/{username}</span>
-            )}
-            {isOfficial ? <span className="ml-1 rounded bg-brand-800 px-1 py-0.5 text-[9px] font-bold uppercase text-white">Official</span> : null}
-            {!isPublished && isOwnPost ? (
-              <span className="ml-1 rounded bg-amber-100 px-1 py-0.5 text-[9px] font-bold uppercase text-amber-900">
-                {postStatusLabel(post.status)}
-              </span>
-            ) : null}
-          </p>
-        </div>
-        <div className="flex shrink-0 items-center gap-1.5">
-          {user && !isOwnPost && !isOfficial && onToggleFollow ? (
-            <button
-              type="button"
-              onClick={() => onToggleFollow(post)}
-              className={[
-                "focus-ring rounded-full px-2.5 py-1 text-[11px] font-semibold",
-                isFollowingAuthor
-                  ? "border border-stone-200 bg-white text-stone-600"
-                  : "bg-brand-700 text-white hover:bg-brand-800",
-              ].join(" ")}
-            >
-              {isFollowingAuthor ? "Joined" : "Join"}
-            </button>
-          ) : null}
-          <div className="relative" ref={menuRef}>
-            <button
-              type="button"
-              onClick={() => setMenuOpen((open) => !open)}
-              className="focus-ring flex h-7 w-7 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600"
-              aria-label="More actions"
-              aria-expanded={menuOpen}
-            >
-              <IconMore />
-            </button>
-            {menuOpen ? (
-              <div className="absolute right-0 top-full z-10 mt-1 min-w-[8rem] rounded-lg border border-stone-200 bg-white py-1 shadow-card">
-                {onSave ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onSave(post);
-                      setMenuOpen(false);
-                    }}
-                    className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50"
-                  >
-                    {isSaved ? "Unsave" : "Save"}
-                  </button>
+          <div className="flex min-w-0 items-start justify-between gap-2">
+            <div className="min-w-0">
+              <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                {authorProfilePath ? (
+                  <Link to={authorProfilePath} className="focus-ring min-w-0 hover:underline">
+                    <UserDisplayName
+                      name={displayName}
+                      isPro={post.authorIsPro && !isOfficial}
+                      className="min-w-0"
+                      nameClassName="truncate text-xs font-semibold text-stone-900"
+                      badgeClassName="size-3.5"
+                    />
+                  </Link>
+                ) : (
+                  <UserDisplayName
+                    name={displayName}
+                    isPro={post.authorIsPro && !isOfficial}
+                    className="min-w-0"
+                    nameClassName="truncate text-xs font-semibold text-stone-900"
+                    badgeClassName="size-3.5"
+                  />
+                )}
+                {isOfficial ? <OfficialBadge /> : null}
+                {timeLabel ? <span className="text-[11px] text-stone-400">{timeLabel}</span> : null}
+                {!isPublished && isOwnPost ? (
+                  <span className="rounded bg-amber-100 px-1 py-0.5 text-[9px] font-bold uppercase text-amber-900">
+                    {postStatusLabel(post.status)}
+                  </span>
                 ) : null}
+              </div>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-1.5">
+              {user && !isOwnPost && !isOfficial && onToggleFollow ? (
                 <button
                   type="button"
-                  onClick={() => {
-                    onReport({ postId: post.id, targetType: "post", targetId: post.id });
-                    setMenuOpen(false);
-                  }}
-                  disabled={postReported}
-                  className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50 disabled:text-stone-400"
+                  onClick={() => onToggleFollow(post)}
+                  className={[
+                    "focus-ring text-[11px] font-semibold",
+                    isFollowingAuthor ? "text-stone-500" : "text-brand-700 hover:text-brand-800",
+                  ].join(" ")}
                 >
-                  {postReported ? "Reported" : "Report"}
+                  {isFollowingAuthor ? "Following" : "Follow"}
                 </button>
+              ) : null}
+              <span className="rounded-full bg-brand-700 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+                {categoryBadgeText(post.category)}
+              </span>
+              <div className="relative" ref={menuRef}>
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen((open) => !open)}
+                  className="focus-ring flex h-7 w-7 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600"
+                  aria-label="More actions"
+                  aria-expanded={menuOpen}
+                >
+                  <IconMore />
+                </button>
+                {menuOpen ? (
+                  <div className="absolute right-0 top-full z-10 mt-1 min-w-[9rem] rounded-lg border border-stone-200 bg-white py-1 shadow-card">
+                    {onSave ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onSave(post);
+                          setMenuOpen(false);
+                        }}
+                        className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50"
+                      >
+                        {isSaved ? "Unsave" : "Save"}
+                      </button>
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleShare();
+                        setMenuOpen(false);
+                      }}
+                      className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50"
+                    >
+                      Share
+                    </button>
+                    {isOwnPost && onDelete ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onDelete(post);
+                          setMenuOpen(false);
+                        }}
+                        className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-red-700 hover:bg-red-50"
+                      >
+                        Delete post
+                      </button>
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onReport({ postId: post.id, targetType: "post", targetId: post.id });
+                        setMenuOpen(false);
+                      }}
+                      disabled={postReported}
+                      className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50 disabled:text-stone-400"
+                    >
+                      {postReported ? "Reported" : "Report"}
+                    </button>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
+            </div>
           </div>
         </div>
       </header>
 
       {post.title ? (
-        <h3 className="mt-1.5 break-words text-sm font-semibold leading-snug text-stone-900">{post.title}</h3>
+        <h3 className="mt-2 break-words text-sm font-semibold leading-snug text-stone-900">{post.title}</h3>
       ) : null}
 
       <ExpandableText
         text={post.body}
         maxLines={6}
         preserveWrap
-        className={`break-words text-xs leading-relaxed text-stone-600 ${post.title ? "mt-1" : "mt-1.5"}`}
+        className={`break-words text-xs leading-relaxed text-stone-600 ${post.title ? "mt-1" : "mt-2"}`}
         buttonClassName="text-xs font-medium text-brand-700"
         renderText={renderHashtagText}
       />
@@ -501,49 +525,47 @@ export default function FeedPostCard({
       <PostImages images={post.images} />
 
       {isPublished ? (
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <div className="inline-flex items-center rounded-full border border-stone-200 bg-stone-50 text-xs font-semibold text-stone-600">
+        <div className="mt-2.5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 text-stone-500">
             <button
               type="button"
-              onClick={handleUpvote}
-              className={[
-                "focus-ring flex h-7 w-7 items-center justify-center rounded-l-full hover:bg-stone-100",
-                upvoted ? "text-brand-700" : "text-stone-500",
-              ].join(" ")}
-              aria-label="Upvote"
-              aria-pressed={upvoted}
+              onClick={handleThumbsUp}
+              className={["focus-ring inline-flex items-center gap-1 text-xs font-medium", liked ? "text-brand-700" : "hover:text-brand-700"].join(" ")}
+              aria-label="Like"
+              aria-pressed={liked}
             >
-              <IconUpvote filled={upvoted} />
+              <IconThumbsUp filled={liked} />
+              {likeCount ? <span>{likeCount}</span> : null}
             </button>
-            <span className="min-w-[1.25rem] px-0.5 text-center text-[11px] font-bold tabular-nums">{score || 0}</span>
             <button
               type="button"
-              onClick={handleDownvote}
-              className="focus-ring flex h-7 w-7 items-center justify-center rounded-r-full text-stone-500 hover:bg-stone-100"
-              aria-label="Remove vote"
+              onClick={handleThumbsDown}
+              className="focus-ring inline-flex items-center gap-1 text-xs font-medium hover:text-stone-700"
+              aria-label="Remove like"
             >
-              <IconDownvote filled={false} />
+              <IconThumbsDown filled={false} />
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => onToggleComments(post.id)}
-            className="focus-ring inline-flex h-7 items-center gap-1 rounded-full border border-stone-200 bg-stone-50 px-2.5 text-[11px] font-semibold text-stone-600 hover:bg-stone-100"
-            aria-expanded={commentsExpanded}
-          >
-            <IconComment />
-            <span>{commentCount}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleShare}
-            className="focus-ring inline-flex h-7 w-7 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600"
-            aria-label="Share"
-          >
-            <IconShare />
-          </button>
+          <div className="flex items-center gap-3 text-stone-500">
+            <button
+              type="button"
+              onClick={() => onToggleComments(post.id)}
+              className="focus-ring inline-flex items-center gap-1 text-xs font-medium hover:text-brand-700"
+              aria-expanded={commentsExpanded}
+            >
+              <IconComment />
+              {commentCount ? <span>{commentCount}</span> : null}
+            </button>
+            <button
+              type="button"
+              onClick={handleShare}
+              className="focus-ring inline-flex items-center text-stone-500 hover:text-brand-700"
+              aria-label="Repost"
+            >
+              <IconRepost />
+            </button>
+          </div>
         </div>
       ) : isOwnPost ? (
         <p className="mt-2 text-[11px] text-amber-700">Visible only to you while review is pending.</p>

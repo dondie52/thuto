@@ -9,7 +9,7 @@ import {
   respondConnectionRequest,
   sendConnectionRequest,
 } from "../lib/connections.js";
-import { reportFeedTarget, setFeedReaction, submitFeedComment } from "../lib/feed.js";
+import { deleteFeedPost, reportFeedTarget, setFeedReaction, submitFeedComment } from "../lib/feed.js";
 import { toggleFollowUser } from "../lib/feedFollows.js";
 import { getOrCreateConversation } from "../lib/messaging.js";
 import { fetchFollowingSetForUsers } from "../lib/people.js";
@@ -183,6 +183,16 @@ export default function PublicProfile() {
         else next.delete(post.id);
         return next;
       });
+    } catch (err) {
+      setPostFeedbackById((current) => ({ ...current, [post.id]: { tone: "error", message: err.message } }));
+    }
+  }
+
+  async function handleDeletePost(post) {
+    if (!window.confirm("Delete this post? This cannot be undone.")) return;
+    try {
+      await deleteFeedPost({ postId: post.id });
+      setPosts((current) => current.filter((item) => item.id !== post.id));
     } catch (err) {
       setPostFeedbackById((current) => ({ ...current, [post.id]: { tone: "error", message: err.message } }));
     }
@@ -364,6 +374,7 @@ export default function PublicProfile() {
                   setReportedTargetKeys((current) => ({ ...current, [`${targetType}:${targetId}`]: true }));
                 }}
                 onSave={handleSave}
+                onDelete={handleDeletePost}
                 actionFeedback={postFeedbackById[post.id] || null}
                 reportedTargetKeys={reportedTargetKeys}
               />

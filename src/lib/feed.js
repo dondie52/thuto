@@ -468,6 +468,13 @@ export async function submitFeedComment({ postId, body }) {
   });
 }
 
+export async function deleteFeedPost({ postId }) {
+  return invokeFeedModeration({
+    action: "deletePost",
+    postId,
+  });
+}
+
 export async function setFeedReaction({ postId, reaction }) {
   const supabase = assertSupabase();
   const user = await requireCurrentUser(supabase);

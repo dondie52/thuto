@@ -5,6 +5,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import {
   FEED_CATEGORIES,
+  deleteFeedPost,
   fetchFeedPostById,
   fetchFeedPosts,
   isSupabaseConfigured,
@@ -364,6 +365,24 @@ export default function Feed() {
     }
   }
 
+  async function handleDeletePost(post) {
+    if (!user) {
+      setPostFeedback(post.id, "notice", "Log in to delete posts.");
+      return;
+    }
+    if (!window.confirm("Delete this post? This cannot be undone.")) return;
+    clearPostFeedback(post.id);
+    setError("");
+    setNotice("");
+    try {
+      await deleteFeedPost({ postId: post.id });
+      setPosts((current) => current.filter((item) => item.id !== post.id));
+      setNotice("Post deleted.");
+    } catch (err) {
+      setPostFeedback(post.id, "error", err.message || "Could not delete post.");
+    }
+  }
+
   return (
     <div>
       {(configured === false ||
@@ -419,104 +438,114 @@ export default function Feed() {
 
           <div className="min-w-0 flex-1">
             <form className="space-y-2" onSubmit={handleSubmitPost}>
-              {!showComposerDetails ? (
+              <div className="flex min-w-0 items-center gap-1.5">
                 <button
                   type="button"
                   onClick={() => setShowComposerDetails(true)}
-                  className="focus-ring min-h-9 w-full rounded-full border border-stone-200 bg-stone-50 px-3 text-left text-xs font-medium text-stone-500 hover:border-stone-300 hover:bg-white"
+                  className="focus-ring min-h-8 min-w-0 flex-1 rounded-full border border-stone-200 bg-stone-50 px-3 text-left text-xs font-medium text-stone-500 hover:border-stone-300 hover:bg-white"
                 >
-                  Create post
+                  Start a post...
                 </button>
-              ) : (
-                <>
+                <label className="focus-within:ring-1 focus-within:ring-brand-200 inline-flex min-h-8 cursor-pointer flex-col items-center justify-center rounded-lg px-1.5 text-[10px] font-medium text-stone-600 hover:bg-stone-50">
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.75 5.75A1.75 1.75 0 016.5 4h11a1.75 1.75 0 011.75 1.75v12.5A1.75 1.75 0 0117.5 20h-11a1.75 1.75 0 01-1.75-1.75V5.75z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM5 16l4-4 3 3 2-2 5 5" />
+                  </svg>
+                  Photo
+                  <input
+                    key={fileInputKey}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    disabled={!canCompose || isPosting}
+                    onChange={(event) => {
+                      updateForm({ files: Array.from(event.target.files || []).slice(0, 4) });
+                      setShowComposerDetails(true);
+                    }}
+                    className="sr-only"
+                  />
+                </label>
+                <button
+                  type="submit"
+                  disabled={!canPublish || isPosting || !form.body.trim()}
+                  className="focus-ring inline-flex min-h-8 shrink-0 items-center justify-center rounded-full bg-brand-700 px-4 py-1.5 text-xs font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isPosting ? "..." : "Post"}
+                </button>
+              </div>
+
+              {showComposerDetails ? (
+                <label className="block">
+                  <span className="sr-only">Post</span>
+                  <textarea
+                    value={form.body}
+                    onChange={(event) => updateForm({ body: event.target.value })}
+                    maxLength={2400}
+                    rows={3}
+                    required
+                    disabled={!canCompose || isPosting}
+                    placeholder="What do you want to share?"
+                    className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs leading-relaxed text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
+                  />
+                </label>
+              ) : null}
+
+              {showComposerDetails ? (
+                <div className="grid gap-2 sm:grid-cols-3">
                   <label className="block">
-                    <span className="sr-only">Community</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-stone-500">Category</span>
                     <select
                       value={form.category}
                       onChange={(event) => updateForm({ category: event.target.value })}
                       disabled={!canCompose || isPosting}
-                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
+                      className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
                     >
                       {FEED_CATEGORIES.map((category) => (
                         <option key={category.value} value={category.value}>
-                          r/{category.label.replace(/\s+/g, "")}
+                          {category.label}
                         </option>
                       ))}
                     </select>
                   </label>
                   <label className="block">
-                    <span className="sr-only">Title</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-stone-500">Title optional</span>
                     <input
                       value={form.title}
                       onChange={(event) => updateForm({ title: event.target.value })}
                       maxLength={120}
                       disabled={!canCompose || isPosting}
-                      placeholder="Title"
-                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-sm font-medium text-stone-900 placeholder:font-normal placeholder:text-stone-400 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
+                      placeholder="Example: BDF scholarship notice"
+                      className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
                     />
                   </label>
                   <label className="block">
-                    <span className="sr-only">Post body</span>
-                    <textarea
-                      value={form.body}
-                      onChange={(event) => updateForm({ body: event.target.value })}
-                      maxLength={2400}
-                      rows={4}
-                      required
-                      disabled={!canCompose || isPosting}
-                      placeholder="Text (optional)"
-                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-2 text-xs leading-relaxed text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
-                    />
-                  </label>
-                  <label className="block">
-                    <span className="sr-only">Source link</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-stone-500">Link optional</span>
                     <input
                       value={form.linkUrl}
                       onChange={(event) => updateForm({ linkUrl: event.target.value })}
                       disabled={!canCompose || isPosting}
-                      placeholder="Link (optional)"
-                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
+                      placeholder="https://..."
+                      className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
                     />
                   </label>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <label className="focus-within:ring-1 focus-within:ring-brand-200 inline-flex cursor-pointer items-center gap-1 rounded-full border border-stone-200 px-2.5 py-1 text-[11px] font-medium text-stone-600 hover:bg-stone-50">
-                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.75 5.75A1.75 1.75 0 016.5 4h11a1.75 1.75 0 011.75 1.75v12.5A1.75 1.75 0 0117.5 20h-11a1.75 1.75 0 01-1.75-1.75V5.75z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM5 16l4-4 3 3 2-2 5 5" />
-                      </svg>
-                      Image
-                      <input
-                        key={fileInputKey}
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        disabled={!canCompose || isPosting}
-                        onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
-                        className="sr-only"
-                      />
-                    </label>
-                    {form.files.length ? (
-                      <span className="text-[11px] text-stone-500">
-                        {form.files.length} {form.files.length === 1 ? "image" : "images"}
-                      </span>
-                    ) : null}
-                    <button
-                      type="button"
-                      onClick={() => setShowComposerDetails(false)}
-                      className="focus-ring rounded-full px-2.5 py-1 text-[11px] font-medium text-stone-500 hover:bg-stone-100"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={!canPublish || isPosting || !form.body.trim()}
-                      className="focus-ring ml-auto inline-flex min-h-8 items-center justify-center rounded-full bg-brand-700 px-4 py-1.5 text-xs font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      {isPosting ? "Posting..." : "Post"}
-                    </button>
-                  </div>
-                </>
-              )}
+                </div>
+              ) : null}
+
+              {showComposerDetails && form.files.length ? (
+                <p className="rounded-lg bg-stone-50 px-2.5 py-1.5 text-[11px] text-stone-600">
+                  Attached: {form.files.map((file) => file.name).join(", ")}
+                </p>
+              ) : null}
+
+              {showComposerDetails ? (
+                <button
+                  type="button"
+                  onClick={() => setShowComposerDetails(false)}
+                  className="focus-ring rounded-full px-2.5 py-1 text-[11px] font-medium text-stone-500 hover:bg-stone-100"
+                >
+                  Hide details
+                </button>
+              ) : null}
 
               {notice ? (
                 <p className="rounded-lg border border-brand-100 bg-brand-50 px-2.5 py-1.5 text-xs text-brand-900" role="status">
@@ -566,6 +595,7 @@ export default function Feed() {
             onSubmitComment={handleSubmitComment}
             onReport={handleReport}
             onSave={handleSave}
+            onDelete={handleDeletePost}
             actionFeedback={postFeedbackById[post.id] || null}
             reportedTargetKeys={reportedTargetKeys}
           />
