@@ -118,12 +118,23 @@ export const PAGE_CONTENT_DEFAULTS = {
     },
   },
   home: {
+    hero: {
+      kicker: "Featured partner",
+      ctaLabel: "View institution",
+    },
+    dailySpotlight: {
+      kicker: "Daily spotlight",
+      heading: "Today's featured institutions",
+      body: "Partner universities in rotation — swipe through today's lineup.",
+      ctaLabel: "View profile",
+    },
     featuredUniversities: {
       heading: "Featured institutions",
       body: "Partner universities and sponsored spots on Thuto.",
       fallbackIds: ["ub", "biust", "buan", "botho", "bac", "bou", "limkokwing"],
     },
     centerCreators: {
+      kicker: "Winners",
       heading: "Best Thuto Centre creators",
       body: "Top study materials from students helping their campus.",
       emptyTitle: "Creators coming soon",

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
@@ -31,6 +31,8 @@ function navLinkClass({ isActive }) {
 }
 
 export default function Layout() {
+  const location = useLocation();
+  const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
   const isFeedRoute = useFeedRoute();
   const { user } = useAuth();
   const [messageCount, setMessageCount] = useState(0);
@@ -65,7 +67,12 @@ export default function Layout() {
   }
 
   return (
-    <div className="thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6">
+    <div
+      className={[
+        "thuto-page-bg flex min-h-dvh flex-col",
+        isHomeRoute ? "pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6" : "pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
+      ].join(" ")}
+    >
       <OnboardingRedirect />
       <header
         className={[
@@ -114,9 +121,9 @@ export default function Layout() {
         ].join(" ")}
       >
         <Outlet />
-        <SubscriptionAdSlot />
+        {!isHomeRoute ? <SubscriptionAdSlot /> : null}
       </main>
-      <BottomNav />
+      {!isHomeRoute ? <BottomNav /> : null}
     </div>
   );
 }
