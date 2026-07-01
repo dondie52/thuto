@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.105.1";
 
-type FeedAction = "submitPost" | "submitComment" | "adminAction";
+type FeedAction = "submitPost" | "submitComment" | "deletePost" | "adminAction";
 
 type ModerationDecision = "publish" | "review" | "reject";
 
@@ -738,6 +738,45 @@ async function submitComment(
   return { comment, moderation };
 }
 
+async function deletePost(
+  adminClient: ReturnType<typeof createClient>,
+  user: Record<string, unknown>,
+  body: FeedRequest,
+) {
+  const userId = String(user.id || "");
+  const postId = cleanText(body.postId, 80);
+  if (!postId) throw new HttpError("Post is required.");
+
+  const { data: post, error: postError } = await adminClient
+    .from("feed_posts")
+    .select("id,author_id,status")
+    .eq("id", postId)
+    .maybeSingle();
+
+  if (postError) throw new HttpError(postError.message, 500);
+  if (!post) throw new HttpError("Post not found.", 404);
+
+  const isAuthor = String(post.author_id || "") === userId;
+  const isAdmin = await isFeedAdmin(adminClient, userId);
+  if (!isAuthor && !isAdmin) throw new HttpError("You can only delete your own posts.", 403);
+
+  const now = new Date().toISOString();
+  const { data, error } = await adminClient
+    .from("feed_posts")
+    .update({
+      status: "removed",
+      removed_at: now,
+      reviewed_by: isAdmin ? userId : null,
+      reviewed_at: now,
+    })
+    .eq("id", postId)
+    .select("id,status,removed_at")
+    .single();
+
+  if (error) throw new HttpError(error.message, 500);
+  return { post: data };
+}
+
 async function adminAction(
   adminClient: ReturnType<typeof createClient>,
   user: Record<string, unknown>,
@@ -802,6 +841,10 @@ Deno.serve(async (request) => {
 
     if (body.action === "submitComment") {
       return jsonResponse(await submitComment(adminClient, user, body));
+    }
+
+    if (body.action === "deletePost") {
+      return jsonResponse(await deletePost(adminClient, user, body));
     }
 
     if (body.action === "adminAction") {
