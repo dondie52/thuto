@@ -58,16 +58,20 @@ function linkClass({ isActive }) {
   ].join(" ");
 }
 
-export default function BottomNav() {
+export default function BottomNav({ visible = true }) {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-20 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 sm:hidden"
+      className={[
+        "fixed bottom-0 left-0 right-0 z-20 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 transition-transform duration-300 ease-out will-change-transform sm:hidden",
+        visible ? "translate-y-0" : "pointer-events-none translate-y-[calc(100%+1rem)]",
+      ].join(" ")}
       aria-label="Primary"
+      aria-hidden={!visible}
     >
       <div className="mx-auto max-w-lg rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md">
         <div className="grid grid-cols-5 gap-0.5 px-1 py-1">
           {links.map(({ to, label, end, icon }) => (
-            <NavLink key={to} to={to} end={end} className={linkClass}>
+            <NavLink key={to} to={to} end={end} className={linkClass} tabIndex={visible ? undefined : -1}>
               {icon}
               <span className="max-w-full truncate whitespace-nowrap">{label}</span>
             </NavLink>

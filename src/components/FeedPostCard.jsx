@@ -48,24 +48,33 @@ function feedbackClassName(tone) {
   return "border border-brand-100 bg-brand-50 text-brand-900";
 }
 
-function EmojiThumb({ emoji, active = false, className = "" }) {
+function IconThumbUp({ className = "h-3.5 w-3.5", filled = false }) {
   return (
-    <span
-      className={[
-        "inline-flex items-center justify-center text-2xl leading-none select-none",
-        active ? "scale-110 opacity-100" : "opacity-80",
-        className,
-      ].join(" ")}
-      aria-hidden
-    >
-      {emoji}
-    </span>
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M7 10v10M7 10l1.5-5.5A2 2 0 0110.44 3h2.34a1.5 1.5 0 011.46 1.14L15 10h4.2a1.5 1.5 0 011.47 1.84l-1.4 6A1.5 1.5 0 0118.77 19H11"
+      />
+    </svg>
   );
 }
 
-function IconComment({ className = "h-5 w-5" }) {
+function IconThumbDown({ className = "h-3.5 w-3.5", filled = false }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17 14V4M17 14l-1.5 5.5a2 2 0 01-1.94 1.5h-2.34a1.5 1.5 0 01-1.46-1.14L9 14H4.8a1.5 1.5 0 01-1.47-1.84l1.4-6A1.5 1.5 0 015.23 5H13"
+      />
+    </svg>
+  );
+}
+
+function IconComment({ className = "h-3.5 w-3.5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -75,7 +84,16 @@ function IconComment({ className = "h-5 w-5" }) {
   );
 }
 
-function IconBookmark({ filled = false, className = "h-5 w-5" }) {
+function IconRepost({ className = "h-3.5 w-3.5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M17 7l3 3-3 3M7 17l-3-3 3-3" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M20 10a8 8 0 00-14-4M4 14a8 8 0 0014 4" />
+    </svg>
+  );
+}
+
+function IconBookmark({ filled = false, className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5" aria-hidden>
       <path
@@ -87,7 +105,7 @@ function IconBookmark({ filled = false, className = "h-5 w-5" }) {
   );
 }
 
-function IconShare({ className = "h-5 w-5" }) {
+function IconShare({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
       <path
@@ -148,6 +166,29 @@ function OfficialBadge() {
   return (
     <span className="rounded bg-brand-800 px-1 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
       Official
+    </span>
+  );
+}
+
+function ActionCircle({ children, active = false, variant = "default", className = "" }) {
+  const variantClasses =
+    variant === "thumb"
+      ? active
+        ? "border-brand-800 bg-brand-800 text-white"
+        : "border-brand-700 bg-brand-700 text-white"
+      : active
+        ? "border-brand-700 bg-brand-700 text-white"
+        : "border-stone-300 bg-white text-stone-600";
+
+  return (
+    <span
+      className={[
+        "inline-flex h-8 min-w-8 items-center justify-center gap-1 rounded-full border px-2 text-[11px] font-semibold tabular-nums transition-colors",
+        variantClasses,
+        className,
+      ].join(" ")}
+    >
+      {children}
     </span>
   );
 }
@@ -529,66 +570,55 @@ export default function FeedPostCard({
       <PostImages images={post.images} />
 
       {isPublished ? (
-        <div className="mt-3 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4 text-stone-700">
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleThumbsUp}
-              className={[
-                "focus-ring inline-flex min-h-9 items-center gap-1 rounded-full px-1 py-1 text-xs font-semibold transition-transform active:scale-95",
-                liked ? "text-brand-800" : "hover:bg-stone-50",
-              ].join(" ")}
+              className="focus-ring rounded-full transition-transform active:scale-95"
               aria-label="Like"
               aria-pressed={liked}
             >
-              <EmojiThumb emoji="👍" active={liked} />
-              <span className="tabular-nums">{likeCount || 0}</span>
+              <ActionCircle active={liked} variant="thumb">
+                <IconThumbUp filled={liked} />
+                <span>{likeCount || 0}</span>
+              </ActionCircle>
             </button>
             <button
               type="button"
               onClick={handleThumbsDown}
-              className="focus-ring inline-flex min-h-9 items-center rounded-full px-1 py-1 transition-transform hover:bg-stone-50 active:scale-95"
+              className="focus-ring rounded-full transition-transform active:scale-95"
               aria-label="Remove like"
             >
-              <EmojiThumb emoji="👎" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onToggleComments(post.id)}
-              className={[
-                "focus-ring inline-flex min-h-9 items-center gap-1.5 rounded-full px-1.5 py-1 text-xs font-semibold hover:bg-stone-50",
-                commentsExpanded ? "text-brand-800" : "text-stone-700",
-              ].join(" ")}
-              aria-expanded={commentsExpanded}
-              aria-label="Comments"
-            >
-              <IconComment />
-              <span className="tabular-nums">{commentCount}</span>
+              <ActionCircle variant="thumb">
+                <IconThumbDown />
+              </ActionCircle>
             </button>
           </div>
 
-          <div className="flex items-center gap-4 text-stone-700">
-            {onSave ? (
-              <button
-                type="button"
-                onClick={() => onSave(post)}
-                className={[
-                  "focus-ring inline-flex min-h-9 min-w-9 items-center justify-center rounded-full px-1.5 py-1 hover:bg-stone-50",
-                  isSaved ? "text-brand-800" : "text-stone-700",
-                ].join(" ")}
-                aria-label={isSaved ? "Unsave post" : "Save post"}
-                aria-pressed={isSaved}
-              >
-                <IconBookmark filled={isSaved} />
-              </button>
-            ) : null}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onToggleComments(post.id)}
+              className="focus-ring rounded-full transition-transform active:scale-95"
+              aria-expanded={commentsExpanded}
+              aria-label="Comments"
+            >
+              <ActionCircle active={commentsExpanded}>
+                <IconComment />
+                <span>{commentCount}</span>
+              </ActionCircle>
+            </button>
             <button
               type="button"
               onClick={handleShare}
-              className="focus-ring inline-flex min-h-9 min-w-9 items-center justify-center rounded-full px-1.5 py-1 text-stone-700 hover:bg-stone-50"
-              aria-label="Share"
+              className="focus-ring rounded-full transition-transform active:scale-95"
+              aria-label="Repost"
             >
-              <IconShare />
+              <ActionCircle>
+                <IconRepost />
+                <span>0</span>
+              </ActionCircle>
             </button>
           </div>
         </div>
