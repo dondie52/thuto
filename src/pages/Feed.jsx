@@ -403,142 +403,128 @@ export default function Feed() {
         </div>
       )}
 
-      <section className="border-b border-stone-200/70 px-4 py-1.5">
-        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+      <section className="border-b border-stone-200/70 px-3 py-2">
+        <div className="flex min-w-0 items-start gap-2">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
               alt=""
-              className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-brand-100"
+              className="mt-0.5 h-7 w-7 shrink-0 rounded-full object-cover ring-1 ring-stone-200"
             />
           ) : (
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-700 text-lg font-bold text-white ring-1 ring-brand-100">
+            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-bold text-white ring-1 ring-stone-200">
               {profileInitial(composerName)}
             </div>
           )}
 
           <div className="min-w-0 flex-1">
-            <form className="space-y-2.5 sm:space-y-3" onSubmit={handleSubmitPost}>
-              <div className="flex min-w-0 items-center gap-2">
+            <form className="space-y-2" onSubmit={handleSubmitPost}>
+              {!showComposerDetails ? (
                 <button
                   type="button"
                   onClick={() => setShowComposerDetails(true)}
-                  className="focus-ring min-h-11 min-w-0 flex-1 rounded-full bg-stone-100/90 px-4 text-left text-sm font-medium text-stone-600 hover:bg-stone-100"
+                  className="focus-ring min-h-9 w-full rounded-full border border-stone-200 bg-stone-50 px-3 text-left text-xs font-medium text-stone-500 hover:border-stone-300 hover:bg-white"
                 >
-                  Start a post
+                  Create post
                 </button>
-                <label className="focus-within:ring-2 focus-within:ring-brand-200 inline-flex min-h-11 cursor-pointer flex-col items-center justify-center rounded-xl px-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.75 5.75A1.75 1.75 0 016.5 4h11a1.75 1.75 0 011.75 1.75v12.5A1.75 1.75 0 0117.5 20h-11a1.75 1.75 0 01-1.75-1.75V5.75z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM5 16l4-4 3 3 2-2 5 5" />
-                  </svg>
-                  Photo
-                  <input
-                    key={fileInputKey}
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    disabled={!canCompose || isPosting}
-                    onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
-                    className="sr-only"
-                  />
-                </label>
-                <button
-                  type="submit"
-                  disabled={!canPublish || isPosting || !form.body.trim()}
-                  className="focus-ring inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-brand-700 px-5 py-2 text-sm font-bold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {isPosting ? "..." : "Post"}
-                </button>
-              </div>
-
-              {showComposerDetails ? (
-                <label className="block">
-                  <span className="sr-only">Post</span>
-                  <textarea
-                    value={form.body}
-                    onChange={(event) => updateForm({ body: event.target.value })}
-                    maxLength={2400}
-                    rows={3}
-                    required
-                    disabled={!canCompose || isPosting}
-                    placeholder="What do you want to share?"
-                    className="w-full rounded-2xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60 sm:px-4 sm:py-3"
-                  />
-                </label>
-              ) : null}
-
-              {showComposerDetails ? (
-                <div className="grid gap-3 sm:grid-cols-3">
+              ) : (
+                <>
                   <label className="block">
-                    <span className="text-xs font-semibold text-stone-600">Category</span>
+                    <span className="sr-only">Community</span>
                     <select
                       value={form.category}
                       onChange={(event) => updateForm({ category: event.target.value })}
                       disabled={!canCompose || isPosting}
-                      className="mt-1 w-full rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
                     >
                       {FEED_CATEGORIES.map((category) => (
                         <option key={category.value} value={category.value}>
-                          {category.label}
+                          r/{category.label.replace(/\s+/g, "")}
                         </option>
                       ))}
                     </select>
                   </label>
                   <label className="block">
-                    <span className="text-xs font-semibold text-stone-600">Title optional</span>
+                    <span className="sr-only">Title</span>
                     <input
                       value={form.title}
                       onChange={(event) => updateForm({ title: event.target.value })}
                       maxLength={120}
                       disabled={!canCompose || isPosting}
-                      placeholder="Example: BDF scholarship notice"
-                      className="mt-1 w-full rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                      placeholder="Title"
+                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-sm font-medium text-stone-900 placeholder:font-normal placeholder:text-stone-400 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
                     />
                   </label>
                   <label className="block">
-                    <span className="text-xs font-semibold text-stone-600">Source link optional</span>
+                    <span className="sr-only">Post body</span>
+                    <textarea
+                      value={form.body}
+                      onChange={(event) => updateForm({ body: event.target.value })}
+                      maxLength={2400}
+                      rows={4}
+                      required
+                      disabled={!canCompose || isPosting}
+                      placeholder="Text (optional)"
+                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-2 text-xs leading-relaxed text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="sr-only">Source link</span>
                     <input
                       value={form.linkUrl}
                       onChange={(event) => updateForm({ linkUrl: event.target.value })}
                       disabled={!canCompose || isPosting}
-                      placeholder="https://..."
-                      className="mt-1 w-full rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                      placeholder="Link (optional)"
+                      className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
                     />
                   </label>
-                </div>
-              ) : null}
-
-              {showComposerDetails ? (
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowComposerDetails((open) => !open)}
-                    className="focus-ring inline-flex min-h-9 items-center justify-center rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 hover:bg-brand-50"
-                  >
-                    Hide details
-                  </button>
-                  {form.files.length ? (
-                    <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
-                      {form.files.length} {form.files.length === 1 ? "photo" : "photos"}
-                    </span>
-                  ) : null}
-                </div>
-              ) : null}
-
-              {form.files.length ? (
-                <p className="rounded-xl bg-stone-50 px-3 py-2 text-xs text-stone-600">
-                  Attached: {form.files.map((file) => file.name).join(", ")}
-                </p>
-              ) : null}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <label className="focus-within:ring-1 focus-within:ring-brand-200 inline-flex cursor-pointer items-center gap-1 rounded-full border border-stone-200 px-2.5 py-1 text-[11px] font-medium text-stone-600 hover:bg-stone-50">
+                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.75 5.75A1.75 1.75 0 016.5 4h11a1.75 1.75 0 011.75 1.75v12.5A1.75 1.75 0 0117.5 20h-11a1.75 1.75 0 01-1.75-1.75V5.75z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM5 16l4-4 3 3 2-2 5 5" />
+                      </svg>
+                      Image
+                      <input
+                        key={fileInputKey}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        disabled={!canCompose || isPosting}
+                        onChange={(event) => updateForm({ files: Array.from(event.target.files || []).slice(0, 4) })}
+                        className="sr-only"
+                      />
+                    </label>
+                    {form.files.length ? (
+                      <span className="text-[11px] text-stone-500">
+                        {form.files.length} {form.files.length === 1 ? "image" : "images"}
+                      </span>
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={() => setShowComposerDetails(false)}
+                      className="focus-ring rounded-full px-2.5 py-1 text-[11px] font-medium text-stone-500 hover:bg-stone-100"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={!canPublish || isPosting || !form.body.trim()}
+                      className="focus-ring ml-auto inline-flex min-h-8 items-center justify-center rounded-full bg-brand-700 px-4 py-1.5 text-xs font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {isPosting ? "Posting..." : "Post"}
+                    </button>
+                  </div>
+                </>
+              )}
 
               {notice ? (
-                <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900" role="status">
+                <p className="rounded-lg border border-brand-100 bg-brand-50 px-2.5 py-1.5 text-xs text-brand-900" role="status">
                   {notice}
                 </p>
               ) : null}
               {error ? (
-                <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+                <p className="rounded-lg border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs text-red-800" role="alert">
                   {error}
                 </p>
               ) : null}
@@ -548,15 +534,13 @@ export default function Feed() {
       </section>
 
       {isLoading ? (
-        <div className="px-4 py-4 text-center text-sm text-stone-500">
-          Loading the feed...
-        </div>
+        <div className="px-3 py-3 text-center text-xs text-stone-500">Loading posts...</div>
       ) : null}
 
       {!isLoading && !posts.length ? (
-        <div className="px-4 py-8 text-center">
-          <p className="font-display text-xl font-semibold text-brand-900">No posts yet</p>
-          <p className="mt-2 text-sm text-stone-600">
+        <div className="px-3 py-6 text-center">
+          <p className="text-sm font-semibold text-stone-800">No posts yet</p>
+          <p className="mt-1 text-xs text-stone-500">
             {user ? "Be the first to share an update, or check back after you submit one for review." : "Sign in and post the first student update."}
           </p>
         </div>

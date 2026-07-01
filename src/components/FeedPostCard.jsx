@@ -2,30 +2,29 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ExpandableText from "./ExpandableText.jsx";
 import UserDisplayName from "./UserDisplayName.jsx";
-import { categoryLabel, FEED_REACTIONS, FEED_STATUS_LABELS, shareFeedPostUrl } from "../lib/feed.js";
+import { categoryLabel, FEED_STATUS_LABELS, shareFeedPostUrl } from "../lib/feed.js";
 import { profilePath } from "../lib/profileLinks.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 
 const OFFICIAL_DISPLAY_NAME = "Thuto Admin";
-const LONG_PRESS_MS = 420;
 
 function formatRelativeTime(value) {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
-  if (seconds < 60) return "Just now";
+  if (seconds < 60) return "now";
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `${minutes}m`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 48) return `${hours}h ago`;
+  if (hours < 48) return `${hours}h`;
   const days = Math.floor(hours / 24);
-  if (days < 14) return `${days}d ago`;
+  if (days < 14) return `${days}d`;
   return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-function categoryBadgeText(category) {
-  return categoryLabel(category).toUpperCase();
+function categorySubreddit(category) {
+  return categoryLabel(category).replace(/\s+/g, "");
 }
 
 function postStatusLabel(status) {
@@ -49,26 +48,35 @@ function feedbackClassName(tone) {
   return "border border-brand-100 bg-brand-50 text-brand-900";
 }
 
-function IconHeart({ filled, className = "h-4 w-4" }) {
-  if (filled) {
-    return (
-      <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-      </svg>
-    );
-  }
+function voteScore(post) {
+  return Object.values(post.reactionCounts || {}).reduce((sum, count) => sum + Number(count || 0), 0);
+}
+
+function IconUpvote({ filled, className = "h-3.5 w-3.5" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-      />
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={filled ? 0 : 2} aria-hidden>
+      {filled ? (
+        <path d="M12 4l7 8h-5v8H10v-8H5l7-8z" />
+      ) : (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 5l6 7h-4v7h-4v-7H6l6-7z" />
+      )}
     </svg>
   );
 }
 
-function IconComment({ className = "h-4 w-4" }) {
+function IconDownvote({ filled, className = "h-3.5 w-3.5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={filled ? 0 : 2} aria-hidden>
+      {filled ? (
+        <path d="M12 20l-7-8h5V4h4v8h5l-7 8z" />
+      ) : (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l-6-7h4V5h4v7h4l-6 7z" />
+      )}
+    </svg>
+  );
+}
+
+function IconComment({ className = "h-3.5 w-3.5" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
       <path
@@ -80,7 +88,7 @@ function IconComment({ className = "h-4 w-4" }) {
   );
 }
 
-function IconShare({ className = "h-4 w-4" }) {
+function IconShare({ className = "h-3.5 w-3.5" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M7 17l10-10M17 7H9m8 0v8" />
@@ -89,10 +97,12 @@ function IconShare({ className = "h-4 w-4" }) {
   );
 }
 
-function IconSave({ className = "h-4 w-4" }) {
+function IconMore({ className = "h-3.5 w-3.5" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6.5 4.75A1.75 1.75 0 018.25 3h7.5a1.75 1.75 0 011.75 1.75V21l-5.5-3.5L6.5 21V4.75z" />
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <circle cx="5" cy="12" r="1.75" />
+      <circle cx="12" cy="12" r="1.75" />
+      <circle cx="19" cy="12" r="1.75" />
     </svg>
   );
 }
@@ -102,7 +112,7 @@ function renderHashtagText(text) {
     .split(/(#[\p{L}\p{N}_-]+)/gu)
     .map((part, index) =>
       part.startsWith("#") ? (
-        <span key={`${part}-${index}`} className="font-semibold text-brand-700">
+        <span key={`${part}-${index}`} className="font-medium text-brand-700">
           {part}
         </span>
       ) : (
@@ -111,45 +121,18 @@ function renderHashtagText(text) {
     );
 }
 
-function PostAvatar({ isOfficial, displayName, avatarUrl }) {
-  if (isOfficial) {
-    return (
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-700 to-brand-900 text-xl font-bold text-white ring-2 ring-white">
-        T
-      </div>
-    );
-  }
-  if (avatarUrl) {
-    return (
-      <img
-        src={avatarUrl}
-        alt=""
-        className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white"
-      />
-    );
-  }
+function CommunityAvatar({ category, isOfficial }) {
+  const label = isOfficial ? "T" : categorySubreddit(category).charAt(0).toUpperCase() || "G";
   return (
     <div
-      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-100 text-base font-bold text-brand-800 ring-2 ring-white"
+      className={[
+        "flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
+        isOfficial ? "bg-brand-800 text-white" : "bg-brand-100 text-brand-800",
+      ].join(" ")}
       aria-hidden
     >
-      {avatarInitial(displayName)}
+      {label}
     </div>
-  );
-}
-
-function OfficialBadge() {
-  return (
-    <span className="inline-flex items-center gap-0.5 rounded-md bg-brand-800 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-      <svg className="h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-        <path
-          fillRule="evenodd"
-          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-      Official
-    </span>
   );
 }
 
@@ -164,12 +147,12 @@ function PostImages({ images }) {
         href={primary.publicUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 block w-full overflow-hidden bg-stone-100"
+        className="mt-2 block w-full overflow-hidden rounded-lg border border-stone-200 bg-stone-50"
       >
         <img
           src={primary.publicUrl}
           alt={primary.altText || "Post image"}
-          className="h-auto max-h-[28rem] w-full object-cover"
+          className="h-auto max-h-80 w-full object-cover"
           loading="lazy"
           decoding="async"
         />
@@ -178,22 +161,19 @@ function PostImages({ images }) {
   }
 
   return (
-    <div className={`mt-4 grid gap-0.5 ${visible.length >= 3 ? "grid-cols-2" : "grid-cols-2"}`}>
+    <div className={`mt-2 grid gap-0.5 overflow-hidden rounded-lg border border-stone-200 ${visible.length >= 3 ? "grid-cols-2" : "grid-cols-2"}`}>
       {visible.map((image, index) => (
         <a
           key={image.id || image.publicUrl}
           href={image.publicUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={[
-            "block w-full overflow-hidden bg-stone-100",
-            visible.length === 3 && index === 0 ? "col-span-2" : "",
-          ].join(" ")}
+          className={[visible.length === 3 && index === 0 ? "col-span-2" : ""].join(" ")}
         >
           <img
             src={image.publicUrl}
             alt={image.altText || "Post image"}
-            className="aspect-[4/3] h-auto w-full object-cover sm:aspect-[16/10]"
+            className="aspect-[4/3] h-auto w-full object-cover"
             loading="lazy"
             decoding="async"
           />
@@ -203,12 +183,12 @@ function PostImages({ images }) {
   );
 }
 
-function InlineActionFeedback({ feedback, className = "mt-3" }) {
+function InlineActionFeedback({ feedback, className = "mt-2" }) {
   if (!feedback?.message) return null;
 
   return (
     <p
-      className={`${className} rounded-xl px-3 py-2 text-sm ${feedbackClassName(feedback.tone)}`}
+      className={`${className} rounded-lg px-2.5 py-1.5 text-xs ${feedbackClassName(feedback.tone)}`}
       role={feedback.tone === "error" ? "alert" : "status"}
     >
       {feedback.message}
@@ -230,16 +210,16 @@ function CommentSection({
   const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
 
   return (
-    <div className="mt-4 border-t border-stone-200/80 px-4 pb-4 pt-4">
+    <div className="mt-2 border-t border-stone-200/80 pt-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Comments</p>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-stone-400">Comments</p>
         <button
           type="button"
           onClick={() => onReport({ postId: post.id, targetType: "post", targetId: post.id })}
           disabled={postReported}
           className={[
-            "text-xs font-semibold underline",
-            postReported ? "cursor-default text-brand-700 decoration-brand-300" : "text-stone-500 hover:text-red-700",
+            "text-[11px] font-medium",
+            postReported ? "cursor-default text-stone-400" : "text-stone-400 hover:text-red-700",
           ].join(" ")}
         >
           {postReported ? "Reported" : "Report"}
@@ -249,37 +229,32 @@ function CommentSection({
       <InlineActionFeedback feedback={actionFeedback} />
 
       {post.comments.length ? (
-        <ul className="mt-3 space-y-2">
+        <ul className="mt-2 space-y-1.5">
           {post.comments.map((comment) => {
             const commentReported = Boolean(reportedTargetKeys?.[targetKey("comment", comment.id)]);
 
             return (
-              <li key={comment.id} className="rounded-xl bg-stone-50 px-3 py-2.5">
-                <div className="flex items-start justify-between gap-3">
+              <li key={comment.id} className="rounded-lg bg-stone-50 px-2.5 py-2">
+                <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="inline-flex min-w-0 flex-wrap items-center gap-1.5 text-xs font-semibold text-brand-900">
-                      <UserDisplayName name={comment.authorDisplayName} isPro={comment.authorIsPro} badgeClassName="size-4" />
+                    <p className="inline-flex min-w-0 flex-wrap items-center gap-1 text-[11px] font-semibold text-stone-700">
+                      <UserDisplayName name={comment.authorDisplayName} isPro={comment.authorIsPro} badgeClassName="size-3.5" />
                       {comment.authorUsername ? (
-                        <span className="font-medium text-stone-500">@{comment.authorUsername}</span>
+                        <span className="font-normal text-stone-400">u/{comment.authorUsername}</span>
                       ) : null}
+                      <span className="font-normal text-stone-400">
+                        · {formatRelativeTime(comment.publishedAt || comment.createdAt)}
+                      </span>
                     </p>
-                    {comment.authorDistinction ? (
-                      <p className="break-words text-[11px] font-medium text-brand-800/80">{comment.authorDistinction}</p>
-                    ) : null}
-                    <p className="mt-1 whitespace-pre-line break-words text-sm leading-relaxed text-stone-700">{comment.body}</p>
-                    <p className="mt-1 text-[11px] text-stone-400">
-                      {formatRelativeTime(comment.publishedAt || comment.createdAt)}
-                    </p>
+                    <p className="mt-0.5 whitespace-pre-line break-words text-xs leading-relaxed text-stone-600">{comment.body}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => onReport({ postId: post.id, targetType: "comment", targetId: comment.id })}
                     disabled={commentReported}
                     className={[
-                      "shrink-0 text-[11px] font-semibold underline",
-                      commentReported
-                        ? "cursor-default text-brand-700 decoration-brand-300"
-                        : "text-stone-400 hover:text-red-700",
+                      "shrink-0 text-[10px] font-medium",
+                      commentReported ? "cursor-default text-stone-400" : "text-stone-400 hover:text-red-700",
                     ].join(" ")}
                   >
                     {commentReported ? "Reported" : "Report"}
@@ -290,32 +265,32 @@ function CommentSection({
           })}
         </ul>
       ) : (
-        <p className="mt-3 rounded-xl bg-stone-50 px-3 py-3 text-sm text-stone-500">No comments yet.</p>
+        <p className="mt-2 text-xs text-stone-400">No comments yet.</p>
       )}
 
       {user ? (
-        <form className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]" onSubmit={(event) => onSubmitComment(event, post.id)}>
+        <form className="mt-2 flex gap-2" onSubmit={(event) => onSubmitComment(event, post.id)}>
           <input
             value={draft || ""}
             onChange={(event) => onDraftChange(post.id, event.target.value)}
             maxLength={1000}
-            placeholder="Write a reply..."
-            className="min-h-11 min-w-0 rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            placeholder="Add a comment..."
+            className="min-h-8 min-w-0 flex-1 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200"
           />
           <button
             type="submit"
             disabled={isSubmitting || !String(draft || "").trim()}
-            className="focus-ring min-h-10 rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+            className="focus-ring shrink-0 rounded-full bg-brand-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Reply
           </button>
         </form>
       ) : (
-        <p className="mt-3 text-xs text-stone-500">
-          <Link to="/auth?mode=login" className="font-semibold text-brand-700 underline">
+        <p className="mt-2 text-[11px] text-stone-400">
+          <Link to="/auth?mode=login" className="font-medium text-brand-700 hover:underline">
             Log in
           </Link>{" "}
-          to comment or react.
+          to comment.
         </p>
       )}
     </div>
@@ -323,27 +298,7 @@ function CommentSection({
 }
 
 /**
- * Minimal informative feed post card.
- *
- * @param {{
- *   post: object,
- *   user: import("@supabase/supabase-js").User | null,
- *   isOwnPost?: boolean,
- *   commentsExpanded?: boolean,
- *   commentDraft?: string,
- *   isCommentSubmitting?: boolean,
- *   actionFeedback?: { tone: string, message: string } | null,
- *   reportedTargetKeys?: Record<string, boolean>,
- *   onReact: (post: object, reaction: string) => void,
- *   onToggleComments: (postId: string) => void,
- *   onCommentDraftChange: (postId: string, value: string) => void,
- *   onSubmitComment: (event: import("react").FormEvent, postId: string) => void,
- *   onReport: (params: { postId: string, targetType: string, targetId: string }) => void,
- *   isFollowingAuthor?: boolean,
- *   onToggleFollow?: (post: object) => void,
- *   isSaved?: boolean,
- *   onSave?: (post: object) => void,
- * }} props
+ * Minimal Reddit-style feed post card.
  */
 export default function FeedPostCard({
   post,
@@ -364,90 +319,37 @@ export default function FeedPostCard({
   onSubmitComment,
   onReport,
 }) {
-  const [reactionPickerOpen, setReactionPickerOpen] = useState(false);
-  const reactionPickerRef = useRef(null);
-  const longPressTimerRef = useRef(null);
-  const suppressNextLikeClickRef = useRef(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const linkUrl = safeExternalUrl(post.linkUrl);
   const isPublished = post.status === "published";
   const isOfficial = Boolean(post.isOfficial);
   const displayName = isOfficial ? OFFICIAL_DISPLAY_NAME : post.authorDisplayName;
+  const username = isOfficial ? "thuto" : post.authorUsername || avatarInitial(displayName).toLowerCase();
   const timeLabel = formatRelativeTime(post.publishedAt || post.createdAt);
   const commentCount = post.comments?.length || 0;
-  const reactionOptions = FEED_REACTIONS.map((reaction) => ({
-    ...reaction,
-    count: Number(post.reactionCounts?.[reaction.value] || 0),
-    active: post.viewerReaction === reaction.value,
-  }));
-  const activeReaction = reactionOptions.find((reaction) => reaction.active) || null;
-  const primaryReactionCount = activeReaction ? activeReaction.count : Number(post.reactionCounts?.like || 0);
-  const visibleReactionCounts = reactionOptions.filter((reaction) => reaction.count > 0);
-  const reactButtonLabel = activeReaction ? activeReaction.shortLabel : "Like";
-  const reactButtonActive = Boolean(activeReaction);
+  const score = voteScore(post);
+  const upvoted = post.viewerReaction === "like";
+  const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
 
   useEffect(() => {
-    if (!reactionPickerOpen) return undefined;
+    if (!menuOpen) return undefined;
 
     function handlePointerDown(event) {
-      if (!reactionPickerRef.current?.contains(event.target)) {
-        setReactionPickerOpen(false);
-      }
+      if (!menuRef.current?.contains(event.target)) setMenuOpen(false);
     }
 
     function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        setReactionPickerOpen(false);
-      }
+      if (event.key === "Escape") setMenuOpen(false);
     }
 
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [reactionPickerOpen]);
-
-  useEffect(
-    () => () => {
-      if (longPressTimerRef.current) {
-        window.clearTimeout(longPressTimerRef.current);
-      }
-    },
-    [],
-  );
-
-  function clearLongPressTimer() {
-    if (longPressTimerRef.current) {
-      window.clearTimeout(longPressTimerRef.current);
-      longPressTimerRef.current = null;
-    }
-  }
-
-  function startLongPress() {
-    if (!user) return;
-    clearLongPressTimer();
-    longPressTimerRef.current = window.setTimeout(() => {
-      suppressNextLikeClickRef.current = true;
-      setReactionPickerOpen(true);
-    }, LONG_PRESS_MS);
-  }
-
-  function handleLikeButtonClick() {
-    if (suppressNextLikeClickRef.current) {
-      suppressNextLikeClickRef.current = false;
-      return;
-    }
-    setReactionPickerOpen(false);
-    onReact(post, "like");
-  }
-
-  function handleReactionSelect(reaction) {
-    clearLongPressTimer();
-    setReactionPickerOpen(false);
-    onReact(post, reaction);
-  }
+  }, [menuOpen]);
 
   async function handleShare() {
     const url = await shareFeedPostUrl(post.id);
@@ -467,101 +369,120 @@ export default function FeedPostCard({
     }
   }
 
+  function handleUpvote() {
+    onReact(post, "like");
+  }
+
+  function handleDownvote() {
+    if (post.viewerReaction) {
+      onReact(post, post.viewerReaction);
+    }
+  }
+
   const authorProfilePath = !isOfficial && post.authorUsername ? profilePath(post.authorUsername) : null;
 
   return (
     <article
       id={`feed-post-${post.id}`}
       className={[
-        "min-w-0 overflow-hidden",
-        !isPublished && isOwnPost ? "bg-amber-50/40" : "",
+        "min-w-0 px-3 py-2.5 text-sm",
+        !isPublished && isOwnPost ? "bg-amber-50/30" : "",
       ].join(" ")}
     >
-      <header className="flex min-w-0 items-start gap-3 px-4 pb-0 pt-4">
-        {authorProfilePath ? (
-          <Link to={authorProfilePath} className="focus-ring shrink-0 rounded-full">
-            <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
-          </Link>
-        ) : (
-          <PostAvatar isOfficial={isOfficial} displayName={displayName} avatarUrl={post.authorAvatarUrl} />
-        )}
+      <header className="flex min-w-0 items-center gap-2">
+        <CommunityAvatar category={post.category} isOfficial={isOfficial} />
         <div className="min-w-0 flex-1">
-          <div className="flex min-w-0 items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-                <span className="inline-flex min-w-0 max-w-full items-center gap-1.5">
-                  {authorProfilePath ? (
-                    <Link to={authorProfilePath} className="focus-ring min-w-0 break-words text-base font-extrabold text-brand-950 hover:underline">
-                      <UserDisplayName
-                        name={displayName}
-                        isPro={post.authorIsPro && !isOfficial}
-                        className="min-w-0"
-                        nameClassName="break-words"
-                      />
-                    </Link>
-                  ) : (
-                    <h3 className="min-w-0 break-words text-base font-extrabold text-brand-950">
-                      <UserDisplayName
-                        name={displayName}
-                        isPro={post.authorIsPro && !isOfficial}
-                        className="min-w-0"
-                        nameClassName="break-words"
-                      />
-                    </h3>
-                  )}
-                </span>
-                {isOfficial ? <OfficialBadge /> : null}
-                {!isPublished && isOwnPost ? (
-                  <span className="rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-900">
-                    {postStatusLabel(post.status)}
-                  </span>
-                ) : null}
-              </div>
-              {post.authorDistinction ? (
-                <p className="mt-0.5 break-words text-xs font-medium text-brand-800/90">{post.authorDistinction}</p>
-              ) : null}
-              {timeLabel ? <p className="mt-0.5 text-xs text-stone-500">{timeLabel}</p> : null}
-            </div>
-            <div className="flex shrink-0 flex-col items-end gap-2">
-              <span className="max-w-full rounded-full bg-brand-700 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
-                {categoryBadgeText(post.category)}
+          <p className="truncate text-xs leading-none text-stone-500">
+            <span className="font-semibold text-stone-800">r/{categorySubreddit(post.category)}</span>
+            {timeLabel ? <span className="text-stone-400"> · {timeLabel}</span> : null}
+          </p>
+          <p className="mt-0.5 truncate text-[11px] text-stone-400">
+            {authorProfilePath ? (
+              <Link to={authorProfilePath} className="focus-ring font-medium text-stone-500 hover:text-brand-700 hover:underline">
+                u/{username}
+              </Link>
+            ) : (
+              <span className="font-medium text-stone-500">u/{username}</span>
+            )}
+            {isOfficial ? <span className="ml-1 rounded bg-brand-800 px-1 py-0.5 text-[9px] font-bold uppercase text-white">Official</span> : null}
+            {!isPublished && isOwnPost ? (
+              <span className="ml-1 rounded bg-amber-100 px-1 py-0.5 text-[9px] font-bold uppercase text-amber-900">
+                {postStatusLabel(post.status)}
               </span>
-              {user && !isOwnPost && !isOfficial && onToggleFollow ? (
+            ) : null}
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5">
+          {user && !isOwnPost && !isOfficial && onToggleFollow ? (
+            <button
+              type="button"
+              onClick={() => onToggleFollow(post)}
+              className={[
+                "focus-ring rounded-full px-2.5 py-1 text-[11px] font-semibold",
+                isFollowingAuthor
+                  ? "border border-stone-200 bg-white text-stone-600"
+                  : "bg-brand-700 text-white hover:bg-brand-800",
+              ].join(" ")}
+            >
+              {isFollowingAuthor ? "Joined" : "Join"}
+            </button>
+          ) : null}
+          <div className="relative" ref={menuRef}>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="focus-ring flex h-7 w-7 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600"
+              aria-label="More actions"
+              aria-expanded={menuOpen}
+            >
+              <IconMore />
+            </button>
+            {menuOpen ? (
+              <div className="absolute right-0 top-full z-10 mt-1 min-w-[8rem] rounded-lg border border-stone-200 bg-white py-1 shadow-card">
+                {onSave ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onSave(post);
+                      setMenuOpen(false);
+                    }}
+                    className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50"
+                  >
+                    {isSaved ? "Unsave" : "Save"}
+                  </button>
+                ) : null}
                 <button
                   type="button"
-                  onClick={() => onToggleFollow(post)}
-                  className={[
-                    "focus-ring rounded-full border px-3 py-1 text-[11px] font-semibold",
-                    isFollowingAuthor
-                      ? "border-brand-200 bg-brand-50 text-brand-800"
-                      : "border-brand-700 bg-brand-700 text-white hover:bg-brand-800",
-                  ].join(" ")}
+                  onClick={() => {
+                    onReport({ postId: post.id, targetType: "post", targetId: post.id });
+                    setMenuOpen(false);
+                  }}
+                  disabled={postReported}
+                  className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50 disabled:text-stone-400"
                 >
-                  {isFollowingAuthor ? "Following" : "Follow"}
+                  {postReported ? "Reported" : "Report"}
                 </button>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
           </div>
         </div>
-        {post.reportCount ? (
-          <span className="sr-only">{post.reportCount} reports</span>
-        ) : null}
       </header>
 
       {post.title ? (
-        <h4 className="mt-3 break-words px-4 text-base font-bold leading-snug text-stone-950 sm:text-lg">{post.title}</h4>
+        <h3 className="mt-1.5 break-words text-sm font-semibold leading-snug text-stone-900">{post.title}</h3>
       ) : null}
+
       <ExpandableText
         text={post.body}
-        maxLines={4}
+        maxLines={6}
         preserveWrap
-        className={`break-words px-4 text-[1rem] leading-relaxed text-stone-950 sm:text-[1.05rem] ${post.title ? "mt-2" : "mt-3"}`}
-        buttonClassName="ml-4"
+        className={`break-words text-xs leading-relaxed text-stone-600 ${post.title ? "mt-1" : "mt-1.5"}`}
+        buttonClassName="text-xs font-medium text-brand-700"
         renderText={renderHashtagText}
       />
 
       {!isPublished && isOwnPost && post.moderationReason ? (
-        <p className="mx-4 mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800">
+        <p className="mt-2 rounded-lg bg-amber-50 px-2.5 py-1.5 text-[11px] leading-relaxed text-amber-800">
           {post.moderationReason}
         </p>
       ) : null}
@@ -571,136 +492,64 @@ export default function FeedPostCard({
           href={linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mx-4 mt-3 inline-flex break-all text-sm font-semibold text-brand-800 underline decoration-brand-300 underline-offset-2 hover:text-brand-950"
+          className="mt-1.5 inline-flex break-all text-xs font-medium text-brand-700 hover:underline"
         >
-          Open source link
+          Open link
         </a>
       ) : null}
 
       <PostImages images={post.images} />
 
-      {isPublished && visibleReactionCounts.length ? (
-        <div className="mx-4 mt-4 flex flex-wrap gap-2 text-xs font-semibold text-stone-500">
-          {visibleReactionCounts.map((reaction) => (
-            <span
-              key={reaction.value}
-              className={[
-                "inline-flex items-center gap-1 rounded-full border px-2.5 py-1",
-                reaction.active
-                  ? "border-brand-200 bg-brand-50 text-brand-800"
-                  : "border-stone-200 bg-stone-50 text-stone-600",
-              ].join(" ")}
-            >
-              <span>{reaction.shortLabel}</span>
-              <span>{reaction.count}</span>
-            </span>
-          ))}
-        </div>
-      ) : null}
-
       {isPublished ? (
-        <div className="mt-4 grid grid-cols-4 border-t border-stone-200/80">
-          <div className="relative" ref={reactionPickerRef}>
-            {reactionPickerOpen ? (
-              <div className="absolute left-0 bottom-full z-10 mb-2 w-64 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-stone-200 bg-white p-2 shadow-card">
-                <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wide text-stone-500">
-                  Choose a reaction
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {reactionOptions.map((reaction) => (
-                    <button
-                      key={reaction.value}
-                      type="button"
-                      onClick={() => handleReactionSelect(reaction.value)}
-                      className={[
-                        "focus-ring inline-flex min-h-10 w-full items-center justify-center rounded-xl border px-3 py-2 text-xs font-semibold transition",
-                        reaction.active
-                          ? "border-brand-300 bg-brand-50 text-brand-800"
-                          : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50",
-                      ].join(" ")}
-                    >
-                      {reaction.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : null}
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <div className="inline-flex items-center rounded-full border border-stone-200 bg-stone-50 text-xs font-semibold text-stone-600">
             <button
               type="button"
-              onClick={handleLikeButtonClick}
-              onPointerDown={startLongPress}
-              onPointerUp={clearLongPressTimer}
-              onPointerLeave={clearLongPressTimer}
-              onPointerCancel={clearLongPressTimer}
-              onContextMenu={(event) => {
-                if (!user) return;
-                event.preventDefault();
-                clearLongPressTimer();
-                suppressNextLikeClickRef.current = true;
-                setReactionPickerOpen(true);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "ArrowDown") {
-                  event.preventDefault();
-                  clearLongPressTimer();
-                  setReactionPickerOpen(true);
-                }
-              }}
+              onClick={handleUpvote}
               className={[
-                "focus-ring flex min-h-14 w-full items-center justify-center gap-1.5 px-1 text-sm font-semibold transition",
-                reactButtonActive
-                  ? "text-brand-700"
-                  : "text-brand-900 hover:bg-brand-50",
+                "focus-ring flex h-7 w-7 items-center justify-center rounded-l-full hover:bg-stone-100",
+                upvoted ? "text-brand-700" : "text-stone-500",
               ].join(" ")}
-              aria-pressed={reactButtonActive}
-              aria-haspopup="menu"
-              aria-expanded={reactionPickerOpen}
+              aria-label="Upvote"
+              aria-pressed={upvoted}
             >
-              <IconHeart filled={reactButtonActive} className="h-4 w-4" />
-              <span className="flex flex-col items-start leading-none">
-                {primaryReactionCount ? <span className="text-[11px] font-medium">{primaryReactionCount}</span> : null}
-                <span>{reactButtonLabel}</span>
-              </span>
-              <span className="sr-only">Hold or right-click for more reactions.</span>
+              <IconUpvote filled={upvoted} />
+            </button>
+            <span className="min-w-[1.25rem] px-0.5 text-center text-[11px] font-bold tabular-nums">{score || 0}</span>
+            <button
+              type="button"
+              onClick={handleDownvote}
+              className="focus-ring flex h-7 w-7 items-center justify-center rounded-r-full text-stone-500 hover:bg-stone-100"
+              aria-label="Remove vote"
+            >
+              <IconDownvote filled={false} />
             </button>
           </div>
+
           <button
             type="button"
             onClick={() => onToggleComments(post.id)}
-            className="focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold text-brand-900 hover:bg-brand-50"
+            className="focus-ring inline-flex h-7 items-center gap-1 rounded-full border border-stone-200 bg-stone-50 px-2.5 text-[11px] font-semibold text-stone-600 hover:bg-stone-100"
             aria-expanded={commentsExpanded}
           >
             <IconComment />
-            <span className="flex flex-col items-start leading-none">
-              {commentCount ? <span className="text-[11px] font-medium">{commentCount}</span> : null}
-              <span>Comment</span>
-            </span>
+            <span>{commentCount}</span>
           </button>
+
           <button
             type="button"
             onClick={handleShare}
-            className="focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold text-brand-900 hover:bg-brand-50"
+            className="focus-ring inline-flex h-7 w-7 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600"
+            aria-label="Share"
           >
             <IconShare />
-            <span>Share</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onSave?.(post)}
-            className={[
-              "focus-ring flex min-h-14 items-center justify-center gap-1.5 px-1 text-sm font-semibold hover:bg-brand-50",
-              isSaved ? "text-brand-700" : "text-brand-900",
-            ].join(" ")}
-          >
-            <IconSave />
-            <span>{isSaved ? "Saved" : "Save"}</span>
           </button>
         </div>
       ) : isOwnPost ? (
-        <p className="mx-4 mt-4 text-xs text-amber-700">Visible only to you while review is pending.</p>
+        <p className="mt-2 text-[11px] text-amber-700">Visible only to you while review is pending.</p>
       ) : null}
 
-      {isPublished && !commentsExpanded ? <InlineActionFeedback feedback={actionFeedback} /> : null}
+      {isPublished && !commentsExpanded ? <InlineActionFeedback feedback={actionFeedback} className="mt-2" /> : null}
 
       {isPublished && commentsExpanded ? (
         <CommentSection
