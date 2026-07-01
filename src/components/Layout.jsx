@@ -6,6 +6,7 @@ import BottomNav from "./BottomNav.jsx";
 import FeedTopBar from "./FeedTopBar.jsx";
 import OnboardingRedirect from "./OnboardingRedirect.jsx";
 import SubscriptionAdSlot from "./SubscriptionAdSlot.jsx";
+import { useScrollChrome } from "../hooks/useScrollChrome.js";
 import { useAuth } from "../lib/auth.jsx";
 import { FEED_CHROME_CLASSES, useFeedRoute } from "../lib/feedChrome.jsx";
 import { triggerFeedRefresh } from "../lib/feedRefresh.js";
@@ -34,6 +35,7 @@ export default function Layout() {
   const location = useLocation();
   const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
   const isFeedRoute = useFeedRoute();
+  const chromeVisible = useScrollChrome({ enabled: !isHomeRoute });
   const { user } = useAuth();
   const [messageCount, setMessageCount] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -76,7 +78,8 @@ export default function Layout() {
       <OnboardingRedirect />
       <header
         className={[
-          "feed-chrome-header sticky top-0 z-30",
+          "feed-chrome-header sticky top-0 z-30 transition-transform duration-300 ease-out will-change-transform",
+          chromeVisible ? "translate-y-0" : "-translate-y-full sm:translate-y-0",
           isFeedRoute
             ? `${FEED_CHROME_CLASSES} border-b border-brand-100/80`
             : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
@@ -123,7 +126,7 @@ export default function Layout() {
         <Outlet />
         {!isHomeRoute ? <SubscriptionAdSlot /> : null}
       </main>
-      {!isHomeRoute ? <BottomNav /> : null}
+      {!isHomeRoute ? <BottomNav visible={chromeVisible} /> : null}
     </div>
   );
 }
