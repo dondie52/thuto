@@ -315,14 +315,14 @@
     "id": "limkokwing",
     "name": "Limkokwing University of Creative Technology",
     "location": "Gaborone",
-    "description": "Creative and technology-led institution offering design, multimedia, ICT, and entrepreneurship-oriented programmes in a project-based environment.",
+    "description": "Creative and technology-led institution offering TVET degrees and diplomas across ICT, design innovation, business, architecture, and media — with a project-based campus in Gaborone.",
     "website": "https://www.limkokwing.net/botswana/",
     "phone": "+267 318 0777",
     "applicationOpen": "2026-01-20",
     "applicationClose": "2026-08-10",
-    "academicYearStart": "2026-09",
+    "academicYearStart": "2026-07",
     "applyUrl": "https://www.limkokwing.net/botswana/admissions",
-    "featured": false,
+    "featured": true,
     "sponsorshipTier": "standard",
     "resources": [
       {

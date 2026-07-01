@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import InstitutionCampaignBanner from "../components/InstitutionCampaignBanner.jsx";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
 import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
@@ -258,6 +259,12 @@ export default function UniversityDetail() {
           )}
         </dl>
       </header>
+
+      <InstitutionCampaignBanner
+        institutionId={university.id}
+        institutionName={university.name}
+        showProfileLink={false}
+      />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Applications & intake</h2>
