@@ -48,35 +48,24 @@ function feedbackClassName(tone) {
   return "border border-brand-100 bg-brand-50 text-brand-900";
 }
 
-function IconThumbsUp({ filled, className = "h-4 w-4" }) {
+function EmojiThumb({ emoji, active = false, className = "" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M7 11v8a1 1 0 001 1h2.5l1.2-5.4a1 1 0 01.98-.8H17a1 1 0 00.98-1.2l-1.2-6A1 1 0 0015.8 6H10a1 1 0 00-1 .8L7 11z"
-      />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7 11H4a1 1 0 00-1 1v6a1 1 0 001 1h3" />
-    </svg>
+    <span
+      className={[
+        "inline-flex items-center justify-center text-2xl leading-none select-none",
+        active ? "scale-110 opacity-100" : "opacity-80",
+        className,
+      ].join(" ")}
+      aria-hidden
+    >
+      {emoji}
+    </span>
   );
 }
 
-function IconThumbsDown({ filled, className = "h-4 w-4" }) {
+function IconComment({ className = "h-5 w-5" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M17 13V5a1 1 0 00-1-1h-2.5l-1.2 5.4a1 1 0 01-.98.8H7a1 1 0 01-.98 1.2l1.2 6A1 1 0 008.2 18H14a1 1 0 001-.8l2-4.2z"
-      />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17 13h3a1 1 0 001-1V6a1 1 0 00-1-1h-3" />
-    </svg>
-  );
-}
-
-function IconComment({ className = "h-4 w-4" }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -86,11 +75,26 @@ function IconComment({ className = "h-4 w-4" }) {
   );
 }
 
-function IconRepost({ className = "h-4 w-4" }) {
+function IconBookmark({ filled = false, className = "h-5 w-5" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7 17l10-10M17 7H9m8 0v8" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6.5 10.5v7a1.5 1.5 0 001.5 1.5h7" />
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 4.75A1.75 1.75 0 017.75 3h8.5A1.75 1.75 0 0118 4.75v16.5l-5.25-3.25L7.5 21.25V4.75z"
+      />
+    </svg>
+  );
+}
+
+function IconShare({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M7 17l10-10M17 7H9m8 0v8"
+      />
     </svg>
   );
 }
@@ -402,13 +406,13 @@ export default function FeedPostCard({
                   />
                 )}
                 {isOfficial ? <OfficialBadge /> : null}
-                {timeLabel ? <span className="text-[11px] text-stone-400">{timeLabel}</span> : null}
                 {!isPublished && isOwnPost ? (
                   <span className="rounded bg-amber-100 px-1 py-0.5 text-[9px] font-bold uppercase text-amber-900">
                     {postStatusLabel(post.status)}
                   </span>
                 ) : null}
               </div>
+              {timeLabel ? <p className="mt-0.5 text-[11px] text-stone-400">{timeLabel}</p> : null}
             </div>
 
             <div className="flex shrink-0 items-center gap-1.5">
@@ -525,45 +529,66 @@ export default function FeedPostCard({
       <PostImages images={post.images} />
 
       {isPublished ? (
-        <div className="mt-2.5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 text-stone-500">
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 text-stone-700">
             <button
               type="button"
               onClick={handleThumbsUp}
-              className={["focus-ring inline-flex items-center gap-1 text-xs font-medium", liked ? "text-brand-700" : "hover:text-brand-700"].join(" ")}
+              className={[
+                "focus-ring inline-flex min-h-9 items-center gap-1 rounded-full px-1 py-1 text-xs font-semibold transition-transform active:scale-95",
+                liked ? "text-brand-800" : "hover:bg-stone-50",
+              ].join(" ")}
               aria-label="Like"
               aria-pressed={liked}
             >
-              <IconThumbsUp filled={liked} />
-              {likeCount ? <span>{likeCount}</span> : null}
+              <EmojiThumb emoji="👍" active={liked} />
+              <span className="tabular-nums">{likeCount || 0}</span>
             </button>
             <button
               type="button"
               onClick={handleThumbsDown}
-              className="focus-ring inline-flex items-center gap-1 text-xs font-medium hover:text-stone-700"
+              className="focus-ring inline-flex min-h-9 items-center rounded-full px-1 py-1 transition-transform hover:bg-stone-50 active:scale-95"
               aria-label="Remove like"
             >
-              <IconThumbsDown filled={false} />
+              <EmojiThumb emoji="👎" />
             </button>
-          </div>
-
-          <div className="flex items-center gap-3 text-stone-500">
             <button
               type="button"
               onClick={() => onToggleComments(post.id)}
-              className="focus-ring inline-flex items-center gap-1 text-xs font-medium hover:text-brand-700"
+              className={[
+                "focus-ring inline-flex min-h-9 items-center gap-1.5 rounded-full px-1.5 py-1 text-xs font-semibold hover:bg-stone-50",
+                commentsExpanded ? "text-brand-800" : "text-stone-700",
+              ].join(" ")}
               aria-expanded={commentsExpanded}
+              aria-label="Comments"
             >
               <IconComment />
-              {commentCount ? <span>{commentCount}</span> : null}
+              <span className="tabular-nums">{commentCount}</span>
             </button>
+          </div>
+
+          <div className="flex items-center gap-4 text-stone-700">
+            {onSave ? (
+              <button
+                type="button"
+                onClick={() => onSave(post)}
+                className={[
+                  "focus-ring inline-flex min-h-9 min-w-9 items-center justify-center rounded-full px-1.5 py-1 hover:bg-stone-50",
+                  isSaved ? "text-brand-800" : "text-stone-700",
+                ].join(" ")}
+                aria-label={isSaved ? "Unsave post" : "Save post"}
+                aria-pressed={isSaved}
+              >
+                <IconBookmark filled={isSaved} />
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={handleShare}
-              className="focus-ring inline-flex items-center text-stone-500 hover:text-brand-700"
-              aria-label="Repost"
+              className="focus-ring inline-flex min-h-9 min-w-9 items-center justify-center rounded-full px-1.5 py-1 text-stone-700 hover:bg-stone-50"
+              aria-label="Share"
             >
-              <IconRepost />
+              <IconShare />
             </button>
           </div>
         </div>
