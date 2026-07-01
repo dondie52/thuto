@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import InstitutionVerificationBadge from "../InstitutionVerificationBadge.jsx";
 import UniversityInitialsBadge from "../UniversityInitialsBadge.jsx";
+import { getInstitutionCampaign } from "../../lib/institutionCampaigns.js";
 import { fetchDailySpotlightInstitutions, fetchHomeHeroPartner } from "../../lib/homeAdvertising.js";
 
 const AUTO_ADVANCE_MS = 6000;
@@ -122,6 +123,8 @@ export default function HomeDailySpotlight({
         >
           {entries.map((entry) => {
             const slide = entry.university;
+            const campaign = getInstitutionCampaign(slide.id);
+            const description = campaign?.spotlightDescription || slide.description;
             return (
               <article key={slide.id} className="w-full shrink-0 p-5" aria-hidden={slide.id !== university.id}>
                 <Link
@@ -146,6 +149,11 @@ export default function HomeDailySpotlight({
                             Spotlight
                           </span>
                         ) : null}
+                        {campaign ? (
+                          <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-red-900">
+                            Intake open
+                          </span>
+                        ) : null}
                       </div>
                       <h3 className="mt-1 font-display text-lg font-semibold text-brand-900 group-hover:text-brand-700">
                         {slide.name}
@@ -153,8 +161,11 @@ export default function HomeDailySpotlight({
                       {slide.location ? (
                         <p className="mt-0.5 text-sm font-medium text-brand-700">{slide.location}</p>
                       ) : null}
-                      {slide.description ? (
-                        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-stone-600">{slide.description}</p>
+                      {campaign?.intakeLabel ? (
+                        <p className="mt-2 text-sm font-semibold text-red-800">{campaign.intakeLabel}</p>
+                      ) : null}
+                      {description ? (
+                        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-stone-600">{description}</p>
                       ) : (
                         <p className="mt-2 text-sm leading-relaxed text-stone-500">
                           Explore programmes, application dates, and campus details on Thuto.

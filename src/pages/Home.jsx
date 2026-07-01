@@ -14,6 +14,7 @@ import HomeCenterCreators from "../components/home/HomeCenterCreators.jsx";
 import HomeDailySpotlight from "../components/home/HomeDailySpotlight.jsx";
 import HomeFeaturedUniversities from "../components/home/HomeFeaturedUniversities.jsx";
 import HomeHeroPartner from "../components/home/HomeHeroPartner.jsx";
+import HomePartnerCampaigns from "../components/home/HomePartnerCampaigns.jsx";
 
 const URGENT_DEADLINES_PREVIEW = 5;
 
@@ -98,6 +99,8 @@ export default function Home() {
         kicker={content.hero?.kicker}
         ctaLabel={content.hero?.ctaLabel}
       />
+
+      <HomePartnerCampaigns />
 
       <HomeDailySpotlight
         kicker={content.dailySpotlight?.kicker}
