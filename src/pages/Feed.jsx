@@ -574,7 +574,7 @@ export default function Feed() {
         {hasMore ? (
           <div
             ref={loadMoreRef}
-            className="py-4 text-center text-sm text-stone-500"
+            className="py-3 text-center text-xs text-stone-500"
           >
             {isLoadingMore ? "Loading more posts..." : "Scroll for more"}
           </div>
