@@ -150,15 +150,26 @@ export default function PublicProfile() {
   }
 
   async function handleReaction(post, reaction) {
-    const { post: optimisticPost, nextReaction, prevReaction } = patchPostReaction(post, reaction);
-    setPosts((current) => current.map((item) => (item.id === post.id ? optimisticPost : item)));
+    let nextReaction = null;
+    let rollbackPost = post;
+
+    setPosts((current) => {
+      const target = current.find((item) => item.id === post.id);
+      if (!target) return current;
+      rollbackPost = target;
+      const patched = patchPostReaction(target, reaction);
+      nextReaction = patched.nextReaction;
+      return current.map((item) => (item.id === post.id ? patched.post : item));
+    });
 
     try {
       await setFeedReaction({ postId: post.id, reaction: nextReaction });
     } catch (err) {
       setPosts((current) =>
         current.map((item) =>
-          item.id === post.id ? { ...item, viewerReaction: prevReaction, reactionCounts: post.reactionCounts } : item,
+          item.id === post.id
+            ? { ...item, viewerReaction: rollbackPost.viewerReaction, reactionCounts: rollbackPost.reactionCounts }
+            : item,
         ),
       );
       setPostFeedbackById((current) => ({ ...current, [post.id]: { tone: "error", message: err.message } }));

@@ -51,6 +51,7 @@ export default function Feed() {
   const cursorRef = useRef(null);
   const postsRef = useRef(posts);
   const loadingFeedRef = useRef(false);
+  const loadFeedGenerationRef = useRef(0);
 
   postsRef.current = posts;
   const [commentSubmittingFor, setCommentSubmittingFor] = useState("");
@@ -79,9 +80,12 @@ export default function Feed() {
     async ({ reset = true } = {}) => {
       if (!reset && loadingFeedRef.current) return;
       loadingFeedRef.current = true;
+      const generation = ++loadFeedGenerationRef.current;
 
       if (reset) {
-        setIsLoading(true);
+        if (postsRef.current.length === 0) {
+          setIsLoading(true);
+        }
         cursorRef.current = null;
       } else {
         setIsLoadingMore(true);
@@ -93,6 +97,8 @@ export default function Feed() {
           limit: 30,
           cursor: reset ? null : cursorRef.current,
         });
+        if (generation !== loadFeedGenerationRef.current) return;
+
         const currentPosts = postsRef.current;
         const merged = reset
           ? batch
@@ -102,6 +108,8 @@ export default function Feed() {
           syncFollowingState(merged),
           fetchSavedPostSet(merged.map((post) => post.id)).then(setSavedPostIds),
         ]);
+        if (generation !== loadFeedGenerationRef.current) return;
+
         setHasMore(batch.length === 30);
         const last = batch[batch.length - 1];
         if (last) {
@@ -112,11 +120,15 @@ export default function Feed() {
           };
         }
       } catch (err) {
-        setError(err.message || "Could not load the feed.");
+        if (generation === loadFeedGenerationRef.current) {
+          setError(err.message || "Could not load the feed.");
+        }
       } finally {
-        loadingFeedRef.current = false;
-        setIsLoading(false);
-        setIsLoadingMore(false);
+        if (generation === loadFeedGenerationRef.current) {
+          loadingFeedRef.current = false;
+          setIsLoading(false);
+          setIsLoadingMore(false);
+        }
       }
     },
     [syncFollowingState],
@@ -271,9 +283,19 @@ export default function Feed() {
       return;
     }
     clearPostFeedback(post.id);
+    loadFeedGenerationRef.current += 1;
 
-    const { post: optimisticPost, nextReaction, prevReaction } = patchPostReaction(post, reaction);
-    setPosts((current) => current.map((item) => (item.id === post.id ? optimisticPost : item)));
+    let nextReaction = null;
+    let rollbackPost = post;
+
+    setPosts((current) => {
+      const target = current.find((item) => item.id === post.id);
+      if (!target) return current;
+      rollbackPost = target;
+      const patched = patchPostReaction(target, reaction);
+      nextReaction = patched.nextReaction;
+      return current.map((item) => (item.id === post.id ? patched.post : item));
+    });
 
     try {
       await setFeedReaction({
@@ -283,7 +305,9 @@ export default function Feed() {
     } catch (err) {
       setPosts((current) =>
         current.map((item) =>
-          item.id === post.id ? { ...item, viewerReaction: prevReaction, reactionCounts: post.reactionCounts } : item,
+          item.id === post.id
+            ? { ...item, viewerReaction: rollbackPost.viewerReaction, reactionCounts: rollbackPost.reactionCounts }
+            : item,
         ),
       );
       setPostFeedback(post.id, "error", err.message || "Could not update reaction.");
@@ -348,7 +372,6 @@ export default function Feed() {
         else next.delete(post.authorId);
         return next;
       });
-      await loadFeed({ reset: true });
     } catch (err) {
       setPostFeedback(post.id, "error", err.message || "Could not update follow.");
     }

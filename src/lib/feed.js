@@ -496,7 +496,10 @@ export async function deleteFeedPost({ postId }) {
 
 export async function setFeedReaction({ postId, reaction }) {
   const supabase = assertSupabase();
-  const user = await requireCurrentUser(supabase);
+  const { data, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError) throw sessionError;
+  const user = data?.session?.user;
+  if (!user) throw new Error("Sign in to use the feed.");
 
   if (!reaction) {
     const { error } = await supabase.from("feed_reactions").delete().eq("post_id", postId).eq("user_id", user.id);
