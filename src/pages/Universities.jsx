@@ -128,7 +128,8 @@ export default function Universities() {
 
   const institutionType = searchParams.get("type") ?? "all";
   const sort = searchParams.get("sort") ?? "name_asc";
-  const nameQuery = (searchParams.get("q") ?? "").trim();
+  const rawNameQuery = searchParams.get("q") ?? "";
+  const nameQuery = rawNameQuery.trim();
 
   const setPatch = useCallback(
     (patch) => {
@@ -222,7 +223,7 @@ export default function Universities() {
           <input
             id="institution-name-search"
             type="search"
-            value={nameQuery}
+            value={rawNameQuery}
             onChange={(e) => setPatch({ q: e.target.value })}
             placeholder="e.g. Botho, UB, BAC"
             className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
