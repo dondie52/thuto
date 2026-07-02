@@ -366,11 +366,15 @@ export default function FeedPostCard({
     }
   }
 
-  function handleCircleVote() {
+  function handleCircleVote(event) {
+    event.preventDefault();
+    event.stopPropagation();
     onReact(post, "like");
   }
 
-  function handleCrossVote() {
+  function handleCrossVote(event) {
+    event.preventDefault();
+    event.stopPropagation();
     if (post.viewerReaction) {
       onReact(post, post.viewerReaction);
     }

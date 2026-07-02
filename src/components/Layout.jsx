@@ -35,7 +35,7 @@ export default function Layout() {
   const location = useLocation();
   const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
   const isFeedRoute = useFeedRoute();
-  const chromeVisible = useScrollChrome({ enabled: !isHomeRoute });
+  const chromeVisible = useScrollChrome();
   const { user } = useAuth();
   const [messageCount, setMessageCount] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
