@@ -71,8 +71,7 @@ export default function Layout() {
   return (
     <div
       className={[
-        "thuto-page-bg flex min-h-dvh flex-col",
-        isHomeRoute ? "pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6" : "pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
+        "thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
       ].join(" ")}
     >
       <OnboardingRedirect />
@@ -126,7 +125,7 @@ export default function Layout() {
         <Outlet />
         {!isHomeRoute ? <SubscriptionAdSlot /> : null}
       </main>
-      {!isHomeRoute ? <BottomNav visible={chromeVisible} /> : null}
+      <BottomNav visible={chromeVisible} />
     </div>
   );
 }
