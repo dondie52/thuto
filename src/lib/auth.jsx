@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { deleteAccount as deleteAccountRequest } from "./account.js";
+import { buildAuthRedirectUrl } from "./authRedirect.js";
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 import { isPremiumActive } from "./premium.js";
 import { normalizeProfileRow, updateUserProfile } from "./profile.js";
@@ -216,6 +217,26 @@ export function AuthProvider({ children }) {
     return data;
   }
 
+  async function signInWithGoogle({ nextPath = "/app", mode = "login" } = {}) {
+    const supabase = getSupabase();
+    if (!supabase) {
+      throw new Error("Google sign-in is unavailable until Supabase is configured.");
+    }
+    setAuthError("");
+    const redirectTo = buildAuthRedirectUrl({
+      mode,
+      ...(nextPath && nextPath !== "/app" ? { next: nextPath } : {}),
+    });
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo },
+    });
+    if (error) {
+      setAuthError(error.message);
+      throw error;
+    }
+  }
+
   async function changePassword({ currentPassword, newPassword }) {
     const supabase = getSupabase();
     if (!supabase) {
@@ -247,7 +268,7 @@ export function AuthProvider({ children }) {
       throw new Error("Password reset is unavailable until Supabase is configured.");
     }
     setAuthError("");
-    const redirectTo = `${window.location.origin}/auth?mode=login`;
+    const redirectTo = buildAuthRedirectUrl({ mode: "login" });
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) {
       setAuthError(error.message);
@@ -300,6 +321,7 @@ export function AuthProvider({ children }) {
       saveProfile,
       session,
       signIn,
+      signInWithGoogle,
       signUp,
       supabaseConfigured,
       user: session?.user || null,

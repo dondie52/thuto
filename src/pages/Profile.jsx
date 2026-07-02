@@ -12,6 +12,7 @@ import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KE
 import { openBillingPortal } from "../lib/billing.js";
 import { getBookmarkIds } from "../lib/bookmarks.js";
 import { useAuth } from "../lib/auth.jsx";
+import { usesPasswordAuth } from "../lib/authRedirect.js";
 import { syncFromCloud } from "../lib/cloudSync.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchUnreadNotificationCount } from "../lib/notifications.js";
@@ -190,7 +191,13 @@ export default function Profile() {
                 <p className="font-semibold text-brand-900">Signed in as</p>
                 <p className="mt-1 text-stone-700">{user.email}</p>
               </div>
-              <ChangePasswordForm />
+              {!usesPasswordAuth(user) ? (
+                <p className="rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-3 text-sm text-stone-700">
+                  You signed in with Google, so password changes are managed through your Google account.
+                </p>
+              ) : (
+                <ChangePasswordForm />
+              )}
               {publicProfileUrl ? (
                 <div className="rounded-xl border border-brand-100 bg-white px-3 py-3">
                   <p className="text-sm font-semibold text-brand-900">Public profile</p>
@@ -378,7 +385,8 @@ export default function Profile() {
           >
             <div className="space-y-4">
               <p className="text-sm text-slate-600">
-                Thuto uses email sign-in. Social connections on the feed are managed separately from your login method.
+                You can sign in with Google or email. Social connections on the feed are managed separately from your login
+                method.
               </p>
               <div className="flex flex-wrap gap-2">
                 <Link

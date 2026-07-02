@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import GoogleSignInButton from "../components/GoogleSignInButton.jsx";
 import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { needsOnboarding } from "../lib/onboarding.js";
@@ -14,15 +15,23 @@ export default function Auth() {
   const navigate = useNavigate();
   const mode = cleanMode(searchParams.get("mode"));
   const nextPath = safeInternalPath(searchParams.get("next")) || "/app";
-  const { signIn, signUp, supabaseConfigured, user, profile, isProfileLoading } = useAuth();
+  const { signIn, signInWithGoogle, signUp, supabaseConfigured, user, profile, isProfileLoading } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   useDocumentTitle(`${mode === "login" ? "Log in" : "Sign up"} | Thuto`);
+
+  useEffect(() => {
+    const oauthError = searchParams.get("error_description") || searchParams.get("error");
+    if (oauthError) {
+      setError(oauthError);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!user || isProfileLoading) return;
@@ -68,6 +77,18 @@ export default function Auth() {
     }
   }
 
+  async function handleGoogleSignIn() {
+    setIsGoogleSubmitting(true);
+    setMessage("");
+    setError("");
+    try {
+      await signInWithGoogle({ nextPath, mode });
+    } catch (err) {
+      setError(err.message || "Google sign-in failed.");
+      setIsGoogleSubmitting(false);
+    }
+  }
+
   return (
     <div className="space-y-5">
       <div>
@@ -105,6 +126,20 @@ export default function Auth() {
             Account login is unavailable until Supabase environment variables are configured.
           </p>
         ) : null}
+
+        <div className="mt-4 space-y-4">
+          <GoogleSignInButton
+            disabled={!supabaseConfigured}
+            isLoading={isGoogleSubmitting}
+            onClick={handleGoogleSignIn}
+          />
+
+          <div className="flex items-center gap-3">
+            <span className="h-px flex-1 bg-brand-100" aria-hidden="true" />
+            <span className="text-xs font-semibold uppercase tracking-wide text-stone-500">or</span>
+            <span className="h-px flex-1 bg-brand-100" aria-hidden="true" />
+          </div>
+        </div>
 
         <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
           {mode === "signup" ? (
@@ -156,7 +191,7 @@ export default function Auth() {
 
           <button
             type="submit"
-            disabled={!supabaseConfigured || isSubmitting}
+            disabled={!supabaseConfigured || isSubmitting || isGoogleSubmitting}
             className="focus-ring w-full rounded-xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitLabel}

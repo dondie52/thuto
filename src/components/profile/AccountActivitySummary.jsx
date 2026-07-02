@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { formatAuthProviderLabel, getAuthProvider } from "../../lib/authRedirect.js";
 
 function formatTimestamp(value) {
   if (!value) return "Not available";
@@ -27,9 +28,7 @@ export default function AccountActivitySummary({ user, unreadCount = 0 }) {
         </div>
         <div className="rounded-xl border border-brand-100 bg-white px-3 py-3">
           <dt className="text-xs font-semibold uppercase tracking-wide text-stone-500">Sign-in method</dt>
-          <dd className="mt-1 font-semibold text-brand-900">
-            {user?.app_metadata?.provider === "email" || !user?.app_metadata?.provider ? "Email and password" : user.app_metadata.provider}
-          </dd>
+          <dd className="mt-1 font-semibold text-brand-900">{formatAuthProviderLabel(getAuthProvider(user))}</dd>
         </div>
         <div className="rounded-xl border border-brand-100 bg-brand-50/50 px-3 py-3">
           <dt className="text-xs font-semibold uppercase tracking-wide text-stone-500">Unread notifications</dt>
