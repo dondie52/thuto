@@ -84,7 +84,7 @@ export default function Layout() {
             : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
         ].join(" ")}
       >
-        <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pt-3" : "py-3"].join(" ")}>
+        <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pt-2" : "py-2"].join(" ")}>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
             <BrandMark className="min-w-0 justify-self-start" />
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto sm:flex" aria-label="Primary desktop">
@@ -94,18 +94,10 @@ export default function Layout() {
                 </NavLink>
               ))}
             </nav>
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center justify-self-end">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center justify-self-end">
               <AccountDrawer />
             </div>
           </div>
-          <p
-            className={[
-              "text-center text-[11px] font-medium uppercase tracking-wider text-stone-500 sm:hidden",
-              isFeedRoute ? "mt-0.5" : "mt-1",
-            ].join(" ")}
-          >
-            Botswana Tertiary Companion
-          </p>
           {isFeedRoute ? (
             <FeedTopBar
               embedded
