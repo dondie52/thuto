@@ -11,6 +11,7 @@ import {
   isSupabaseConfigured,
   reportFeedTarget,
   setFeedReaction,
+  patchPostReaction,
   submitFeedComment,
   submitFeedPost,
 } from "../lib/feed.js";
@@ -270,13 +271,21 @@ export default function Feed() {
       return;
     }
     clearPostFeedback(post.id);
+
+    const { post: optimisticPost, nextReaction, prevReaction } = patchPostReaction(post, reaction);
+    setPosts((current) => current.map((item) => (item.id === post.id ? optimisticPost : item)));
+
     try {
       await setFeedReaction({
         postId: post.id,
-        reaction: post.viewerReaction === reaction ? null : reaction,
+        reaction: nextReaction,
       });
-      await loadFeed({ reset: true });
     } catch (err) {
+      setPosts((current) =>
+        current.map((item) =>
+          item.id === post.id ? { ...item, viewerReaction: prevReaction, reactionCounts: post.reactionCounts } : item,
+        ),
+      );
       setPostFeedback(post.id, "error", err.message || "Could not update reaction.");
     }
   }

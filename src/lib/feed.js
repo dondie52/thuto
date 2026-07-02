@@ -73,6 +73,25 @@ function reactionCountMap() {
   return Object.fromEntries(FEED_REACTIONS.map((reaction) => [reaction.value, 0]));
 }
 
+export function patchPostReaction(post, reactionArg) {
+  const prevReaction = post.viewerReaction || null;
+  const nextReaction = prevReaction === reactionArg ? null : reactionArg;
+  const counts = { ...(post.reactionCounts || reactionCountMap()) };
+
+  if (prevReaction) {
+    counts[prevReaction] = Math.max(0, (counts[prevReaction] || 0) - 1);
+  }
+  if (nextReaction) {
+    counts[nextReaction] = (counts[nextReaction] || 0) + 1;
+  }
+
+  return {
+    post: { ...post, viewerReaction: nextReaction, reactionCounts: counts },
+    nextReaction,
+    prevReaction,
+  };
+}
+
 function groupBy(items, key) {
   const map = new Map();
   for (const item of items || []) {
