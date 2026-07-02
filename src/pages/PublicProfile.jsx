@@ -9,7 +9,7 @@ import {
   respondConnectionRequest,
   sendConnectionRequest,
 } from "../lib/connections.js";
-import { deleteFeedPost, reportFeedTarget, setFeedReaction, submitFeedComment } from "../lib/feed.js";
+import { deleteFeedPost, patchPostReaction, reportFeedTarget, setFeedReaction, submitFeedComment } from "../lib/feed.js";
 import { toggleFollowUser } from "../lib/feedFollows.js";
 import { getOrCreateConversation } from "../lib/messaging.js";
 import { fetchFollowingSetForUsers } from "../lib/people.js";
@@ -150,10 +150,17 @@ export default function PublicProfile() {
   }
 
   async function handleReaction(post, reaction) {
+    const { post: optimisticPost, nextReaction, prevReaction } = patchPostReaction(post, reaction);
+    setPosts((current) => current.map((item) => (item.id === post.id ? optimisticPost : item)));
+
     try {
-      await setFeedReaction({ postId: post.id, reaction });
-      await loadProfile();
+      await setFeedReaction({ postId: post.id, reaction: nextReaction });
     } catch (err) {
+      setPosts((current) =>
+        current.map((item) =>
+          item.id === post.id ? { ...item, viewerReaction: prevReaction, reactionCounts: post.reactionCounts } : item,
+        ),
+      );
       setPostFeedbackById((current) => ({ ...current, [post.id]: { tone: "error", message: err.message } }));
     }
   }
