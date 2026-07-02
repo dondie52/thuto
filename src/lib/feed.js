@@ -21,6 +21,7 @@ export const FEED_CATEGORIES = [
 
 export const FEED_REACTIONS = [
   { value: "like", label: "Like", shortLabel: "Like" },
+  { value: "dislike", label: "Dislike", shortLabel: "Dislike" },
   { value: "celebrate", label: "Celebrate", shortLabel: "Bravo" },
   { value: "support", label: "Support", shortLabel: "Support" },
   { value: "insightful", label: "Insightful", shortLabel: "Insight" },

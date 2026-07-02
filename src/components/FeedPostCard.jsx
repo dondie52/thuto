@@ -328,7 +328,9 @@ export default function FeedPostCard({
   const timeLabel = formatRelativeTime(post.publishedAt || post.createdAt);
   const commentCount = post.comments?.length || 0;
   const likeCount = Number(post.reactionCounts?.like || 0);
+  const dislikeCount = Number(post.reactionCounts?.dislike || 0);
   const liked = post.viewerReaction === "like";
+  const disliked = post.viewerReaction === "dislike";
   const postReported = Boolean(reportedTargetKeys?.[targetKey("post", post.id)]);
   const authorProfilePath = !isOfficial && post.authorUsername ? profilePath(post.authorUsername) : null;
 
@@ -375,9 +377,7 @@ export default function FeedPostCard({
   function handleCrossVote(event) {
     event.preventDefault();
     event.stopPropagation();
-    if (post.viewerReaction) {
-      onReact(post, post.viewerReaction);
-    }
+    onReact(post, "dislike");
   }
 
   const actionButtonClass =
@@ -540,11 +540,15 @@ export default function FeedPostCard({
             <button
               type="button"
               onClick={handleCrossVote}
-              className={[actionButtonClass, "text-red-600 hover:text-red-700"].join(" ")}
-              aria-label="Remove like"
+              className={[
+                actionButtonClass,
+                disliked ? "text-red-700 hover:text-red-800" : "text-red-600 hover:text-red-700",
+              ].join(" ")}
+              aria-label="Dislike"
+              aria-pressed={disliked}
             >
               <IconCrossVote />
-              <span className="font-medium tabular-nums">0</span>
+              <span className="font-medium tabular-nums">{dislikeCount || 0}</span>
             </button>
             <ActionDivider />
             <button

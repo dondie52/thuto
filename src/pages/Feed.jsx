@@ -26,11 +26,19 @@ function profileInitial(name) {
   return letter || "S";
 }
 
-function publishMessage(status) {
-  if (status === "published") return "Posted live. Your update is on the feed.";
-  if (status === "rejected") return "Not published. AI rejected it for safety or relevance.";
-  if (status === "pending_ai") return "Submitted. AI moderation is still processing your post.";
-  return "Submitted for admin review. You can see it below while it waits for approval.";
+function publishMessage(status, kind = "post") {
+  if (status === "published") {
+    return kind === "comment" ? "Comment posted." : "Posted live. Your update is on the feed.";
+  }
+  if (status === "rejected") {
+    return kind === "comment" ? "Comment not published. AI rejected it for safety or relevance." : "Not published. AI rejected it for safety or relevance.";
+  }
+  if (status === "pending_ai") {
+    return kind === "comment" ? "Comment submitted. AI moderation is still processing it." : "Submitted. AI moderation is still processing your post.";
+  }
+  return kind === "comment"
+    ? "Comment submitted for admin review. It will appear once approved."
+    : "Submitted for admin review. You can see it below while it waits for approval.";
 }
 
 export default function Feed() {
@@ -318,16 +326,23 @@ export default function Feed() {
     event.preventDefault();
     const body = String(commentDrafts[postId] || "").trim();
     if (!body) return;
+    if (!user) {
+      setPostFeedback(postId, "notice", "Log in to comment on feed posts.");
+      return;
+    }
     setCommentSubmittingFor(postId);
-    setError("");
-    setNotice("");
+    clearPostFeedback(postId);
     try {
       const result = await submitFeedComment({ postId, body });
-      setNotice(publishMessage(result.comment?.status));
       setCommentDrafts((current) => ({ ...current, [postId]: "" }));
-      await loadFeed({ reset: true });
+      setPostFeedback(postId, "notice", publishMessage(result.comment?.status, "comment"));
+      setExpandedComments((current) => ({ ...current, [postId]: true }));
+      const updated = await fetchFeedPostById(postId);
+      if (updated) {
+        setPosts((current) => current.map((item) => (item.id === postId ? updated : item)));
+      }
     } catch (err) {
-      setError(err.message || "Could not submit comment.");
+      setPostFeedback(postId, "error", err.message || "Could not submit comment.");
     } finally {
       setCommentSubmittingFor("");
     }
