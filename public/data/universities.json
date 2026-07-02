@@ -2698,5 +2698,220 @@
     "sponsorshipTier": "standard",
     "resources": [],
     "shortName": "TCIB"
+  },
+  {
+    "id": "phronesis-international-college",
+    "name": "Phronesis International College",
+    "location": "Ramotswa",
+    "description": "Centre of excellence in psycho-social services offering BQA-accredited counselling, guidance, and mental health programmes. Verify accreditation status and application dates with the institution.",
+    "website": "https://www.pic.ac.bw/",
+    "phone": "+267 539 2061",
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://www.phronesisbw.com/online-application/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Official website",
+        "category": "Admissions page",
+        "url": "https://www.pic.ac.bw/",
+        "format": "Web page",
+        "sourceLabel": "Phronesis International College"
+      },
+      {
+        "title": "Online application",
+        "category": "How to apply",
+        "url": "https://www.phronesisbw.com/online-application/",
+        "format": "Web page",
+        "sourceLabel": "Phronesis International College"
+      }
+    ],
+    "shortName": "PIC"
+  },
+  {
+    "id": "ddt-college-of-medicine",
+    "name": "DDT College of Medicine",
+    "location": "Botswana",
+    "description": "Private medical school offering bachelor's programmes in pharmacy, physiotherapy, medical laboratory sciences, and doctor assistance. Verify current BQA accreditation status and application dates with the institution before applying.",
+    "website": "https://ddtcollegeofmedicine.com/",
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://ddtcollegeofmedicine.com/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Official website",
+        "category": "Admissions page",
+        "url": "https://ddtcollegeofmedicine.com/",
+        "format": "Web page",
+        "sourceLabel": "DDT College of Medicine"
+      }
+    ],
+    "shortName": "DDTCOM"
+  },
+  {
+    "id": "kitso-international-college",
+    "name": "Kitso International College",
+    "location": "Botswana",
+    "description": "Private tertiary institution established in 2016 offering certificate and degree programmes focused on practical, industry-relevant training.",
+    "website": "https://www.kitsocollege.ac.bw/",
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://www.kitsocollege.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Official website",
+        "category": "Admissions page",
+        "url": "https://www.kitsocollege.ac.bw/",
+        "format": "Web page",
+        "sourceLabel": "Kitso International College"
+      }
+    ],
+    "shortName": "KIC"
+  },
+  {
+    "id": "arthur-portland-college",
+    "name": "Arthur Portland College",
+    "location": "Gaborone",
+    "description": "Private college in Gaborone offering professional accounting and finance programmes including ACCA, AAT, BICA, and CIMA pathways.",
+    "website": "https://arthurportlandcollege.com/",
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://arthurportlandcollege.com/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Official website",
+        "category": "Admissions page",
+        "url": "https://arthurportlandcollege.com/",
+        "format": "Web page",
+        "sourceLabel": "Arthur Portland College"
+      }
+    ],
+    "shortName": "Arthur Portland"
+  },
+  {
+    "id": "kings-college",
+    "name": "Kings College",
+    "location": "Tlokweng",
+    "description": "BQA-accredited higher education college in Tlokweng offering vocational and tertiary programmes. ETP0558.",
+    "website": "https://www.kingscollege.ac.bw/",
+    "phone": "+267 397 3902",
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://www.kingscollege.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Official website",
+        "category": "Admissions page",
+        "url": "https://www.kingscollege.ac.bw/",
+        "format": "Web page",
+        "sourceLabel": "Kings College"
+      }
+    ],
+    "shortName": "Kings College"
+  },
+  {
+    "id": "institute-for-labour-and-employment-studies",
+    "name": "Institute for Labour and Employment Studies",
+    "location": "Botswana",
+    "description": "BQA-accredited labour college owned by BOPEU, offering education and training in labour law, employment relations, and work ethics.",
+    "website": "https://ilescollege.ac.bw/",
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://ilescollege.ac.bw/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [
+      {
+        "title": "Official website",
+        "category": "Admissions page",
+        "url": "https://ilescollege.ac.bw/",
+        "format": "Web page",
+        "sourceLabel": "Institute for Labour and Employment Studies"
+      }
+    ],
+    "shortName": "ILES"
+  },
+  {
+    "id": "southwest-training-institute",
+    "name": "Southwest Training Institute",
+    "location": "Botswana",
+    "description": "Private training provider offering corporate and skills development programmes. Verify programme details with the institution.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [],
+    "shortName": "Southwest"
+  },
+  {
+    "id": "vocational-and-creativity-institute",
+    "name": "Vocational & Creativity Institute",
+    "location": "Gaborone",
+    "description": "BQA-registered vocational training provider in Mogoditshane offering hands-on technical and engineering programmes for full-time and part-time learners.",
+    "website": null,
+    "phone": "+267 391 1674",
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [],
+    "shortName": "VCI"
+  },
+  {
+    "id": "moeti-practicum-institute",
+    "name": "Moeti Practicum Institute",
+    "location": "Botswana",
+    "description": "BQA-accredited institute specialising in outcome-based, practicum-embedded training for the hospitality and tourism industry.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [],
+    "shortName": "Moeti Practicum"
+  },
+  {
+    "id": "missions-bible-college-botswana",
+    "name": "Missions Bible College Botswana",
+    "location": "Gaborone",
+    "description": "Faith-based tertiary provider offering biblical and ministerial training in Gaborone. Verify programme details, accreditation status, and application dates directly with the institution.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [],
+    "shortName": "Missions Bible"
   }
 ]

@@ -135,6 +135,16 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   "institute-of-health-and-fire-safety": "specialised-academics",
   "boswa-culinary-institute-of-botswana": "specialised-academics",
   "textile-clothing-institute-of-botswana": "specialised-academics",
+  "phronesis-international-college": "specialised-academics",
+  "ddt-college-of-medicine": "specialised-academics",
+  "kitso-international-college": "universities",
+  "arthur-portland-college": "specialised-academics",
+  "kings-college": "universities",
+  "institute-for-labour-and-employment-studies": "specialised-academics",
+  "southwest-training-institute": "short-courses",
+  "vocational-and-creativity-institute": "technical-colleges-brigades",
+  "moeti-practicum-institute": "specialised-academics",
+  "missions-bible-college-botswana": "biblical-theological-studies",
 };
 
 /**
