@@ -170,21 +170,29 @@ function OfficialBadge() {
   );
 }
 
-function ActionCircle({ children, active = false, variant = "default", className = "" }) {
-  const variantClasses =
-    variant === "thumb"
-      ? active
-        ? "border-brand-800 bg-brand-800 text-white"
-        : "border-brand-700 bg-brand-700 text-white"
-      : active
-        ? "border-brand-700 bg-brand-700 text-white"
-        : "border-stone-300 bg-white text-stone-600";
-
+function ActionThumbButton({ children, active = false, compact = false, className = "" }) {
   return (
     <span
       className={[
-        "inline-flex h-8 min-w-8 items-center justify-center gap-1 rounded-full border px-2 text-[11px] font-semibold tabular-nums transition-colors",
-        variantClasses,
+        "inline-flex items-center justify-center rounded-full border border-brand-800/30 bg-gradient-to-b from-brand-600 to-brand-800 text-white shadow-action-thumb transition-colors",
+        compact ? "h-9 w-9" : "h-9 min-w-9 gap-1 px-2.5",
+        active ? "from-brand-700 to-brand-900 ring-2 ring-brand-900/20" : "",
+        className,
+      ].join(" ")}
+    >
+      <span className="inline-flex items-center justify-center gap-1 drop-shadow-sm">{children}</span>
+    </span>
+  );
+}
+
+function ActionPillButton({ children, active = false, className = "" }) {
+  return (
+    <span
+      className={[
+        "inline-flex h-8 items-center justify-center gap-1.5 rounded-full border px-3 text-[11px] font-semibold tabular-nums transition-colors",
+        active
+          ? "border-brand-200 bg-brand-50 text-brand-700"
+          : "border-stone-200 bg-white text-stone-500",
         className,
       ].join(" ")}
     >
@@ -579,10 +587,10 @@ export default function FeedPostCard({
               aria-label="Like"
               aria-pressed={liked}
             >
-              <ActionCircle active={liked} variant="thumb">
+              <ActionThumbButton active={liked}>
                 <IconThumbUp filled={liked} />
                 <span>{likeCount || 0}</span>
-              </ActionCircle>
+              </ActionThumbButton>
             </button>
             <button
               type="button"
@@ -590,9 +598,9 @@ export default function FeedPostCard({
               className="focus-ring rounded-full transition-transform active:scale-95"
               aria-label="Remove like"
             >
-              <ActionCircle variant="thumb">
+              <ActionThumbButton compact>
                 <IconThumbDown />
-              </ActionCircle>
+              </ActionThumbButton>
             </button>
           </div>
 
@@ -604,10 +612,10 @@ export default function FeedPostCard({
               aria-expanded={commentsExpanded}
               aria-label="Comments"
             >
-              <ActionCircle active={commentsExpanded}>
+              <ActionPillButton active={commentsExpanded}>
                 <IconComment />
                 <span>{commentCount}</span>
-              </ActionCircle>
+              </ActionPillButton>
             </button>
             <button
               type="button"
@@ -615,10 +623,10 @@ export default function FeedPostCard({
               className="focus-ring rounded-full transition-transform active:scale-95"
               aria-label="Repost"
             >
-              <ActionCircle>
+              <ActionPillButton>
                 <IconRepost />
                 <span>0</span>
-              </ActionCircle>
+              </ActionPillButton>
             </button>
           </div>
         </div>
