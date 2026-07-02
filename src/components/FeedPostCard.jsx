@@ -18,8 +18,6 @@ function formatRelativeTime(value) {
   if (minutes < 60) return `${minutes}m`;
   const hours = Math.floor(minutes / 60);
   if (hours < 48) return `${hours}h`;
-  const days = Math.floor(hours / 24);
-  if (days < 14) return `${days}d`;
   return date.toLocaleDateString(undefined, { day: "numeric", month: "short" });
 }
 
@@ -48,31 +46,31 @@ function feedbackClassName(tone) {
   return "border border-brand-100 bg-brand-50 text-brand-900";
 }
 
-function IconThumbUp({ className = "h-4 w-4", filled = false }) {
+function IconCircleVote({ className = "h-4 w-4", active = false }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M7 10v10M7 10l1.5-5.5A2 2 0 0110.44 3h2.34a1.5 1.5 0 011.46 1.14L15 10h4.2a1.5 1.5 0 011.47 1.84l-1.4 6A1.5 1.5 0 0118.77 19H11"
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle
+        cx="12"
+        cy="12"
+        r="8.5"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        fill={active ? "currentColor" : "none"}
+        fillOpacity={active ? 0.15 : 0}
       />
     </svg>
   );
 }
 
-function IconThumbDown({ className = "h-4 w-4", filled = false }) {
+function IconCrossVote({ className = "h-4 w-4" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M17 14V4M17 14l-1.5 5.5a2 2 0 01-1.94 1.5h-2.34a1.5 1.5 0 01-1.46-1.14L9 14H4.8a1.5 1.5 0 01-1.47-1.84l1.4-6A1.5 1.5 0 015.23 5H13"
-      />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+      <path strokeLinecap="round" d="M7 7l10 10M17 7L7 17" />
     </svg>
   );
 }
 
-function IconComment({ className = "h-3.5 w-3.5" }) {
+function IconComment({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
       <path
@@ -80,15 +78,6 @@ function IconComment({ className = "h-3.5 w-3.5" }) {
         strokeLinejoin="round"
         d="M8 10h8M8 14h5M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
       />
-    </svg>
-  );
-}
-
-function IconRepost({ className = "h-3.5 w-3.5" }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17 7l3 3-3 3M7 17l-3-3 3-3" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M20 10a8 8 0 00-14-4M4 14a8 8 0 0014 4" />
     </svg>
   );
 }
@@ -107,12 +96,9 @@ function IconBookmark({ filled = false, className = "h-4 w-4" }) {
 
 function IconShare({ className = "h-4 w-4" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M7 17l10-10M17 7H9m8 0v8"
-      />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16 6l-4-4-4 4M12 2v13" />
     </svg>
   );
 }
@@ -125,6 +111,10 @@ function IconMore({ className = "h-4 w-4" }) {
       <circle cx="19" cy="12" r="1.75" />
     </svg>
   );
+}
+
+function ActionDivider() {
+  return <span className="h-4 w-px shrink-0 bg-stone-200" aria-hidden />;
 }
 
 function renderHashtagText(text) {
@@ -164,51 +154,8 @@ function PostAvatar({ isOfficial, displayName, avatarUrl }) {
 
 function OfficialBadge() {
   return (
-    <span className="rounded bg-brand-800 px-1 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+    <span className="rounded bg-brand-800 px-1 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
       Official
-    </span>
-  );
-}
-
-function ActionThumbButton({ children, active = false, compact = false, tone = "like", className = "" }) {
-  const isDislike = tone === "dislike";
-  const surfaceClasses = isDislike
-    ? [
-        "border-stone-200/90 bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 text-stone-700 shadow-action-thumb-dislike",
-        active ? "from-stone-100 via-stone-200 to-stone-300 ring-2 ring-stone-400/25" : "",
-      ]
-    : [
-        "border-brand-700/20 bg-gradient-to-b from-brand-400 via-brand-600 to-brand-800 text-white shadow-action-thumb",
-        active ? "from-brand-500 via-brand-700 to-brand-900 ring-2 ring-brand-900/25" : "",
-      ];
-  const iconShadow = isDislike ? "drop-shadow-thumb-dislike" : "drop-shadow-thumb-like";
-
-  return (
-    <span
-      className={[
-        "inline-flex items-center justify-center rounded-full border transition-all",
-        compact ? "h-10 w-10" : "h-10 min-w-10 gap-1 px-2.5",
-        ...surfaceClasses,
-        className,
-      ].join(" ")}
-    >
-      <span className={["inline-flex items-center justify-center gap-1", iconShadow].join(" ")}>{children}</span>
-    </span>
-  );
-}
-
-function ActionPillButton({ children, active = false, className = "" }) {
-  return (
-    <span
-      className={[
-        "inline-flex h-8 items-center justify-center gap-1.5 rounded-full border px-3 text-[11px] font-semibold tabular-nums transition-colors",
-        active
-          ? "border-brand-200 bg-brand-50 text-brand-700"
-          : "border-stone-200 bg-white text-stone-500",
-        className,
-      ].join(" ")}
-    >
-      {children}
     </span>
   );
 }
@@ -284,7 +231,7 @@ function CommentSection({
   reportedTargetKeys,
 }) {
   return (
-    <div className="mt-2 border-t border-stone-200/80 pt-2">
+    <div className="mt-3 border-t border-stone-200/80 pt-3">
       <InlineActionFeedback feedback={actionFeedback} />
 
       {post.comments.length ? (
@@ -419,20 +366,26 @@ export default function FeedPostCard({
     }
   }
 
-  function handleThumbsUp() {
+  function handleCircleVote() {
     onReact(post, "like");
   }
 
-  function handleThumbsDown() {
+  function handleCrossVote() {
     if (post.viewerReaction) {
       onReact(post, post.viewerReaction);
     }
   }
 
+  const actionButtonClass =
+    "focus-ring inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 text-sm text-stone-600 transition-colors hover:bg-stone-50";
+
   return (
     <article
       id={`feed-post-${post.id}`}
-      className={["min-w-0 px-3 py-3", !isPublished && isOwnPost ? "bg-amber-50/30" : ""].join(" ")}
+      className={[
+        "min-w-0 border-b border-stone-200/80 bg-white px-4 py-4",
+        !isPublished && isOwnPost ? "bg-amber-50/30" : "",
+      ].join(" ")}
     >
       <header className="flex min-w-0 items-start gap-2.5">
         {authorProfilePath ? (
@@ -453,7 +406,7 @@ export default function FeedPostCard({
                       name={displayName}
                       isPro={post.authorIsPro && !isOfficial}
                       className="min-w-0"
-                      nameClassName="truncate text-xs font-semibold text-stone-900"
+                      nameClassName="truncate text-sm font-semibold text-stone-900"
                       badgeClassName="size-3.5"
                     />
                   </Link>
@@ -462,34 +415,34 @@ export default function FeedPostCard({
                     name={displayName}
                     isPro={post.authorIsPro && !isOfficial}
                     className="min-w-0"
-                    nameClassName="truncate text-xs font-semibold text-stone-900"
+                    nameClassName="truncate text-sm font-semibold text-stone-900"
                     badgeClassName="size-3.5"
                   />
                 )}
                 {isOfficial ? <OfficialBadge /> : null}
                 {!isPublished && isOwnPost ? (
-                  <span className="rounded bg-amber-100 px-1 py-0.5 text-[9px] font-bold uppercase text-amber-900">
+                  <span className="rounded bg-amber-100 px-1 py-0.5 text-[10px] font-bold uppercase text-amber-900">
                     {postStatusLabel(post.status)}
                   </span>
                 ) : null}
               </div>
-              {timeLabel ? <p className="mt-0.5 text-[11px] text-stone-400">{timeLabel}</p> : null}
+              {timeLabel ? <p className="mt-0.5 text-xs text-stone-400">{timeLabel}</p> : null}
             </div>
 
-            <div className="flex shrink-0 items-center gap-1.5">
+            <div className="flex shrink-0 items-center gap-2">
               {user && !isOwnPost && !isOfficial && onToggleFollow ? (
                 <button
                   type="button"
                   onClick={() => onToggleFollow(post)}
                   className={[
-                    "focus-ring text-[11px] font-semibold",
-                    isFollowingAuthor ? "text-stone-500" : "text-brand-700 hover:text-brand-800",
+                    "focus-ring text-xs font-semibold",
+                    isFollowingAuthor ? "text-brand-800" : "text-brand-700 hover:text-brand-800",
                   ].join(" ")}
                 >
                   {isFollowingAuthor ? "Following" : "Follow"}
                 </button>
               ) : null}
-              <span className="rounded-full bg-brand-700 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+              <span className="rounded-full bg-brand-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
                 {categoryBadgeText(post.category)}
               </span>
               <div className="relative" ref={menuRef}>
@@ -504,28 +457,6 @@ export default function FeedPostCard({
                 </button>
                 {menuOpen ? (
                   <div className="absolute right-0 top-full z-10 mt-1 min-w-[9rem] rounded-lg border border-stone-200 bg-white py-1 shadow-card">
-                    {onSave ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onSave(post);
-                          setMenuOpen(false);
-                        }}
-                        className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50"
-                      >
-                        {isSaved ? "Unsave" : "Save"}
-                      </button>
-                    ) : null}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        handleShare();
-                        setMenuOpen(false);
-                      }}
-                      className="focus-ring block w-full px-3 py-1.5 text-left text-xs text-stone-700 hover:bg-stone-50"
-                    >
-                      Share
-                    </button>
                     {isOwnPost && onDelete ? (
                       <button
                         type="button"
@@ -558,15 +489,15 @@ export default function FeedPostCard({
       </header>
 
       {post.title ? (
-        <h3 className="mt-2 break-words text-sm font-semibold leading-snug text-stone-900">{post.title}</h3>
+        <h3 className="mt-3 break-words text-sm font-semibold leading-snug text-stone-900">{post.title}</h3>
       ) : null}
 
       <ExpandableText
         text={post.body}
         maxLines={6}
         preserveWrap
-        className={`break-words text-xs leading-relaxed text-stone-600 ${post.title ? "mt-1" : "mt-2"}`}
-        buttonClassName="text-xs font-medium text-brand-700"
+        className={`break-words text-sm leading-relaxed text-stone-900 ${post.title ? "mt-1" : "mt-3"}`}
+        buttonClassName="text-sm font-medium text-brand-700"
         renderText={renderHashtagText}
       />
 
@@ -590,55 +521,60 @@ export default function FeedPostCard({
       <PostImages images={post.images} />
 
       {isPublished ? (
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+        <div className="mt-4 flex min-w-0 items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <button
               type="button"
-              onClick={handleThumbsUp}
-              className="focus-ring rounded-full transition-transform active:scale-95"
+              onClick={handleCircleVote}
+              className={[actionButtonClass, liked ? "text-brand-700 hover:text-brand-800" : "hover:text-brand-800"].join(" ")}
               aria-label="Like"
               aria-pressed={liked}
             >
-              <ActionThumbButton active={liked} tone="like">
-                <IconThumbUp filled={liked} />
-                <span className="text-[11px] font-bold tabular-nums">{likeCount || 0}</span>
-              </ActionThumbButton>
+              <IconCircleVote active={liked} />
+              <span className="font-medium tabular-nums">{likeCount || 0}</span>
             </button>
             <button
               type="button"
-              onClick={handleThumbsDown}
-              className="focus-ring rounded-full transition-transform active:scale-95"
+              onClick={handleCrossVote}
+              className={[actionButtonClass, "text-red-600 hover:text-red-700"].join(" ")}
               aria-label="Remove like"
             >
-              <ActionThumbButton compact tone="dislike">
-                <IconThumbDown />
-              </ActionThumbButton>
+              <IconCrossVote />
+              <span className="font-medium tabular-nums">0</span>
             </button>
-          </div>
-
-          <div className="flex items-center gap-2">
+            <ActionDivider />
             <button
               type="button"
               onClick={() => onToggleComments(post.id)}
-              className="focus-ring rounded-full transition-transform active:scale-95"
+              className={[actionButtonClass, commentsExpanded ? "text-brand-700" : "hover:text-brand-800"].join(" ")}
               aria-expanded={commentsExpanded}
               aria-label="Comments"
             >
-              <ActionPillButton active={commentsExpanded}>
-                <IconComment />
-                <span>{commentCount}</span>
-              </ActionPillButton>
+              <IconComment />
+              <span className="font-medium tabular-nums">{commentCount}</span>
             </button>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-3 sm:gap-4">
+            <ActionDivider />
+            {onSave ? (
+              <button
+                type="button"
+                onClick={() => onSave(post)}
+                className={[actionButtonClass, isSaved ? "text-brand-700" : "hover:text-brand-800"].join(" ")}
+                aria-label={isSaved ? "Unsave post" : "Save post"}
+                aria-pressed={isSaved}
+              >
+                <IconBookmark filled={isSaved} />
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={handleShare}
-              className="focus-ring rounded-full transition-transform active:scale-95"
-              aria-label="Repost"
+              className={[actionButtonClass, "hover:text-brand-800"].join(" ")}
+              aria-label="Share"
             >
-              <ActionPillButton>
-                <IconRepost />
-                <span>0</span>
-              </ActionPillButton>
+              <IconShare />
             </button>
           </div>
         </div>

@@ -576,7 +576,7 @@ export default function Feed() {
       ) : null}
 
       {!isLoading && posts.length ? (
-        <section className="divide-y divide-stone-200/80 border-b border-stone-200/80 bg-white">
+        <section className="bg-white">
         {posts.map((post) => (
           <FeedPostCard
             key={post.id}
