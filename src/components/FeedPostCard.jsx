@@ -48,9 +48,9 @@ function feedbackClassName(tone) {
   return "border border-brand-100 bg-brand-50 text-brand-900";
 }
 
-function IconThumbUp({ className = "h-3.5 w-3.5", filled = false }) {
+function IconThumbUp({ className = "h-4 w-4", filled = false }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -60,9 +60,9 @@ function IconThumbUp({ className = "h-3.5 w-3.5", filled = false }) {
   );
 }
 
-function IconThumbDown({ className = "h-3.5 w-3.5", filled = false }) {
+function IconThumbDown({ className = "h-4 w-4", filled = false }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.75" aria-hidden>
+    <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -170,17 +170,29 @@ function OfficialBadge() {
   );
 }
 
-function ActionThumbButton({ children, active = false, compact = false, className = "" }) {
+function ActionThumbButton({ children, active = false, compact = false, tone = "like", className = "" }) {
+  const isDislike = tone === "dislike";
+  const surfaceClasses = isDislike
+    ? [
+        "border-stone-200/90 bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 text-stone-700 shadow-action-thumb-dislike",
+        active ? "from-stone-100 via-stone-200 to-stone-300 ring-2 ring-stone-400/25" : "",
+      ]
+    : [
+        "border-brand-700/20 bg-gradient-to-b from-brand-400 via-brand-600 to-brand-800 text-white shadow-action-thumb",
+        active ? "from-brand-500 via-brand-700 to-brand-900 ring-2 ring-brand-900/25" : "",
+      ];
+  const iconShadow = isDislike ? "drop-shadow-thumb-dislike" : "drop-shadow-thumb-like";
+
   return (
     <span
       className={[
-        "inline-flex items-center justify-center rounded-full border border-brand-800/30 bg-gradient-to-b from-brand-600 to-brand-800 text-white shadow-action-thumb transition-colors",
-        compact ? "h-9 w-9" : "h-9 min-w-9 gap-1 px-2.5",
-        active ? "from-brand-700 to-brand-900 ring-2 ring-brand-900/20" : "",
+        "inline-flex items-center justify-center rounded-full border transition-all",
+        compact ? "h-10 w-10" : "h-10 min-w-10 gap-1 px-2.5",
+        ...surfaceClasses,
         className,
       ].join(" ")}
     >
-      <span className="inline-flex items-center justify-center gap-1 drop-shadow-sm">{children}</span>
+      <span className={["inline-flex items-center justify-center gap-1", iconShadow].join(" ")}>{children}</span>
     </span>
   );
 }
@@ -587,9 +599,9 @@ export default function FeedPostCard({
               aria-label="Like"
               aria-pressed={liked}
             >
-              <ActionThumbButton active={liked}>
+              <ActionThumbButton active={liked} tone="like">
                 <IconThumbUp filled={liked} />
-                <span>{likeCount || 0}</span>
+                <span className="text-[11px] font-bold tabular-nums">{likeCount || 0}</span>
               </ActionThumbButton>
             </button>
             <button
@@ -598,7 +610,7 @@ export default function FeedPostCard({
               className="focus-ring rounded-full transition-transform active:scale-95"
               aria-label="Remove like"
             >
-              <ActionThumbButton compact>
+              <ActionThumbButton compact tone="dislike">
                 <IconThumbDown />
               </ActionThumbButton>
             </button>

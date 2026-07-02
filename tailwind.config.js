@@ -25,7 +25,14 @@ export default {
         "card": "0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -4px rgba(15, 23, 42, 0.08)",
         "card-hover": "0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 40px -8px rgba(15, 23, 42, 0.12)",
         "nav": "0 -4px 24px rgba(15, 23, 42, 0.06)",
-        "action-thumb": "0 4px 12px rgba(15, 118, 110, 0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
+        "action-thumb":
+          "0 5px 14px rgba(15, 118, 110, 0.45), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 0 rgba(0,0,0,0.12)",
+        "action-thumb-dislike":
+          "0 5px 14px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -2px 0 rgba(0,0,0,0.06)",
+      },
+      dropShadow: {
+        "thumb-like": "2px 3px 2px rgba(0,0,0,0.28)",
+        "thumb-dislike": "2px 3px 2px rgba(0,0,0,0.2)",
       },
       keyframes: {
         "fade-up": {
