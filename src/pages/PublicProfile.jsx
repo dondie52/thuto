@@ -352,7 +352,7 @@ export default function PublicProfile() {
             {profile.fullName} has not posted yet.
           </div>
         ) : (
-          <div className="divide-y divide-stone-200/80 border-y border-stone-200/80 bg-white">
+          <div className="bg-white">
             {posts.map((post) => (
               <FeedPostCard
                 key={post.id}
