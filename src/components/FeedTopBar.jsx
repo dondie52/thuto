@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FEED_CHROME_CLASSES } from "../lib/feedChrome.jsx";
 
-function IconRefresh({ className = "h-5 w-5" }) {
+function IconRefresh({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M20 11a8.1 8.1 0 00-15.5-2M4 5v4h4M4 13a8.1 8.1 0 0015.5 2M20 19v-4h-4" />
@@ -9,7 +9,7 @@ function IconRefresh({ className = "h-5 w-5" }) {
   );
 }
 
-function IconSearch({ className = "h-5 w-5" }) {
+function IconSearch({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 110-15 7.5 7.5 0 010 15z" />
@@ -17,7 +17,7 @@ function IconSearch({ className = "h-5 w-5" }) {
   );
 }
 
-function IconPeople({ className = "h-5 w-5" }) {
+function IconPeople({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
@@ -25,7 +25,7 @@ function IconPeople({ className = "h-5 w-5" }) {
   );
 }
 
-function IconMessages({ className = "h-5 w-5" }) {
+function IconMessages({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
       <path
@@ -37,7 +37,7 @@ function IconMessages({ className = "h-5 w-5" }) {
   );
 }
 
-function IconBell({ className = "h-5 w-5" }) {
+function IconBell({ className = "h-4 w-4" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
       <path
@@ -52,7 +52,7 @@ function IconBell({ className = "h-5 w-5" }) {
 function NavIconButton({ to, label, isActive, icon, badge = 0, onClick }) {
   const badgeLabel = badge > 99 ? "99+" : String(badge);
   const className = [
-    "focus-ring relative flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+    "focus-ring relative flex h-9 w-9 items-center justify-center rounded-full transition-colors",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-brand-800 hover:bg-brand-100/70",
   ].join(" ");
 
