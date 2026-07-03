@@ -203,12 +203,12 @@ export default function AccountDrawer() {
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
-        className="focus-ring relative z-40 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-brand-50 text-brand-900 shadow-sm transition hover:border-brand-300 hover:bg-brand-100"
+        className="focus-ring relative z-40 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-brand-50 text-brand-900 shadow-sm transition hover:border-brand-300 hover:bg-brand-100"
         aria-label="Open menu"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
       >
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
         </svg>
       </button>

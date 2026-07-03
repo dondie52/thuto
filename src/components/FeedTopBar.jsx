@@ -52,7 +52,7 @@ function IconBell({ className = "h-4 w-4" }) {
 function NavIconButton({ to, label, isActive, icon, badge = 0, onClick }) {
   const badgeLabel = badge > 99 ? "99+" : String(badge);
   const className = [
-    "focus-ring relative flex h-9 w-9 items-center justify-center rounded-full transition-colors",
+    "focus-ring relative flex h-8 w-8 items-center justify-center rounded-full transition-colors",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-brand-800 hover:bg-brand-100/70",
   ].join(" ");
 
@@ -104,7 +104,7 @@ export default function FeedTopBar({ embedded = false, onRefresh, messageCount =
     <section
       className={
         embedded
-          ? "feed-top-bar -mx-4 px-4 pb-1 pt-0.5"
+          ? "feed-top-bar -mx-4 px-4 pb-0.5 pt-0"
           : `feed-top-bar border-b border-brand-100/80 px-4 py-1.5 ${FEED_CHROME_CLASSES}`
       }
       aria-label="Feed actions"
