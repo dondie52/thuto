@@ -435,8 +435,13 @@ export default function Assistant() {
 
   return (
     <div className="-my-2 flex min-h-0 flex-1 flex-col sm:-my-4">
+      <header className="mb-4 shrink-0">
+        <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
+        <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
+      </header>
+
       {canUseGemini && !isPremium ? (
-        <p className="mb-3 shrink-0 text-center text-xs text-slate-500">
+        <p className="mb-3 shrink-0 text-xs text-slate-500">
           AI questions today: {getAssistantUsageToday(isPremium).count} / {getAssistantUsageToday(isPremium).limit}
           {" · "}
           <Link to="/upgrade" className="font-semibold text-brand-700 underline">
@@ -446,7 +451,7 @@ export default function Assistant() {
         </p>
       ) : null}
 
-      <section className="flex min-h-[calc(100dvh-11rem-env(safe-area-inset-bottom))] flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
+      <section className="flex min-h-[calc(100dvh-14rem-env(safe-area-inset-bottom))] flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4 sm:px-5">
           <p className="font-display text-lg font-semibold leading-snug text-brand-900 sm:text-xl">{helpHeading}</p>
           <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
