@@ -20,6 +20,14 @@ function IconBack({ className = "h-5 w-5" }) {
   );
 }
 
+function IconSend({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+    </svg>
+  );
+}
+
 export default function FeedMessageThread() {
   const { conversationId } = useParams();
   const { user } = useAuth();
@@ -161,9 +169,10 @@ export default function FeedMessageThread() {
         <button
           type="submit"
           disabled={isSending || !draft.trim()}
-          className="focus-ring inline-flex min-h-11 items-center justify-center rounded-full bg-brand-700 px-5 text-sm font-bold text-white hover:bg-brand-800 disabled:opacity-60"
+          className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-700 text-white hover:bg-brand-800 disabled:opacity-60"
+          aria-label="Send message"
         >
-          Send
+          <IconSend />
         </button>
       </form>
     </div>
