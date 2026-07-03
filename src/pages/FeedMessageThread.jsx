@@ -20,10 +20,10 @@ function IconBack({ className = "h-5 w-5" }) {
   );
 }
 
-function IconSend({ className = "h-5 w-5" }) {
+function IconSend({ className = "h-[18px] w-[18px]" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5M5 12l7-7 7 7" />
     </svg>
   );
 }
@@ -169,7 +169,7 @@ export default function FeedMessageThread() {
 
       <form
         onSubmit={handleSubmit}
-        className="flex shrink-0 items-end gap-2 border-t border-brand-100 bg-white px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
+        className="flex shrink-0 items-center gap-2 border-t border-brand-100 bg-white px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
       >
         <textarea
           value={draft}
@@ -181,7 +181,7 @@ export default function FeedMessageThread() {
         <button
           type="submit"
           disabled={isSending || !draft.trim()}
-          className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-700 text-white hover:bg-brand-800 disabled:opacity-60"
+          className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-700 p-0 text-white hover:bg-brand-800 disabled:opacity-60"
           aria-label="Send message"
         >
           <IconSend />
