@@ -18,6 +18,7 @@ export function useScrollChrome({ enabled = true } = {}) {
       return undefined;
     }
 
+    setChromeVisible(true);
     lastScrollYRef.current = window.scrollY;
 
     function updateChrome() {

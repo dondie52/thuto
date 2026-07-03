@@ -1,12 +1,19 @@
 import { Link, Outlet } from "react-router-dom";
 import BrandMark from "../BrandMark.jsx";
+import { useScrollChrome } from "../../hooks/useScrollChrome.js";
 import { LandingAuthProvider, landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
 function LandingHeader() {
   const { isSignedIn } = useLandingAuth();
+  const chromeVisible = useScrollChrome();
 
   return (
-    <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md">
+    <header
+      className={[
+        "sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md transition-transform duration-300 ease-out will-change-transform",
+        chromeVisible ? "translate-y-0" : "-translate-y-full",
+      ].join(" ")}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <BrandMark />
         <nav className="hidden items-center gap-1 sm:flex" aria-label="Marketing">

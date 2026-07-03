@@ -8,7 +8,7 @@ import OnboardingRedirect from "./OnboardingRedirect.jsx";
 import SubscriptionAdSlot from "./SubscriptionAdSlot.jsx";
 import { useScrollChrome } from "../hooks/useScrollChrome.js";
 import { useAuth } from "../lib/auth.jsx";
-import { FEED_CHROME_CLASSES, useFeedCompactChrome, useFeedHomeRoute, useFeedMessageThread, useFeedRoute } from "../lib/feedChrome.jsx";
+import { FEED_CHROME_CLASSES, useFeedCompactChrome, useFeedMessageThread, useFeedRoute } from "../lib/feedChrome.jsx";
 import { triggerFeedRefresh } from "../lib/feedRefresh.js";
 import { fetchUnreadMessageCount } from "../lib/messaging.js";
 import { fetchUnreadNotificationCount } from "../lib/notifications.js";
@@ -35,10 +35,9 @@ export default function Layout() {
   const location = useLocation();
   const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
   const isFeedRoute = useFeedRoute();
-  const isFeedHome = useFeedHomeRoute();
   const isFeedCompact = useFeedCompactChrome();
   const isMessageThread = useFeedMessageThread();
-  const scrollChromeEnabled = isFeedHome && !isMessageThread;
+  const scrollChromeEnabled = !isMessageThread;
   const chromeVisible = useScrollChrome({ enabled: scrollChromeEnabled });
   const { user } = useAuth();
   const [messageCount, setMessageCount] = useState(0);
@@ -117,7 +116,9 @@ export default function Layout() {
             <div
               className={[
                 "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 overflow-hidden transition-[max-height,opacity] duration-300 ease-out sm:grid-cols-[auto_minmax(0,1fr)_auto]",
-                isFeedCompact ? "max-h-0 opacity-0 sm:max-h-16 sm:opacity-100" : "max-h-16 opacity-100",
+                isFeedCompact && !chromeVisible
+                  ? "max-h-0 opacity-0 sm:max-h-16 sm:opacity-100"
+                  : "max-h-16 opacity-100",
               ].join(" ")}
             >
               <BrandMark className="min-w-0 justify-self-start" />
