@@ -15,8 +15,60 @@ import { scrollElementIntoView } from "../lib/motion.js";
 import { getAssistantUsageToday, recordAssistantUsage } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
 
+const STARTER_QUESTIONS = [
+  "I have 36 APS. What can I study?",
+  "Which programmes lead to software careers?",
+  "Compare Computer Science and IT",
+  "What can I study with Maths Literacy?",
+  "Which applications are still open?",
+  "Show entry requirements for engineering",
+  "What careers fit a business degree?",
+];
+
+const HINT_TOPICS = [
+  "programmes",
+  "requirements",
+  "careers",
+  "modules",
+  "application dates",
+  "your saved grades",
+];
+
 const speechRecognition =
   typeof window !== "undefined" ? window.SpeechRecognition || window.webkitSpeechRecognition : null;
+
+function IconSend({ className = "h-[18px] w-[18px]" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5M5 12l7-7 7 7" />
+    </svg>
+  );
+}
+
+function SparkleIcon({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M12 2l1.2 4.2L17.5 7.5 13.2 8.7 12 13l-1.2-4.3L6.5 7.5l4.3-1.3L12 2z" />
+      <path d="M19 11l.7 2.5L22 14.2l-2.3.7L19 17.2l-.7-2.3L16 14.2l2.3-.7L19 11z" opacity="0.85" />
+    </svg>
+  );
+}
+
+function ChatBubbleEmpty({ className = "h-20 w-20" }) {
+  return (
+    <svg className={className} viewBox="0 0 96 96" fill="none" aria-hidden>
+      <ellipse cx="52" cy="72" rx="22" ry="6" fill="rgba(15, 118, 110, 0.12)" />
+      <path
+        d="M24 28c0-8.837 7.163-16 16-16h16c8.837 0 16 7.163 16 16v18c0 8.837-7.163 16-16 16H44l-12 10v-10c-4.418 0-8-3.582-8-8V28z"
+        fill="#99f6e4"
+        stroke="#5eead4"
+        strokeWidth="2"
+      />
+      <circle cx="40" cy="40" r="3" fill="white" />
+      <circle cx="56" cy="40" r="3" fill="white" />
+    </svg>
+  );
+}
 
 function MicrophoneIcon({ active = false }) {
   return (
@@ -41,6 +93,50 @@ function VolumeIcon() {
   );
 }
 
+function SearchIcon({ className = "h-3.5 w-3.5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <circle cx="11" cy="11" r="7" />
+      <path strokeLinecap="round" d="M20 20l-3.5-3.5" />
+    </svg>
+  );
+}
+
+function SuggestionTicker({ onPick }) {
+  const hintLine = `Try asking about ${HINT_TOPICS.join(", ")}…`;
+  const chips = [...STARTER_QUESTIONS, ...STARTER_QUESTIONS];
+
+  return (
+    <div className="mt-2 space-y-2">
+      <div className="overflow-hidden rounded-full border border-brand-100 bg-brand-50/60 px-3 py-1.5">
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <SearchIcon className="shrink-0 text-brand-600" />
+          <div className="relative min-w-0 flex-1 overflow-hidden">
+            <div className="motion-safe:animate-assistant-hint-scroll motion-reduce:animate-none flex w-max whitespace-nowrap">
+              <span className="pr-8">{hintLine}</span>
+              <span aria-hidden>{hintLine}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="overflow-hidden">
+        <div className="motion-safe:animate-assistant-hint-scroll motion-reduce:animate-none flex w-max gap-2">
+          {chips.map((suggestion, index) => (
+            <button
+              key={`${suggestion}-${index}`}
+              type="button"
+              onClick={() => onPick(suggestion)}
+              className="focus-ring shrink-0 rounded-full border border-brand-100 bg-white px-3 py-1 text-xs font-medium text-brand-800 transition hover:border-brand-200 hover:bg-brand-50"
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function firstNameFromProfile(profile, user) {
   const raw = String(profile?.full_name || user?.user_metadata?.full_name || "").trim();
   if (!raw) return null;
@@ -50,7 +146,7 @@ function firstNameFromProfile(profile, user) {
 
 function helpPromptName(profile, user) {
   const first = firstNameFromProfile(profile, user);
-  return first ? `What can I help you with today ${first}?` : "What can I help you with today?";
+  return first ? `What can I help you with today, ${first}?` : "What can I help you with today?";
 }
 
 function createMessage(role, content, extras = {}) {
@@ -105,6 +201,7 @@ export default function Assistant() {
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
   const providerStatus = getProviderStatus();
 
   useEffect(() => {
@@ -143,6 +240,7 @@ export default function Assistant() {
   const canUseGemini = providerStatus.configured && Boolean(getSupabase());
   const canListen = Boolean(speechRecognition);
   const canSpeak = Boolean(getSupabase()) || (typeof window !== "undefined" && Boolean(window.speechSynthesis));
+  const hasConversation = messages.length > 0;
 
   async function askGemini(value) {
     const supabase = getSupabase();
@@ -210,7 +308,7 @@ export default function Assistant() {
           source: "gemini",
           confidence: payload.confidence,
           usedLocalContext: payload.usedLocalContext,
-          suggestions: payload.suggestions.slice(0, 2),
+          suggestions: payload.suggestions.length ? payload.suggestions : STARTER_QUESTIONS.slice(0, 3),
           references: payload.references,
         }),
       ]);
@@ -234,6 +332,13 @@ export default function Assistant() {
 
   function retryLastQuestion() {
     if (lastQuestion) sendQuestion(lastQuestion);
+  }
+
+  function handleInputKeyDown(event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendQuestion(question);
+    }
   }
 
   function startListening() {
@@ -314,18 +419,14 @@ export default function Assistant() {
   }
 
   return (
-    <div className="space-y-6">
-      <header>
+    <div className="flex min-h-0 flex-1 flex-col gap-4">
+      <header className="shrink-0">
         <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
         <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
-          Ask about programmes, entry requirements, careers, modules, application dates, or what fits your saved grades.
-        </p>
         {canUseGemini && !isPremium ? (
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-1.5 text-xs text-slate-500">
             AI questions today: {getAssistantUsageToday(isPremium).count} / {getAssistantUsageToday(isPremium).limit}
-            {" "}
-            ·{" "}
+            {" · "}
             <Link to="/upgrade" className="font-semibold text-brand-700 underline">
               Pro
             </Link>{" "}
@@ -334,93 +435,120 @@ export default function Assistant() {
         ) : null}
       </header>
 
-      <section className="rounded-2xl border border-brand-200 bg-white shadow-sm">
-        <div className="border-b border-brand-100 px-4 py-3">
-          <p className="text-sm font-semibold text-brand-900">{helpHeading}</p>
+      <section className="flex min-h-[min(760px,calc(100dvh-10.5rem-env(safe-area-inset-bottom)))] flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-brand-100 px-4 py-3.5 sm:px-5">
+          <p className="font-display text-base font-semibold leading-snug text-brand-900 sm:text-lg">{helpHeading}</p>
+          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
+            <SparkleIcon />
+          </span>
         </div>
 
-        <div className="max-h-[34rem] space-y-4 overflow-y-auto px-4 py-5" aria-live="polite">
-          {messages.map((message) => (
-            <article
-              key={message.id}
-              className={[
-                "max-w-[48rem] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm",
-                message.role === "user"
-                  ? "ml-auto bg-brand-700 text-white"
-                  : "border border-brand-100 bg-brand-50/70 text-brand-950",
-              ].join(" ")}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <p className="whitespace-pre-line">{message.content}</p>
-                {message.role === "assistant" ? (
-                  <button
-                    type="button"
-                    onClick={() => readAloud(message)}
-                    disabled={!canSpeak || Boolean(speakingMessageId)}
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-800 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
-                    aria-label={speakingMessageId === message.id ? "Reading aloud" : "Read aloud"}
-                    title={canSpeak ? "Read aloud with ElevenLabs" : "Read aloud unavailable"}
-                  >
-                    <VolumeIcon />
-                  </button>
-                ) : null}
-              </div>
-
-              {message.references?.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {message.references.map((reference, index) => {
-                    if (!reference.href) return null;
-                    const safeHref = reference.external ? safeExternalUrl(reference.href) : safeInternalPath(reference.href);
-                    if (!safeHref) return null;
-                    return reference.external ? (
-                      <a
-                        key={`${reference.href}-${index}`}
-                        href={safeHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
-                      >
-                        {reference.title || "Open source"}
-                      </a>
-                    ) : (
-                      <Link
-                        key={`${reference.href}-${index}`}
-                        to={safeHref}
-                        className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
-                      >
-                        {reference.title || "Open in Thuto"}
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : null}
-
-              {message.suggestions?.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {message.suggestions.map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      type="button"
-                      onClick={() => ask(suggestion)}
-                      className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-            </article>
-          ))}
-          {isSending ? (
-            <div className="max-w-[24rem] rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-3 text-sm text-brand-800">
-              Checking programme information...
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4 sm:px-5" aria-live="polite">
+          {!hasConversation && !isSending ? (
+            <div className="flex flex-1 flex-col items-center justify-center py-8 text-center">
+              <ChatBubbleEmpty />
+              <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-500">
+                Ask anything about your academic journey.
+              </p>
             </div>
           ) : null}
+
+          <div className="space-y-3">
+            {messages.map((message) => (
+              <div key={message.id} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
+                <article
+                  className={[
+                    "max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm sm:max-w-[75%]",
+                    message.role === "user"
+                      ? "bg-brand-700 text-white"
+                      : "border border-brand-100 bg-brand-50/70 text-brand-950",
+                  ].join(" ")}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="whitespace-pre-line">{message.content}</p>
+                    {message.role === "assistant" ? (
+                      <button
+                        type="button"
+                        onClick={() => readAloud(message)}
+                        disabled={!canSpeak || Boolean(speakingMessageId)}
+                        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-800 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        aria-label={speakingMessageId === message.id ? "Reading aloud" : "Read aloud"}
+                        title={canSpeak ? "Read aloud with ElevenLabs" : "Read aloud unavailable"}
+                      >
+                        <VolumeIcon />
+                      </button>
+                    ) : null}
+                  </div>
+
+                  {message.references?.length ? (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {message.references.map((reference, index) => {
+                        if (!reference.href) return null;
+                        const safeHref = reference.external ? safeExternalUrl(reference.href) : safeInternalPath(reference.href);
+                        if (!safeHref) return null;
+                        return reference.external ? (
+                          <a
+                            key={`${reference.href}-${index}`}
+                            href={safeHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
+                          >
+                            {reference.title || "Open source"}
+                          </a>
+                        ) : (
+                          <Link
+                            key={`${reference.href}-${index}`}
+                            to={safeHref}
+                            className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
+                          >
+                            {reference.title || "Open in Thuto"}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+
+                  {message.suggestions?.length ? (
+                    <div className="-mx-1 mt-3 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      <div className="flex w-max gap-2">
+                        {message.suggestions.map((suggestion) => (
+                          <button
+                            key={suggestion}
+                            type="button"
+                            onClick={() => ask(suggestion)}
+                            className="focus-ring shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </article>
+              </div>
+            ))}
+
+            {isSending ? (
+              <div className="flex justify-start">
+                <div className="max-w-[75%] rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-3 text-sm text-brand-800">
+                  <span className="inline-flex items-center gap-2">
+                    <span className="inline-flex gap-1" aria-hidden>
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:0ms]" />
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:150ms]" />
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:300ms]" />
+                    </span>
+                    Checking programme information…
+                  </span>
+                </div>
+              </div>
+            ) : null}
+          </div>
           <div ref={messagesEndRef} />
         </div>
 
         {error ? (
-          <div className="mx-4 mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          <div className="mx-4 shrink-0 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 sm:mx-5">
             {error}
             {lastQuestion ? (
               <button type="button" onClick={retryLastQuestion} className="ml-2 font-semibold underline">
@@ -430,46 +558,46 @@ export default function Assistant() {
           </div>
         ) : null}
 
-        <form onSubmit={submit} className="border-t border-brand-100 p-4">
-          <label htmlFor="assistant-question" className="block text-xs font-medium text-slate-600">
-            Your question
-          </label>
-          <div className="mt-2 grid gap-2 md:grid-cols-[1fr_auto]">
+        <form onSubmit={submit} className="shrink-0 border-t border-brand-100 px-3 py-3 sm:px-4">
+          <div className="flex items-end gap-2">
+            <button
+              type="button"
+              onClick={startListening}
+              disabled={!canListen || isListening}
+              className={[
+                "focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-white text-brand-800 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50",
+                isListening ? "border-brand-500 bg-brand-50 text-brand-900" : "border-brand-200",
+              ].join(" ")}
+              aria-label={isListening ? "Listening" : "Speak your question"}
+              title={canListen ? (isListening ? "Listening" : "Speak your question") : "Speech entry unavailable"}
+            >
+              <MicrophoneIcon active={isListening} />
+            </button>
             <textarea
+              ref={inputRef}
               id="assistant-question"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              rows={3}
+              onKeyDown={handleInputKeyDown}
+              rows={1}
               placeholder="Type your question…"
-              className="min-h-24 w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="focus-ring max-h-32 min-h-11 flex-1 resize-none rounded-full border border-brand-200 bg-white px-4 py-2.5 text-sm leading-relaxed shadow-sm focus:border-brand-500"
             />
-            <div className="flex gap-2 md:flex-col">
-              <button
-                type="button"
-                onClick={startListening}
-                disabled={!canListen || isListening}
-                className={[
-                  "inline-flex h-11 min-w-11 items-center justify-center rounded-lg border border-brand-200 bg-white px-3 text-brand-800 shadow-sm transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50",
-                  isListening ? "border-brand-500 bg-brand-50 text-brand-900" : "",
-                ].join(" ")}
-                aria-label={isListening ? "Listening" : "Speak your question"}
-                title={canListen ? (isListening ? "Listening" : "Speak your question") : "Speech entry unavailable"}
-              >
-                <MicrophoneIcon active={isListening} />
-              </button>
-              <button
-                type="submit"
-                disabled={isSending || !question.trim()}
-                className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                Ask
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={isSending || !question.trim()}
+              className="focus-ring inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-700 p-0 text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+              aria-label="Send question"
+            >
+              <IconSend />
+            </button>
           </div>
+
+          {!hasConversation ? <SuggestionTicker onPick={ask} /> : null}
         </form>
       </section>
 
-      <p className="text-xs leading-relaxed text-slate-500">
+      <p className="shrink-0 text-xs leading-relaxed text-slate-500">
         Thuto provides guidance based on available programme information. Always confirm final requirements and dates
         with the university.
       </p>
