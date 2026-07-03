@@ -22,6 +22,9 @@ function normalizePublicProfile(row) {
     avatarUrl: row.avatar_url || "",
     distinction: row.distinction?.trim() || "",
     fieldsOfInterest: Array.isArray(row.fields_of_interest) ? row.fields_of_interest : [],
+    universityId: row.university_id || "",
+    universityName: row.university_name?.trim() || "",
+    universityStatus: row.university_status || "",
     universityLine: formatAuthorUniversity({
       universityName: row.university_name,
       universityStatus: row.university_status,
