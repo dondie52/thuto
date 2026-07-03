@@ -84,30 +84,11 @@ function VolumeIcon() {
   );
 }
 
-function LargeSearchDecor({ className = "h-28 w-28 sm:h-32 sm:w-32" }) {
-  return (
-    <div className="relative flex h-44 w-44 items-center justify-center sm:h-52 sm:w-52">
-      <div className="absolute inset-0 rounded-full bg-brand-50/90" aria-hidden />
-      <svg
-        className={`relative text-brand-400 ${className}`}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        aria-hidden
-      >
-        <circle cx="10.5" cy="10.5" r="6.75" />
-        <path strokeLinecap="round" d="M15.5 15.5L21 21" />
-      </svg>
-    </div>
-  );
-}
-
 function SuggestionChips({ onPick }) {
   const chips = [...STARTER_QUESTIONS, ...STARTER_QUESTIONS];
 
   return (
-    <div className="shrink-0 overflow-hidden px-4 pb-4 pt-2 sm:px-5">
+    <div className="shrink-0 overflow-hidden px-4 pb-3 sm:px-5">
       <div className="motion-safe:animate-assistant-hint-scroll motion-reduce:animate-none flex w-max gap-2">
         {chips.map((suggestion, index) => (
           <button
@@ -466,12 +447,14 @@ export default function Assistant() {
       ) : null}
 
       <section className="flex min-h-[calc(100dvh-11rem-env(safe-area-inset-bottom))] flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
-        <div className="flex shrink-0 items-start justify-between gap-3 px-4 py-4 sm:px-5">
+        <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4 sm:px-5">
           <p className="font-display text-lg font-semibold leading-snug text-brand-900 sm:text-xl">{helpHeading}</p>
           <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
             <SparkleIcon />
           </span>
         </div>
+
+        {!hasConversation && !isSending ? <SuggestionChips onPick={ask} /> : null}
 
         {hasConversation || isSending ? (
           <>
@@ -596,14 +579,20 @@ export default function Assistant() {
           </>
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
-            <div className="flex flex-col items-center px-4 pt-2 text-center sm:px-5">
+            <div className="flex flex-1 flex-col items-center justify-center px-4 text-center sm:px-5">
               <ChatBubbleEmpty className="h-16 w-16 sm:h-20 sm:w-20" />
               <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500">
                 Ask anything about your academic journey.
               </p>
             </div>
 
-            <form onSubmit={submit} className="mt-5 shrink-0 px-4 sm:px-5">
+            {error ? (
+              <div className="mx-4 mb-3 shrink-0 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 sm:mx-5">
+                {error}
+              </div>
+            ) : null}
+
+            <form onSubmit={submit} className="shrink-0 px-4 pb-4 sm:px-5">
               <AskInputRow
                 question={question}
                 onQuestionChange={(e) => setQuestion(e.target.value)}
@@ -615,18 +604,6 @@ export default function Assistant() {
                 inputRef={inputRef}
               />
             </form>
-
-            {error ? (
-              <div className="mx-4 mt-3 shrink-0 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 sm:mx-5">
-                {error}
-              </div>
-            ) : null}
-
-            <div className="flex flex-1 items-center justify-center py-2">
-              <LargeSearchDecor />
-            </div>
-
-            <SuggestionChips onPick={ask} />
           </div>
         )}
       </section>
