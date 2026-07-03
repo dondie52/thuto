@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ProgrammeThemeHero from "../ProgrammeThemeHero.jsx";
 import { fetchDailySpotlightProgrammes } from "../../lib/homeAdvertising.js";
+import { resolveProgrammeVisual } from "../../lib/programmeBranding.js";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -12,6 +12,36 @@ const AUTO_ADVANCE_MS = 6000;
 function wrapIndex(index, total) {
   if (total <= 0) return 0;
   return ((index % total) + total) % total;
+}
+
+/**
+ * @param {string | undefined} value
+ */
+function programmeInitials(value) {
+  const text = String(value || "PR").trim();
+  if (!text) return "PR";
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length >= 2) {
+    return `${words[0][0] || ""}${words[1][0] || ""}`.toUpperCase();
+  }
+  return text.slice(0, 3).toUpperCase();
+}
+
+function IconUniversity({ className = "h-3.5 w-3.5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 21h16M6 21V10l6-4 6 4v11M9 21v-4h6v4" />
+    </svg>
+  );
+}
+
+function IconClock({ className = "h-3.5 w-3.5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <circle cx="12" cy="12" r="8" />
+      <path strokeLinecap="round" d="M12 8v4l2.5 2.5" />
+    </svg>
+  );
 }
 
 /**
@@ -81,7 +111,7 @@ export default function HomeDailyProgrammes({
     return (
       <section className="space-y-4" aria-labelledby="home-daily-programmes-heading" aria-busy="true">
         <div className="h-6 w-40 animate-pulse rounded bg-stone-200" />
-        <div className="h-56 animate-pulse rounded-2xl border border-stone-200 bg-stone-100/80" />
+        <div className="h-52 animate-pulse rounded-2xl border border-stone-200 bg-stone-100/80" />
       </section>
     );
   }
@@ -112,99 +142,110 @@ export default function HomeDailyProgrammes({
         <p className="mt-1 text-sm leading-relaxed text-stone-600">{body}</p>
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl border border-brand-200/90 bg-white shadow-card">
-        <div
-          className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
-          style={{ transform: `translateX(-${index * 100}%)` }}
-        >
-          {entries.map((entry) => {
-            const slide = entry.programme;
-            const description =
-              entry.teaser ||
-              slide.description ||
-              "Explore entry requirements, careers, and how this programme fits your BGCSE results.";
-            const metaItems = [
-              slide.duration,
-              typeof slide.minPoints === "number" ? `${slide.minPoints} pts min` : null,
-            ].filter(Boolean);
+      <div className="overflow-hidden rounded-2xl border border-stone-200/90 bg-white shadow-card">
+        <div className="relative overflow-hidden">
+          <div
+            className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
+            style={{ transform: `translateX(-${index * 100}%)` }}
+          >
+            {entries.map((entry) => {
+              const slide = entry.programme;
+              const { imageUrl, label } = resolveProgrammeVisual(slide);
+              const description =
+                entry.teaser ||
+                slide.description ||
+                "Explore entry requirements, careers, and how this programme fits your BGCSE results.";
 
-            return (
-              <article key={slide.id} className="w-full shrink-0" aria-hidden={slide.id !== programme.id}>
-                <Link
-                  to={`/programmes/${slide.id}`}
-                  className="focus-ring group block outline-offset-4"
-                  tabIndex={slide.id === programme.id ? 0 : -1}
-                >
-                  <ProgrammeThemeHero programme={slide} variant="card" className="rounded-none">
-                    <div className="flex flex-wrap items-center gap-2">
-                      {entry.sponsored ? (
-                        <span className="rounded-full bg-amber-300/95 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-950">
-                          Sponsored
-                        </span>
-                      ) : null}
-                      {slide.field ? (
-                        <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white ring-1 ring-inset ring-white/25">
-                          {slide.field}
-                        </span>
-                      ) : null}
+              return (
+                <article key={slide.id} className="w-full shrink-0" aria-hidden={slide.id !== programme.id}>
+                  <div className="flex items-start gap-4 p-5 pb-4">
+                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-stone-200 bg-brand-50">
+                      {imageUrl ? (
+                        <div
+                          className="absolute inset-0 bg-cover bg-center"
+                          style={{ backgroundImage: `url("${imageUrl}")` }}
+                          role="img"
+                          aria-label={label}
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" aria-hidden />
+                      )}
+                      <div className="absolute inset-0 bg-brand-950/40" aria-hidden />
+                      <span className="relative flex h-full w-full items-center justify-center font-display text-sm font-bold text-white drop-shadow">
+                        {programmeInitials(slide.universityShort || slide.university)}
+                      </span>
                     </div>
-                    {slide.university ? (
-                      <p className="mt-2 text-sm font-medium text-brand-50">{slide.university}</p>
-                    ) : null}
-                  </ProgrammeThemeHero>
 
-                  <div className="space-y-3 p-5">
-                    <h3 className="font-display text-lg font-semibold leading-snug text-brand-900 group-hover:text-brand-700 sm:text-xl">
-                      {slide.name}
-                    </h3>
-
-                    {metaItems.length ? (
-                      <div className="flex flex-wrap gap-2">
-                        {metaItems.map((item) => (
-                          <span
-                            key={item}
-                            className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-800 ring-1 ring-inset ring-brand-100"
-                          >
-                            {item}
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-display text-lg font-semibold leading-snug text-brand-900">{slide.name}</h3>
+                      <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-stone-500">
+                        {slide.university ? (
+                          <span className="inline-flex items-center gap-1 font-medium text-brand-700">
+                            <IconUniversity />
+                            {slide.university}
                           </span>
-                        ))}
-                      </div>
-                    ) : null}
-
-                    <p className="line-clamp-3 text-sm leading-relaxed text-stone-600">{description}</p>
-
-                    <p className="text-sm font-semibold text-brand-800 group-hover:underline">{ctaLabel} →</p>
+                        ) : null}
+                        {slide.field ? (
+                          <>
+                            <span aria-hidden>·</span>
+                            <span>{slide.field}</span>
+                          </>
+                        ) : null}
+                        {slide.duration ? (
+                          <>
+                            <span aria-hidden>·</span>
+                            <span className="inline-flex items-center gap-1">
+                              <IconClock />
+                              {slide.duration}
+                            </span>
+                          </>
+                        ) : null}
+                      </p>
+                    </div>
                   </div>
-                </Link>
-              </article>
-            );
-          })}
+
+                  <div className="border-t border-stone-200/90 px-5 py-4">
+                    <p className="line-clamp-3 text-sm leading-relaxed text-stone-600">{description}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
 
-        {showControls ? (
-          <>
-            <button
-              type="button"
-              onClick={goPrev}
-              className="focus-ring absolute left-2 top-[4.5rem] flex h-9 w-9 items-center justify-center rounded-full border border-stone-200/90 bg-white/95 text-brand-800 shadow-sm hover:bg-brand-50 sm:top-[5.5rem]"
-              aria-label="Previous programme"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              className="focus-ring absolute right-2 top-[4.5rem] flex h-9 w-9 items-center justify-center rounded-full border border-stone-200/90 bg-white/95 text-brand-800 shadow-sm hover:bg-brand-50 sm:top-[5.5rem]"
-              aria-label="Next programme"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </>
-        ) : null}
+        <div className="flex items-center justify-between gap-3 border-t border-stone-200/90 px-5 py-4">
+          <Link
+            to={`/programmes/${programme.id}`}
+            className="focus-ring text-sm font-semibold text-brand-800 hover:text-brand-950 hover:underline"
+          >
+            {ctaLabel} →
+          </Link>
+
+          {showControls ? (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={goPrev}
+                className="focus-ring flex h-9 w-9 items-center justify-center rounded-full border border-stone-200 bg-white text-brand-800 shadow-sm hover:bg-brand-50"
+                aria-label="Previous programme"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                className="focus-ring flex h-9 w-9 items-center justify-center rounded-full bg-brand-800 text-white shadow-sm hover:bg-brand-900"
+                aria-label="Next programme"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          ) : null}
+        </div>
       </div>
 
       {showControls ? (
