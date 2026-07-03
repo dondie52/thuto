@@ -11,8 +11,9 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 import HomeCenterCreators from "../components/home/HomeCenterCreators.jsx";
+import HomeDailyProgrammes from "../components/home/HomeDailyProgrammes.jsx";
 import HomeDailySpotlight from "../components/home/HomeDailySpotlight.jsx";
-import HomeFeaturedUniversities from "../components/home/HomeFeaturedUniversities.jsx";
+import HomeSponsorshipHighlight from "../components/home/HomeSponsorshipHighlight.jsx";
 import HomeHeroPartner from "../components/home/HomeHeroPartner.jsx";
 import HomePartnerCampaigns from "../components/home/HomePartnerCampaigns.jsx";
 
@@ -110,10 +111,19 @@ export default function Home() {
         fallbackIds={content.featuredUniversities?.fallbackIds}
       />
 
-      <HomeFeaturedUniversities
-        heading={content.featuredUniversities?.heading}
-        body={content.featuredUniversities?.body}
-        fallbackIds={content.featuredUniversities?.fallbackIds}
+      <HomeDailyProgrammes
+        kicker={content.dailyProgrammes?.kicker}
+        heading={content.dailyProgrammes?.heading}
+        body={content.dailyProgrammes?.body}
+        ctaLabel={content.dailyProgrammes?.ctaLabel}
+        fallbackIds={content.dailyProgrammes?.fallbackIds}
+      />
+
+      <HomeSponsorshipHighlight
+        kicker={content.sponsorshipHighlight?.kicker}
+        heading={content.sponsorshipHighlight?.heading}
+        body={content.sponsorshipHighlight?.body}
+        ctaLabel={content.sponsorshipHighlight?.ctaLabel}
       />
 
       <HomeCenterCreators
