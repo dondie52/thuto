@@ -1,16 +1,18 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import BrandMark from "../BrandMark.jsx";
 import { useScrollChrome } from "../../hooks/useScrollChrome.js";
 import { LandingAuthProvider, landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
-function LandingHeader() {
+function LandingHeader({ headerRef }) {
   const { isSignedIn } = useLandingAuth();
   const chromeVisible = useScrollChrome();
 
   return (
     <header
+      ref={headerRef}
       className={[
-        "sticky top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md transition-transform duration-300 ease-out will-change-transform",
+        "fixed inset-x-0 top-0 z-30 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/90 backdrop-blur-md transition-transform duration-300 ease-out will-change-transform",
         chromeVisible ? "translate-y-0" : "-translate-y-full",
       ].join(" ")}
     >
@@ -54,11 +56,28 @@ function LandingHeader() {
 }
 
 export default function LandingLayout() {
+  const headerRef = useRef(null);
+  const [headerOffset, setHeaderOffset] = useState(0);
+
+  useEffect(() => {
+    const node = headerRef.current;
+    if (!node) return undefined;
+
+    const updateOffset = () => {
+      setHeaderOffset(node.getBoundingClientRect().height);
+    };
+
+    updateOffset();
+    const observer = new ResizeObserver(updateOffset);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <LandingAuthProvider>
       <div className="thuto-page-bg flex min-h-dvh flex-col text-slate-900">
-        <LandingHeader />
-        <main className="flex flex-1 flex-col">
+        <LandingHeader headerRef={headerRef} />
+        <main className="flex flex-1 flex-col" style={{ paddingTop: headerOffset }}>
           <Outlet />
         </main>
       </div>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
@@ -39,6 +39,8 @@ export default function Layout() {
   const isMessageThread = useFeedMessageThread();
   const scrollChromeEnabled = !isMessageThread;
   const chromeVisible = useScrollChrome({ enabled: scrollChromeEnabled });
+  const headerRef = useRef(null);
+  const [headerOffset, setHeaderOffset] = useState(0);
   const { user } = useAuth();
   const [messageCount, setMessageCount] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -81,6 +83,25 @@ export default function Layout() {
     };
   }, [isFeedRoute]);
 
+  useEffect(() => {
+    if (isMessageThread) {
+      setHeaderOffset(0);
+      return undefined;
+    }
+
+    const node = headerRef.current;
+    if (!node) return undefined;
+
+    const updateOffset = () => {
+      setHeaderOffset(node.getBoundingClientRect().height);
+    };
+
+    updateOffset();
+    const observer = new ResizeObserver(updateOffset);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [isMessageThread, isFeedRoute, isFeedCompact, chromeVisible, location.pathname]);
+
   function handleFeedRefresh() {
     triggerFeedRefresh();
     if (window.location.pathname.replace(/\/$/, "") === "/feed") {
@@ -99,8 +120,9 @@ export default function Layout() {
       <OnboardingRedirect />
       {!isMessageThread ? (
         <header
+          ref={headerRef}
           className={[
-            "feed-chrome-header sticky top-0 z-30 transition-transform duration-300 ease-out will-change-transform",
+            "feed-chrome-header fixed inset-x-0 top-0 z-30 transition-transform duration-300 ease-out will-change-transform",
             chromeVisible ? "translate-y-0" : "-translate-y-full sm:translate-y-0",
             isFeedRoute
               ? `${FEED_CHROME_CLASSES} border-b border-brand-100/80`
@@ -150,8 +172,9 @@ export default function Layout() {
           "mx-auto flex w-full flex-1 flex-col",
           isMessageThread
             ? "max-w-none px-0 pb-0 pt-0"
-            : ["max-w-lg px-4 sm:max-w-3xl", isFeedRoute ? "min-h-0 bg-white pb-6 pt-0" : "py-6 sm:py-8"].join(" "),
+            : ["max-w-lg px-4 sm:max-w-3xl", isFeedRoute ? "min-h-0 bg-white pb-6" : "pb-6 sm:pb-8"].join(" "),
         ].join(" ")}
+        style={isMessageThread ? undefined : { paddingTop: headerOffset }}
       >
         <Outlet />
         {!isHomeRoute && !isMessageThread ? <SubscriptionAdSlot /> : null}

@@ -4,8 +4,7 @@ const SCROLL_DELTA_THRESHOLD = 8;
 const TOP_REVEAL_OFFSET = 48;
 
 /**
- * Hides app chrome while the user scrolls up (content moves up) and reveals it when
- * scrolling down — same pattern as LinkedIn, Reddit, and YouTube mobile feeds.
+ * Hides app chrome while the user scrolls down and reveals it when scrolling up.
  */
 export function useScrollChrome({ enabled = true } = {}) {
   const [chromeVisible, setChromeVisible] = useState(true);
@@ -27,10 +26,10 @@ export function useScrollChrome({ enabled = true } = {}) {
 
       if (currentY <= TOP_REVEAL_OFFSET) {
         setChromeVisible(true);
+      } else if (delta < 0) {
+        setChromeVisible(true);
       } else if (delta > SCROLL_DELTA_THRESHOLD) {
         setChromeVisible(false);
-      } else if (delta < -SCROLL_DELTA_THRESHOLD) {
-        setChromeVisible(true);
       }
 
       lastScrollYRef.current = currentY;
@@ -44,7 +43,11 @@ export function useScrollChrome({ enabled = true } = {}) {
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("scroll", handleScroll, { passive: true, capture: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("scroll", handleScroll, { capture: true });
+    };
   }, [enabled]);
 
   return chromeVisible;
