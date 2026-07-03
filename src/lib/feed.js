@@ -1,6 +1,7 @@
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 import { isPremiumActive } from "./premium.js";
 import { applyAuthorProFlags, fetchProStatusMap } from "./proStatus.js";
+import { withNetworkRetry } from "./networkErrors.js";
 
 export { isSupabaseConfigured };
 
@@ -339,6 +340,10 @@ async function hydrateFeedPosts(supabase, posts, viewerUserId = null) {
  * @param {{ mode?: 'for_you' | 'latest', limit?: number, cursor?: { publishedAt?: string, id?: string, feedScore?: number | null } }} [options]
  */
 export async function fetchFeedPosts({ mode = "for_you", limit = 30, cursor = null } = {}) {
+  return withNetworkRetry(() => fetchFeedPostsOnce({ mode, limit, cursor }));
+}
+
+async function fetchFeedPostsOnce({ mode = "for_you", limit = 30, cursor = null } = {}) {
   const supabase = getSupabase();
   if (!supabase) return [];
 

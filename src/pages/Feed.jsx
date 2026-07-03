@@ -17,6 +17,7 @@ import {
 } from "../lib/feed.js";
 import { fetchFollowingSet, toggleFollowUser } from "../lib/feedFollows.js";
 import { fetchSavedPostSet, toggleSavedPost } from "../lib/savedPosts.js";
+import { formatNetworkErrorMessage } from "../lib/networkErrors.js";
 
 function profileInitial(name) {
   const letter = String(name || "S")
@@ -112,7 +113,7 @@ export default function Feed() {
           ? batch
           : [...currentPosts, ...batch.filter((post) => !currentPosts.some((item) => item.id === post.id))];
         setPosts(merged);
-        await Promise.all([
+        await Promise.allSettled([
           syncFollowingState(merged),
           fetchSavedPostSet(merged.map((post) => post.id)).then(setSavedPostIds),
         ]);
@@ -129,7 +130,7 @@ export default function Feed() {
         }
       } catch (err) {
         if (generation === loadFeedGenerationRef.current) {
-          setError(err.message || "Could not load the feed.");
+          setError(formatNetworkErrorMessage(err, "Could not load the feed. Check your connection and try again."));
         }
       } finally {
         if (generation === loadFeedGenerationRef.current) {
@@ -143,10 +144,12 @@ export default function Feed() {
   );
 
   useEffect(() => {
+    if (configured && isAuthLoading) return undefined;
     setPostFeedbackById({});
     setReportedTargetKeys({});
     loadFeed({ reset: true });
-  }, [user?.id, loadFeed]);
+    return undefined;
+  }, [configured, isAuthLoading, user?.id, loadFeed]);
 
   useEffect(() => {
     if (!registerRefresh) return undefined;
@@ -600,9 +603,19 @@ export default function Feed() {
                 </p>
               ) : null}
               {error ? (
-                <p className="rounded-lg border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs text-red-800" role="alert">
-                  {error}
-                </p>
+                <div
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs text-red-800"
+                  role="alert"
+                >
+                  <p>{error}</p>
+                  <button
+                    type="button"
+                    onClick={() => loadFeed({ reset: true })}
+                    className="focus-ring shrink-0 rounded-md border border-red-300 bg-white px-2 py-1 text-[11px] font-semibold text-red-800 hover:bg-red-100"
+                  >
+                    Retry
+                  </button>
+                </div>
               ) : null}
             </form>
           </div>

@@ -41,6 +41,23 @@ export function AuthProvider({ children }) {
       setProfile(null);
       return null;
     }
+    if (!data) {
+      const { data: bootstrapped, error: bootstrapError } = await supabase.rpc("ensure_own_profile");
+      if (bootstrapError) {
+        const { data: legacyBootstrapped, error: legacyError } = await supabase.rpc("update_own_profile", { patch: {} });
+        if (legacyError) {
+          console.warn("Profile bootstrap failed:", bootstrapError.message);
+          setProfile(null);
+          return null;
+        }
+        const normalizedLegacy = normalizeProfileRow(legacyBootstrapped);
+        setProfile(normalizedLegacy);
+        return normalizedLegacy;
+      }
+      const normalizedBootstrapped = normalizeProfileRow(bootstrapped);
+      setProfile(normalizedBootstrapped);
+      return normalizedBootstrapped;
+    }
     const normalized = normalizeProfileRow(data);
     setProfile(normalized);
     return normalized;
