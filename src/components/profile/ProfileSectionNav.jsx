@@ -1,32 +1,78 @@
-const sections = [
-  { id: "personal-info", label: "Personal info" },
-  { id: "security", label: "Security" },
-  { id: "subscription", label: "Subscription" },
-  { id: "billing", label: "Billing" },
-  { id: "notifications", label: "Notifications" },
-  { id: "privacy", label: "Privacy" },
-  { id: "support", label: "Support" },
+import { useCallback, useEffect, useState } from "react";
+
+export const PROFILE_TABS = [
+  { id: "about", label: "About" },
   { id: "activity", label: "Activity" },
   { id: "connections", label: "Connections" },
+  { id: "privacy", label: "Privacy" },
+  { id: "billing", label: "Billing" },
+  { id: "settings", label: "Settings" },
 ];
 
-export default function ProfileSectionNav({ signedIn }) {
+const TAB_IDS = new Set(PROFILE_TABS.map((tab) => tab.id));
+
+function readTabFromHash() {
+  const hash = window.location.hash.replace(/^#/, "");
+  return TAB_IDS.has(hash) ? hash : "about";
+}
+
+export function useProfileTab() {
+  const [activeTab, setActiveTabState] = useState(readTabFromHash);
+
+  const setActiveTab = useCallback((tabId) => {
+    if (!TAB_IDS.has(tabId)) return;
+    setActiveTabState(tabId);
+    const nextHash = `#${tabId}`;
+    if (window.location.hash !== nextHash) {
+      window.history.replaceState(null, "", nextHash);
+    }
+  }, []);
+
+  useEffect(() => {
+    function syncFromHash() {
+      setActiveTabState(readTabFromHash());
+    }
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  return [activeTab, setActiveTab];
+}
+
+/**
+ * @param {{
+ *   activeTab: string,
+ *   onTabChange: (tabId: string) => void,
+ *   signedIn: boolean,
+ * }} props
+ */
+export default function ProfileSectionNav({ activeTab, onTabChange, signedIn }) {
   if (!signedIn) return null;
 
   return (
     <nav
-      className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="-mx-4 flex gap-0 overflow-x-auto border-b border-stone-200/70 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       aria-label="Profile sections"
     >
-      {sections.map((section) => (
-        <a
-          key={section.id}
-          href={`#${section.id}`}
-          className="focus-ring shrink-0 rounded-full border border-brand-200 bg-white px-3 py-1.5 text-xs font-semibold text-brand-800 transition hover:bg-brand-50"
-        >
-          {section.label}
-        </a>
-      ))}
+      {PROFILE_TABS.map((tab) => {
+        const isActive = activeTab === tab.id;
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => onTabChange(tab.id)}
+            className={[
+              "focus-ring shrink-0 border-b-2 px-3 py-2.5 text-xs font-semibold transition sm:px-4 sm:text-sm",
+              isActive
+                ? "border-brand-700 text-brand-800"
+                : "border-transparent text-stone-500 hover:border-stone-200 hover:text-brand-800",
+            ].join(" ")}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {tab.label}
+          </button>
+        );
+      })}
     </nav>
   );
 }

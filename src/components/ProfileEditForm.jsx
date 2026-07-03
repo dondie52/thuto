@@ -1,58 +1,43 @@
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchTargetInstitutions, saveTargetInstitutions } from "../lib/onboarding.js";
-import { formatAuthorUniversity, uploadProfileAvatar, PROFILE_SCHEMA_UNAVAILABLE_MESSAGE } from "../lib/profile.js";
+import { formatAuthorUniversity, PROFILE_SCHEMA_UNAVAILABLE_MESSAGE } from "../lib/profile.js";
 import FieldInterestPills from "./onboarding/FieldInterestPills.jsx";
 import InstitutionMultiSelect from "./onboarding/InstitutionMultiSelect.jsx";
 import UsernameInput from "./onboarding/UsernameInput.jsx";
 import { normalizeUsername } from "../lib/username.js";
 
-function ProfileAvatarPreview({ url, displayName, onPickFile, isUploading }) {
-  const initial = String(displayName || "S")
-    .trim()
-    .charAt(0)
-    .toUpperCase();
+const MAX_INSTITUTIONS = 10;
+const MAX_FIELD_OPTIONS = 8;
 
-  return (
-    <div className="flex flex-wrap items-center gap-4">
-      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-brand-100 ring-2 ring-brand-200">
-        {url ? (
-          <img src={url} alt="" className="h-full w-full object-cover" />
-        ) : (
-          <span className="flex h-full w-full items-center justify-center text-2xl font-bold text-brand-800" aria-hidden>
-            {initial || "S"}
-          </span>
-        )}
-      </div>
-      <div>
-        <label className="block">
-          <span className="sr-only">Profile picture</span>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            disabled={isUploading}
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) onPickFile(file);
-              event.target.value = "";
-            }}
-            className="block w-full max-w-xs text-sm text-stone-600 file:mr-3 file:rounded-xl file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-brand-800 hover:file:bg-brand-100 disabled:opacity-60"
-          />
-        </label>
-        <p className="mt-1 text-xs text-stone-500">Max 2MB.</p>
-      </div>
-    </div>
-  );
+const ProfileEditFormContext = createContext(null);
+
+export function useProfileEditFormContext() {
+  const context = useContext(ProfileEditFormContext);
+  if (!context) {
+    throw new Error("Profile edit fields must be used within ProfileEditForm.");
+  }
+  return context;
 }
 
-/**
- * @param {{
- *   profile: object | null,
- *   onSave: (patch: object) => Promise<object>,
- *   disabled?: boolean,
- * }} props
- */
-export default function ProfileEditForm({ profile, onSave, disabled = false }) {
+function profileSaveErrorMessage(err) {
+  const message = err?.message || "Could not save profile.";
+  if (/duplicate key|profiles_username_lower_idx/i.test(message)) {
+    return "This username is already taken. Try another.";
+  }
+  if (/permission denied for table user_target_institutions/i.test(message)) {
+    return "Could not save your university choices. Please try again in a moment.";
+  }
+  if (message === PROFILE_SCHEMA_UNAVAILABLE_MESSAGE) {
+    return message;
+  }
+  if (/schema cache/i.test(message) || /could not find the ['"]?bio['"]? column/i.test(message)) {
+    return PROFILE_SCHEMA_UNAVAILABLE_MESSAGE;
+  }
+  return message;
+}
+
+function useProfileEditFormState(profile, onSave, disabled) {
   const [universities, setUniversities] = useState([]);
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -64,7 +49,6 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [messagePrivacy, setMessagePrivacy] = useState("everyone");
   const [isSaving, setIsSaving] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
@@ -122,39 +106,6 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
     universityStatus: profile?.university_status || "aspiring",
   });
 
-  async function handleAvatarPick(file) {
-    setIsUploading(true);
-    setError("");
-    setNotice("");
-    try {
-      const url = await uploadProfileAvatar(file);
-      setAvatarUrl(url);
-      await onSave({ avatarUrl: url });
-      setNotice("Photo updated.");
-    } catch (err) {
-      setError(err.message || "Could not upload profile picture.");
-    } finally {
-      setIsUploading(false);
-    }
-  }
-
-  function profileSaveErrorMessage(err) {
-    const message = err?.message || "Could not save profile.";
-    if (/duplicate key|profiles_username_lower_idx/i.test(message)) {
-      return "This username is already taken. Try another.";
-    }
-    if (/permission denied for table user_target_institutions/i.test(message)) {
-      return "Could not save your university choices. Please try again in a moment.";
-    }
-    if (message === PROFILE_SCHEMA_UNAVAILABLE_MESSAGE) {
-      return message;
-    }
-    if (/schema cache/i.test(message) || /could not find the ['"]?bio['"]? column/i.test(message)) {
-      return PROFILE_SCHEMA_UNAVAILABLE_MESSAGE;
-    }
-    return message;
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
     setIsSaving(true);
@@ -187,15 +138,157 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
     }
   }
 
-  return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <ProfileAvatarPreview
-        url={avatarUrl}
-        displayName={fullName}
-        onPickFile={handleAvatarPick}
-        isUploading={isUploading}
-      />
+  return {
+    profile,
+    disabled,
+    universities,
+    fullName,
+    setFullName,
+    username,
+    setUsername,
+    bio,
+    setBio,
+    usernameValid,
+    setUsernameValid,
+    targetInstitutionIds,
+    setTargetInstitutionIds,
+    fieldsOfInterest,
+    setFieldsOfInterest,
+    distinction,
+    setDistinction,
+    avatarUrl,
+    messagePrivacy,
+    setMessagePrivacy,
+    isSaving,
+    error,
+    notice,
+    previewUniversity,
+    selectedUniversities,
+    handleSubmit,
+  };
+}
 
+function FormFeedback() {
+  const { notice, error } = useProfileEditFormContext();
+  return (
+    <>
+      {notice ? (
+        <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900" role="status">
+          {notice}
+        </p>
+      ) : null}
+      {error ? (
+        <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+          {error}
+        </p>
+      ) : null}
+    </>
+  );
+}
+
+export function ProfileAboutFields() {
+  const { bio, setBio, distinction, setDistinction, messagePrivacy, setMessagePrivacy, disabled, isSaving } =
+    useProfileEditFormContext();
+
+  return (
+    <div className="space-y-4">
+      <label className="block">
+        <span className="text-xs font-semibold text-stone-600">Bio / headline</span>
+        <textarea
+          value={bio}
+          onChange={(event) => setBio(event.target.value)}
+          maxLength={150}
+          rows={3}
+          disabled={disabled || isSaving}
+          placeholder='e.g. "Aspiring software engineer looking to join BIUST"'
+          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+        />
+      </label>
+
+      <label className="block">
+        <span className="text-xs font-semibold text-stone-600">Tagline</span>
+        <input
+          value={distinction}
+          onChange={(event) => setDistinction(event.target.value)}
+          maxLength={120}
+          disabled={disabled || isSaving}
+          placeholder="e.g. First class hopeful, prefect, BGCSE 2025"
+          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+        />
+      </label>
+
+      <label className="block">
+        <span className="text-xs font-semibold text-stone-600">Who can message you</span>
+        <select
+          value={messagePrivacy}
+          onChange={(event) => setMessagePrivacy(event.target.value)}
+          disabled={disabled || isSaving}
+          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+        >
+          <option value="everyone">Everyone on Thuto</option>
+          <option value="followers_only">People you follow or who follow you</option>
+          <option value="connections_only">Accepted connections only</option>
+        </select>
+      </label>
+    </div>
+  );
+}
+
+export function ProfileUniversitiesFields() {
+  const { universities, targetInstitutionIds, setTargetInstitutionIds, disabled, isSaving } =
+    useProfileEditFormContext();
+
+  return (
+    <div>
+      <div className="mt-2">
+        <InstitutionMultiSelect
+          universities={universities}
+          selectedIds={targetInstitutionIds}
+          onChange={setTargetInstitutionIds}
+          max={MAX_INSTITUTIONS}
+          disabled={disabled || isSaving}
+        />
+      </div>
+      <p className="mt-2 text-xs text-stone-500">
+        {targetInstitutionIds.length} of {MAX_INSTITUTIONS} selected • Select up to {MAX_INSTITUTIONS} institutions to
+        seed your feed.
+      </p>
+    </div>
+  );
+}
+
+export function ProfileFieldsOfInterest() {
+  const { fieldsOfInterest, setFieldsOfInterest, disabled, isSaving } = useProfileEditFormContext();
+
+  return (
+    <div>
+      <div className="mt-2">
+        <FieldInterestPills selected={fieldsOfInterest} onChange={setFieldsOfInterest} disabled={disabled || isSaving} />
+      </div>
+      <p className="mt-2 text-xs text-stone-500">
+        {fieldsOfInterest.length} of {MAX_FIELD_OPTIONS} selected • Choose the areas you&apos;re most interested in.
+      </p>
+    </div>
+  );
+}
+
+export function ProfilePersonalFields() {
+  const {
+    fullName,
+    setFullName,
+    username,
+    setUsername,
+    profile,
+    disabled,
+    isSaving,
+    usernameValid,
+    setUsernameValid,
+    previewUniversity,
+    selectedUniversities,
+  } = useProfileEditFormContext();
+
+  return (
+    <div className="space-y-4">
       <label className="block">
         <span className="text-xs font-semibold text-stone-600">Display name</span>
         <input
@@ -216,58 +309,6 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
         onValidityChange={setUsernameValid}
       />
 
-      <label className="block">
-        <span className="text-xs font-semibold text-stone-600">Bio / headline</span>
-        <textarea
-          value={bio}
-          onChange={(event) => setBio(event.target.value)}
-          maxLength={150}
-          rows={3}
-          disabled={disabled || isSaving}
-          placeholder='e.g. "Aspiring software engineer looking to join BIUST"'
-          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-        />
-      </label>
-
-      <label className="block">
-        <span className="text-xs font-semibold text-stone-600">Who can message you</span>
-        <select
-          value={messagePrivacy}
-          onChange={(event) => setMessagePrivacy(event.target.value)}
-          disabled={disabled || isSaving}
-          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-        >
-          <option value="everyone">Everyone on Thuto</option>
-          <option value="followers_only">People you follow or who follow you</option>
-          <option value="connections_only">Accepted connections only</option>
-        </select>
-      </label>
-
-      <div>
-        <p className="text-xs font-semibold text-stone-600">Universities you&apos;re interested in</p>
-        <p className="mt-0.5 text-xs text-stone-500">Tick all institutions you want to follow or apply to.</p>
-        <div className="mt-2">
-          <InstitutionMultiSelect
-            universities={universities}
-            selectedIds={targetInstitutionIds}
-            onChange={setTargetInstitutionIds}
-            disabled={disabled || isSaving}
-          />
-        </div>
-      </div>
-
-      <div>
-        <p className="text-xs font-semibold text-stone-600">Fields of interest</p>
-        <p className="mt-0.5 text-xs text-stone-500">Pick areas like science, business, health, and more.</p>
-        <div className="mt-2">
-          <FieldInterestPills
-            selected={fieldsOfInterest}
-            onChange={setFieldsOfInterest}
-            disabled={disabled || isSaving}
-          />
-        </div>
-      </div>
-
       {previewUniversity ? (
         <p className="rounded-xl bg-brand-50 px-3 py-2 text-xs text-brand-900">
           On the feed: <span className="font-semibold">{previewUniversity}</span>
@@ -280,36 +321,90 @@ export default function ProfileEditForm({ profile, onSave, disabled = false }) {
         </p>
       ) : null}
 
-      <label className="block">
-        <span className="text-xs font-semibold text-stone-600">Tagline</span>
-        <input
-          value={distinction}
-          onChange={(event) => setDistinction(event.target.value)}
-          maxLength={120}
-          disabled={disabled || isSaving}
-          placeholder="e.g. First class hopeful, prefect, BGCSE 2025"
-          className="mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
-        />
-      </label>
+      <FormFeedback />
 
-      {notice ? (
-        <p className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900" role="status">
-          {notice}
-        </p>
-      ) : null}
-      {error ? (
-        <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
-          {error}
-        </p>
-      ) : null}
-
-      <button
-        type="submit"
-        disabled={disabled || isSaving || isUploading || (username.trim() && !usernameValid)}
-        className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {isSaving ? "Saving..." : "Save profile"}
-      </button>
-    </form>
+      <ProfileSaveButton usernameValid={usernameValid} />
+    </div>
   );
 }
+
+function ProfileSaveButton({ usernameValid }) {
+  const { disabled, isSaving, username } = useProfileEditFormContext();
+  return (
+    <button
+      type="submit"
+      disabled={disabled || isSaving || (username.trim() && !usernameValid)}
+      className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      {isSaving ? "Saving..." : "Save profile"}
+    </button>
+  );
+}
+
+function AboutIcon() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function UniversityIcon() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function StarIcon() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path
+        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PersonIcon() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+/**
+ * @param {{
+ *   profile: object | null,
+ *   onSave: (patch: object) => Promise<object>,
+ *   disabled?: boolean,
+ *   children?: import("react").ReactNode,
+ * }} props
+ */
+export default function ProfileEditForm({ profile, onSave, disabled = false, children }) {
+  const formState = useProfileEditFormState(profile, onSave, disabled);
+
+  return (
+    <ProfileEditFormContext.Provider value={formState}>
+      <form className="space-y-0" onSubmit={formState.handleSubmit}>
+        {children || (
+          <>
+            <ProfileAboutFields />
+            <ProfileUniversitiesFields />
+            <ProfileFieldsOfInterest />
+            <ProfilePersonalFields />
+          </>
+        )}
+      </form>
+    </ProfileEditFormContext.Provider>
+  );
+}
+
+export { AboutIcon, UniversityIcon, StarIcon, PersonIcon };
