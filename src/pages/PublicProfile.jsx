@@ -25,11 +25,36 @@ function profileInitial(name) {
   return letter || "S";
 }
 
+function formatProfileCount(value) {
+  const count = Number(value) || 0;
+  if (count >= 1_000_000) {
+    const compact = count / 1_000_000;
+    return `${compact >= 10 ? Math.round(compact) : compact.toFixed(1).replace(/\.0$/, "")}M`;
+  }
+  if (count >= 10_000) {
+    const compact = count / 1_000;
+    return `${compact >= 100 ? Math.round(compact) : compact.toFixed(1).replace(/\.0$/, "")}K`;
+  }
+  return count.toLocaleString();
+}
+
 function connectLabel(status) {
   if (status === "accepted") return "Connected";
   if (status === "pending_outgoing") return "Requested";
   if (status === "pending_incoming") return "Respond";
   return "Connect";
+}
+
+function MessageIcon({ className = "size-4" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M22 2 11 13M22 2l-7 20-4-9-9-4Z"
+      />
+    </svg>
+  );
 }
 
 export default function PublicProfile() {
@@ -267,134 +292,183 @@ export default function PublicProfile() {
   }
 
   const isOwnProfile = user?.id === profile.id;
+  const hasBioSection = Boolean(profile.distinction?.trim());
+  const hasFieldsOfInterest = profile.fieldsOfInterest.length > 0;
 
   return (
-    <div className="space-y-0 pt-1">
+    <div className="space-y-0 pt-0">
       {error ? (
-        <p className="mx-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+        <p className="mx-4 mt-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
           {error}
         </p>
       ) : null}
 
-      <section className="border-b border-stone-200/70 px-4 pb-3 pt-2">
-        <div className="flex items-start gap-2.5">
-          {profile.avatarUrl ? (
-            <img src={profile.avatarUrl} alt="" className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-brand-100" />
-          ) : (
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white">
-              {profileInitial(profile.fullName)}
-            </span>
-          )}
-          <div className="min-w-0 flex-1">
-            <h1 className="min-w-0 text-base font-semibold leading-snug text-brand-900">
-              <UserDisplayName
-                name={profile.fullName}
-                isPro={profile.isPro}
-                className="max-w-full"
-                nameClassName="truncate text-base font-semibold"
-                badgeClassName="size-3.5 shrink-0"
-              />
-            </h1>
-            <div className="mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-stone-600">
-              <span>
-                <span className="font-semibold text-brand-900">{counts.followers}</span> followers
-              </span>
-              <span>
-                <span className="font-semibold text-brand-900">{counts.following}</span> following
-              </span>
-            </div>
-            {profile.universityLine ? <p className="mt-0.5 text-xs text-brand-800">{profile.universityLine}</p> : null}
+      <section className="border-b border-stone-200/70 bg-white pb-4">
+        <div className="relative h-28 bg-gradient-to-r from-brand-800 via-brand-700 to-brand-600 sm:h-32">
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 15% 85%, rgba(255,255,255,0.35) 0%, transparent 45%), radial-gradient(circle at 85% 15%, rgba(0,0,0,0.2) 0%, transparent 40%)",
+            }}
+          />
+          <div className="absolute right-3 top-3 rounded-md bg-white/95 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-800 shadow-sm">
+            Thuto
           </div>
         </div>
 
-        {profile.bio || profile.distinction ? (
-          <div className="mt-2 space-y-0.5">
-            {profile.bio ? (
-              <p className="text-sm leading-relaxed text-stone-700">{profile.bio}</p>
-            ) : null}
-            {profile.distinction ? (
-              <p className="text-xs text-stone-500">{profile.distinction}</p>
-            ) : null}
-          </div>
-        ) : null}
-        {profile.fieldsOfInterest.length ? (
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {profile.fieldsOfInterest.map((field) => (
-              <span key={field} className="rounded-full bg-brand-50 px-2.5 py-0.5 text-[11px] font-semibold text-brand-800">
-                {field}
+        <div className="relative px-4">
+          <div className="relative -mt-10 mb-3 inline-block">
+            <div className="relative h-20 w-20 overflow-hidden rounded-full bg-brand-100 ring-4 ring-white sm:h-[5.25rem] sm:w-[5.25rem]">
+              {profile.avatarUrl ? (
+                <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-2xl font-bold text-brand-800">
+                  {profileInitial(profile.fullName)}
+                </span>
+              )}
+            </div>
+            {profile.isPro ? (
+              <span
+                className="absolute bottom-0.5 right-0.5 flex size-5 items-center justify-center rounded-full bg-brand-700 text-white ring-2 ring-white"
+                title="Verified Pro"
+                aria-label="Verified Pro"
+              >
+                <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
               </span>
-            ))}
+            ) : null}
           </div>
-        ) : null}
 
-        {user && !isOwnProfile ? (
-          <div className="mt-2.5 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={handleFollow}
-              className={[
-                "focus-ring rounded-full px-4 py-2 text-sm font-semibold",
-                isFollowing ? "border border-brand-200 bg-white text-brand-800" : "bg-brand-700 text-white hover:bg-brand-800",
-              ].join(" ")}
-            >
-              {isFollowing ? "Following" : "Follow"}
-            </button>
-            {connectionStatus === "pending_incoming" ? (
+          <div className="min-w-0">
+            <h1 className="font-display text-xl font-bold leading-tight text-brand-900 sm:text-2xl">
+              <UserDisplayName
+                name={profile.fullName}
+                isPro={profile.isPro}
+                nameClassName="min-w-0 break-words"
+                badgeClassName="size-4 shrink-0"
+              />
+            </h1>
+
+            {profile.bio ? (
+              <p className="mt-1 text-sm leading-snug text-stone-700">{profile.bio}</p>
+            ) : null}
+
+            {profile.universityLine ? (
+              <p className="mt-0.5 text-xs text-brand-800/90">{profile.universityLine}</p>
+            ) : null}
+
+            <p className="mt-2 text-xs text-stone-600">
+              <span className="font-semibold text-brand-900">{formatProfileCount(counts.followers)}</span> followers
+              <span className="mx-1.5 text-stone-400" aria-hidden>
+                •
+              </span>
+              <span className="font-semibold text-brand-900">{formatProfileCount(counts.following)}</span> following
+            </p>
+          </div>
+
+          {user && !isOwnProfile ? (
+            <div className="mt-4 flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={handleIncomingAccept}
-                className="focus-ring rounded-full bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+                onClick={handleFollow}
+                className={[
+                  "focus-ring flex-1 rounded-full px-4 py-2.5 text-sm font-semibold sm:flex-none",
+                  isFollowing
+                    ? "border border-brand-200 bg-white text-brand-800 hover:bg-brand-50"
+                    : "bg-brand-700 text-white hover:bg-brand-800",
+                ].join(" ")}
               >
-                Accept connection
+                {isFollowing ? "Following" : "+ Follow"}
               </button>
-            ) : (
               <button
                 type="button"
-                onClick={handleConnect}
-                disabled={connectionStatus === "pending_outgoing" || connectionStatus === "accepted"}
-                className="focus-ring rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50 disabled:opacity-60"
+                onClick={handleMessage}
+                className="focus-ring flex flex-1 items-center justify-center gap-1.5 rounded-full border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50 sm:flex-none"
               >
-                {connectLabel(connectionStatus)}
+                <MessageIcon />
+                Message
               </button>
-            )}
-            <button
-              type="button"
-              onClick={handleMessage}
-              className="focus-ring rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50"
-            >
-              Message
-            </button>
-          </div>
-        ) : null}
+              {connectionStatus === "pending_incoming" ? (
+                <button
+                  type="button"
+                  onClick={handleIncomingAccept}
+                  className="focus-ring rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+                >
+                  Accept connection
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleConnect}
+                  disabled={connectionStatus === "pending_outgoing" || connectionStatus === "accepted"}
+                  className="focus-ring rounded-full border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50 disabled:opacity-60"
+                >
+                  {connectLabel(connectionStatus)}
+                </button>
+              )}
+            </div>
+          ) : null}
 
-        {user && !isPremium && !isOwnProfile ? (
-          <p className="mt-2 text-xs text-slate-600">
-            Free accounts can message people who follow you or accepted connections.{" "}
-            <Link to="/upgrade" className="font-semibold text-brand-700 underline">
-              Pro
-            </Link>{" "}
-            lets you message anyone.
-          </p>
-        ) : null}
+          {user && !isPremium && !isOwnProfile ? (
+            <p className="mt-3 text-xs text-slate-600">
+              Free accounts can message people who follow you or accepted connections.{" "}
+              <Link to="/upgrade" className="font-semibold text-brand-700 underline">
+                Pro
+              </Link>{" "}
+              lets you message anyone.
+            </p>
+          ) : null}
 
-        {!user ? (
-          <p className="mt-3 text-sm text-stone-600">
-            <Link to={`/auth?mode=login&next=${encodeURIComponent(profilePath(profile.username) || "/feed")}`} className="font-semibold text-brand-800 underline">
-              Sign in
-            </Link>{" "}
-            to follow, connect, or message {profile.fullName}.
-          </p>
-        ) : null}
+          {!user ? (
+            <p className="mt-4 text-sm text-stone-600">
+              <Link
+                to={`/auth?mode=login&next=${encodeURIComponent(profilePath(profile.username) || "/feed")}`}
+                className="font-semibold text-brand-800 underline"
+              >
+                Sign in
+              </Link>{" "}
+              to follow, connect, or message {profile.fullName}.
+            </p>
+          ) : null}
+        </div>
       </section>
 
-      <section className="space-y-3 px-4 pt-3">
-        <h2 className="text-sm font-semibold text-brand-900">Posts</h2>
+      {hasBioSection || hasFieldsOfInterest ? (
+        <section className="border-b border-stone-200/70 px-4 py-4">
+          <h2 className="font-display text-base font-semibold text-brand-900">Bio</h2>
+          {hasBioSection ? (
+            <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-stone-700">{profile.distinction}</p>
+          ) : null}
+          {hasFieldsOfInterest ? (
+            <div className={`flex flex-wrap gap-1.5 ${hasBioSection ? "mt-3" : "mt-2"}`}>
+              {profile.fieldsOfInterest.map((field) => (
+                <span
+                  key={field}
+                  className="rounded-full bg-brand-50 px-2.5 py-0.5 text-[11px] font-semibold text-brand-800"
+                >
+                  {field}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
+      <section className="space-y-3 px-4 py-4">
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="font-display text-base font-semibold text-brand-900">Posts</h2>
+          {posts.length > 0 ? (
+            <span className="text-xs font-semibold text-stone-500">{posts.length} shown</span>
+          ) : null}
+        </div>
         {!posts.length ? (
           <div className="rounded-2xl border border-dashed border-brand-200 bg-white p-6 text-center text-sm text-stone-600">
             {profile.fullName} has not posted yet.
           </div>
         ) : (
-          <div className="bg-white">
+          <div className="overflow-hidden rounded-2xl border border-stone-200/70 bg-white">
             {posts.map((post) => (
               <FeedPostCard
                 key={post.id}
