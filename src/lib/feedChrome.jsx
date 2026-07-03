@@ -22,6 +22,12 @@ export function useFeedMessageThread() {
   return isFeedMessageThreadPath(normalizePath(location));
 }
 
+/** True only on the main feed timeline — not sub-pages. */
+export function useFeedHomeRoute() {
+  const location = useLocation();
+  return normalizePath(location) === "/feed";
+}
+
 /** True on list sub-pages — People, Chats list, Notifications, Search, profiles. NOT threads. */
 export function useFeedCompactChrome() {
   const location = useLocation();

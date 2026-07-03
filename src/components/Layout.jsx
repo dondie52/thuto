@@ -8,7 +8,7 @@ import OnboardingRedirect from "./OnboardingRedirect.jsx";
 import SubscriptionAdSlot from "./SubscriptionAdSlot.jsx";
 import { useScrollChrome } from "../hooks/useScrollChrome.js";
 import { useAuth } from "../lib/auth.jsx";
-import { FEED_CHROME_CLASSES, useFeedCompactChrome, useFeedMessageThread, useFeedRoute } from "../lib/feedChrome.jsx";
+import { FEED_CHROME_CLASSES, useFeedCompactChrome, useFeedHomeRoute, useFeedMessageThread, useFeedRoute } from "../lib/feedChrome.jsx";
 import { triggerFeedRefresh } from "../lib/feedRefresh.js";
 import { fetchUnreadMessageCount } from "../lib/messaging.js";
 import { fetchUnreadNotificationCount } from "../lib/notifications.js";
@@ -35,9 +35,11 @@ export default function Layout() {
   const location = useLocation();
   const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
   const isFeedRoute = useFeedRoute();
+  const isFeedHome = useFeedHomeRoute();
   const isFeedCompact = useFeedCompactChrome();
   const isMessageThread = useFeedMessageThread();
-  const chromeVisible = useScrollChrome({ enabled: !isMessageThread });
+  const scrollChromeEnabled = isFeedHome && !isMessageThread;
+  const chromeVisible = useScrollChrome({ enabled: scrollChromeEnabled });
   const { user } = useAuth();
   const [messageCount, setMessageCount] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -63,6 +65,23 @@ export default function Layout() {
     return () => window.clearInterval(interval);
   }, [isFeedRoute, loadBadgeCounts]);
 
+  useEffect(() => {
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (!themeMeta) return undefined;
+
+    if (isFeedRoute) {
+      themeMeta.setAttribute("content", "#ffffff");
+      document.documentElement.classList.add("feed-surface");
+    } else {
+      themeMeta.setAttribute("content", "#14746e");
+      document.documentElement.classList.remove("feed-surface");
+    }
+
+    return () => {
+      document.documentElement.classList.remove("feed-surface");
+    };
+  }, [isFeedRoute]);
+
   function handleFeedRefresh() {
     triggerFeedRefresh();
     if (window.location.pathname.replace(/\/$/, "") === "/feed") {
@@ -73,7 +92,8 @@ export default function Layout() {
   return (
     <div
       className={[
-        "thuto-page-bg flex min-h-dvh flex-col",
+        "flex min-h-dvh flex-col overflow-x-hidden",
+        isFeedRoute ? "bg-white" : "thuto-page-bg",
         isMessageThread ? "pb-0" : "pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
       ].join(" ")}
     >
@@ -126,16 +146,16 @@ export default function Layout() {
       ) : null}
       <main
         className={[
-          "mx-auto w-full flex-1",
+          "mx-auto flex w-full flex-1 flex-col",
           isMessageThread
-            ? "flex max-w-none flex-col px-0 pb-0 pt-0"
-            : ["max-w-lg px-4 sm:max-w-3xl", isFeedRoute ? "pb-6 pt-0" : "py-6 sm:py-8"].join(" "),
+            ? "max-w-none px-0 pb-0 pt-0"
+            : ["max-w-lg px-4 sm:max-w-3xl", isFeedRoute ? "min-h-0 bg-white pb-6 pt-0" : "py-6 sm:py-8"].join(" "),
         ].join(" ")}
       >
         <Outlet />
         {!isHomeRoute && !isMessageThread ? <SubscriptionAdSlot /> : null}
       </main>
-      {!isMessageThread ? <BottomNav visible={chromeVisible} /> : null}
+      {!isMessageThread ? <BottomNav visible={chromeVisible} surface={isFeedRoute ? "white" : "default"} /> : null}
     </div>
   );
 }

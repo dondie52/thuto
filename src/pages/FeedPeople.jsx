@@ -218,7 +218,8 @@ export default function FeedPeople() {
   }
 
   return (
-    <div className="space-y-4 px-4 pt-2">
+    <div className="flex min-h-full flex-1 flex-col bg-white px-4 pt-2">
+      <div className="space-y-4">
       <h1 className="font-display text-xl font-semibold text-brand-900">People</h1>
 
       <div className="flex gap-0.5 rounded-full border border-brand-100 bg-white p-0.5 shadow-sm">
@@ -264,6 +265,7 @@ export default function FeedPeople() {
             showActions={user.id !== person.id}
           />
         ))}
+      </div>
       </div>
     </div>
   );

@@ -75,6 +75,18 @@ export default function FeedMessageThread() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
 
+  useEffect(() => {
+    const { documentElement, body } = document;
+    const previousHtmlOverflow = documentElement.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    documentElement.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    return () => {
+      documentElement.style.overflow = previousHtmlOverflow;
+      body.style.overflow = previousBodyOverflow;
+    };
+  }, []);
+
   async function handleSubmit(event) {
     event.preventDefault();
     if (!conversationId || !draft.trim()) return;
@@ -106,8 +118,8 @@ export default function FeedMessageThread() {
   }
 
   return (
-    <div className="flex h-dvh flex-col bg-white">
-      <header className="sticky top-0 z-10 flex shrink-0 items-center gap-2 border-b border-brand-100 bg-white px-3 pb-2.5 pt-[calc(0.5rem+env(safe-area-inset-top))]">
+    <div className="fixed inset-0 z-0 flex flex-col overflow-hidden bg-white touch-pan-y">
+      <header className="flex shrink-0 items-center gap-2 border-b border-brand-100 bg-white px-3 pb-2.5 pt-[calc(0.5rem+env(safe-area-inset-top))]">
         <Link
           to="/feed/messages"
           className="focus-ring flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-brand-800 hover:bg-brand-50"
@@ -164,7 +176,7 @@ export default function FeedMessageThread() {
           onChange={(event) => setDraft(event.target.value)}
           rows={2}
           placeholder="Write a message..."
-          className="focus-ring min-h-11 flex-1 rounded-2xl border border-brand-100 bg-white px-3 py-2 text-sm"
+          className="focus-ring min-h-11 flex-1 rounded-2xl border border-brand-100 bg-white px-3 py-2 text-base"
         />
         <button
           type="submit"

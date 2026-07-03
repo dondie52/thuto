@@ -46,7 +46,7 @@ export default function FeedLayout() {
   }, [loadBadgeCounts]);
 
   return (
-    <div className="-mx-4 bg-white">
+    <div className="-mx-4 flex min-h-full flex-1 flex-col bg-white">
       <Outlet context={{ registerRefresh, reloadBadges: loadBadgeCounts, messageCount, notificationCount }} />
     </div>
   );

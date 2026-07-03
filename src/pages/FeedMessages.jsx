@@ -80,7 +80,8 @@ export default function FeedMessages() {
   }
 
   return (
-    <div className="space-y-4 px-4 pt-2">
+    <div className="flex min-h-full flex-1 flex-col bg-white px-4 pt-2">
+      <div className="space-y-4">
       <h1 className="font-display text-xl font-semibold text-brand-900">Chats</h1>
 
       {error ? (
@@ -138,6 +139,7 @@ export default function FeedMessages() {
             ) : null}
           </Link>
         ))}
+      </div>
       </div>
     </div>
   );

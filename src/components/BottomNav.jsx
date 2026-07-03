@@ -58,7 +58,12 @@ function linkClass({ isActive }) {
   ].join(" ");
 }
 
-export default function BottomNav({ visible = true }) {
+export default function BottomNav({ visible = true, surface = "default" }) {
+  const shellClass =
+    surface === "white"
+      ? "border-brand-100 bg-white shadow-sm"
+      : "border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md";
+
   return (
     <nav
       className={[
@@ -68,7 +73,7 @@ export default function BottomNav({ visible = true }) {
       aria-label="Primary"
       aria-hidden={!visible}
     >
-      <div className="mx-auto max-w-lg rounded-2xl border border-stone-200/90 bg-[var(--thuto-surface-elevated)]/95 shadow-nav backdrop-blur-md">
+      <div className={["mx-auto max-w-lg rounded-2xl border", shellClass].join(" ")}>
         <div className="grid grid-cols-5 gap-0.5 px-1 py-1">
           {links.map(({ to, label, end, icon }) => (
             <NavLink key={to} to={to} end={end} className={linkClass} tabIndex={visible ? undefined : -1}>

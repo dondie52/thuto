@@ -19,6 +19,15 @@
     @apply font-sans antialiased text-slate-900;
     background-color: var(--thuto-surface);
     color: var(--thuto-ink);
+    touch-action: manipulation;
+  }
+
+  html.feed-surface {
+    background-color: #ffffff;
+  }
+
+  html.feed-surface body {
+    background-color: #ffffff;
   }
 
   @media (prefers-reduced-motion: reduce) {
