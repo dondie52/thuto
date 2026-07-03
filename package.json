@@ -30,6 +30,7 @@
     "merge-isbs": "node scripts/merge-isbs-prospectus-2025.mjs",
     "merge-admission-overrides": "node scripts/merge-admission-overrides.mjs",
     "merge-campaign-programmes": "node scripts/merge-campaign-programmes.mjs",
+    "push-campaign-programmes": "node scripts/push-campaign-programmes-to-supabase.mjs --apply",
     "merge-ub-graduate": "node scripts/merge-ub-graduate-programmes.mjs",
     "scrape-ub-graduate-modules": "node scripts/scrape-ub-graduate-modules.mjs",
     "merge-postgraduate-modules": "node scripts/merge-postgraduate-modules-curated.mjs",
