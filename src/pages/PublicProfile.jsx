@@ -9,7 +9,7 @@ import {
   respondConnectionRequest,
   sendConnectionRequest,
 } from "../lib/connections.js";
-import { deleteFeedPost, patchPostReaction, reportFeedTarget, setFeedReaction, submitFeedComment } from "../lib/feed.js";
+import { deleteFeedPost, fetchFeedPostById, patchPostReaction, reportFeedTarget, setFeedReaction, submitFeedComment } from "../lib/feed.js";
 import { toggleFollowUser } from "../lib/feedFollows.js";
 import { getOrCreateConversation } from "../lib/messaging.js";
 import { fetchFollowingSetForUsers } from "../lib/people.js";
@@ -180,11 +180,35 @@ export default function PublicProfile() {
     event.preventDefault();
     const body = (commentDrafts[postId] || "").trim();
     if (!body) return;
+    if (!user) {
+      setPostFeedbackById((current) => ({ ...current, [postId]: { tone: "notice", message: "Log in to comment on feed posts." } }));
+      return;
+    }
     setCommentSubmittingFor(postId);
+    setPostFeedbackById((current) => {
+      if (!current[postId]) return current;
+      const next = { ...current };
+      delete next[postId];
+      return next;
+    });
     try {
-      await submitFeedComment({ postId, body });
+      const result = await submitFeedComment({ postId, body });
       setCommentDrafts((current) => ({ ...current, [postId]: "" }));
-      await loadProfile();
+      setExpandedComments((current) => ({ ...current, [postId]: true }));
+      const status = result.comment?.status;
+      const message =
+        status === "published"
+          ? "Comment posted."
+          : status === "rejected"
+            ? "Comment not published. AI rejected it for safety or relevance."
+            : status === "pending_ai"
+              ? "Comment submitted. AI moderation is still processing it."
+              : "Comment submitted for admin review. It will appear once approved.";
+      setPostFeedbackById((current) => ({ ...current, [postId]: { tone: "notice", message } }));
+      const updated = await fetchFeedPostById(postId);
+      if (updated) {
+        setPosts((current) => current.map((item) => (item.id === postId ? updated : item)));
+      }
     } catch (err) {
       setPostFeedbackById((current) => ({ ...current, [postId]: { tone: "error", message: err.message } }));
     } finally {
