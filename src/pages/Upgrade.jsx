@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThutoCenterPromo from "../components/ThutoCenterPromo.jsx";
 import { useAuth } from "../lib/auth.jsx";
-import { startPremiumCheckout, isBillingConfigured } from "../lib/billing.js";
+import { startPremiumCheckout, isBillingConfigured, canManageStripeBilling } from "../lib/billing.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { formatPremiumUntil, getPlanCheckoutLabel, PREMIUM_PLANS, FREE_VS_PRO_FEATURES } from "../lib/premium.js";
 import { usePageContent } from "../hooks/usePageContent.js";
@@ -121,7 +121,7 @@ export default function Upgrade() {
       return;
     }
     if (!isBillingConfigured()) {
-      setError("Billing is not configured yet. Add Supabase and Stripe secrets to enable checkout.");
+      setError("Billing is not configured yet. Add Supabase and Flutterwave secrets to enable checkout.");
       return;
     }
     setLoadingPlan(planId);
@@ -169,7 +169,7 @@ export default function Upgrade() {
               >
                 View profile
               </Link>
-              {profile?.stripe_customer_id ? (
+              {canManageStripeBilling(profile) ? (
                 <button
                   type="button"
                   onClick={async () => {
@@ -248,7 +248,7 @@ export default function Upgrade() {
             </div>
             <p className="text-xs leading-relaxed text-slate-500">
               One-time payment — no recurring monthly billing. University application and tuition fees are not processed by
-              Thuto. Pro is billed via Stripe for Thuto features only.
+              Thuto. Pro is billed via Flutterwave for Thuto features only.
             </p>
           </section>
         ) : null}
