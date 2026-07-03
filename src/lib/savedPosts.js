@@ -1,4 +1,5 @@
 import { getSupabase } from "./supabase.js";
+import { isNetworkError } from "./networkErrors.js";
 
 const STORAGE_KEY = "thuto-saved-feed-posts";
 
@@ -44,7 +45,7 @@ export async function fetchSavedPostSet(postIds = []) {
 
   const { data, error } = await supabase.from("saved_posts").select("post_id").eq("user_id", userId).in("post_id", ids);
   if (error) {
-    if (isMissingTableError(error)) return readLocalSavedSet();
+    if (isMissingTableError(error) || isNetworkError(error)) return readLocalSavedSet();
     throw error;
   }
   return new Set((data || []).map((row) => row.post_id));
