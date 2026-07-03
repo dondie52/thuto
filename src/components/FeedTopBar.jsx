@@ -83,9 +83,9 @@ function NavIconButton({ to, label, isActive, icon, badge = 0, onClick }) {
 }
 
 /**
- * @param {{ embedded?: boolean, onRefresh?: () => void, messageCount?: number, notificationCount?: number }} props
+ * @param {{ embedded?: boolean, compact?: boolean, onRefresh?: () => void, messageCount?: number, notificationCount?: number }} props
  */
-export default function FeedTopBar({ embedded = false, onRefresh, messageCount = 0, notificationCount = 0 }) {
+export default function FeedTopBar({ embedded = false, compact = false, onRefresh, messageCount = 0, notificationCount = 0 }) {
   const location = useLocation();
   const navigate = useNavigate();
   const path = location.pathname.replace(/\/$/, "");
@@ -104,7 +104,9 @@ export default function FeedTopBar({ embedded = false, onRefresh, messageCount =
     <section
       className={
         embedded
-          ? "feed-top-bar -mx-4 px-4 pb-0.5 pt-0"
+          ? compact
+            ? "feed-top-bar -mx-4 px-4 pb-1 pt-[calc(0.375rem+env(safe-area-inset-top))]"
+            : "feed-top-bar -mx-4 px-4 pb-0.5 pt-0"
           : `feed-top-bar border-b border-brand-100/80 px-4 py-1.5 ${FEED_CHROME_CLASSES}`
       }
       aria-label="Feed actions"
@@ -119,7 +121,7 @@ export default function FeedTopBar({ embedded = false, onRefresh, messageCount =
         <NavIconButton to="/feed/people" label="People" isActive={path.startsWith("/feed/people")} icon={<IconPeople />} />
         <NavIconButton
           to="/feed/messages"
-          label="Messages"
+          label="Chats"
           isActive={path.startsWith("/feed/messages")}
           icon={<IconMessages />}
           badge={messageCount}

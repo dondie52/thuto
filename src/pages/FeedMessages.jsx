@@ -27,7 +27,7 @@ function formatWhen(value) {
 }
 
 export default function FeedMessages() {
-  useDocumentTitle("Messages | Thuto");
+  useDocumentTitle("Chats | Thuto");
   const { user, supabaseConfigured } = useAuth();
   const [conversations, setConversations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +44,7 @@ export default function FeedMessages() {
     try {
       setConversations(await fetchConversations());
     } catch (err) {
-      setError(err.message || "Could not load messages.");
+      setError(err.message || "Could not load chats.");
       setConversations([]);
     } finally {
       setIsLoading(false);
@@ -59,7 +59,7 @@ export default function FeedMessages() {
     return (
       <div className="px-4 pt-2">
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-        Messages need Supabase to be configured on this build.
+        Chats need Supabase to be configured on this build.
         </div>
       </div>
     );
@@ -68,7 +68,7 @@ export default function FeedMessages() {
   if (!user) {
     return (
       <div className="space-y-3 px-4 pt-2">
-        <h1 className="font-display text-xl font-semibold text-brand-900">Messages</h1>
+        <h1 className="font-display text-xl font-semibold text-brand-900">Chats</h1>
         <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900">
           <Link to="/auth?mode=login&next=%2Ffeed%2Fmessages" className="font-semibold underline">
             Sign in
@@ -81,7 +81,7 @@ export default function FeedMessages() {
 
   return (
     <div className="space-y-4 px-4 pt-2">
-      <h1 className="font-display text-xl font-semibold text-brand-900">Messages</h1>
+      <h1 className="font-display text-xl font-semibold text-brand-900">Chats</h1>
 
       {error ? (
         <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
@@ -89,11 +89,11 @@ export default function FeedMessages() {
         </p>
       ) : null}
 
-      {isLoading ? <p className="text-sm text-stone-500">Loading messages...</p> : null}
+      {isLoading ? <p className="text-sm text-stone-500">Loading chats...</p> : null}
 
       {!isLoading && !conversations.length ? (
         <div className="rounded-2xl border border-dashed border-brand-200 bg-white p-6 text-center text-sm text-stone-600">
-          No messages yet. Find someone in{" "}
+          No chats yet. Find someone in{" "}
           <Link to="/feed/people" className="font-semibold text-brand-800 underline">
             People
           </Link>{" "}
