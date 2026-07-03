@@ -1,15 +1,18 @@
 import { corsHeaders, jsonResponse } from "../_shared/cors.ts";
-import {
-  createFlutterwavePaymentLink,
-  getFlutterwaveCurrency,
-} from "../_shared/flutterwave.ts";
-import {
-  getFlutterwavePlanAmount,
-  getPlanDescription,
-  VALID_PREMIUM_PLANS,
-} from "../_shared/premiumPlans.ts";
+import { createDpoToken, getDpoCheckoutUrl, getDpoCurrency, getDpoServiceType } from "../_shared/dpo.ts";
+import { getDpoPlanAmount, getPlanDescription, VALID_PREMIUM_PLANS } from "../_shared/premiumPlans.ts";
 import { getSiteUrl } from "../_shared/siteUrl.ts";
 import { getSupabaseAdmin, getSupabaseUserClient } from "../_shared/supabaseAdmin.ts";
+
+function splitName(fullName: string | null | undefined) {
+  const trimmed = String(fullName || "").trim();
+  if (!trimmed) return { firstName: "", lastName: "" };
+  const parts = trimmed.split(/\s+/);
+  return {
+    firstName: parts[0] || "",
+    lastName: parts.slice(1).join(" ") || parts[0] || "",
+  };
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -38,13 +41,13 @@ Deno.serve(async (req) => {
       return jsonResponse({ error: "Invalid plan" }, 400, req);
     }
 
-    const amount = getFlutterwavePlanAmount(planId);
+    const amount = getDpoPlanAmount(planId);
     if (!amount) {
       return jsonResponse({ error: "Plan is not configured on the server" }, 503, req);
     }
 
-    const currency = getFlutterwaveCurrency();
-    const txRef = `thuto-${crypto.randomUUID()}`;
+    const currency = getDpoCurrency();
+    const companyRef = `thuto-${crypto.randomUUID()}`;
     const admin = getSupabaseAdmin();
 
     const { data: profile } = await admin
@@ -53,52 +56,62 @@ Deno.serve(async (req) => {
       .eq("id", user.id)
       .maybeSingle();
 
+    const { firstName, lastName } = splitName(profile?.full_name);
+    const siteUrl = getSiteUrl();
+    const redirectUrl =
+      `${siteUrl}/upgrade/success?provider=dpo&company_ref=${encodeURIComponent(companyRef)}`;
+    const backUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/dpo-webhook`;
+
     const { error: insertError } = await admin.from("payment_transactions").insert({
-      tx_ref: txRef,
+      tx_ref: companyRef,
       user_id: user.id,
       plan_id: planId,
       amount,
       currency,
       status: "pending",
+      payment_provider: "dpo",
       metadata: { email: user.email || null },
     });
 
     if (insertError) {
-      console.error("create-flutterwave-payment insert:", insertError.message);
+      console.error("create-dpo-payment insert:", insertError.message);
       return jsonResponse({ error: "Could not start payment" }, 500, req);
     }
 
-    const siteUrl = getSiteUrl();
-    const redirectUrl = `${siteUrl}/upgrade/success?provider=flutterwave&tx_ref=${encodeURIComponent(txRef)}`;
-
-    const payment = await createFlutterwavePaymentLink({
-      tx_ref: txRef,
+    const tokenResponse = await createDpoToken({
       amount,
       currency,
-      redirect_url: redirectUrl,
-      customer: {
-        email: user.email || undefined,
-        name: profile?.full_name || undefined,
-      },
-      customizations: {
-        title: "Thuto Pro",
-        description: getPlanDescription(planId),
-      },
-      meta: {
+      companyRef,
+      redirectUrl,
+      backUrl,
+      serviceType: getDpoServiceType(),
+      serviceDescription: getPlanDescription(planId),
+      customerEmail: user.email || undefined,
+      customerFirstName: firstName || undefined,
+      customerLastName: lastName || undefined,
+      metadata: {
         supabase_user_id: user.id,
         plan_id: planId,
       },
     });
 
-    const link = payment?.data?.link;
-    if (!link || typeof link !== "string") {
-      return jsonResponse({ error: "Payment link was not returned" }, 502, req);
+    const transToken = tokenResponse.TransToken;
+    if (!transToken) {
+      return jsonResponse({ error: "DPO did not return a payment token" }, 502, req);
     }
 
-    return jsonResponse({ url: link, txRef }, 200, req);
+    await admin
+      .from("payment_transactions")
+      .update({
+        dpo_trans_token: transToken,
+        provider_transaction_id: tokenResponse.TransRef || null,
+      })
+      .eq("tx_ref", companyRef);
+
+    return jsonResponse({ url: getDpoCheckoutUrl(transToken), companyRef }, 200, req);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Payment failed";
-    console.error("create-flutterwave-payment:", message);
+    console.error("create-dpo-payment:", message);
     return jsonResponse({ error: message }, 500, req);
   }
 });

@@ -291,7 +291,7 @@ export default function Profile() {
                 </button>
               ) : isPremium ? (
                 <p className="text-sm text-slate-600">
-                  Pro payments are handled by Flutterwave. Contact support if you need a receipt.
+                  Pro payments are handled by DPO Pay. Contact support if you need a receipt.
                 </p>
               ) : (
                 <p className="text-sm text-slate-600">

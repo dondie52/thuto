@@ -121,7 +121,7 @@ export default function Upgrade() {
       return;
     }
     if (!isBillingConfigured()) {
-      setError("Billing is not configured yet. Add Supabase and Flutterwave secrets to enable checkout.");
+      setError("Billing is not configured yet. Add Supabase and DPO Pay secrets to enable checkout.");
       return;
     }
     setLoadingPlan(planId);
@@ -248,7 +248,7 @@ export default function Upgrade() {
             </div>
             <p className="text-xs leading-relaxed text-slate-500">
               One-time payment — no recurring monthly billing. University application and tuition fees are not processed by
-              Thuto. Pro is billed via Flutterwave for Thuto features only.
+              Thuto. Pro is billed via DPO Pay for Thuto features only.
             </p>
           </section>
         ) : null}

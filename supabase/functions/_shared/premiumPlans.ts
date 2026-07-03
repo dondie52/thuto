@@ -17,10 +17,10 @@ export function planAccessUntil(planId: string): string {
   return until.toISOString();
 }
 
-export function getFlutterwavePlanAmount(planId: string): number | null {
+export function getDpoPlanAmount(planId: string): number | null {
   const envMap: Record<string, string | undefined> = {
-    yearly: Deno.env.get("FLUTTERWAVE_AMOUNT_YEARLY"),
-    five_year: Deno.env.get("FLUTTERWAVE_AMOUNT_FIVE_YEAR"),
+    yearly: Deno.env.get("DPO_AMOUNT_YEARLY"),
+    five_year: Deno.env.get("DPO_AMOUNT_FIVE_YEAR"),
   };
   const raw = envMap[planId];
   if (raw) {

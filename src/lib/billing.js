@@ -45,12 +45,12 @@ export function canManageStripeBilling(profile) {
 
 /**
  * @param {'yearly' | 'five_year'} planId
- * @returns {Promise<string>} Flutterwave hosted checkout URL
+ * @returns {Promise<string>} DPO hosted checkout URL
  */
 export async function startPremiumCheckout(planId) {
   const { supabase, token } = await getAccessToken();
 
-  const { data, error } = await supabase.functions.invoke("create-flutterwave-payment", {
+  const { data, error } = await supabase.functions.invoke("create-dpo-payment", {
     body: { planId },
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -59,7 +59,7 @@ export async function startPremiumCheckout(planId) {
     throw await parseFunctionInvokeError(
       error,
       data,
-      "Could not start checkout. Check that the create-flutterwave-payment Edge Function is deployed and Flutterwave secrets are set.",
+      "Could not start checkout. Check that the create-dpo-payment Edge Function is deployed and DPO secrets are set.",
     );
   }
   const url = data?.url;
@@ -70,17 +70,16 @@ export async function startPremiumCheckout(planId) {
 }
 
 /**
- * @param {{ txRef: string, transactionId: string, status?: string | null }} params
+ * @param {{ companyRef: string, transToken: string }} params
  * @returns {Promise<{ ok: boolean, alreadyCompleted?: boolean }>}
  */
-export async function verifyFlutterwavePayment({ txRef, transactionId, status }) {
+export async function verifyDpoPayment({ companyRef, transToken }) {
   const { supabase, token } = await getAccessToken();
 
-  const { data, error } = await supabase.functions.invoke("verify-flutterwave-payment", {
+  const { data, error } = await supabase.functions.invoke("verify-dpo-payment", {
     body: {
-      txRef,
-      transactionId,
-      status,
+      companyRef,
+      transToken,
     },
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -89,7 +88,7 @@ export async function verifyFlutterwavePayment({ txRef, transactionId, status })
     throw await parseFunctionInvokeError(
       error,
       data,
-      "Could not verify payment. Pro may still activate shortly via webhook.",
+      "Could not verify payment. Pro may still activate shortly via DPO callback.",
     );
   }
   if (!data?.ok) {

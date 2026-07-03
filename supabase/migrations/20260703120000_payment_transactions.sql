@@ -1,4 +1,4 @@
--- Flutterwave payment records for Thuto Pro one-time checkout
+-- Payment records for Thuto Pro one-time checkout (DPO Pay)
 
 create table if not exists public.payment_transactions (
   id uuid primary key default gen_random_uuid(),
@@ -7,7 +7,9 @@ create table if not exists public.payment_transactions (
   plan_id text not null,
   amount numeric(12, 2) not null,
   currency text not null default 'BWP',
-  flutterwave_transaction_id text,
+  payment_provider text not null default 'dpo',
+  dpo_trans_token text,
+  provider_transaction_id text,
   status text not null default 'pending'
     check (status in ('pending', 'completed', 'failed', 'cancelled')),
   metadata jsonb not null default '{}'::jsonb,

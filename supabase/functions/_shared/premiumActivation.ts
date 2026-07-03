@@ -32,15 +32,15 @@ export async function activatePremium(
 type VerifiedPayment = {
   amount: number;
   currency: string;
-  status: string;
+  paid: boolean;
 };
 
-export async function fulfillFlutterwavePayment(
-  txRef: string,
-  flutterwaveTransactionId: string,
+export async function fulfillDpoPayment(
+  companyRef: string,
   verified: VerifiedPayment,
+  providerRefs: { transToken?: string; transRef?: string },
 ): Promise<{ ok: boolean; alreadyCompleted?: boolean; error?: string }> {
-  if (verified.status !== "successful") {
+  if (!verified.paid) {
     return { ok: false, error: "Payment not successful" };
   }
 
@@ -48,11 +48,11 @@ export async function fulfillFlutterwavePayment(
   const { data: txn, error: txnError } = await admin
     .from("payment_transactions")
     .select("id, user_id, plan_id, amount, currency, status")
-    .eq("tx_ref", txRef)
+    .eq("tx_ref", companyRef)
     .maybeSingle();
 
   if (txnError) {
-    console.error("fulfillFlutterwavePayment lookup:", txnError.message);
+    console.error("fulfillDpoPayment lookup:", txnError.message);
     return { ok: false, error: "Could not load payment record" };
   }
   if (!txn) {
@@ -62,7 +62,9 @@ export async function fulfillFlutterwavePayment(
     return { ok: true, alreadyCompleted: true };
   }
 
-  if (Number(txn.amount) !== Number(verified.amount)) {
+  const expectedAmount = Number(txn.amount);
+  const paidAmount = Number(verified.amount);
+  if (Math.abs(expectedAmount - paidAmount) > 0.01) {
     return { ok: false, error: "Amount mismatch" };
   }
   if (String(txn.currency).toUpperCase() !== String(verified.currency).toUpperCase()) {
@@ -70,20 +72,23 @@ export async function fulfillFlutterwavePayment(
   }
 
   const until = planAccessUntil(txn.plan_id);
-  await activatePremium(txn.user_id, txn.plan_id, until, "active", "flutterwave");
+  await activatePremium(txn.user_id, txn.plan_id, until, "active", "dpo");
+
+  const updatePayload: Record<string, unknown> = {
+    status: "completed",
+    completed_at: new Date().toISOString(),
+  };
+  if (providerRefs.transToken) updatePayload.dpo_trans_token = providerRefs.transToken;
+  if (providerRefs.transRef) updatePayload.provider_transaction_id = providerRefs.transRef;
 
   const { error: updateError } = await admin
     .from("payment_transactions")
-    .update({
-      status: "completed",
-      flutterwave_transaction_id: String(flutterwaveTransactionId),
-      completed_at: new Date().toISOString(),
-    })
+    .update(updatePayload)
     .eq("id", txn.id)
     .eq("status", "pending");
 
   if (updateError) {
-    console.error("fulfillFlutterwavePayment update:", updateError.message);
+    console.error("fulfillDpoPayment update:", updateError.message);
     return { ok: false, error: "Could not finalize payment record" };
   }
 
