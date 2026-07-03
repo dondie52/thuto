@@ -218,7 +218,7 @@ export default function HomeDailySpotlight({
                 aria-label={`Show ${entry.university.name}`}
                 onClick={() => goTo(dotIndex)}
                 className={[
-                  "focus-ring h-2.5 rounded-full transition-all",
+                  "focus-ring h-2.5 rounded-full transition-[width,background-color] duration-200 motion-reduce:transition-none",
                   dotIndex === index ? "w-6 bg-brand-700" : "w-2.5 bg-stone-300 hover:bg-brand-400",
                 ].join(" ")}
               />

@@ -9,3 +9,8 @@ export function scrollElementIntoView(element, options = {}) {
     behavior: prefersReducedMotion() ? "auto" : options.behavior || "smooth",
   });
 }
+
+export function scrollToElementId(id, options = {}) {
+  if (!id) return;
+  scrollElementIntoView(document.getElementById(id), options);
+}

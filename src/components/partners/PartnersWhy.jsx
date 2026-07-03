@@ -12,7 +12,7 @@ export default function PartnersWhy({ content }) {
         {items.map((item, index) => (
           <li
             key={`${item.title}-${index}`}
-            className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+            className="overflow-hidden rounded-2xl border border-stone-200 bg-[var(--thuto-surface-elevated)] shadow-card"
           >
             <div className="border-b border-brand-50 bg-gradient-to-br from-brand-50 to-white px-5 py-8">
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-700 text-white">
@@ -21,7 +21,7 @@ export default function PartnersWhy({ content }) {
             </div>
             <div className="p-5">
               <h3 className="font-display text-lg font-semibold text-brand-900">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-stone-600">{item.body}</p>
             </div>
           </li>
         ))}

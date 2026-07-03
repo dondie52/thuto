@@ -203,7 +203,7 @@ export default function AccountDrawer() {
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
-        className="focus-ring relative z-40 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-brand-50 text-brand-900 shadow-sm transition hover:border-brand-300 hover:bg-brand-100"
+        className="focus-ring relative z-40 flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-brand-50 text-brand-900 shadow-sm transition hover:border-brand-300 hover:bg-brand-100"
         aria-label="Open menu"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
@@ -216,19 +216,19 @@ export default function AccountDrawer() {
       {isOpen ? (
         <div
           ref={dialogRef}
-          className="fixed inset-0 z-50 bg-[#faf9f6] sm:bg-transparent"
+          className="fixed inset-0 z-50 bg-[var(--thuto-surface-elevated)] sm:bg-transparent"
           role="dialog"
           aria-modal="true"
           aria-label="Account navigation"
         >
           <button
             type="button"
-            className="absolute inset-0 cursor-default bg-[#faf9f6] sm:bg-slate-950/35 sm:backdrop-blur-[2px]"
+            className="absolute inset-0 cursor-default bg-[var(--thuto-surface-elevated)] sm:bg-slate-950/35 sm:backdrop-blur-[2px]"
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
             tabIndex={-1}
           />
-          <aside className="fixed inset-0 z-10 flex h-dvh min-h-0 w-screen max-w-none flex-col bg-[#faf9f6] shadow-2xl sm:left-auto sm:right-0 sm:w-[min(26rem,92vw)] sm:border-l sm:border-stone-200">
+          <aside className="fixed inset-0 z-10 flex h-dvh min-h-0 w-screen max-w-none flex-col bg-[var(--thuto-surface-elevated)] shadow-card sm:left-auto sm:right-0 sm:w-[min(26rem,92vw)] sm:border-l sm:border-stone-200">
             <div className="shrink-0 border-b border-stone-200 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))]">
               <div className="flex items-center justify-between gap-3">
                 <Link
