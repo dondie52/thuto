@@ -143,6 +143,12 @@ export const PAGE_CONTENT_DEFAULTS = {
         "limkokwing-ba-graphic",
       ],
     },
+    sponsorshipHighlight: {
+      kicker: "Sponsorship",
+      heading: "Sponsorship highlight",
+      body: "Funding routes and notices in rotation — refreshed daily.",
+      ctaLabel: "Learn more",
+    },
     featuredUniversities: {
       heading: "Featured institutions",
       body: "Partner universities and sponsored spots on Thuto.",

@@ -13,6 +13,7 @@ import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 import HomeCenterCreators from "../components/home/HomeCenterCreators.jsx";
 import HomeDailyProgrammes from "../components/home/HomeDailyProgrammes.jsx";
 import HomeDailySpotlight from "../components/home/HomeDailySpotlight.jsx";
+import HomeSponsorshipHighlight from "../components/home/HomeSponsorshipHighlight.jsx";
 import HomeHeroPartner from "../components/home/HomeHeroPartner.jsx";
 import HomePartnerCampaigns from "../components/home/HomePartnerCampaigns.jsx";
 
@@ -116,6 +117,13 @@ export default function Home() {
         body={content.dailyProgrammes?.body}
         ctaLabel={content.dailyProgrammes?.ctaLabel}
         fallbackIds={content.dailyProgrammes?.fallbackIds}
+      />
+
+      <HomeSponsorshipHighlight
+        kicker={content.sponsorshipHighlight?.kicker}
+        heading={content.sponsorshipHighlight?.heading}
+        body={content.sponsorshipHighlight?.body}
+        ctaLabel={content.sponsorshipHighlight?.ctaLabel}
       />
 
       <HomeCenterCreators
