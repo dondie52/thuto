@@ -229,6 +229,10 @@
     .landing-motion-press:active {
       transform: none;
     }
+
+    .animate-fade-up {
+      animation: none !important;
+    }
   }
 }
 
