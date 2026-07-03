@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ProgrammeThemeHero from "../ProgrammeThemeHero.jsx";
 import { fetchDailySpotlightProgrammes } from "../../lib/homeAdvertising.js";
-import { resolveProgrammeVisual } from "../../lib/programmeBranding.js";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -12,19 +12,6 @@ const AUTO_ADVANCE_MS = 6000;
 function wrapIndex(index, total) {
   if (total <= 0) return 0;
   return ((index % total) + total) % total;
-}
-
-/**
- * @param {string | undefined} value
- */
-function programmeInitials(value) {
-  const text = String(value || "PR").trim();
-  if (!text) return "PR";
-  const words = text.split(/\s+/).filter(Boolean);
-  if (words.length >= 2) {
-    return `${words[0][0] || ""}${words[1][0] || ""}`.toUpperCase();
-  }
-  return text.slice(0, 3).toUpperCase();
 }
 
 /**
@@ -94,7 +81,7 @@ export default function HomeDailyProgrammes({
     return (
       <section className="space-y-4" aria-labelledby="home-daily-programmes-heading" aria-busy="true">
         <div className="h-6 w-40 animate-pulse rounded bg-stone-200" />
-        <div className="h-44 animate-pulse rounded-2xl border border-stone-200 bg-stone-100/80" />
+        <div className="h-56 animate-pulse rounded-2xl border border-stone-200 bg-stone-100/80" />
       </section>
     );
   }
@@ -125,65 +112,68 @@ export default function HomeDailyProgrammes({
         <p className="mt-1 text-sm leading-relaxed text-stone-600">{body}</p>
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl border border-brand-200/90 bg-gradient-to-br from-white via-brand-50/30 to-white shadow-card">
+      <div className="relative overflow-hidden rounded-2xl border border-brand-200/90 bg-white shadow-card">
         <div
           className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {entries.map((entry) => {
             const slide = entry.programme;
-            const { imageUrl, label } = resolveProgrammeVisual(slide);
-            const subtitle = [slide.university, slide.field].filter(Boolean).join(" · ");
-            const meta = [slide.duration, typeof slide.minPoints === "number" ? `${slide.minPoints} pts min` : null]
-              .filter(Boolean)
-              .join(" · ");
             const description =
               entry.teaser ||
               slide.description ||
               "Explore entry requirements, careers, and how this programme fits your BGCSE results.";
+            const metaItems = [
+              slide.duration,
+              typeof slide.minPoints === "number" ? `${slide.minPoints} pts min` : null,
+            ].filter(Boolean);
+
             return (
-              <article key={slide.id} className="w-full shrink-0 p-5" aria-hidden={slide.id !== programme.id}>
+              <article key={slide.id} className="w-full shrink-0" aria-hidden={slide.id !== programme.id}>
                 <Link
                   to={`/programmes/${slide.id}`}
-                  className="focus-ring group block rounded-xl outline-offset-4"
+                  className="focus-ring group block outline-offset-4"
                   tabIndex={slide.id === programme.id ? 0 : -1}
                 >
-                  <div className="flex gap-4">
-                    <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-brand-100 bg-brand-50/80">
-                      {imageUrl ? (
-                        <div
-                          className="absolute inset-0 bg-cover bg-center"
-                          style={{ backgroundImage: `url("${imageUrl}")` }}
-                          role="img"
-                          aria-label={label}
-                        />
+                  <ProgrammeThemeHero programme={slide} variant="card" className="rounded-none">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {entry.sponsored ? (
+                        <span className="rounded-full bg-amber-300/95 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-950">
+                          Sponsored
+                        </span>
                       ) : null}
-                      <div className="absolute inset-0 bg-brand-900/35" aria-hidden />
-                      <span className="relative font-display text-sm font-bold text-white drop-shadow">
-                        {programmeInitials(slide.universityShort || slide.field)}
-                      </span>
+                      {slide.field ? (
+                        <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white ring-1 ring-inset ring-white/25">
+                          {slide.field}
+                        </span>
+                      ) : null}
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        {entry.sponsored ? (
-                          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
-                            Sponsored
+                    {slide.university ? (
+                      <p className="mt-2 text-sm font-medium text-brand-50">{slide.university}</p>
+                    ) : null}
+                  </ProgrammeThemeHero>
+
+                  <div className="space-y-3 p-5">
+                    <h3 className="font-display text-lg font-semibold leading-snug text-brand-900 group-hover:text-brand-700 sm:text-xl">
+                      {slide.name}
+                    </h3>
+
+                    {metaItems.length ? (
+                      <div className="flex flex-wrap gap-2">
+                        {metaItems.map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-800 ring-1 ring-inset ring-brand-100"
+                          >
+                            {item}
                           </span>
-                        ) : null}
-                        {slide.field ? (
-                          <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-800">
-                            {slide.field}
-                          </span>
-                        ) : null}
+                        ))}
                       </div>
-                      <h3 className="mt-1 font-display text-lg font-semibold text-brand-900 group-hover:text-brand-700">
-                        {slide.name}
-                      </h3>
-                      {subtitle ? <p className="mt-0.5 text-sm font-medium text-brand-700">{subtitle}</p> : null}
-                      {meta ? <p className="mt-1 text-sm text-stone-500">{meta}</p> : null}
-                      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-stone-600">{description}</p>
-                      <p className="mt-3 text-sm font-semibold text-brand-800 group-hover:underline">{ctaLabel} →</p>
-                    </div>
+                    ) : null}
+
+                    <p className="line-clamp-3 text-sm leading-relaxed text-stone-600">{description}</p>
+
+                    <p className="text-sm font-semibold text-brand-800 group-hover:underline">{ctaLabel} →</p>
                   </div>
                 </Link>
               </article>
@@ -196,7 +186,7 @@ export default function HomeDailyProgrammes({
             <button
               type="button"
               onClick={goPrev}
-              className="focus-ring absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200/90 bg-white/95 text-brand-800 shadow-sm hover:bg-brand-50"
+              className="focus-ring absolute left-2 top-[4.5rem] flex h-9 w-9 items-center justify-center rounded-full border border-stone-200/90 bg-white/95 text-brand-800 shadow-sm hover:bg-brand-50 sm:top-[5.5rem]"
               aria-label="Previous programme"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
@@ -206,7 +196,7 @@ export default function HomeDailyProgrammes({
             <button
               type="button"
               onClick={goNext}
-              className="focus-ring absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200/90 bg-white/95 text-brand-800 shadow-sm hover:bg-brand-50"
+              className="focus-ring absolute right-2 top-[4.5rem] flex h-9 w-9 items-center justify-center rounded-full border border-stone-200/90 bg-white/95 text-brand-800 shadow-sm hover:bg-brand-50 sm:top-[5.5rem]"
               aria-label="Next programme"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
