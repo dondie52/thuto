@@ -23,11 +23,7 @@ async function parseFunctionInvokeError(error, data, fallbackMessage) {
   return new Error(message || fallbackMessage);
 }
 
-/**
- * @param {'yearly' | 'five_year'} planId
- * @returns {Promise<string>} Stripe Checkout URL
- */
-export async function startPremiumCheckout(planId) {
+async function getAccessToken() {
   const supabase = getSupabase();
   if (!supabase) {
     throw new Error("Accounts are not configured. Set up Supabase to enable Premium checkout.");
@@ -37,8 +33,24 @@ export async function startPremiumCheckout(planId) {
   if (!token) {
     throw new Error("Sign in before starting checkout.");
   }
+  return { supabase, token };
+}
 
-  const { data, error } = await supabase.functions.invoke("create-checkout-session", {
+/**
+ * @param {import('./auth.jsx').Profile | null | undefined} profile
+ */
+export function canManageStripeBilling(profile) {
+  return profile?.payment_provider === "stripe" && Boolean(profile?.stripe_customer_id);
+}
+
+/**
+ * @param {'yearly' | 'five_year'} planId
+ * @returns {Promise<string>} Flutterwave hosted checkout URL
+ */
+export async function startPremiumCheckout(planId) {
+  const { supabase, token } = await getAccessToken();
+
+  const { data, error } = await supabase.functions.invoke("create-flutterwave-payment", {
     body: { planId },
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -47,29 +59,50 @@ export async function startPremiumCheckout(planId) {
     throw await parseFunctionInvokeError(
       error,
       data,
-      "Could not start checkout. Check that the create-checkout-session Edge Function is deployed and its Stripe secrets are set.",
+      "Could not start checkout. Check that the create-flutterwave-payment Edge Function is deployed and Flutterwave secrets are set.",
     );
   }
   const url = data?.url;
   if (!url || typeof url !== "string") {
-    throw new Error(data?.error || "Checkout session did not return a URL.");
+    throw new Error(data?.error || "Checkout did not return a payment URL.");
   }
   return url;
+}
+
+/**
+ * @param {{ txRef: string, transactionId: string, status?: string | null }} params
+ * @returns {Promise<{ ok: boolean, alreadyCompleted?: boolean }>}
+ */
+export async function verifyFlutterwavePayment({ txRef, transactionId, status }) {
+  const { supabase, token } = await getAccessToken();
+
+  const { data, error } = await supabase.functions.invoke("verify-flutterwave-payment", {
+    body: {
+      txRef,
+      transactionId,
+      status,
+    },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (error) {
+    throw await parseFunctionInvokeError(
+      error,
+      data,
+      "Could not verify payment. Pro may still activate shortly via webhook.",
+    );
+  }
+  if (!data?.ok) {
+    throw new Error(data?.error || "Payment verification failed.");
+  }
+  return data;
 }
 
 /**
  * @returns {Promise<string>} Stripe Customer Portal URL
  */
 export async function openBillingPortal() {
-  const supabase = getSupabase();
-  if (!supabase) {
-    throw new Error("Accounts are not configured.");
-  }
-  const { data: sessionData } = await supabase.auth.getSession();
-  const token = sessionData?.session?.access_token;
-  if (!token) {
-    throw new Error("Sign in to manage billing.");
-  }
+  const { supabase, token } = await getAccessToken();
 
   const { data, error } = await supabase.functions.invoke("create-portal-session", {
     body: {},

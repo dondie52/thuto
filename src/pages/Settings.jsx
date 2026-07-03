@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import DeleteAccountForm from "../components/profile/DeleteAccountForm.jsx";
 import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY } from "../lib/admissions.js";
 import { STORAGE_KEY as BOOKMARK_STORAGE_KEY } from "../lib/bookmarks.js";
-import { openBillingPortal } from "../lib/billing.js";
+import { openBillingPortal, canManageStripeBilling } from "../lib/billing.js";
 import { syncToCloud } from "../lib/cloudSync.js";
 import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
@@ -112,7 +112,7 @@ export default function Settings() {
           </div>
         ) : (
           <div className="mt-4 flex flex-wrap gap-2">
-            {isPremium && profile?.stripe_customer_id ? (
+            {isPremium && canManageStripeBilling(profile) ? (
               <button
                 type="button"
                 disabled={billingLoading}

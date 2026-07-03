@@ -9,7 +9,7 @@ import NotificationPreferences from "../components/profile/NotificationPreferenc
 import ProfileSection from "../components/profile/ProfileSection.jsx";
 import ProfileSectionNav from "../components/profile/ProfileSectionNav.jsx";
 import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY } from "../lib/admissions.js";
-import { openBillingPortal } from "../lib/billing.js";
+import { openBillingPortal, canManageStripeBilling } from "../lib/billing.js";
 import { getBookmarkIds } from "../lib/bookmarks.js";
 import { useAuth } from "../lib/auth.jsx";
 import { usesPasswordAuth } from "../lib/authRedirect.js";
@@ -231,23 +231,24 @@ export default function Profile() {
                 )}
               </div>
               <div className="flex flex-wrap gap-2">
-                {isPremium ? (
+                {isPremium && canManageStripeBilling(profile) ? (
                   <button
                     type="button"
-                    disabled={billingLoading || !profile?.stripe_customer_id}
+                    disabled={billingLoading}
                     onClick={handleManageBilling}
                     className="rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50 disabled:opacity-60"
                   >
                     {billingLoading ? "Opening portal..." : "Manage billing"}
                   </button>
-                ) : (
+                ) : null}
+                {!isPremium ? (
                   <Link
                     to="/upgrade"
                     className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800"
                   >
                     Upgrade to Pro
                   </Link>
-                )}
+                ) : null}
                 <button
                   type="button"
                   onClick={() => refreshProfile()}
@@ -262,7 +263,7 @@ export default function Profile() {
           <ProfileSection
             id="billing"
             title="Billing details"
-            description="Review payment history and receipts in the Stripe customer portal."
+            description="Review payment history and receipts (Stripe customers only)."
           >
             <div className="space-y-4">
               <dl className="space-y-2 text-sm">
@@ -279,7 +280,7 @@ export default function Profile() {
                   </div>
                 ) : null}
               </dl>
-              {isPremium && profile?.stripe_customer_id ? (
+              {canManageStripeBilling(profile) ? (
                 <button
                   type="button"
                   disabled={billingLoading}
@@ -288,6 +289,10 @@ export default function Profile() {
                 >
                   {billingLoading ? "Opening portal..." : "Open billing portal"}
                 </button>
+              ) : isPremium ? (
+                <p className="text-sm text-slate-600">
+                  Pro payments are handled by Flutterwave. Contact support if you need a receipt.
+                </p>
               ) : (
                 <p className="text-sm text-slate-600">
                   Billing details appear here after you subscribe to Pro.{" "}

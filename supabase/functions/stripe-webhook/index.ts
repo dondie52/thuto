@@ -1,32 +1,7 @@
 import Stripe from "https://esm.sh/stripe@14.21.0?target=deno";
 import { jsonResponse } from "../_shared/cors.ts";
+import { activatePremium } from "../_shared/premiumActivation.ts";
 import { getStripe, planAccessUntil } from "../_shared/stripe.ts";
-import { getSupabaseAdmin } from "../_shared/supabaseAdmin.ts";
-
-async function activatePremium(
-  userId: string,
-  plan: string,
-  until: string | null,
-  status: "active" | "past_due" | "canceled" = "active",
-) {
-  const admin = getSupabaseAdmin();
-  const normalizedPlan = plan === "season_pass" ? "yearly" : plan;
-  await admin
-    .from("profiles")
-    .update({
-      premium_status: status,
-      premium_plan: status === "active" ? normalizedPlan : null,
-      premium_until: until,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", userId);
-
-  await admin.from("analytics_events").insert({
-    user_id: userId,
-    event_name: status === "active" ? "premium_activated" : `premium_${status}`,
-    metadata: { plan: normalizedPlan },
-  });
-}
 
 function subscriptionUntil(sub: Stripe.Subscription): string | null {
   const end = sub.current_period_end;
