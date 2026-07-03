@@ -1709,11 +1709,11 @@
   },
   {
     "id": "biust-beng-mechanical-engineering",
-    "name": "Bachelor of Engineering in Mechanical Engineering",
+    "name": "BEng (Hons) Mechanical and Energy Engineering",
     "field": "Engineering",
     "university": "BIUST",
     "universityShort": "BIUST",
-    "faculty": "Engineering and Technology",
+    "faculty": "School of Electrical & Mechanical Engineering",
     "minPoints": 36,
     "subjectRequirements": {
       "english": "C",
@@ -1764,7 +1764,8 @@
     ],
     "interests": [
       "Engineering",
-      "Engineering and Technology"
+      "Engineering and Technology",
+      "School of Electrical & Mechanical Engineering"
     ],
     "tags": [
       "Engineering"
@@ -1816,7 +1817,7 @@
   },
   {
     "id": "biust-beng-civil",
-    "name": "BEng Civil Engineering",
+    "name": "BEng (Hons) Civil & Environmental Engineering",
     "field": "Engineering",
     "university": "BIUST",
     "universityShort": "BIUST",
@@ -1842,15 +1843,17 @@
       "English Language"
     ],
     "interests": [
-      "Engineering"
+      "Engineering",
+      "School of Earth Sciences & Engineering"
     ],
     "tags": [
       "Engineering"
-    ]
+    ],
+    "faculty": "School of Earth Sciences & Engineering"
   },
   {
     "id": "biust-beng-industrial",
-    "name": "BEng Industrial Engineering",
+    "name": "BEng (Hons) Industrial and Manufacturing Engineering",
     "field": "Engineering",
     "university": "BIUST",
     "universityShort": "BIUST",
@@ -1876,15 +1879,17 @@
       "English Language"
     ],
     "interests": [
-      "Engineering"
+      "Engineering",
+      "School of Electrical & Mechanical Engineering"
     ],
     "tags": [
       "Engineering"
-    ]
+    ],
+    "faculty": "School of Electrical & Mechanical Engineering"
   },
   {
     "id": "biust-beng-mechanical",
-    "name": "BEng Mechanical Engineering",
+    "name": "BEng (Hons) Mechanical and Energy Engineering",
     "field": "Engineering",
     "university": "BIUST",
     "minPoints": 44,
@@ -1926,7 +1931,7 @@
       "Energy Analyst"
     ],
     "universityShort": "BIUST",
-    "faculty": "Faculty of Engineering & Technology",
+    "faculty": "School of Electrical & Mechanical Engineering",
     "applicationDeadline": "2026-06-15",
     "applyUrl": "https://www.biust.ac.bw/",
     "durationYears": 5,
@@ -1943,7 +1948,8 @@
     ],
     "interests": [
       "Engineering",
-      "Faculty of Engineering & Technology"
+      "Faculty of Engineering & Technology",
+      "School of Electrical & Mechanical Engineering"
     ],
     "tags": [
       "Engineering"
@@ -1951,7 +1957,7 @@
   },
   {
     "id": "biust-beng-mining",
-    "name": "BEng Mining Engineering",
+    "name": "BEng (Hons) Mining Engineering",
     "field": "Engineering",
     "university": "BIUST",
     "universityShort": "BIUST",
@@ -1977,11 +1983,13 @@
       "English Language"
     ],
     "interests": [
-      "Engineering"
+      "Engineering",
+      "School of Earth Sciences & Engineering"
     ],
     "tags": [
       "Engineering"
-    ]
+    ],
+    "faculty": "School of Earth Sciences & Engineering"
   },
   {
     "id": "biust-bsc-biological-sciences",
@@ -2129,7 +2137,7 @@
       "Business Intelligence"
     ],
     "universityShort": "BIUST",
-    "faculty": "Faculty of Science & Technology",
+    "faculty": "School of Pure & Applied Sciences",
     "applicationDeadline": "2026-06-15",
     "applyUrl": "https://www.biust.ac.bw/",
     "durationYears": 4,
@@ -2146,7 +2154,8 @@
     ],
     "interests": [
       "Technology",
-      "Faculty of Science & Technology"
+      "Faculty of Science & Technology",
+      "School of Pure & Applied Sciences"
     ],
     "tags": [
       "Technology"
@@ -2188,7 +2197,7 @@
   },
   {
     "id": "biust-bsc-env",
-    "name": "BSc Environmental Science",
+    "name": "BSc Ecosystem Science and Sustainability",
     "field": "Natural Sciences",
     "university": "BIUST",
     "minPoints": 39,
@@ -2230,7 +2239,7 @@
       "Sustainability Coordinator"
     ],
     "universityShort": "BIUST",
-    "faculty": "Faculty of Science & Technology",
+    "faculty": "School of Earth Sciences & Engineering",
     "applicationDeadline": "2026-06-15",
     "applyUrl": "https://www.biust.ac.bw/",
     "durationYears": 4,
@@ -2247,7 +2256,8 @@
     ],
     "interests": [
       "Natural Sciences",
-      "Faculty of Science & Technology"
+      "Faculty of Science & Technology",
+      "School of Earth Sciences & Engineering"
     ],
     "tags": [
       "Natural Sciences"
@@ -2289,7 +2299,7 @@
   },
   {
     "id": "biust-bsc-geology",
-    "name": "BSc Geology",
+    "name": "BSc Applied Geology",
     "field": "Natural Sciences",
     "university": "BIUST",
     "universityShort": "BIUST",
@@ -2315,11 +2325,13 @@
       "Science"
     ],
     "interests": [
-      "Natural Sciences"
+      "Natural Sciences",
+      "School of Earth Sciences & Engineering"
     ],
     "tags": [
       "Natural Sciences"
-    ]
+    ],
+    "faculty": "School of Earth Sciences & Engineering"
   },
   {
     "id": "biust-bsc-information-systems",
@@ -2391,7 +2403,7 @@
   },
   {
     "id": "biust-bsc-physics-general",
-    "name": "BSc Physics",
+    "name": "BSc Applied Physics",
     "field": "Natural Sciences",
     "university": "BIUST",
     "universityShort": "BIUST",
@@ -2417,11 +2429,13 @@
       "Science"
     ],
     "interests": [
-      "Natural Sciences"
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
     ],
     "tags": [
       "Natural Sciences"
-    ]
+    ],
+    "faculty": "School of Pure & Applied Sciences"
   },
   {
     "id": "biust-bsc-software-eng",
@@ -16640,11 +16654,11 @@
   },
   {
     "id": "limkokwing-bachelor-creative-multimedia",
-    "name": "Bachelor in Creative Multimedia",
+    "name": "BA in Creative Multimedia",
     "field": "Creative Arts",
     "university": "Limkokwing University of Creative Technology",
     "universityShort": "Limkokwing",
-    "faculty": "Creative Multimedia",
+    "faculty": "Faculty of Information Communication Technology",
     "minPoints": 28,
     "subjectRequirements": {
       "english": "C"
@@ -16674,7 +16688,8 @@
     ],
     "interests": [
       "Creative Arts",
-      "Creative Multimedia"
+      "Creative Multimedia",
+      "Faculty of Information Communication Technology"
     ],
     "tags": [
       "Creative Arts"
@@ -16760,7 +16775,7 @@
   },
   {
     "id": "limkokwing-bsc-software",
-    "name": "BSc Software Engineering with Multimedia",
+    "name": "BSc in Software Engineering",
     "field": "Technology",
     "university": "Limkokwing University of Creative Technology",
     "minPoints": 38,
@@ -16802,7 +16817,7 @@
       "UX Developer"
     ],
     "universityShort": "Limkokwing",
-    "faculty": "Faculty of Science & Technology",
+    "faculty": "Faculty of Information Communication Technology",
     "applicationDeadline": "2026-08-10",
     "applyUrl": "https://www.limkokwing.net/botswana/",
     "durationYears": 4,
@@ -16819,7 +16834,8 @@
     ],
     "interests": [
       "Technology",
-      "Faculty of Science & Technology"
+      "Faculty of Science & Technology",
+      "Faculty of Information Communication Technology"
     ],
     "tags": [
       "Technology"
@@ -16907,11 +16923,13 @@
     "careers": [],
     "minPointsScaleVersion": 2,
     "interests": [
-      "Humanities"
+      "Humanities",
+      "Faculty of Design Innovation"
     ],
     "tags": [
       "Humanities"
-    ]
+    ],
+    "faculty": "Faculty of Design Innovation"
   },
   {
     "id": "lobatse-brigade-bricklaying-and-plastering-ncqf-level-iii",
@@ -42757,6 +42775,913 @@
       "NCQF Level III",
       "12 months",
       "DTVET August 2026"
+    ]
+  },
+  {
+    "id": "biust-bsc-chemistry-materials",
+    "name": "BSc Chemistry (Materials and Applied Chemistry)",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-chemistry-drug-discovery",
+    "name": "BSc Chemistry (Drug Discovery and Development)",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-chemistry-environmental",
+    "name": "BSc Chemistry (Environmental & Analytical Chemistry)",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-forensic-science",
+    "name": "BSc Forensic Science",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-mathematical-sciences",
+    "name": "BSc Mathematical Sciences",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-industrial-mathematics",
+    "name": "BSc Industrial Mathematics",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-statistics",
+    "name": "BSc Statistics",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-cyber-security-digital-forensics",
+    "name": "BSc Cyber Security and Digital Forensics",
+    "field": "Technology",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Pure & Applied Sciences",
+    "minPoints": 43,
+    "subjectRequirements": {
+      "math": "B",
+      "science": "C",
+      "english": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Technology",
+      "School of Pure & Applied Sciences"
+    ],
+    "tags": [
+      "Technology"
+    ],
+    "minPointsSource": "BIUST entry-requirements; level aligned with existing curated BSc Data Science row until programme-specific values are added.",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-beng-computer-telecommunications",
+    "name": "BEng (Hons) Computer and Telecommunications Engineering",
+    "field": "Engineering",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Electrical & Mechanical Engineering",
+    "minPoints": 44,
+    "subjectRequirements": {
+      "math": "A",
+      "science": "B",
+      "english": "C"
+    },
+    "duration": "5 years",
+    "durationYears": 5,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "School of Electrical & Mechanical Engineering"
+    ],
+    "tags": [
+      "Engineering"
+    ],
+    "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-beng-electrical-communications",
+    "name": "BEng (Hons) Electrical and Communications Engineering",
+    "field": "Engineering",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Electrical & Mechanical Engineering",
+    "minPoints": 44,
+    "subjectRequirements": {
+      "math": "A",
+      "science": "B",
+      "english": "C"
+    },
+    "duration": "5 years",
+    "durationYears": 5,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "School of Electrical & Mechanical Engineering"
+    ],
+    "tags": [
+      "Engineering"
+    ],
+    "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-beng-mechatronics-industrial-instrumentation",
+    "name": "BEng (Hons) Mechatronics and Industrial Instrumentation",
+    "field": "Engineering",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Electrical & Mechanical Engineering",
+    "minPoints": 44,
+    "subjectRequirements": {
+      "math": "A",
+      "science": "B",
+      "english": "C"
+    },
+    "duration": "5 years",
+    "durationYears": 5,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "School of Electrical & Mechanical Engineering"
+    ],
+    "tags": [
+      "Engineering"
+    ],
+    "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-beng-chemical-engineering",
+    "name": "BEng (Hons) Chemical Engineering",
+    "field": "Engineering",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Earth Sciences & Engineering",
+    "minPoints": 44,
+    "subjectRequirements": {
+      "math": "A",
+      "science": "B",
+      "english": "C"
+    },
+    "duration": "5 years",
+    "durationYears": 5,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "School of Earth Sciences & Engineering"
+    ],
+    "tags": [
+      "Engineering"
+    ],
+    "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-beng-materials-metallurgical",
+    "name": "BEng (Hons) Materials & Metallurgical Engineering",
+    "field": "Engineering",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Earth Sciences & Engineering",
+    "minPoints": 44,
+    "subjectRequirements": {
+      "math": "A",
+      "science": "B",
+      "english": "C"
+    },
+    "duration": "5 years",
+    "durationYears": 5,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "School of Earth Sciences & Engineering"
+    ],
+    "tags": [
+      "Engineering"
+    ],
+    "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-beng-geological-engineering",
+    "name": "BEng (Hons) Geological Engineering",
+    "field": "Engineering",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Earth Sciences & Engineering",
+    "minPoints": 44,
+    "subjectRequirements": {
+      "math": "A",
+      "science": "B",
+      "english": "C"
+    },
+    "duration": "5 years",
+    "durationYears": 5,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "School of Earth Sciences & Engineering"
+    ],
+    "tags": [
+      "Engineering"
+    ],
+    "minPointsSource": "BIUST entry-requirements (https://www.biust.ac.bw/entry-requirements/): programme-level bar aligned with existing curated BIUST engineering rows until prospectus confirms each programme.",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "biust-bsc-ecology-evolutionary-biology",
+    "name": "BSc (Hons) Ecology and Evolutionary Biology",
+    "field": "Natural Sciences",
+    "university": "BIUST",
+    "universityShort": "BIUST",
+    "faculty": "School of Life Sciences",
+    "minPoints": 39,
+    "subjectRequirements": {
+      "english": "D",
+      "math": "C",
+      "science": "C"
+    },
+    "duration": "4 years",
+    "durationYears": 4,
+    "description": "Programme at BIUST. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.biust.ac.bw/",
+    "applyUrl": "https://www.biust.ac.bw/admissions",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Natural Sciences",
+      "School of Life Sciences"
+    ],
+    "tags": [
+      "Natural Sciences"
+    ],
+    "minPointsSource": "BIUST entry-requirements page; institutional floor (combined six-subject score >=39 on the official BGCSE A=8 scale).",
+    "minPointsTier": "converted_official"
+  },
+  {
+    "id": "limkokwing-bsc-it-security",
+    "name": "BSc in Information Technology Security",
+    "field": "Technology",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Information Communication Technology",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Technology",
+      "Faculty of Information Communication Technology"
+    ],
+    "tags": [
+      "Technology"
+    ]
+  },
+  {
+    "id": "limkokwing-bsc-information-systems",
+    "name": "BSc in Information Systems",
+    "field": "Technology",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Information Communication Technology",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Technology",
+      "Faculty of Information Communication Technology"
+    ],
+    "tags": [
+      "Technology"
+    ]
+  },
+  {
+    "id": "limkokwing-diploma-information-technology",
+    "name": "Diploma in Information Technology",
+    "field": "Technology",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Information Communication Technology",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "2 years",
+    "durationYears": 2,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Technology",
+      "Faculty of Information Communication Technology"
+    ],
+    "tags": [
+      "Technology"
+    ]
+  },
+  {
+    "id": "limkokwing-ba-visual-communication",
+    "name": "BA in Visual Communication",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Design Innovation",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Design Innovation"
+    ],
+    "tags": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "limkokwing-ba-industrial-design",
+    "name": "BA in Industrial Design",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Design Innovation",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Design Innovation"
+    ],
+    "tags": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "limkokwing-diploma-fashion-design",
+    "name": "Diploma in Fashion Design",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Design Innovation",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "2 years",
+    "durationYears": 2,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Design Innovation"
+    ],
+    "tags": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "limkokwing-bbus-international-business",
+    "name": "BBus in International Business",
+    "field": "Business",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Business and Globalisation",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Business",
+      "Faculty of Business and Globalisation"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "limkokwing-bbus-finance-banking",
+    "name": "BBus in Finance and Banking",
+    "field": "Business",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Business and Globalisation",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Business",
+      "Faculty of Business and Globalisation"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "limkokwing-bbus-tourism-management",
+    "name": "BBus in Tourism Management",
+    "field": "Business",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Business and Globalisation",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Business",
+      "Faculty of Business and Globalisation"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "limkokwing-bbus-hospitality-management",
+    "name": "BBus in Hospitality Management",
+    "field": "Business",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Business and Globalisation",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Business",
+      "Faculty of Business and Globalisation"
+    ],
+    "tags": [
+      "Business"
+    ]
+  },
+  {
+    "id": "limkokwing-ba-interior-architecture",
+    "name": "BA in Interior Architecture",
+    "field": "Engineering",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Architecture & the Built Environment",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "Faculty of Architecture & the Built Environment"
+    ],
+    "tags": [
+      "Engineering"
+    ]
+  },
+  {
+    "id": "limkokwing-associate-architectural-technology",
+    "name": "Associate Degree in Architectural Technology",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Architecture & the Built Environment",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "2 years",
+    "durationYears": 2,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Architecture & the Built Environment"
+    ],
+    "tags": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "limkokwing-cert-construction-management",
+    "name": "Certificate in Construction Management",
+    "field": "Engineering",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Architecture & the Built Environment",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "1 year",
+    "durationYears": 1,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Engineering",
+      "Faculty of Architecture & the Built Environment"
+    ],
+    "tags": [
+      "Engineering"
+    ]
+  },
+  {
+    "id": "limkokwing-ba-professional-communication",
+    "name": "BA in Professional Communication",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Communication, Media & Broadcasting",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Communication, Media & Broadcasting"
+    ],
+    "tags": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "limkokwing-ba-digital-film-television",
+    "name": "BA in Digital Film and Television",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Communication, Media & Broadcasting",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Communication, Media & Broadcasting"
+    ],
+    "tags": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "limkokwing-ba-broadcasting-journalism",
+    "name": "BA in Broadcasting and Journalism",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Communication, Media & Broadcasting",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Communication, Media & Broadcasting"
+    ],
+    "tags": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "limkokwing-ba-events-management",
+    "name": "BA in Events Management",
+    "field": "Humanities",
+    "university": "Limkokwing University of Creative Technology",
+    "universityShort": "Limkokwing",
+    "faculty": "Faculty of Communication, Media & Broadcasting",
+    "minPoints": null,
+    "subjectRequirements": {},
+    "duration": "3 years",
+    "durationYears": 3,
+    "description": "Programme at Limkokwing Botswana. Confirm entry requirements with the institution.",
+    "officialUrl": "https://www.limkokwing.net/botswana/",
+    "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+    "applicationDeadline": "2026-08-10",
+    "modules": [],
+    "careers": [],
+    "minPointsScaleVersion": 2,
+    "interests": [
+      "Humanities",
+      "Faculty of Communication, Media & Broadcasting"
+    ],
+    "tags": [
+      "Humanities"
     ]
   }
 ]
