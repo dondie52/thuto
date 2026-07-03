@@ -1,10 +1,12 @@
 import { fetchUniversities } from "./universitiesData.js";
 import { fetchProgrammes } from "./programmesData.js";
 import { fetchActiveFeaturedPlacements, fetchVerifiedPartnersForMarketing } from "./partner.js";
-import { hash32, localCalendarDateKey, programmeEligibleForSpotlight } from "./weeklyHomeSpotlight.js";
+import { hash32, localCalendarDateKey, pickDistinctBySeed, programmeEligibleForSpotlight } from "./weeklyHomeSpotlight.js";
 
 const DEFAULT_FEATURED_IDS = ["ub", "biust", "buan", "botho", "bac", "bou", "limkokwing"];
 const DAILY_SPOTLIGHT_FALLBACK_IDS = DEFAULT_FEATURED_IDS;
+const DAILY_INSTITUTION_SPOTLIGHT_LIMIT = 5;
+const DAILY_PROGRAMME_SPOTLIGHT_LIMIT = 10;
 const DAILY_PROGRAMME_SPOTLIGHT_FALLBACK_IDS = [
   "ub-bachelor-arts-economics",
   "biust-bsc-computer-science",
@@ -244,7 +246,7 @@ export async function fetchDailySpotlightInstitutions(options = {}) {
 
   return {
     dayKey,
-    entries: orderEntriesForDay(entries, dayKey),
+    entries: orderEntriesForDay(entries, dayKey).slice(0, DAILY_INSTITUTION_SPOTLIGHT_LIMIT),
   };
 }
 
@@ -292,17 +294,20 @@ export async function fetchDailySpotlightProgrammes(options = {}) {
     for (const id of fallbackIds) {
       pushProgramme(id, { sponsored: false });
     }
-    for (const programme of programmes) {
-      if (!programmeEligibleForSpotlight(programme) || seen.has(programme.id) || excludeIds.has(programme.id)) {
-        continue;
-      }
+    const eligible = programmes.filter(
+      (programme) =>
+        programmeEligibleForSpotlight(programme) && !seen.has(programme.id) && !excludeIds.has(programme.id),
+    );
+    const remaining = Math.max(0, DAILY_PROGRAMME_SPOTLIGHT_LIMIT - entries.length);
+    const picks = pickDistinctBySeed(eligible, remaining, `${dayKey}|daily-programme-spotlight-picks`);
+    for (const programme of picks) {
       pushProgramme(programme.id, { sponsored: false });
     }
   }
 
   return {
     dayKey,
-    entries: orderProgrammeEntriesForDay(entries, dayKey),
+    entries: orderProgrammeEntriesForDay(entries, dayKey).slice(0, DAILY_PROGRAMME_SPOTLIGHT_LIMIT),
   };
 }
 
