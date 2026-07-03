@@ -38,13 +38,13 @@ export default function PartnersLogos({ content }) {
   }, [content?.featuredUniversityIds, universitiesById, verifiedIds]);
 
   return (
-    <section className="rounded-2xl border border-brand-100 bg-slate-50/70 p-5 sm:p-6" aria-labelledby="partners-logos-heading">
+    <section className="rounded-2xl border border-brand-100 bg-[var(--thuto-surface)] p-5 sm:p-6" aria-labelledby="partners-logos-heading">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 id="partners-logos-heading" className="font-display text-xl font-bold text-brand-950 sm:text-2xl">
             {content?.heading}
           </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">{content?.body}</p>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">{content?.body}</p>
         </div>
         {verifiedIds.length ? (
           <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-900">
@@ -57,7 +57,7 @@ export default function PartnersLogos({ content }) {
           <li key={university.id}>
             <Link
               to={`/universities/${university.id}`}
-              className="flex h-24 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition-colors hover:border-brand-300"
+              className="flex h-24 flex-col justify-between rounded-2xl border border-stone-200 bg-[var(--thuto-surface-elevated)] p-3 shadow-card transition-colors hover:border-brand-300"
             >
               <div className="flex items-start justify-between gap-2">
                 <UniversityInitialsBadge university={university} size="sm" />

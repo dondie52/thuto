@@ -14,8 +14,8 @@ export default function PartnersWho({ content }) {
             <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-500 text-white shadow-sm">
               {partnerIcons[item.icon] || partnerIcons.university}
             </span>
-            <h3 className="mt-4 text-sm font-bold uppercase tracking-wide text-slate-900">{item.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.body}</p>
+            <h3 className="mt-4 text-sm font-bold uppercase tracking-wide text-brand-900">{item.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-stone-600">{item.body}</p>
           </li>
         ))}
       </ul>

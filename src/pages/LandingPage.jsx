@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { scrollToElementId } from "../lib/motion.js";
 import Hero from "../components/landing/Hero.jsx";
 import ProblemSection from "../components/landing/ProblemSection.jsx";
 import HowItWorks from "../components/landing/HowItWorks.jsx";
@@ -22,7 +23,7 @@ export default function LandingPage() {
   useEffect(() => {
     if (!hash) return;
     window.requestAnimationFrame(() => {
-      document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" });
+      scrollToElementId(hash.slice(1), { block: "start" });
     });
   }, [hash]);
 

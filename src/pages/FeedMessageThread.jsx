@@ -4,6 +4,7 @@ import UserDisplayName from "../components/UserDisplayName.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import { fetchConversations, fetchMessages, markConversationRead, sendMessage } from "../lib/messaging.js";
+import { scrollElementIntoView } from "../lib/motion.js";
 
 function formatWhen(value) {
   if (!value) return "";
@@ -72,7 +73,7 @@ export default function FeedMessageThread() {
   }, [loadThread]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollElementIntoView(bottomRef.current, { block: "end" });
   }, [messages.length]);
 
   useEffect(() => {

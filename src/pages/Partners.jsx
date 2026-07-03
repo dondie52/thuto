@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
+import { scrollToElementId } from "../lib/motion.js";
 import PartnersHero from "../components/partners/PartnersHero.jsx";
 import PartnersLogos from "../components/partners/PartnersLogos.jsx";
 import PartnersWhy from "../components/partners/PartnersWhy.jsx";
@@ -17,7 +18,7 @@ export default function Partners() {
   const { content } = usePageContent("partners", PAGE_CONTENT_DEFAULTS.partners);
 
   const scrollToInquiry = useCallback(() => {
-    document.getElementById("partner-inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToElementId("partner-inquiry", { block: "start" });
   }, []);
 
   return (
@@ -30,7 +31,7 @@ export default function Partners() {
       <PartnersPricing content={content.pricing} onBookDemo={scrollToInquiry} />
       <PartnerInquiryForm content={content.inquiry} />
       <PartnersCta content={content.cta} onBookDemo={scrollToInquiry} />
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-stone-600">
         <Link to="/" className="font-semibold text-brand-800 underline hover:text-brand-950">
           Back to home
         </Link>

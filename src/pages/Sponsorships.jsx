@@ -4,6 +4,7 @@ import OpportunityPostsFeed from "../components/OpportunityPostsFeed.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { OPPORTUNITY_CATEGORY } from "../lib/opportunityPosts.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { scrollElementIntoView } from "../lib/motion.js";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 import UpgradePrompt from "../components/UpgradePrompt.jsx";
@@ -234,7 +235,7 @@ export default function Sponsorships() {
 
   useEffect(() => {
     if (activeRoute && detailRef.current) {
-      detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollElementIntoView(detailRef.current, { block: "start" });
     }
   }, [activeRoute]);
 
