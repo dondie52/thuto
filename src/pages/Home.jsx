@@ -13,7 +13,6 @@ import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 import HomeCenterCreators from "../components/home/HomeCenterCreators.jsx";
 import HomeDailyProgrammes from "../components/home/HomeDailyProgrammes.jsx";
 import HomeDailySpotlight from "../components/home/HomeDailySpotlight.jsx";
-import HomeFeaturedUniversities from "../components/home/HomeFeaturedUniversities.jsx";
 import HomeHeroPartner from "../components/home/HomeHeroPartner.jsx";
 import HomePartnerCampaigns from "../components/home/HomePartnerCampaigns.jsx";
 
@@ -117,12 +116,6 @@ export default function Home() {
         body={content.dailyProgrammes?.body}
         ctaLabel={content.dailyProgrammes?.ctaLabel}
         fallbackIds={content.dailyProgrammes?.fallbackIds}
-      />
-
-      <HomeFeaturedUniversities
-        heading={content.featuredUniversities?.heading}
-        body={content.featuredUniversities?.body}
-        fallbackIds={content.featuredUniversities?.fallbackIds}
       />
 
       <HomeCenterCreators
