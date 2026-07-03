@@ -134,7 +134,7 @@ function renderHashtagText(text) {
 function PostAvatar({ isOfficial, displayName, avatarUrl }) {
   if (isOfficial) {
     return (
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-800 text-sm font-bold text-white ring-1 ring-brand-200">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-700 to-brand-900 text-sm font-bold text-white">
         T
       </div>
     );
@@ -277,7 +277,7 @@ function CommentSection({
             onChange={(event) => onDraftChange(post.id, event.target.value)}
             maxLength={1000}
             placeholder="Add a comment..."
-            className="min-h-11 min-w-0 flex-1 rounded-full border border-brand-200 bg-[var(--thuto-surface-elevated)] px-3 py-2 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            className="min-h-8 min-w-0 flex-1 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200"
           />
           <button
             type="submit"
@@ -381,13 +381,13 @@ export default function FeedPostCard({
   }
 
   const actionButtonClass =
-    "focus-ring inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-2 text-sm text-stone-600 transition-colors hover:bg-stone-50 motion-reduce:transition-none";
+    "focus-ring inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 text-sm text-stone-600 transition-colors hover:bg-stone-50";
 
   return (
     <article
       id={`feed-post-${post.id}`}
       className={[
-        "min-w-0 border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)] px-4 py-4",
+        "min-w-0 border-b border-stone-200/80 bg-white px-4 py-4",
         !isPublished && isOwnPost ? "bg-amber-50/30" : "",
       ].join(" ")}
     >
@@ -430,7 +430,7 @@ export default function FeedPostCard({
                   </span>
                 ) : null}
               </div>
-              {timeLabel ? <p className="mt-0.5 text-xs text-stone-500">{timeLabel}</p> : null}
+              {timeLabel ? <p className="mt-0.5 text-xs text-stone-400">{timeLabel}</p> : null}
             </div>
 
             <div className="flex shrink-0 items-center gap-2">
@@ -446,14 +446,14 @@ export default function FeedPostCard({
                   {isFollowingAuthor ? "Following" : "Follow"}
                 </button>
               ) : null}
-              <span className="rounded-full border border-brand-200 bg-brand-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-800">
+              <span className="rounded-full bg-brand-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
                 {categoryBadgeText(post.category)}
               </span>
               <div className="relative" ref={menuRef}>
                 <button
                   type="button"
                   onClick={() => setMenuOpen((open) => !open)}
-                  className="focus-ring flex min-h-11 min-w-11 items-center justify-center rounded-full text-stone-500 hover:bg-stone-100 hover:text-stone-700"
+                  className="focus-ring flex h-7 w-7 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600"
                   aria-label="More actions"
                   aria-expanded={menuOpen}
                 >
@@ -531,7 +531,7 @@ export default function FeedPostCard({
               type="button"
               onClick={handleCircleVote}
               className={[actionButtonClass, liked ? "text-brand-700 hover:text-brand-800" : "hover:text-brand-800"].join(" ")}
-              aria-label={`Like${likeCount ? `, ${likeCount}` : ""}`}
+              aria-label="Like"
               aria-pressed={liked}
             >
               <IconCircleVote active={liked} />
@@ -544,7 +544,7 @@ export default function FeedPostCard({
                 actionButtonClass,
                 disliked ? "text-red-700 hover:text-red-800" : "text-red-600 hover:text-red-700",
               ].join(" ")}
-              aria-label={`Dislike${dislikeCount ? `, ${dislikeCount}` : ""}`}
+              aria-label="Dislike"
               aria-pressed={disliked}
             >
               <IconCrossVote />
@@ -556,7 +556,7 @@ export default function FeedPostCard({
               onClick={() => onToggleComments(post.id)}
               className={[actionButtonClass, commentsExpanded ? "text-brand-700" : "hover:text-brand-800"].join(" ")}
               aria-expanded={commentsExpanded}
-              aria-label={`Comments${commentCount ? `, ${commentCount}` : ""}`}
+              aria-label="Comments"
             >
               <IconComment />
               <span className="font-medium tabular-nums">{commentCount}</span>

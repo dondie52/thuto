@@ -18,7 +18,6 @@ import {
 import { fetchFollowingSet, toggleFollowUser } from "../lib/feedFollows.js";
 import { fetchSavedPostSet, toggleSavedPost } from "../lib/savedPosts.js";
 import { formatNetworkErrorMessage } from "../lib/networkErrors.js";
-import { scrollElementIntoView } from "../lib/motion.js";
 
 function profileInitial(name) {
   const letter = String(name || "S")
@@ -195,7 +194,7 @@ export default function Feed() {
       window.requestAnimationFrame(() => {
         const node = document.getElementById(`feed-post-${highlightPostId}`);
         if (node) {
-          scrollElementIntoView(node, { block: "center" });
+          node.scrollIntoView({ behavior: "smooth", block: "center" });
           node.classList.add("ring-2", "ring-brand-400", "ring-offset-2");
           window.setTimeout(() => {
             node.classList.remove("ring-2", "ring-brand-400", "ring-offset-2");
@@ -473,8 +472,8 @@ export default function Feed() {
         </div>
       )}
 
-      <section className="border-b border-stone-200/70 bg-[var(--thuto-surface)] px-3 py-3">
-        <div className="flex min-w-0 items-start gap-2.5">
+      <section className="border-b border-stone-200/70 px-3 py-2">
+        <div className="flex min-w-0 items-start gap-2">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
@@ -493,11 +492,11 @@ export default function Feed() {
                 <button
                   type="button"
                   onClick={() => setShowComposerDetails(true)}
-                  className="focus-ring min-h-11 min-w-0 flex-1 rounded-full border border-brand-200 bg-[var(--thuto-surface-elevated)] px-4 text-left text-sm font-medium text-stone-600 hover:border-brand-300"
+                  className="focus-ring min-h-8 min-w-0 flex-1 rounded-full border border-stone-200 bg-stone-50 px-3 text-left text-xs font-medium text-stone-500 hover:border-stone-300 hover:bg-white"
                 >
                   Start a post...
                 </button>
-                <label className="focus-within:ring-2 focus-within:ring-brand-200 inline-flex min-h-11 min-w-11 cursor-pointer flex-col items-center justify-center rounded-xl px-2 text-[10px] font-semibold text-stone-600 hover:bg-stone-50">
+                <label className="focus-within:ring-1 focus-within:ring-brand-200 inline-flex min-h-8 cursor-pointer flex-col items-center justify-center rounded-lg px-1.5 text-[10px] font-medium text-stone-600 hover:bg-stone-50">
                   <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.75 5.75A1.75 1.75 0 016.5 4h11a1.75 1.75 0 011.75 1.75v12.5A1.75 1.75 0 0117.5 20h-11a1.75 1.75 0 01-1.75-1.75V5.75z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM5 16l4-4 3 3 2-2 5 5" />
@@ -519,7 +518,7 @@ export default function Feed() {
                 <button
                   type="submit"
                   disabled={!canPublish || isPosting || !form.body.trim()}
-                  className="focus-ring inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-brand-700 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="focus-ring inline-flex min-h-8 shrink-0 items-center justify-center rounded-full bg-brand-700 px-4 py-1.5 text-xs font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isPosting ? "..." : "Post"}
                 </button>
@@ -536,7 +535,7 @@ export default function Feed() {
                     required
                     disabled={!canCompose || isPosting}
                     placeholder="What do you want to share?"
-                    className="w-full rounded-xl border border-brand-200 bg-[var(--thuto-surface-elevated)] px-3 py-2.5 text-sm leading-relaxed text-stone-800 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:opacity-60"
+                    className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs leading-relaxed text-stone-700 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-200 disabled:opacity-60"
                   />
                 </label>
               ) : null}
@@ -637,7 +636,7 @@ export default function Feed() {
       ) : null}
 
       {!isLoading && posts.length ? (
-        <section className="bg-[var(--thuto-surface-elevated)]">
+        <section className="bg-white">
         {posts.map((post) => (
           <FeedPostCard
             key={post.id}

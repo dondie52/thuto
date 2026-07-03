@@ -53,7 +53,7 @@ const links = [
 
 function linkClass({ isActive }) {
   return [
-    "focus-ring flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-[9px] font-semibold leading-none transition-colors duration-200 motion-reduce:transition-none",
+    "focus-ring flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-[9px] font-semibold leading-none transition-all duration-200",
     isActive ? "bg-brand-700 text-white shadow-sm" : "text-stone-500 hover:bg-stone-100 hover:text-brand-800",
   ].join(" ");
 }
@@ -67,7 +67,7 @@ export default function BottomNav({ visible = true, surface = "default" }) {
   return (
     <nav
       className={[
-        "fixed bottom-0 left-0 right-0 z-20 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 transition-transform duration-300 ease-out motion-reduce:transition-none will-change-transform sm:hidden",
+        "fixed bottom-0 left-0 right-0 z-20 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 transition-transform duration-300 ease-out will-change-transform sm:hidden",
         visible ? "translate-y-0" : "pointer-events-none translate-y-[calc(100%+1rem)]",
       ].join(" ")}
       aria-label="Primary"

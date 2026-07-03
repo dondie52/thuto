@@ -41,21 +41,24 @@ export default function Hero({ content }) {
           </Link>
           <Link
             to={landingTo(isSignedIn, "/programmes", "#programmes")}
-            className="focus-ring-on-dark landing-motion-press inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:border-white/55 hover:bg-white/15"
+            className="focus-ring-on-dark landing-motion-press inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-sm backdrop-blur-sm hover:border-white/55 hover:bg-white/20"
           >
             {content?.secondaryCtaLabel}
           </Link>
         </div>
         {stats.length ? (
-          <p className="landing-hero-highlights mt-8 max-w-2xl text-sm leading-7 text-slate-200/95 sm:mt-9">
+          <dl className="landing-hero-stats mt-10 grid max-w-2xl grid-cols-1 gap-2 sm:grid-cols-3">
             {stats.map((item, index) => (
-              <span key={`${item.label}-${index}`}>
-                {index > 0 ? <span className="mx-2 text-white/30" aria-hidden>·</span> : null}
-                <span className="font-semibold text-white">{item.value}</span>{" "}
-                <span className="text-brand-100">{item.label}</span>
-              </span>
+              <div
+                key={`${item.label}-${index}`}
+                className="landing-hero-stat rounded-2xl border border-white/15 bg-slate-950/35 px-4 py-3 shadow-sm backdrop-blur-sm"
+                style={{ "--stat-delay": `${680 + index * 130}ms` }}
+              >
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-100">{item.label}</dt>
+                <dd className="mt-1 font-display text-xl font-semibold leading-none text-white">{item.value}</dd>
+              </div>
             ))}
-          </p>
+          </dl>
         ) : null}
         <p className="landing-hero-note mt-5 max-w-xl text-sm leading-6 text-slate-200/90">{content?.note}</p>
       </div>

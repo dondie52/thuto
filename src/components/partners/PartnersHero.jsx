@@ -10,14 +10,14 @@ export default function PartnersHero({ content, onBookDemo }) {
   }
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-brand-200 bg-[var(--thuto-surface-elevated)] shadow-card">
+    <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
       <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="p-5 sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">{content?.kicker}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{content?.kicker}</p>
           <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-brand-950 sm:text-4xl">
             {content?.title}
           </h1>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-stone-600 sm:text-base">{content?.body}</p>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">{content?.body}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="#partner-inquiry"

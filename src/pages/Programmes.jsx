@@ -60,7 +60,6 @@ export default function Programmes() {
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [advancedOpen, setAdvancedOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toggle, isBookmarked } = useBookmarks();
   const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
@@ -101,7 +100,6 @@ export default function Programmes() {
     },
     [setSearchParams],
   );
-
 
   useEffect(() => {
     let cancelled = false;
@@ -199,36 +197,16 @@ export default function Programmes() {
     levelFilter;
 
   const activeFilterChips = [
-    uni !== "All" ? { key: "uni", label: `University: ${uni}`, clear: () => setPatch({ uni: "" }) } : null,
-    field !== "All" ? { key: "field", label: `Field: ${field}`, clear: () => setPatch({ field: "" }) } : null,
-    minPtsRaw !== "" ? { key: "minPts", label: `From ${minPtsRaw} pts`, clear: () => setPatch({ minPts: "" }) } : null,
-    maxPtsRaw !== "" ? { key: "maxPts", label: `Up to ${maxPtsRaw} pts`, clear: () => setPatch({ maxPts: "" }) } : null,
-    sort !== "name_asc"
-      ? {
-          key: "sort",
-          label: SORT_OPTIONS.find((option) => option.value === sort)?.label,
-          clear: () => setPatch({ sort: "" }),
-        }
-      : null,
-    qualifyPoints
-      ? {
-          key: "qualify",
-          label: predTotal != null ? `Within ${predTotal} pts` : "Predictor points",
-          clear: () => setPatch({ qualify: "" }),
-        }
-      : null,
-    levelFilter === "postgraduate"
-      ? { key: "level", label: "Master's / taught postgraduate", clear: () => setPatch({ level: "" }) }
-      : null,
-    levelFilter === "phd" ? { key: "level", label: "PhD / research", clear: () => setPatch({ level: "" }) } : null,
-    levelFilter === "pg" ? { key: "level", label: "All postgraduate", clear: () => setPatch({ level: "" }) } : null,
+    uni !== "All" ? `University: ${uni}` : null,
+    field !== "All" ? `Field: ${field}` : null,
+    minPtsRaw !== "" ? `From ${minPtsRaw} pts` : null,
+    maxPtsRaw !== "" ? `Up to ${maxPtsRaw} pts` : null,
+    sort !== "name_asc" ? SORT_OPTIONS.find((option) => option.value === sort)?.label : null,
+    qualifyPoints ? (predTotal != null ? `Within ${predTotal} pts` : "Predictor points") : null,
+    levelFilter === "postgraduate" ? "Master's / taught postgraduate" : null,
+    levelFilter === "phd" ? "PhD / research" : null,
+    levelFilter === "pg" ? "All postgraduate" : null,
   ].filter(Boolean);
-
-  useEffect(() => {
-    if (hasActiveFilters) setFiltersOpen(true);
-    if (minPtsRaw !== "" || maxPtsRaw !== "" || qualifyPoints) setAdvancedOpen(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- open panels once from initial URL state
-  }, []);
 
   function clearFilters() {
     setSearchParams({}, { replace: true });
@@ -252,7 +230,7 @@ export default function Programmes() {
                 ? "Postgraduate programmes"
                 : "Programmes"}
         </h1>
-        <p className="mt-2 text-sm text-stone-600">
+        <p className="mt-2 text-sm text-slate-600">
           {levelFilter
             ? "Postgraduate catalogue — entry routes and requirements differ from BGCSE undergraduate planning. Confirm every detail with the institution."
             : "Search by programme or university. Open a result for requirements, careers, and course detail."}
@@ -270,10 +248,10 @@ export default function Programmes() {
         </p>
       ) : null}
 
-      <div className="space-y-4 rounded-2xl border border-brand-200 bg-[var(--thuto-surface-elevated)] p-4 shadow-card">
+      <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
           <div>
-            <label htmlFor="prog-search" className="block text-xs font-semibold text-stone-600">
+            <label htmlFor="prog-search" className="block text-xs font-medium text-slate-600">
               Search
             </label>
             <input
@@ -282,7 +260,7 @@ export default function Programmes() {
               value={searchParams.get("q") ?? ""}
               onChange={(e) => setPatch({ q: e.target.value })}
               placeholder="Programme or university..."
-              className="focus-ring mt-1 w-full rounded-xl border border-brand-200 bg-[var(--thuto-surface)] px-3 py-3 text-base focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 sm:max-w-md sm:py-2.5 sm:text-sm"
+              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:max-w-md sm:py-2 sm:text-sm"
             />
           </div>
           <button
@@ -292,51 +270,21 @@ export default function Programmes() {
             aria-expanded={filtersOpen}
             aria-controls="programme-filter-controls"
           >
-            {filtersOpen ? "Hide filters" : `More filters${activeFilterChips.length ? ` (${activeFilterChips.length})` : ""}`}
+            {filtersOpen ? "Hide filters" : `Filters${activeFilterChips.length ? ` (${activeFilterChips.length})` : ""}`}
           </button>
         </div>
 
-        {!levelFilter && fields.length > 1 ? (
-          <div className="space-y-2">
-            <p className="text-xs font-semibold text-stone-600">Popular fields</p>
-            <div className="flex flex-wrap gap-2">
-              {fields
-                .filter((value) => value !== "All")
-                .slice(0, 8)
-                .map((value) => {
-                  const active = field === value;
-                  return (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setPatch({ field: active ? "" : value })}
-                      className={[
-                        "focus-ring rounded-full px-3 py-1.5 text-xs font-semibold transition-colors motion-reduce:transition-none",
-                        active
-                          ? "bg-brand-700 text-white"
-                          : "border border-brand-200 bg-[var(--thuto-surface)] text-brand-800 hover:bg-brand-50",
-                      ].join(" ")}
-                      aria-pressed={active}
-                    >
-                      {value}
-                    </button>
-                  );
-                })}
-            </div>
-          </div>
-        ) : null}
-
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-stone-600">
+          <p className="text-sm text-slate-600">
             <span className="font-semibold text-brand-900">{isLoading ? "..." : filteredSorted.length}</span> programmes found
           </p>
           {hasActiveFilters ? (
             <button
               type="button"
               onClick={clearFilters}
-              className="focus-ring self-start rounded-lg text-sm font-semibold text-brand-700 underline underline-offset-4 hover:text-brand-900 sm:self-auto"
+              className="self-start rounded-lg text-sm font-semibold text-brand-700 underline underline-offset-4 hover:text-brand-900 sm:self-auto"
             >
-              Clear all
+              Clear filters
             </button>
           ) : null}
         </div>
@@ -344,30 +292,24 @@ export default function Programmes() {
         {activeFilterChips.length ? (
           <div className="flex flex-wrap gap-2" aria-label="Active filters">
             {activeFilterChips.map((chip) => (
-              <button
-                key={chip.key}
-                type="button"
-                onClick={chip.clear}
-                className="focus-ring inline-flex max-w-full items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
-              >
-                <span className="break-words">{chip.label}</span>
-                <span aria-hidden="true">×</span>
-              </button>
+              <span key={chip} className="max-w-full break-words rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+                {chip}
+              </span>
             ))}
           </div>
         ) : null}
 
-        <div id="programme-filter-controls" className={`${filtersOpen ? "block" : "hidden"} space-y-4 border-t border-brand-100 pt-4`}>
+        <div id="programme-filter-controls" className={`${filtersOpen ? "block" : "hidden"} space-y-4`}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div>
-              <label htmlFor="uni-filter" className="block text-xs font-semibold text-stone-600">
+              <label htmlFor="uni-filter" className="block text-xs font-medium text-slate-600">
                 University
               </label>
               <select
                 id="uni-filter"
                 value={uni}
                 onChange={(e) => setPatch({ uni: e.target.value === "All" ? "" : e.target.value })}
-                className="focus-ring mt-1 w-full rounded-xl border border-brand-200 bg-[var(--thuto-surface)] px-3 py-3 text-base focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 sm:py-2.5 sm:text-sm"
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
               >
                 {universities.map((u) => (
                   <option key={u} value={u}>
@@ -377,14 +319,14 @@ export default function Programmes() {
               </select>
             </div>
             <div>
-              <label htmlFor="field-filter" className="block text-xs font-semibold text-stone-600">
+              <label htmlFor="field-filter" className="block text-xs font-medium text-slate-600">
                 Field of study
               </label>
               <select
                 id="field-filter"
                 value={field}
                 onChange={(e) => setPatch({ field: e.target.value === "All" ? "" : e.target.value })}
-                className="focus-ring mt-1 w-full rounded-xl border border-brand-200 bg-[var(--thuto-surface)] px-3 py-3 text-base focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 sm:py-2.5 sm:text-sm"
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
               >
                 {fields.map((f) => (
                   <option key={f} value={f}>
@@ -394,14 +336,14 @@ export default function Programmes() {
               </select>
             </div>
             <div>
-              <label htmlFor="sort-filter" className="block text-xs font-semibold text-stone-600">
+              <label htmlFor="sort-filter" className="block text-xs font-medium text-slate-600">
                 Sort
               </label>
               <select
                 id="sort-filter"
                 value={sort}
                 onChange={(e) => setPatch({ sort: e.target.value === "name_asc" ? "" : e.target.value })}
-                className="focus-ring mt-1 w-full rounded-xl border border-brand-200 bg-[var(--thuto-surface)] px-3 py-3 text-base focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 sm:py-2.5 sm:text-sm"
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
               >
                 {SORT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -412,90 +354,76 @@ export default function Programmes() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-brand-100 bg-[var(--thuto-surface)]">
-            <button
-              type="button"
-              onClick={() => setAdvancedOpen((open) => !open)}
-              className="focus-ring flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
-              aria-expanded={advancedOpen}
-              aria-controls="programme-advanced-filters"
-            >
-              <span className="text-sm font-semibold text-brand-900">Advanced filters</span>
-              <span className="text-xs font-medium text-stone-500">{advancedOpen ? "Hide" : "Show"}</span>
-            </button>
-            <div id="programme-advanced-filters" className={`${advancedOpen ? "block" : "hidden"} space-y-4 border-t border-brand-100 px-4 pb-4 pt-4`}>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="min-pts" className="block text-xs font-semibold text-stone-600">
-                    Min entry points (at least)
-                  </label>
-                  <input
-                    id="min-pts"
-                    type="number"
-                    inputMode="numeric"
-                    min={0}
-                    max={48}
-                    placeholder="e.g. 22"
-                    value={searchParams.get("minPts") ?? ""}
-                    onChange={(e) => setPatch({ minPts: sanitizePoints(e.target.value) })}
-                    aria-invalid={pointsRangeInvalid}
-                    aria-describedby={pointsRangeInvalid ? "points-range-error" : undefined}
-                    className="focus-ring mt-1 w-full rounded-xl border border-brand-200 bg-[var(--thuto-surface-elevated)] px-3 py-3 text-base focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 sm:py-2.5 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="max-pts" className="block text-xs font-semibold text-stone-600">
-                    Min entry points (at most)
-                  </label>
-                  <input
-                    id="max-pts"
-                    type="number"
-                    inputMode="numeric"
-                    min={0}
-                    max={48}
-                    placeholder="e.g. 32"
-                    value={searchParams.get("maxPts") ?? ""}
-                    onChange={(e) => setPatch({ maxPts: sanitizePoints(e.target.value) })}
-                    aria-invalid={pointsRangeInvalid}
-                    aria-describedby={pointsRangeInvalid ? "points-range-error" : undefined}
-                    className="focus-ring mt-1 w-full rounded-xl border border-brand-200 bg-[var(--thuto-surface-elevated)] px-3 py-3 text-base focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 sm:py-2.5 sm:text-sm"
-                  />
-                </div>
-              </div>
-
-              {pointsRangeInvalid ? (
-                <p id="points-range-error" className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900" role="alert">
-                  The lower point value is higher than the upper value. Adjust the range to filter by points.
-                </p>
-              ) : null}
-
-              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-brand-100 bg-brand-50/70 px-3 py-3 text-sm text-brand-900">
-                <input
-                  type="checkbox"
-                  className="mt-1 rounded border-brand-300 text-brand-700 focus:ring-brand-500"
-                  checked={qualifyPoints}
-                  disabled={predTotal == null}
-                  onChange={(e) => setPatch({ qualify: e.target.checked ? "1" : "" })}
-                />
-                <span>
-                  Show programmes I may reach on <strong>points only</strong>
-                  {predTotal != null ? (
-                    <>
-                      {" "}
-                      using <strong>{predTotal}</strong> pts.
-                    </>
-                  ) : (
-                    <> after using the predictor.</>
-                  )}{" "}
-                  Subject requirements are not checked here.
-                </span>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="min-pts" className="block text-xs font-medium text-slate-600">
+                Min entry points (at least)
               </label>
+              <input
+                id="min-pts"
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={48}
+                placeholder="e.g. 22"
+                value={searchParams.get("minPts") ?? ""}
+                onChange={(e) => setPatch({ minPts: sanitizePoints(e.target.value) })}
+                aria-invalid={pointsRangeInvalid}
+                aria-describedby={pointsRangeInvalid ? "points-range-error" : undefined}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="max-pts" className="block text-xs font-medium text-slate-600">
+                Min entry points (at most)
+              </label>
+              <input
+                id="max-pts"
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={48}
+                placeholder="e.g. 32"
+                value={searchParams.get("maxPts") ?? ""}
+                onChange={(e) => setPatch({ maxPts: sanitizePoints(e.target.value) })}
+                aria-invalid={pointsRangeInvalid}
+                aria-describedby={pointsRangeInvalid ? "points-range-error" : undefined}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              />
             </div>
           </div>
+
+          {pointsRangeInvalid ? (
+            <p id="points-range-error" className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900" role="alert">
+              The lower point value is higher than the upper value. Adjust the range to filter by points.
+            </p>
+          ) : null}
+
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-brand-50/60 px-3 py-3 text-sm text-brand-900">
+            <input
+              type="checkbox"
+              className="mt-1 rounded border-brand-300 text-brand-700 focus:ring-brand-500"
+              checked={qualifyPoints}
+              disabled={predTotal == null}
+              onChange={(e) => setPatch({ qualify: e.target.checked ? "1" : "" })}
+            />
+            <span>
+              Show programmes I may reach on <strong>points only</strong>
+              {predTotal != null ? (
+                <>
+                  {" "}
+                  using <strong>{predTotal}</strong> pts.
+                </>
+              ) : (
+                <> after using the predictor.</>
+              )}{" "}
+              Subject requirements are not checked here.
+            </span>
+          </label>
         </div>
       </div>
 
-      <ul className="divide-y divide-brand-100 overflow-hidden rounded-2xl border border-brand-200 bg-[var(--thuto-surface-elevated)] shadow-card" aria-busy={isLoading}>
+      <ul className="divide-y divide-brand-100 overflow-hidden rounded-xl border border-brand-200 bg-white shadow-sm" aria-busy={isLoading}>
         {isLoading ? (
           <li className="space-y-3 px-4 py-5" role="status">
             {[0, 1, 2].map((item) => (
@@ -534,7 +462,7 @@ export default function Programmes() {
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <span className="break-words font-medium text-brand-900">{p.name}</span>
-                    <p className="break-words text-xs text-stone-600">
+                    <p className="break-words text-xs text-slate-500">
                       {p.university}
                       {p.field ? ` · ${p.field}` : ""}
                     </p>
@@ -548,7 +476,7 @@ export default function Programmes() {
                     </span>
                   </div>
                 </div>
-                <p className="text-xs text-stone-600">
+                <p className="text-xs text-slate-600">
                   {careers.length ? `Careers: ${careers.join(", ")}` : "Open for requirements, careers, and course detail."}
                 </p>
               </Link>
@@ -564,8 +492,8 @@ export default function Programmes() {
           );
         })}
         {!isLoading && !filteredSorted.length && !error && (
-          <li className="px-4 py-8 text-center text-sm text-stone-600">
-            <p className="font-medium text-stone-800">No programmes match these filters.</p>
+          <li className="px-4 py-8 text-center text-sm text-slate-600">
+            <p className="font-medium text-slate-800">No programmes match these filters.</p>
             <p className="mt-2">{pointsRangeInvalid ? "Adjust the point range to continue." : "Try clearing a filter or widening the points range."}</p>
             {hasActiveFilters && (
               <button

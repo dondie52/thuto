@@ -80,7 +80,7 @@ export default function HomeFeaturedUniversities({
                 <Link
                   to={`/universities/${university.id}`}
                   className={[
-                    "focus-ring group flex gap-4 rounded-2xl border p-4 transition-[border-color,box-shadow,transform] duration-300 motion-reduce:transition-none motion-safe:hover:-translate-y-0.5",
+                    "focus-ring group flex gap-4 rounded-2xl border p-4 transition duration-300 hover:-translate-y-0.5",
                     cardClassName(entry),
                   ].join(" ")}
                 >
