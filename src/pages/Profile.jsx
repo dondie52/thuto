@@ -105,6 +105,7 @@ export default function Profile() {
   const premiumUntil = formatPremiumUntil(profile);
   const publicProfileUrl = profilePath(profile?.username);
   const showSignedInContent = isSignedIn && supabaseConfigured;
+  const profileReady = Boolean(profile);
 
   useEffect(() => {
     if (profile && isPremium) {
@@ -160,7 +161,7 @@ export default function Profile() {
 
   return (
     <div className="space-y-0">
-      {showSignedInContent ? (
+      {showSignedInContent && profileReady ? (
         <ProfileHero
           user={user}
           profile={profile}
@@ -171,7 +172,13 @@ export default function Profile() {
         />
       ) : null}
 
-      <ProfileSectionNav activeTab={activeTab} onTabChange={setActiveTab} signedIn={showSignedInContent} />
+      <ProfileSectionNav activeTab={activeTab} onTabChange={setActiveTab} signedIn={showSignedInContent && profileReady} />
+
+      {showSignedInContent && !profileReady ? (
+        <p className="py-8 text-center text-sm text-stone-500" role="status">
+          {isProfileLoading ? "Loading your profile..." : "Could not load your profile. Try refreshing the page."}
+        </p>
+      ) : null}
 
       {!isSignedIn ? (
         <>
@@ -200,7 +207,7 @@ export default function Profile() {
         </>
       ) : null}
 
-      {showSignedInContent ? (
+      {showSignedInContent && profileReady ? (
         <>
           {activeTab === "about" ? (
             <ProfileEditForm profile={profile} onSave={saveProfile} disabled={isProfileLoading}>

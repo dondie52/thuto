@@ -24,7 +24,8 @@ export function useProfileTab() {
     setActiveTabState(tabId);
     const nextHash = `#${tabId}`;
     if (window.location.hash !== nextHash) {
-      window.history.replaceState(null, "", nextHash);
+      const { pathname, search } = window.location;
+      window.history.replaceState(null, "", `${pathname}${search}${nextHash}`);
     }
   }, []);
 

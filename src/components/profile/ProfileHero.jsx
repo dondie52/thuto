@@ -45,14 +45,15 @@ function CameraIcon({ className = "size-3.5" }) {
  */
 export default function ProfileHero({ user, profile, isPremium, onSave, onEdit, disabled = false }) {
   const fileInputRef = useRef(null);
-  const displayName = profile.full_name || user.email || "Student";
+  const safeProfile = profile || {};
+  const displayName = safeProfile.full_name || user?.email || "Student";
   const universityLine = formatAuthorUniversity({
-    universityName: profile.university_name,
-    universityStatus: profile.university_status,
+    universityName: safeProfile.university_name,
+    universityStatus: safeProfile.university_status,
   });
 
   const { avatarUrl, isUploading, upload } = useProfileAvatarUpload({
-    avatarUrl: profile.avatar_url,
+    avatarUrl: safeProfile.avatar_url,
     onSave,
   });
 
@@ -131,13 +132,13 @@ export default function ProfileHero({ user, profile, isPremium, onSave, onEdit, 
               badgeClassName="size-4 shrink-0"
             />
           </h1>
-          {profile.bio ? <p className="mt-1 text-sm leading-relaxed text-stone-700">{profile.bio}</p> : null}
+          {safeProfile.bio ? <p className="mt-1 text-sm leading-relaxed text-stone-700">{safeProfile.bio}</p> : null}
           <p className="mt-1 text-xs text-stone-500">
-            {profile.username ? `@${profile.username}` : null}
-            {profile.username && universityLine ? " • " : null}
+            {safeProfile.username ? `@${safeProfile.username}` : null}
+            {safeProfile.username && universityLine ? " • " : null}
             {universityLine ? <span className="text-brand-800/90">{universityLine}</span> : null}
           </p>
-          {profile.distinction ? <p className="mt-0.5 text-xs text-stone-600">{profile.distinction}</p> : null}
+          {safeProfile.distinction ? <p className="mt-0.5 text-xs text-stone-600">{safeProfile.distinction}</p> : null}
         </div>
       </div>
     </div>
