@@ -12,6 +12,14 @@ function formatWhen(value) {
   return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 }
 
+function IconBack({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
 export default function FeedMessageThread() {
   const { conversationId } = useParams();
   const { user } = useAuth();
@@ -25,7 +33,7 @@ export default function FeedMessageThread() {
   const [error, setError] = useState("");
   const bottomRef = useRef(null);
 
-  useDocumentTitle(`${peerName} | Messages | Thuto`);
+  useDocumentTitle(`${peerName} | Chats | Thuto`);
 
   const loadThread = useCallback(async () => {
     if (!user || !conversationId) return;
@@ -80,35 +88,40 @@ export default function FeedMessageThread() {
     return (
       <div className="px-4 pt-2">
         <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900">
-        <Link to="/auth?mode=login" className="font-semibold underline">
-          Sign in
-        </Link>{" "}
-        to view this conversation.
+          <Link to="/auth?mode=login" className="font-semibold underline">
+            Sign in
+          </Link>{" "}
+          to view this conversation.
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-12rem)] flex-col px-4 pt-2">
-      <div className="mb-3 flex items-center gap-3">
-        <Link to="/feed/messages" className="focus-ring rounded-full border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800">
-          Back
+    <div className="flex h-dvh flex-col bg-white">
+      <header className="sticky top-0 z-10 flex shrink-0 items-center gap-2 border-b border-brand-100 bg-white px-3 pb-2.5 pt-[calc(0.5rem+env(safe-area-inset-top))]">
+        <Link
+          to="/feed/messages"
+          className="focus-ring flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-brand-800 hover:bg-brand-50"
+          aria-label="Back to chats"
+        >
+          <IconBack />
         </Link>
         <UserDisplayName
           name={peerName}
           isPro={peerIsPro}
-          nameClassName="font-display text-lg font-semibold text-brand-900"
+          nameClassName="font-display truncate text-base font-semibold text-brand-900"
+          className="min-w-0 flex-1"
         />
-      </div>
+      </header>
 
       {error ? (
-        <p className="mb-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+        <p className="mx-4 mt-2 shrink-0 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
           {error}
         </p>
       ) : null}
 
-      <div className="flex-1 space-y-2 overflow-y-auto rounded-2xl border border-brand-100 bg-white p-3 shadow-sm">
+      <div className="flex-1 space-y-2 overflow-y-auto px-4 py-3">
         {isLoading ? <p className="text-sm text-stone-500">Loading conversation...</p> : null}
         {!isLoading && !messages.length ? (
           <p className="text-center text-sm text-stone-500">Say hello to start the chat.</p>
@@ -134,13 +147,16 @@ export default function FeedMessageThread() {
         <div ref={bottomRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-3 flex items-end gap-2">
+      <form
+        onSubmit={handleSubmit}
+        className="flex shrink-0 items-end gap-2 border-t border-brand-100 bg-white px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
+      >
         <textarea
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           rows={2}
           placeholder="Write a message..."
-          className="focus-ring min-h-11 flex-1 rounded-2xl border border-brand-100 bg-white px-3 py-2 text-sm shadow-sm"
+          className="focus-ring min-h-11 flex-1 rounded-2xl border border-brand-100 bg-white px-3 py-2 text-sm"
         />
         <button
           type="submit"

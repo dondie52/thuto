@@ -8,7 +8,7 @@ import OnboardingRedirect from "./OnboardingRedirect.jsx";
 import SubscriptionAdSlot from "./SubscriptionAdSlot.jsx";
 import { useScrollChrome } from "../hooks/useScrollChrome.js";
 import { useAuth } from "../lib/auth.jsx";
-import { FEED_CHROME_CLASSES, useFeedRoute } from "../lib/feedChrome.jsx";
+import { FEED_CHROME_CLASSES, useFeedCompactChrome, useFeedMessageThread, useFeedRoute } from "../lib/feedChrome.jsx";
 import { triggerFeedRefresh } from "../lib/feedRefresh.js";
 import { fetchUnreadMessageCount } from "../lib/messaging.js";
 import { fetchUnreadNotificationCount } from "../lib/notifications.js";
@@ -35,7 +35,9 @@ export default function Layout() {
   const location = useLocation();
   const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
   const isFeedRoute = useFeedRoute();
-  const chromeVisible = useScrollChrome();
+  const isFeedCompact = useFeedCompactChrome();
+  const isMessageThread = useFeedMessageThread();
+  const chromeVisible = useScrollChrome({ enabled: !isMessageThread });
   const { user } = useAuth();
   const [messageCount, setMessageCount] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -71,53 +73,69 @@ export default function Layout() {
   return (
     <div
       className={[
-        "thuto-page-bg flex min-h-dvh flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
+        "thuto-page-bg flex min-h-dvh flex-col",
+        isMessageThread ? "pb-0" : "pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
       ].join(" ")}
     >
       <OnboardingRedirect />
-      <header
-        className={[
-          "feed-chrome-header sticky top-0 z-30 transition-transform duration-300 ease-out will-change-transform",
-          chromeVisible ? "translate-y-0" : "-translate-y-full sm:translate-y-0",
-          isFeedRoute
-            ? `${FEED_CHROME_CLASSES} border-b border-brand-100/80`
-            : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
-        ].join(" ")}
-      >
-        <div className={["mx-auto max-w-lg px-4 sm:max-w-6xl", isFeedRoute ? "pt-1.5" : "py-1.5"].join(" ")}>
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
-            <BrandMark className="min-w-0 justify-self-start" />
-            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto sm:flex" aria-label="Primary desktop">
-              {desktopLinks.map(({ to, label, end }) => (
-                <NavLink key={to} to={to} end={end} className={navLinkClass}>
-                  {label}
-                </NavLink>
-              ))}
-            </nav>
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center justify-self-end">
-              <AccountDrawer />
+      {!isMessageThread ? (
+        <header
+          className={[
+            "feed-chrome-header sticky top-0 z-30 transition-transform duration-300 ease-out will-change-transform",
+            chromeVisible ? "translate-y-0" : "-translate-y-full sm:translate-y-0",
+            isFeedRoute
+              ? `${FEED_CHROME_CLASSES} border-b border-brand-100/80`
+              : "border-b border-stone-200/80 bg-[var(--thuto-surface-elevated)]/95 backdrop-blur-md",
+          ].join(" ")}
+        >
+          <div
+            className={[
+              "mx-auto max-w-lg px-4 sm:max-w-6xl",
+              isFeedRoute ? (isFeedCompact ? "pt-0 sm:pt-1.5" : "pt-1.5") : "py-1.5",
+            ].join(" ")}
+          >
+            <div
+              className={[
+                "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 overflow-hidden transition-[max-height,opacity] duration-300 ease-out sm:grid-cols-[auto_minmax(0,1fr)_auto]",
+                isFeedCompact ? "max-h-0 opacity-0 sm:max-h-16 sm:opacity-100" : "max-h-16 opacity-100",
+              ].join(" ")}
+            >
+              <BrandMark className="min-w-0 justify-self-start" />
+              <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto sm:flex" aria-label="Primary desktop">
+                {desktopLinks.map(({ to, label, end }) => (
+                  <NavLink key={to} to={to} end={end} className={navLinkClass}>
+                    {label}
+                  </NavLink>
+                ))}
+              </nav>
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center justify-self-end">
+                <AccountDrawer />
+              </div>
             </div>
+            {isFeedRoute ? (
+              <FeedTopBar
+                embedded
+                compact={isFeedCompact}
+                onRefresh={handleFeedRefresh}
+                messageCount={messageCount}
+                notificationCount={notificationCount}
+              />
+            ) : null}
           </div>
-          {isFeedRoute ? (
-            <FeedTopBar
-              embedded
-              onRefresh={handleFeedRefresh}
-              messageCount={messageCount}
-              notificationCount={notificationCount}
-            />
-          ) : null}
-        </div>
-      </header>
+        </header>
+      ) : null}
       <main
         className={[
-          "mx-auto w-full max-w-lg flex-1 px-4 sm:max-w-3xl",
-          isFeedRoute ? "pb-6 pt-0" : "py-6 sm:py-8",
+          "mx-auto w-full flex-1",
+          isMessageThread
+            ? "flex max-w-none flex-col px-0 pb-0 pt-0"
+            : ["max-w-lg px-4 sm:max-w-3xl", isFeedRoute ? "pb-6 pt-0" : "py-6 sm:py-8"].join(" "),
         ].join(" ")}
       >
         <Outlet />
-        {!isHomeRoute ? <SubscriptionAdSlot /> : null}
+        {!isHomeRoute && !isMessageThread ? <SubscriptionAdSlot /> : null}
       </main>
-      <BottomNav visible={chromeVisible} />
+      {!isMessageThread ? <BottomNav visible={chromeVisible} /> : null}
     </div>
   );
 }
