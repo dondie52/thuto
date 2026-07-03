@@ -48,11 +48,16 @@ export default {
           "70%": { transform: "scale(1)", boxShadow: "0 0 0 7px rgba(15, 118, 110, 0)" },
           "100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(15, 118, 110, 0)" },
         },
+        "assistant-hint-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out both",
         "compare-in": "compare-in 220ms cubic-bezier(0.22, 1, 0.36, 1) both",
         "compare-check": "compare-check 220ms cubic-bezier(0.22, 1, 0.36, 1) both",
+        "assistant-hint-scroll": "assistant-hint-scroll 28s linear infinite",
       },
     },
   },
