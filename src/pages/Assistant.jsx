@@ -256,6 +256,7 @@ export default function Assistant() {
   const canListen = Boolean(speechRecognition);
   const canSpeak = Boolean(getSupabase()) || (typeof window !== "undefined" && Boolean(window.speechSynthesis));
   const hasConversation = messages.length > 0;
+  const assistantUsage = useMemo(() => getAssistantUsageToday(isPremium), [isPremium, messages.length, isSending]);
 
   async function askGemini(value) {
     const supabase = getSupabase();
@@ -438,18 +439,17 @@ export default function Assistant() {
       <header className="mb-4 shrink-0">
         <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
         <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
+        {!isPremium ? (
+          <p className="mt-2 text-xs text-slate-500">
+            AI questions today: {assistantUsage.count} / {assistantUsage.limit}
+            {" · "}
+            <Link to="/upgrade" className="font-semibold text-brand-700 underline">
+              Pro
+            </Link>{" "}
+            unlocks unlimited questions
+          </p>
+        ) : null}
       </header>
-
-      {canUseGemini && !isPremium ? (
-        <p className="mb-3 shrink-0 text-xs text-slate-500">
-          AI questions today: {getAssistantUsageToday(isPremium).count} / {getAssistantUsageToday(isPremium).limit}
-          {" · "}
-          <Link to="/upgrade" className="font-semibold text-brand-700 underline">
-            Pro
-          </Link>{" "}
-          unlocks unlimited questions
-        </p>
-      ) : null}
 
       <section className="flex min-h-[calc(100dvh-14rem-env(safe-area-inset-bottom))] flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4 sm:px-5">
@@ -458,6 +458,14 @@ export default function Assistant() {
             <SparkleIcon />
           </span>
         </div>
+
+        {!isPremium ? (
+          <p className="shrink-0 px-4 pb-2 text-xs text-slate-500 sm:px-5">
+            <span className="inline-flex rounded-full bg-brand-50 px-2.5 py-1 font-medium text-brand-800">
+              {assistantUsage.count} / {assistantUsage.limit} AI questions used today
+            </span>
+          </p>
+        ) : null}
 
         {!hasConversation && !isSending ? <SuggestionChips onPick={ask} /> : null}
 
