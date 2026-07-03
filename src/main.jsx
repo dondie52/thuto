@@ -5,7 +5,20 @@ import { registerSW } from "virtual:pwa-register";
 import "./index.css";
 import App from "./App.jsx";
 
-registerSW({ immediate: true });
+const updateSW = registerSW({
+  immediate: true,
+  onNeedRefresh() {
+    // Apply new deploys immediately — avoids stale PWA chrome (header, fonts, etc.).
+    updateSW(true);
+  },
+});
+
+// Check for new GitHub Pages builds when the app regains focus.
+if (typeof window !== "undefined") {
+  window.addEventListener("focus", () => {
+    updateSW();
+  });
+}
 
 const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "");
 
