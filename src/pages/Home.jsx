@@ -11,6 +11,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 import HomeCenterCreators from "../components/home/HomeCenterCreators.jsx";
+import HomeDailyProgrammes from "../components/home/HomeDailyProgrammes.jsx";
 import HomeDailySpotlight from "../components/home/HomeDailySpotlight.jsx";
 import HomeFeaturedUniversities from "../components/home/HomeFeaturedUniversities.jsx";
 import HomeHeroPartner from "../components/home/HomeHeroPartner.jsx";
@@ -108,6 +109,14 @@ export default function Home() {
         body={content.dailySpotlight?.body}
         ctaLabel={content.dailySpotlight?.ctaLabel}
         fallbackIds={content.featuredUniversities?.fallbackIds}
+      />
+
+      <HomeDailyProgrammes
+        kicker={content.dailyProgrammes?.kicker}
+        heading={content.dailyProgrammes?.heading}
+        body={content.dailyProgrammes?.body}
+        ctaLabel={content.dailyProgrammes?.ctaLabel}
+        fallbackIds={content.dailyProgrammes?.fallbackIds}
       />
 
       <HomeFeaturedUniversities

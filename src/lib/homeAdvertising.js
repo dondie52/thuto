@@ -1,9 +1,19 @@
 import { fetchUniversities } from "./universitiesData.js";
+import { fetchProgrammes } from "./programmesData.js";
 import { fetchActiveFeaturedPlacements, fetchVerifiedPartnersForMarketing } from "./partner.js";
-import { hash32, localCalendarDateKey } from "./weeklyHomeSpotlight.js";
+import { hash32, localCalendarDateKey, programmeEligibleForSpotlight } from "./weeklyHomeSpotlight.js";
 
 const DEFAULT_FEATURED_IDS = ["ub", "biust", "buan", "botho", "bac", "bou", "limkokwing"];
 const DAILY_SPOTLIGHT_FALLBACK_IDS = DEFAULT_FEATURED_IDS;
+const DAILY_PROGRAMME_SPOTLIGHT_FALLBACK_IDS = [
+  "ub-bachelor-arts-economics",
+  "biust-bsc-computer-science",
+  "botho-bsc-data-science",
+  "bou-bachelor-of-business-administration-leadership-and-change-management-bba",
+  "buan-bachelor-of-science-in-agriculture",
+  "bac-bcom-accounting",
+  "limkokwing-ba-graphic",
+];
 
 /** @type {Record<string, number>} */
 const TIER_PRIORITY = {
@@ -56,6 +66,10 @@ function isPremiumTier(tier) {
  */
 
 /**
+ * @typedef {{ programme: object, sponsored: boolean, teaser?: string }} HomeProgrammeEntry
+ */
+
+/**
  * @returns {Promise<{ placements: object[], universities: object[], verifiedPartners: object[], byId: Map<string, object>, partnerTierById: Map<string, string>, verifiedSet: Set<string> }>}
  */
 async function loadHomeAdvertisingContext() {
@@ -85,6 +99,31 @@ function orderEntriesForDay(entries, dayKey) {
     const hashB = hash32(`${dayKey}|daily-spotlight|${b.university.id}`);
     return hashA - hashB;
   });
+}
+
+/**
+ * @param {HomeProgrammeEntry[]} entries
+ * @param {string} dayKey
+ */
+function orderProgrammeEntriesForDay(entries, dayKey) {
+  return [...entries].sort((a, b) => {
+    const hashA = hash32(`${dayKey}|daily-programme-spotlight|${a.programme.id}`);
+    const hashB = hash32(`${dayKey}|daily-programme-spotlight|${b.programme.id}`);
+    return hashA - hashB;
+  });
+}
+
+/**
+ * @returns {Promise<{ placements: object[], programmes: object[], byId: Map<string, object> }>}
+ */
+async function loadProgrammesAdvertisingContext() {
+  const [placements, programmes] = await Promise.all([fetchActiveFeaturedPlacements(), fetchProgrammes()]);
+
+  return {
+    placements,
+    programmes: programmes || [],
+    byId: new Map((programmes || []).map((programme) => [programme.id, programme])),
+  };
 }
 
 /**
@@ -206,6 +245,64 @@ export async function fetchDailySpotlightInstitutions(options = {}) {
   return {
     dayKey,
     entries: orderEntriesForDay(entries, dayKey),
+  };
+}
+
+/**
+ * Daily rotating spotlight pool for programmes on the home slideshow.
+ * @param {{ excludeIds?: string[], fallbackIds?: string[] }} [options]
+ * @returns {Promise<{ dayKey: string, entries: HomeProgrammeEntry[] }>}
+ */
+export async function fetchDailySpotlightProgrammes(options = {}) {
+  const excludeIds = new Set(options.excludeIds || []);
+  const fallbackIds =
+    Array.isArray(options.fallbackIds) && options.fallbackIds.length
+      ? options.fallbackIds
+      : DAILY_PROGRAMME_SPOTLIGHT_FALLBACK_IDS;
+  const dayKey = localCalendarDateKey();
+  const { placements, programmes, byId } = await loadProgrammesAdvertisingContext();
+
+  /** @type {HomeProgrammeEntry[]} */
+  const entries = [];
+  const seen = new Set();
+
+  /**
+   * @param {string} id
+   * @param {{ sponsored?: boolean, teaser?: string }} [meta]
+   */
+  function pushProgramme(id, { sponsored = false, teaser } = {}) {
+    if (!id || seen.has(id) || excludeIds.has(id)) return;
+    const programme = byId.get(id);
+    if (!programme) return;
+
+    seen.add(id);
+    entries.push({
+      programme,
+      sponsored,
+      teaser,
+    });
+  }
+
+  for (const placement of placements) {
+    if (placement.entity_type !== "programme" || !isHomeDailyPlacement(placement.placement_key)) continue;
+    pushProgramme(placement.entity_id, { sponsored: true });
+  }
+
+  if (entries.length === 0) {
+    for (const id of fallbackIds) {
+      pushProgramme(id, { sponsored: false });
+    }
+    for (const programme of programmes) {
+      if (!programmeEligibleForSpotlight(programme) || seen.has(programme.id) || excludeIds.has(programme.id)) {
+        continue;
+      }
+      pushProgramme(programme.id, { sponsored: false });
+    }
+  }
+
+  return {
+    dayKey,
+    entries: orderProgrammeEntriesForDay(entries, dayKey),
   };
 }
 

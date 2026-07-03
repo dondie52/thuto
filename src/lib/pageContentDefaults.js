@@ -128,6 +128,21 @@ export const PAGE_CONTENT_DEFAULTS = {
       body: "Partner universities in rotation — swipe through today's lineup.",
       ctaLabel: "View profile",
     },
+    dailyProgrammes: {
+      kicker: "Daily spotlight",
+      heading: "Today's featured programmes",
+      body: "Courses in rotation — swipe through today's lineup.",
+      ctaLabel: "View programme",
+      fallbackIds: [
+        "ub-bachelor-arts-economics",
+        "biust-bsc-computer-science",
+        "botho-bsc-data-science",
+        "bou-bachelor-of-business-administration-leadership-and-change-management-bba",
+        "buan-bachelor-of-science-in-agriculture",
+        "bac-bcom-accounting",
+        "limkokwing-ba-graphic",
+      ],
+    },
     featuredUniversities: {
       heading: "Featured institutions",
       body: "Partner universities and sponsored spots on Thuto.",
