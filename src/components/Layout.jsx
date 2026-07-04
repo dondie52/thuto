@@ -34,10 +34,11 @@ function navLinkClass({ isActive }) {
 export default function Layout() {
   const location = useLocation();
   const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
+  const isAssistantRoute = location.pathname.replace(/\/$/, "") === "/assistant";
   const isFeedRoute = useFeedRoute();
   const isFeedCompact = useFeedCompactChrome();
   const isMessageThread = useFeedMessageThread();
-  const scrollChromeEnabled = !isMessageThread;
+  const scrollChromeEnabled = !isMessageThread && !isAssistantRoute;
   const chromeVisible = useScrollChrome({ enabled: scrollChromeEnabled });
   const headerRef = useRef(null);
   const [headerOffset, setHeaderOffset] = useState(0);
@@ -112,7 +113,8 @@ export default function Layout() {
   return (
     <div
       className={[
-        "flex min-h-dvh flex-col overflow-x-hidden",
+        "flex flex-col overflow-x-hidden",
+        isAssistantRoute ? "h-dvh overflow-hidden" : "min-h-dvh",
         isFeedRoute ? "bg-white" : "thuto-page-bg",
         isMessageThread ? "pb-0" : "pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
       ].join(" ")}
@@ -172,12 +174,15 @@ export default function Layout() {
           "mx-auto flex w-full flex-1 flex-col",
           isMessageThread
             ? "max-w-none px-0 pb-0 pt-0"
-            : ["max-w-lg px-4 sm:max-w-3xl", isFeedRoute ? "min-h-0 bg-white pb-6" : "pb-6 sm:pb-8"].join(" "),
+            : [
+                "max-w-lg px-4 sm:max-w-3xl",
+                isFeedRoute ? "min-h-0 bg-white pb-6" : isAssistantRoute ? "min-h-0 flex-1 overflow-hidden pb-2" : "pb-6 sm:pb-8",
+              ].join(" "),
         ].join(" ")}
         style={isMessageThread ? undefined : { paddingTop: headerOffset }}
       >
         <Outlet />
-        {!isHomeRoute && !isMessageThread ? <SubscriptionAdSlot /> : null}
+        {!isHomeRoute && !isMessageThread && !isAssistantRoute ? <SubscriptionAdSlot /> : null}
       </main>
       {!isMessageThread ? <BottomNav visible={chromeVisible} surface={isFeedRoute ? "white" : "default"} /> : null}
     </div>

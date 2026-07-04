@@ -11,7 +11,6 @@ import { readPredictorSession } from "../lib/admissions.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
-import { scrollElementIntoView } from "../lib/motion.js";
 import { useEntitlements } from "../hooks/useEntitlements.js";
 import { getAssistantUsageToday, recordAssistantUsage } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
@@ -216,6 +215,7 @@ export default function Assistant() {
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const messagesScrollRef = useRef(null);
   const inputRef = useRef(null);
   const providerStatus = getProviderStatus();
 
@@ -238,7 +238,9 @@ export default function Assistant() {
   }, []);
 
   useEffect(() => {
-    scrollElementIntoView(messagesEndRef.current, { block: "end" });
+    const scrollNode = messagesScrollRef.current;
+    if (!scrollNode) return;
+    scrollNode.scrollTop = scrollNode.scrollHeight;
   }, [messages, isSending]);
 
   useEffect(() => {
@@ -257,6 +259,7 @@ export default function Assistant() {
   const canSpeak = Boolean(getSupabase()) || (typeof window !== "undefined" && Boolean(window.speechSynthesis));
   const hasConversation = messages.length > 0;
   const assistantUsage = useMemo(() => getAssistantUsageToday(isPremium), [isPremium, messages.length, isSending]);
+  const showUsageCounter = Number.isFinite(entitlements.assistantDailyLimit);
 
   async function askGemini(value) {
     const supabase = getSupabase();
@@ -434,38 +437,44 @@ export default function Assistant() {
     }
   }
 
-  const pageHeightClass = entitlements.showAds
-    ? "h-[calc(100dvh-17.5rem-env(safe-area-inset-bottom))] sm:h-[calc(100dvh-14rem)]"
-    : "h-[calc(100dvh-11.5rem-env(safe-area-inset-bottom))] sm:h-[calc(100dvh-9rem)]";
-
   return (
-    <div className={["-my-2 flex min-h-0 flex-col overflow-hidden sm:-my-4", pageHeightClass].join(" ")}>
-      <header className="mb-3 shrink-0">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <header className="mb-2 shrink-0">
         <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
-        <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
-        {!isPremium ? (
-          <p className="mt-1.5 text-xs text-slate-500">
-            AI questions today: {assistantUsage.count} / {assistantUsage.limit}
-            {" · "}
-            <Link to="/upgrade" className="font-semibold text-brand-700 underline">
-              Pro
-            </Link>{" "}
-            unlocks unlimited questions
-          </p>
-        ) : null}
+        <h1 className="mt-0.5 font-display text-xl font-bold text-brand-900">Ask Thuto</h1>
       </header>
 
       <section className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-3 sm:px-5">
-          <p className="font-display text-base font-semibold leading-snug text-brand-900">{helpHeading}</p>
+          <p className="font-display text-sm font-semibold leading-snug text-brand-900">{helpHeading}</p>
           <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
             <SparkleIcon className="h-4 w-4" />
           </span>
         </div>
 
+        {showUsageCounter ? (
+          <div className="shrink-0 px-4 pb-2 sm:px-5">
+            <p className="inline-flex rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-800">
+              {assistantUsage.count} / {assistantUsage.limit} AI questions used today
+            </p>
+            {!isPremium ? (
+              <p className="mt-1 text-[11px] text-slate-500">
+                <Link to="/upgrade" className="font-semibold text-brand-700 underline">
+                  Pro
+                </Link>{" "}
+                unlocks unlimited questions
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+
         {!hasConversation && !isSending ? <ExampleQuestionChip onPick={ask} /> : null}
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 pb-2 sm:px-5" aria-live="polite">
+        <div
+          ref={messagesScrollRef}
+          className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-4 pb-2 sm:px-5"
+          aria-live="polite"
+        >
           {!hasConversation && !isSending ? (
             <div className="flex flex-1 flex-col items-center justify-center py-4 text-center">
               <ChatBubbleEmpty className="h-14 w-14 sm:h-16 sm:w-16" />
@@ -592,7 +601,7 @@ export default function Assistant() {
         </form>
       </section>
 
-      <p className="mt-2 shrink-0 text-xs leading-relaxed text-slate-500">{ASSISTANT_DISCLAIMER}</p>
+      <p className="mt-2 shrink-0 text-[11px] leading-snug text-slate-500">{ASSISTANT_DISCLAIMER}</p>
     </div>
   );
 }
