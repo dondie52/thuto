@@ -369,7 +369,7 @@ export default function Onboarding() {
             disabled={isSaving}
           />
           <label className="block">
-            <span className="text-xs font-semibold text-slate-600">Bio / headline</span>
+            <span className="text-xs font-semibold text-slate-600">Bio</span>
             <textarea
               value={bio}
               onChange={(event) => setBio(event.target.value)}

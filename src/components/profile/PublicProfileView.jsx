@@ -244,7 +244,7 @@ export default function PublicProfileView({
   const profileLinkLabel = profileUrl ? profileUrl.replace(/^https?:\/\//, "") : "";
   const locationLabel = university?.location?.trim() || "";
   const websiteHref = safeExternalUrl(university?.website);
-  const hasBioSection = Boolean(profile.distinction?.trim());
+  const hasBioSection = Boolean(profile.bio?.trim());
   const hasFieldsOfInterest = profile.fieldsOfInterest.length > 0;
 
   async function handleShareProfile() {
@@ -322,7 +322,9 @@ export default function PublicProfileView({
             ) : null}
           </div>
 
-          {profile.bio ? <p className="mt-1.5 text-sm leading-snug text-stone-700">{profile.bio}</p> : null}
+          {profile.distinction ? (
+            <p className="mt-1.5 text-sm leading-snug text-stone-700">{profile.distinction}</p>
+          ) : null}
 
           {locationLabel || profileLinkLabel ? (
             <div className="mt-2 space-y-1 text-xs text-stone-600">
@@ -419,7 +421,7 @@ export default function PublicProfileView({
         <section className="border-b border-stone-200/70 px-4 py-4">
           <h2 className="font-display text-base font-semibold text-brand-900">Bio</h2>
           {hasBioSection ? (
-            <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-stone-700">{profile.distinction}</p>
+            <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-stone-700">{profile.bio}</p>
           ) : null}
           {hasFieldsOfInterest ? (
             <div className={`flex flex-wrap gap-1.5 ${hasBioSection ? "mt-3" : "mt-2"}`}>

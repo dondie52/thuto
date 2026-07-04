@@ -193,7 +193,7 @@ export function ProfileAboutFields() {
   return (
     <div className="space-y-4">
       <label className="block">
-        <span className="text-xs font-semibold text-stone-600">Bio / headline</span>
+        <span className="text-xs font-semibold text-stone-600">Bio</span>
         <textarea
           value={bio}
           onChange={(event) => setBio(event.target.value)}
