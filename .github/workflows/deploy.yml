@@ -70,13 +70,20 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         timeout-minutes: 15
+        continue-on-error: true
 
       - name: Wait before retry
-        if: failure() && steps.deployment.outcome == 'failure'
+        if: steps.deployment.outcome == 'failure'
         run: sleep 45
 
       - name: Retry deploy on transient Pages failure
-        if: failure() && steps.deployment.outcome == 'failure'
+        if: steps.deployment.outcome == 'failure'
         id: deployment_retry
         uses: actions/deploy-pages@v4
         timeout-minutes: 15
+
+      - name: Fail if all deploy attempts failed
+        if: steps.deployment.outcome == 'failure' && steps.deployment_retry.outcome != 'success'
+        run: |
+          echo "GitHub Pages deploy failed after retry."
+          exit 1
