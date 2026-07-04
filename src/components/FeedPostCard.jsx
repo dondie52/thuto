@@ -434,16 +434,13 @@ export default function FeedPostCard({
             </div>
 
             <div className="flex shrink-0 items-center gap-2">
-              {user && !isOwnPost && !isOfficial && onToggleFollow ? (
+              {user && !isOwnPost && !isOfficial && onToggleFollow && !isFollowingAuthor ? (
                 <button
                   type="button"
                   onClick={() => onToggleFollow(post)}
-                  className={[
-                    "focus-ring text-xs font-semibold",
-                    isFollowingAuthor ? "text-brand-800" : "text-brand-700 hover:text-brand-800",
-                  ].join(" ")}
+                  className="focus-ring text-xs font-semibold text-brand-700 hover:text-brand-800"
                 >
-                  {isFollowingAuthor ? "Following" : "Follow"}
+                  Follow
                 </button>
               ) : null}
               <span className="rounded-full bg-brand-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
