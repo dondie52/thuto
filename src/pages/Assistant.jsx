@@ -12,8 +12,14 @@ import { fetchProgrammes } from "../lib/programmesData.js";
 import { getSupabase } from "../lib/supabase.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { scrollElementIntoView } from "../lib/motion.js";
+import { useEntitlements } from "../hooks/useEntitlements.js";
 import { getAssistantUsageToday, recordAssistantUsage } from "../lib/premium.js";
 import { safeExternalUrl, safeInternalPath } from "../lib/urlSafety.js";
+
+const ASSISTANT_DISCLAIMER =
+  "Thuto provides guidance based on available programme information. Always confirm final requirements and dates with the university.";
+
+const EXAMPLE_QUESTION = "Which programmes lead to software careers?";
 
 const STARTER_QUESTIONS = [
   "I have 36 APS. What can I study?",
@@ -84,23 +90,16 @@ function VolumeIcon() {
   );
 }
 
-function SuggestionChips({ onPick }) {
-  const chips = [...STARTER_QUESTIONS, ...STARTER_QUESTIONS];
-
+function ExampleQuestionChip({ onPick }) {
   return (
-    <div className="shrink-0 overflow-hidden px-4 pb-3 sm:px-5">
-      <div className="motion-safe:animate-assistant-hint-scroll motion-reduce:animate-none flex w-max gap-2">
-        {chips.map((suggestion, index) => (
-          <button
-            key={`${suggestion}-${index}`}
-            type="button"
-            onClick={() => onPick(suggestion)}
-            className="focus-ring shrink-0 rounded-full border border-brand-100 bg-white px-3.5 py-1.5 text-xs font-medium text-brand-800 shadow-sm transition hover:border-brand-200 hover:bg-brand-50"
-          >
-            {suggestion}
-          </button>
-        ))}
-      </div>
+    <div className="shrink-0 px-4 pb-2 sm:px-5">
+      <button
+        type="button"
+        onClick={() => onPick(EXAMPLE_QUESTION)}
+        className="focus-ring rounded-full border border-brand-100 bg-white px-3.5 py-1.5 text-xs font-medium text-brand-800 shadow-sm transition hover:border-brand-200 hover:bg-brand-50"
+      >
+        {EXAMPLE_QUESTION}
+      </button>
     </div>
   );
 }
@@ -204,6 +203,7 @@ function normalizeAssistantPayload(data) {
 export default function Assistant() {
   useDocumentTitle("Ask Thuto | Thuto");
   const { isPremium, profile, user } = useAuth();
+  const { entitlements } = useEntitlements();
   const [question, setQuestion] = useState("");
   const [programmes, setProgrammes] = useState([]);
   const [universities, setUniversities] = useState([]);
@@ -434,13 +434,17 @@ export default function Assistant() {
     }
   }
 
+  const pageHeightClass = entitlements.showAds
+    ? "h-[calc(100dvh-17.5rem-env(safe-area-inset-bottom))] sm:h-[calc(100dvh-14rem)]"
+    : "h-[calc(100dvh-11.5rem-env(safe-area-inset-bottom))] sm:h-[calc(100dvh-9rem)]";
+
   return (
-    <div className="-my-2 flex min-h-0 flex-1 flex-col sm:-my-4">
-      <header className="mb-4 shrink-0">
+    <div className={["-my-2 flex min-h-0 flex-col overflow-hidden sm:-my-4", pageHeightClass].join(" ")}>
+      <header className="mb-3 shrink-0">
         <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
         <h1 className="mt-1 font-display text-2xl font-bold text-brand-900">Ask Thuto</h1>
         {!isPremium ? (
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-1.5 text-xs text-slate-500">
             AI questions today: {assistantUsage.count} / {assistantUsage.limit}
             {" · "}
             <Link to="/upgrade" className="font-semibold text-brand-700 underline">
@@ -451,175 +455,144 @@ export default function Assistant() {
         ) : null}
       </header>
 
-      <section className="flex min-h-[calc(100dvh-14rem-env(safe-area-inset-bottom))] flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
-        <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4 sm:px-5">
-          <p className="font-display text-lg font-semibold leading-snug text-brand-900 sm:text-xl">{helpHeading}</p>
-          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
-            <SparkleIcon />
+      <section className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
+        <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-3 sm:px-5">
+          <p className="font-display text-base font-semibold leading-snug text-brand-900">{helpHeading}</p>
+          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
+            <SparkleIcon className="h-4 w-4" />
           </span>
         </div>
 
-        {!isPremium ? (
-          <p className="shrink-0 px-4 pb-2 text-xs text-slate-500 sm:px-5">
-            <span className="inline-flex rounded-full bg-brand-50 px-2.5 py-1 font-medium text-brand-800">
-              {assistantUsage.count} / {assistantUsage.limit} AI questions used today
-            </span>
-          </p>
-        ) : null}
+        {!hasConversation && !isSending ? <ExampleQuestionChip onPick={ask} /> : null}
 
-        {!hasConversation && !isSending ? <SuggestionChips onPick={ask} /> : null}
-
-        {hasConversation || isSending ? (
-          <>
-            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 pb-3 sm:px-5" aria-live="polite">
-              <div className="space-y-3">
-                {messages.map((message) => (
-                  <div key={message.id} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
-                    <article
-                      className={[
-                        "max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm sm:max-w-[75%]",
-                        message.role === "user"
-                          ? "bg-brand-700 text-white"
-                          : "border border-brand-100 bg-brand-50/70 text-brand-950",
-                      ].join(" ")}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <p className="whitespace-pre-line">{message.content}</p>
-                        {message.role === "assistant" ? (
-                          <button
-                            type="button"
-                            onClick={() => readAloud(message)}
-                            disabled={!canSpeak || Boolean(speakingMessageId)}
-                            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-800 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
-                            aria-label={speakingMessageId === message.id ? "Reading aloud" : "Read aloud"}
-                            title={canSpeak ? "Read aloud with ElevenLabs" : "Read aloud unavailable"}
-                          >
-                            <VolumeIcon />
-                          </button>
-                        ) : null}
-                      </div>
-
-                      {message.references?.length ? (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {message.references.map((reference, index) => {
-                            if (!reference.href) return null;
-                            const safeHref = reference.external ? safeExternalUrl(reference.href) : safeInternalPath(reference.href);
-                            if (!safeHref) return null;
-                            return reference.external ? (
-                              <a
-                                key={`${reference.href}-${index}`}
-                                href={safeHref}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
-                              >
-                                {reference.title || "Open source"}
-                              </a>
-                            ) : (
-                              <Link
-                                key={`${reference.href}-${index}`}
-                                to={safeHref}
-                                className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
-                              >
-                                {reference.title || "Open in Thuto"}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      ) : null}
-
-                      {message.suggestions?.length ? (
-                        <div className="-mx-1 mt-3 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                          <div className="flex w-max gap-2">
-                            {message.suggestions.map((suggestion) => (
-                              <button
-                                key={suggestion}
-                                type="button"
-                                onClick={() => ask(suggestion)}
-                                className="focus-ring shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
-                              >
-                                {suggestion}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ) : null}
-                    </article>
-                  </div>
-                ))}
-
-                {isSending ? (
-                  <div className="flex justify-start">
-                    <div className="max-w-[75%] rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-3 text-sm text-brand-800">
-                      <span className="inline-flex items-center gap-2">
-                        <span className="inline-flex gap-1" aria-hidden>
-                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:0ms]" />
-                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:150ms]" />
-                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:300ms]" />
-                        </span>
-                        Checking programme information…
-                      </span>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-              <div ref={messagesEndRef} />
-            </div>
-
-            {error ? (
-              <div className="mx-4 shrink-0 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 sm:mx-5">
-                {error}
-                {lastQuestion ? (
-                  <button type="button" onClick={retryLastQuestion} className="ml-2 font-semibold underline">
-                    Try again
-                  </button>
-                ) : null}
-              </div>
-            ) : null}
-
-            <form onSubmit={submit} className="shrink-0 border-t border-brand-100 px-4 py-3 sm:px-5">
-              <AskInputRow
-                question={question}
-                onQuestionChange={(e) => setQuestion(e.target.value)}
-                onKeyDown={handleInputKeyDown}
-                onListen={startListening}
-                isListening={isListening}
-                isSending={isSending}
-                canListen={canListen}
-                inputRef={inputRef}
-              />
-            </form>
-          </>
-        ) : (
-          <div className="flex min-h-0 flex-1 flex-col">
-            <div className="flex flex-1 flex-col items-center justify-center px-4 text-center sm:px-5">
-              <ChatBubbleEmpty className="h-16 w-16 sm:h-20 sm:w-20" />
-              <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 pb-2 sm:px-5" aria-live="polite">
+          {!hasConversation && !isSending ? (
+            <div className="flex flex-1 flex-col items-center justify-center py-4 text-center">
+              <ChatBubbleEmpty className="h-14 w-14 sm:h-16 sm:w-16" />
+              <p className="mt-3 max-w-xs text-sm leading-relaxed text-slate-500">
                 Ask anything about your academic journey.
               </p>
             </div>
+          ) : (
+            <div className="space-y-3 py-1">
+              {messages.map((message) => (
+                <div key={message.id} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
+                  <article
+                    className={[
+                      "max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm sm:max-w-[75%]",
+                      message.role === "user"
+                        ? "bg-brand-700 text-white"
+                        : "border border-brand-100 bg-brand-50/70 text-brand-950",
+                    ].join(" ")}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="whitespace-pre-line">{message.content}</p>
+                      {message.role === "assistant" ? (
+                        <button
+                          type="button"
+                          onClick={() => readAloud(message)}
+                          disabled={!canSpeak || Boolean(speakingMessageId)}
+                          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-800 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
+                          aria-label={speakingMessageId === message.id ? "Reading aloud" : "Read aloud"}
+                          title={canSpeak ? "Read aloud with ElevenLabs" : "Read aloud unavailable"}
+                        >
+                          <VolumeIcon />
+                        </button>
+                      ) : null}
+                    </div>
 
-            {error ? (
-              <div className="mx-4 mb-3 shrink-0 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 sm:mx-5">
-                {error}
-              </div>
+                    {message.references?.length ? (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {message.references.map((reference, index) => {
+                          if (!reference.href) return null;
+                          const safeHref = reference.external ? safeExternalUrl(reference.href) : safeInternalPath(reference.href);
+                          if (!safeHref) return null;
+                          return reference.external ? (
+                            <a
+                              key={`${reference.href}-${index}`}
+                              href={safeHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
+                            >
+                              {reference.title || "Open source"}
+                            </a>
+                          ) : (
+                            <Link
+                              key={`${reference.href}-${index}`}
+                              to={safeHref}
+                              className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 underline"
+                            >
+                              {reference.title || "Open in Thuto"}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+
+                    {message.suggestions?.length ? (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {message.suggestions.map((suggestion) => (
+                          <button
+                            key={suggestion}
+                            type="button"
+                            onClick={() => ask(suggestion)}
+                            className="focus-ring rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-100"
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                </div>
+              ))}
+
+              {isSending ? (
+                <div className="flex justify-start">
+                  <div className="max-w-[75%] rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-3 text-sm text-brand-800">
+                    <span className="inline-flex items-center gap-2">
+                      <span className="inline-flex gap-1" aria-hidden>
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:0ms]" />
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:150ms]" />
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500 [animation-delay:300ms]" />
+                      </span>
+                      Checking programme information…
+                    </span>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {error ? (
+          <div className="mx-4 shrink-0 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 sm:mx-5">
+            {error}
+            {lastQuestion ? (
+              <button type="button" onClick={retryLastQuestion} className="ml-2 font-semibold underline">
+                Try again
+              </button>
             ) : null}
-
-            <form onSubmit={submit} className="shrink-0 px-4 pb-4 sm:px-5">
-              <AskInputRow
-                question={question}
-                onQuestionChange={(e) => setQuestion(e.target.value)}
-                onKeyDown={handleInputKeyDown}
-                onListen={startListening}
-                isListening={isListening}
-                isSending={isSending}
-                canListen={canListen}
-                inputRef={inputRef}
-              />
-            </form>
           </div>
-        )}
+        ) : null}
+
+        <form onSubmit={submit} className="shrink-0 border-t border-brand-100 px-4 py-3 sm:px-5">
+          <AskInputRow
+            question={question}
+            onQuestionChange={(e) => setQuestion(e.target.value)}
+            onKeyDown={handleInputKeyDown}
+            onListen={startListening}
+            isListening={isListening}
+            isSending={isSending}
+            canListen={canListen}
+            inputRef={inputRef}
+          />
+        </form>
       </section>
+
+      <p className="mt-2 shrink-0 text-xs leading-relaxed text-slate-500">{ASSISTANT_DISCLAIMER}</p>
     </div>
   );
 }
