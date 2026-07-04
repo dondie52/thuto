@@ -48,18 +48,18 @@ function ThutoBannerMark() {
   );
 }
 
-function LocationIcon({ className = "size-3.5" }) {
+function LocationIcon({ className = "" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <svg className={`size-3.5 ${className}`.trim()} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s7-4.5 7-10a7 7 0 10-14 0c0 5.5 7 10 7 10z" />
       <circle cx="12" cy="11" r="2.5" />
     </svg>
   );
 }
 
-function LinkIcon({ className = "size-3.5" }) {
+function LinkIcon({ className = "" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <svg className={`size-3.5 ${className}`.trim()} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M10 13a5 5 0 007.07 0l1.41-1.41a5 5 0 00-7.07-7.07L10 5M14 11a5 5 0 00-7.07 0L5.52 12.4a5 5 0 007.07 7.07L14 19" />
     </svg>
   );
@@ -82,9 +82,9 @@ function GlobeIcon({ className = "size-4" }) {
   );
 }
 
-function ExternalLinkIcon({ className = "size-4" }) {
+function ExternalLinkIcon({ className = "" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <svg className={`size-4 ${className}`.trim()} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M14 3h7v7M10 14 21 3M21 14v6a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1h6" />
     </svg>
   );
