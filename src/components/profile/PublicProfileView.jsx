@@ -133,7 +133,7 @@ function ProfileMoreMenu({ connectionStatus, onConnect, onIncomingAccept, onShar
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="focus-ring flex size-11 items-center justify-center rounded-full border border-brand-700/30 bg-white text-brand-800 hover:bg-brand-50"
+        className="focus-ring flex size-9 items-center justify-center rounded-lg border border-brand-700/30 bg-white text-brand-800 hover:bg-brand-50"
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label="More actions"
@@ -189,9 +189,8 @@ function ProfileMoreMenu({ connectionStatus, onConnect, onIncomingAccept, onShar
 }
 
 function ProfileExperienceCard({ profile }) {
-  const title = profile.bio?.trim();
   const organization = profile.universityName?.trim();
-  if (!title && !organization) return null;
+  if (!organization) return null;
 
   const statusLabel = universityStatusLabel(profile.universityStatus);
 
@@ -201,13 +200,8 @@ function ProfileExperienceCard({ profile }) {
         <BriefcaseIcon />
       </div>
       <div className="min-w-0">
-        {title ? <p className="text-sm font-semibold text-brand-900">{title}</p> : null}
-        {organization ? (
-          <p className="mt-0.5 text-xs text-stone-600">
-            {organization}
-            {statusLabel ? ` • ${statusLabel}` : null}
-          </p>
-        ) : null}
+        <p className="text-sm font-semibold text-brand-900">{organization}</p>
+        {statusLabel ? <p className="mt-0.5 text-xs text-stone-600">{statusLabel}</p> : null}
       </div>
     </div>
   );
@@ -355,29 +349,33 @@ export default function PublicProfileView({
               •
             </span>
             <span className="font-semibold text-brand-900">{formatProfileCount(counts.following)}</span> following
+            <span className="mx-1.5 text-stone-400" aria-hidden>
+              •
+            </span>
+            <span className="font-semibold text-brand-900">{formatProfileCount(posts.length)}</span> posts
           </p>
 
           {user && !isOwnProfile ? (
             <div className="mt-4 space-y-2">
-              <button
-                type="button"
-                onClick={onFollow}
-                className={[
-                  "focus-ring w-full rounded-full px-4 py-2.5 text-sm font-semibold",
-                  isFollowing
-                    ? "border border-brand-700/30 bg-white text-brand-800 hover:bg-brand-50"
-                    : "bg-brand-700 text-white hover:bg-brand-800",
-                ].join(" ")}
-              >
-                {isFollowing ? "Following" : "+ Follow"}
-              </button>
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={onMessage}
-                  className="focus-ring flex flex-1 items-center justify-center gap-1.5 rounded-full border border-brand-700/30 bg-white px-4 py-2.5 text-sm font-semibold text-brand-800 hover:bg-brand-50"
+                  onClick={onFollow}
+                  className={[
+                    "focus-ring flex flex-1 items-center justify-center rounded-full px-3 py-2 text-xs font-semibold",
+                    isFollowing
+                      ? "border border-brand-700/30 bg-white text-brand-800 hover:bg-brand-50"
+                      : "bg-brand-700 text-white hover:bg-brand-800",
+                  ].join(" ")}
                 >
-                  <MessageIcon />
+                  {isFollowing ? "Following" : "+ Follow"}
+                </button>
+                <button
+                  type="button"
+                  onClick={onMessage}
+                  className="focus-ring flex flex-1 items-center justify-center gap-1 rounded-full border border-brand-700/30 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+                >
+                  <MessageIcon className="size-3.5" />
                   Message
                 </button>
                 <ProfileMoreMenu
