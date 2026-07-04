@@ -162,6 +162,42 @@ function helpPromptName(profile, user) {
   return first ? `What can I help you with today, ${first}?` : "What can I help you with today?";
 }
 
+function AssistantDailyLimitBadge({ usage, isPremium }) {
+  if (isPremium) {
+    return (
+      <span className="inline-flex shrink-0 items-center rounded-full bg-brand-100 px-3 py-1.5 text-xs font-semibold text-brand-800">
+        Unlimited AI
+      </span>
+    );
+  }
+
+  const remaining = Math.max(0, usage.limit - usage.count);
+  const exhausted = remaining === 0;
+
+  return (
+    <div className="flex shrink-0 flex-col items-end gap-0.5 text-right">
+      <span
+        className={[
+          "inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm",
+          exhausted
+            ? "border border-amber-200 bg-amber-50 text-amber-900"
+            : "border border-brand-200 bg-white text-brand-900",
+        ].join(" ")}
+        aria-live="polite"
+      >
+        {remaining} of {usage.limit} AI questions left
+      </span>
+      <span className="text-[10px] text-slate-500">
+        Resets daily ·{" "}
+        <Link to="/upgrade" className="font-semibold text-brand-700 underline">
+          Pro
+        </Link>{" "}
+        is unlimited
+      </span>
+    </div>
+  );
+}
+
 function createMessage(role, content, extras = {}) {
   return {
     id:
@@ -212,6 +248,7 @@ export default function Assistant() {
   const [speakingMessageId, setSpeakingMessageId] = useState(null);
   const [lastQuestion, setLastQuestion] = useState("");
   const [messages, setMessages] = useState([]);
+  const [usageVersion, setUsageVersion] = useState(0);
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -258,8 +295,12 @@ export default function Assistant() {
   const canListen = Boolean(speechRecognition);
   const canSpeak = Boolean(getSupabase()) || (typeof window !== "undefined" && Boolean(window.speechSynthesis));
   const hasConversation = messages.length > 0;
-  const assistantUsage = useMemo(() => getAssistantUsageToday(isPremium), [isPremium, messages.length, isSending]);
-  const showUsageCounter = Number.isFinite(entitlements.assistantDailyLimit);
+  const assistantUsage = useMemo(
+    () => getAssistantUsageToday(isPremium),
+    [isPremium, messages.length, isSending, usageVersion],
+  );
+  const showDailyLimit = !isPremium && Number.isFinite(entitlements.assistantDailyLimit);
+  const questionsRemaining = Math.max(0, assistantUsage.limit - assistantUsage.count);
 
   async function askGemini(value) {
     const supabase = getSupabase();
@@ -306,6 +347,10 @@ export default function Assistant() {
     if (canUseGemini && !recordAssistantUsage(isPremium)) {
       setError(`You have reached today's limit of ${getAssistantUsageToday(isPremium).limit} AI questions on the free plan. Upgrade to Pro for unlimited questions.`);
       return;
+    }
+
+    if (canUseGemini) {
+      setUsageVersion((current) => current + 1);
     }
 
     setQuestion("");
@@ -439,9 +484,12 @@ export default function Assistant() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <header className="mb-2 shrink-0">
-        <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
-        <h1 className="mt-0.5 font-display text-xl font-bold text-brand-900">Ask Thuto</h1>
+      <header className="mb-2 flex shrink-0 items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-xs font-medium uppercase tracking-wide text-brand-600">Student guidance</p>
+          <h1 className="mt-0.5 font-display text-xl font-bold text-brand-900">Ask Thuto</h1>
+        </div>
+        <AssistantDailyLimitBadge usage={assistantUsage} isPremium={isPremium} />
       </header>
 
       <section className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
@@ -451,22 +499,6 @@ export default function Assistant() {
             <SparkleIcon className="h-4 w-4" />
           </span>
         </div>
-
-        {showUsageCounter ? (
-          <div className="shrink-0 px-4 pb-2 sm:px-5">
-            <p className="inline-flex rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-800">
-              {assistantUsage.count} / {assistantUsage.limit} AI questions used today
-            </p>
-            {!isPremium ? (
-              <p className="mt-1 text-[11px] text-slate-500">
-                <Link to="/upgrade" className="font-semibold text-brand-700 underline">
-                  Pro
-                </Link>{" "}
-                unlocks unlimited questions
-              </p>
-            ) : null}
-          </div>
-        ) : null}
 
         {!hasConversation && !isSending ? <ExampleQuestionChip onPick={ask} /> : null}
 
@@ -588,6 +620,19 @@ export default function Assistant() {
         ) : null}
 
         <form onSubmit={submit} className="shrink-0 border-t border-brand-100 px-4 py-3 sm:px-5">
+          {showDailyLimit ? (
+            <p
+              className={[
+                "mb-2 text-center text-[11px] font-medium",
+                questionsRemaining === 0 ? "text-amber-800" : "text-brand-800",
+              ].join(" ")}
+              aria-live="polite"
+            >
+              {questionsRemaining === 0
+                ? "Daily AI limit reached. Upgrade to Pro for unlimited questions."
+                : `${questionsRemaining} AI question${questionsRemaining === 1 ? "" : "s"} remaining today (${assistantUsage.count}/${assistantUsage.limit} used)`}
+            </p>
+          ) : null}
           <AskInputRow
             question={question}
             onQuestionChange={(e) => setQuestion(e.target.value)}
