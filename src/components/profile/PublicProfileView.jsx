@@ -438,8 +438,8 @@ export default function PublicProfileView({
         </section>
       ) : null}
 
-      <section ref={postsRef} className="space-y-3 px-4 py-4">
-        <div className="flex items-center justify-between gap-3">
+      <section ref={postsRef} className="py-4">
+        <div className="mb-3 flex items-center justify-between gap-3 px-4">
           <h2 className="font-display text-base font-semibold text-brand-900">Posts</h2>
           {posts.length > 3 ? (
             <button
@@ -452,11 +452,11 @@ export default function PublicProfileView({
           ) : null}
         </div>
         {!posts.length ? (
-          <div className="rounded-2xl border border-dashed border-brand-200 bg-white p-6 text-center text-sm text-stone-600">
+          <div className="mx-4 rounded-2xl border border-dashed border-brand-200 bg-white p-6 text-center text-sm text-stone-600">
             {profile.fullName} has not posted yet.
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-stone-200/70 bg-white">
+          <section className="bg-white">
             {posts.map((post) => (
               <FeedPostCard
                 key={post.id}
@@ -480,7 +480,7 @@ export default function PublicProfileView({
                 reportedTargetKeys={reportedTargetKeys}
               />
             ))}
-          </div>
+          </section>
         )}
       </section>
     </div>
