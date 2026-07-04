@@ -41,16 +41,20 @@ export default function ProgrammeThemeHero({
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" aria-hidden />
       )}
-      <div
-        className={[
-          "absolute inset-0",
-          isCompact
-            ? "bg-gradient-to-r from-brand-950/85 via-brand-900/55 to-brand-900/25"
-            : "bg-gradient-to-t from-brand-950/92 via-brand-900/65 to-brand-800/35 sm:bg-gradient-to-r sm:from-brand-950/90 sm:via-brand-900/70 sm:to-brand-800/30",
-        ].join(" ")}
-        aria-hidden
-      />
-      {children ? <div className="relative z-10 flex h-full flex-col justify-end p-4 sm:p-5">{children}</div> : null}
+      {children ? (
+        <>
+          <div
+            className={[
+              "absolute inset-0",
+              isCompact
+                ? "bg-gradient-to-r from-brand-950/85 via-brand-900/55 to-brand-900/25"
+                : "bg-gradient-to-t from-brand-950/92 via-brand-900/65 to-brand-800/35 sm:bg-gradient-to-r sm:from-brand-950/90 sm:via-brand-900/70 sm:to-brand-800/30",
+            ].join(" ")}
+            aria-hidden
+          />
+          <div className="relative z-10 flex h-full flex-col justify-end p-4 sm:p-5">{children}</div>
+        </>
+      ) : null}
     </div>
   );
 }

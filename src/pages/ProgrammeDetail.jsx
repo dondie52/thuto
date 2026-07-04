@@ -172,15 +172,16 @@ export default function ProgrammeDetail() {
       ) : null}
 
       <header className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
-        <ProgrammeThemeHero programme={programme} variant="detail">
-          <h1 className="font-display text-xl font-bold text-white sm:text-2xl">{programme.name}</h1>
-          <p className="mt-1 text-sm text-white/90">
-            {programme.university}
-            {programme.field ? ` · ${programme.field}` : ""}
-          </p>
-        </ProgrammeThemeHero>
+        <ProgrammeThemeHero programme={programme} variant="detail" />
         <div className="p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-end">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0 flex-1">
+              <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{programme.name}</h1>
+              <p className="mt-1 text-sm text-slate-600">
+                {programme.university}
+                {programme.field ? ` · ${programme.field}` : ""}
+              </p>
+            </div>
             <div className="flex shrink-0 flex-wrap items-start gap-2 sm:ml-auto">
               <ProgrammeBookmarkButton
                 programmeId={programme.id}
