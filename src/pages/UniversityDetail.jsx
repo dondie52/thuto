@@ -14,6 +14,7 @@ import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from "../lib/urlSafety.js";
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
+import UniversityStudentIncentives from "../components/UniversityStudentIncentives.jsx";
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
@@ -276,6 +277,8 @@ export default function UniversityDetail() {
       {isVerified ? (
         <LeadInquiryForm institutionId={university.id} institutionName={university.name} />
       ) : null}
+
+      <UniversityStudentIncentives university={university} />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">

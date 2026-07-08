@@ -1,0 +1,31 @@
+{
+  "universityId": "biust",
+  "universityName": "BIUST",
+  "universityShort": "BIUST",
+  "officialUrl": "https://www.biust.ac.bw/",
+  "applyUrl": "https://www.biust.ac.bw/admissions",
+  "sourceLabel": "BIUST new schools promotion and undergraduate admissions",
+  "programmes": [
+    { "name": "BSc Applied Physics", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Chemistry (Materials and Applied Chemistry)", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Chemistry (Drug Discovery and Development)", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Chemistry (Environmental and Analytical Chemistry)", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Forensic Science", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Mathematical Sciences", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Industrial Mathematics", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Statistics", "faculty": "School of Pure and Applied Sciences", "field": "Natural Sciences" },
+    { "name": "BSc Cyber Security and Digital Forensics", "faculty": "School of Pure and Applied Sciences", "field": "Technology" },
+    { "name": "BEng (Hons) Computer and Telecommunications Engineering", "faculty": "School of Electrical and Mechanical Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Electrical and Communications Engineering", "faculty": "School of Electrical and Mechanical Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Mechanical and Energy Engineering", "faculty": "School of Electrical and Mechanical Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Industrial and Manufacturing Engineering", "faculty": "School of Electrical and Mechanical Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Mechatronics and Industrial Instrumentation", "faculty": "School of Electrical and Mechanical Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Chemical Engineering", "faculty": "School of Earth Sciences and Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Materials and Metallurgical Engineering", "faculty": "School of Earth Sciences and Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Civil and Environmental Engineering", "faculty": "School of Earth Sciences and Engineering", "field": "Engineering" },
+    { "name": "BEng (Hons) Geological Engineering", "faculty": "School of Earth Sciences and Engineering", "field": "Engineering" },
+    { "name": "BSc Applied Geology", "faculty": "School of Earth Sciences and Engineering", "field": "Natural Sciences" },
+    { "name": "BSc Ecosystem Science and Sustainability", "faculty": "School of Earth Sciences and Engineering", "field": "Natural Sciences" },
+    { "name": "BSc (Hons) Ecology and Evolutionary Biology", "faculty": "School of Life Sciences", "field": "Natural Sciences" }
+  ]
+}

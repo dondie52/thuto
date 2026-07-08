@@ -1,0 +1,20 @@
+{
+  "universityId": "botho",
+  "universityName": "Botho University",
+  "universityShort": "Botho",
+  "officialUrl": "https://www.bothouniversity.com/botswana",
+  "applyUrl": "https://bothouniversity.academiaerp.com/applicant-portal/#/auth/login",
+  "sourceLabel": "Botho University Botswana campus programme pages",
+  "programmes": [
+    { "name": "Bachelor of Commerce in Accounting and Finance", "field": "Business" },
+    { "name": "Bachelor of Commerce in Management", "field": "Business" },
+    { "name": "Bachelor of Science in Analytics and Business Intelligence", "field": "Technology" },
+    { "name": "Bachelor of Science in Information Technology", "field": "Technology" },
+    { "name": "Bachelor of Science in Computer Science", "field": "Technology" },
+    { "name": "Bachelor of Engineering in Mechanical Engineering", "field": "Engineering" },
+    { "name": "Bachelor of Laws (LLB)", "field": "Law" },
+    { "name": "Bachelor of Nursing", "field": "Health" },
+    { "name": "Bachelor of Science in Environmental Health", "field": "Health" },
+    { "name": "Bachelor of Science in Biomedical Sciences", "field": "Health" }
+  ]
+}

@@ -1,0 +1,423 @@
+{
+  "note": "Expand thin programme coverage for colleges of education, brigades, and technical colleges",
+  "institutions": [
+    {
+      "universityId": "tlokweng-coe",
+      "universityName": "Tlokweng College of Education",
+      "universityShort": "Tlokweng CoE",
+      "programmes": [
+        { "name": "Diploma in Early Childhood Education", "field": "Education" },
+        { "name": "Diploma in Secondary Education", "field": "Education" }
+      ]
+    },
+    {
+      "universityId": "serowe-coe",
+      "universityName": "Serowe College of Education",
+      "universityShort": "Serowe CoE",
+      "programmes": [
+        { "name": "Diploma in Secondary Education", "field": "Education" },
+        { "name": "Diploma in Special Needs Education", "field": "Education" }
+      ]
+    },
+    {
+      "universityId": "molepolole-coe",
+      "universityName": "Molepolole College of Education",
+      "universityShort": "Molepolole CoE",
+      "programmes": [
+        { "name": "Diploma in Primary Education", "field": "Education" },
+        { "name": "Diploma in Early Childhood Education", "field": "Education" }
+      ]
+    },
+    {
+      "universityId": "tonota-coe",
+      "universityName": "Tonota College of Education",
+      "universityShort": "Tonota CoE",
+      "programmes": [
+        { "name": "Diploma in Primary Education", "field": "Education" },
+        { "name": "Diploma in Early Childhood Education", "field": "Education" }
+      ]
+    },
+    {
+      "universityId": "chobe-brigade",
+      "universityName": "Chobe Vocational Training Centre",
+      "universityShort": "Chobe Brigade",
+      "programmes": [
+        { "name": "Electrical Installation", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "fire-college",
+      "universityName": "College of Fire & Safety (Fire College)",
+      "universityShort": "Fire College",
+      "programmes": [
+        { "name": "Certificate in Fire Safety Inspection", "field": "Health", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Occupational Health and Safety", "field": "Health" }
+      ]
+    },
+    {
+      "universityId": "gcca",
+      "universityName": "Gaborone College of Culinary Arts",
+      "universityShort": "GCCA",
+      "programmes": [
+        { "name": "Certificate in Professional Cookery", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Patisserie and Baking", "field": "Business" }
+      ]
+    },
+    {
+      "universityId": "barolong-brigade",
+      "universityName": "Barolong Brigade",
+      "universityShort": "Barolong",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "bobonong-brigade",
+      "universityName": "Bobonong Brigade",
+      "universityShort": "Bobonong",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "boteti-brigade",
+      "universityName": "Boteti Brigade",
+      "universityShort": "Boteti",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "ghanzi-brigade",
+      "universityName": "Ghanzi Brigade",
+      "universityShort": "Ghanzi",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "gweta-brigade",
+      "universityName": "Gweta Brigade",
+      "universityShort": "Gweta",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "kang-brigade",
+      "universityName": "Kang Brigade",
+      "universityShort": "Kang",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "kanye-brigade",
+      "universityName": "Kanye Brigade",
+      "universityShort": "Kanye",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "kgatleng-brigade",
+      "universityName": "Kgatleng Brigade",
+      "universityShort": "Kgatleng",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "krda",
+      "universityName": "KRDA (Kweneng Rural Development Association)",
+      "universityShort": "KRDA",
+      "programmes": [
+        { "name": "Certificate in Agriculture", "field": "Agriculture", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Horticulture", "field": "Agriculture" }
+      ]
+    },
+    {
+      "universityId": "kweneng-bophirima-brigade",
+      "universityName": "Kweneng Bophirima Brigade",
+      "universityShort": "Kweneng Bophirima",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "lobatse-brigade",
+      "universityName": "Lobatse Brigade",
+      "universityShort": "Lobatse",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "madiba-brigade",
+      "universityName": "Madiba Brigade",
+      "universityShort": "Madiba",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "mahalapye-brigade",
+      "universityName": "Mahalapye Brigade",
+      "universityShort": "Mahalapye",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "marapong-brigade",
+      "universityName": "Marapong Brigade",
+      "universityShort": "Marapong",
+      "programmes": [
+        { "name": "Electrical Installation", "field": "Engineering" },
+        { "name": "Automotive Mechanics", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "marobela-brigade",
+      "universityName": "Marobela Brigade",
+      "universityShort": "Marobela",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "matsheng-brigade",
+      "universityName": "Matsheng Brigade",
+      "universityShort": "Matsheng",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "mosetse-brigade",
+      "universityName": "Mosetse Brigade",
+      "universityShort": "Mosetse",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "moshupa-brigade",
+      "universityName": "Moshupa Brigade",
+      "universityShort": "Moshupa",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "ngethu-brigade",
+      "universityName": "Ngethu Brigade",
+      "universityShort": "Ngethu",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "nswazwi-brigade",
+      "universityName": "Nswazwi Brigade",
+      "universityShort": "Nswazwi",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "okavango-brigade",
+      "universityName": "Okavango Brigade",
+      "universityShort": "Okavango",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "shashe-brigade",
+      "universityName": "Shashe Brigade",
+      "universityShort": "Shashe",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "shoshong-brigade",
+      "universityName": "Shoshong Brigade",
+      "universityShort": "Shoshong",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "tlokweng-brigade",
+      "universityName": "Tlokweng Brigade",
+      "universityShort": "Tlokweng Brigade",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "kgalagadi-south-brigade",
+      "universityName": "Kgalagadi South Brigade",
+      "universityShort": "Kgalagadi South",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "tshwaragano-brigade",
+      "universityName": "Tshwaragano Brigade",
+      "universityShort": "Tshwaragano",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "tswelelopele-brigade",
+      "universityName": "Tswelelopele Brigade",
+      "universityShort": "Tswelelopele",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "tswapong-bokone-brigade",
+      "universityName": "Tswapong Bokone Brigade",
+      "universityShort": "Tswapong Bokone",
+      "programmes": [
+        { "name": "Bricklaying and Plastering", "field": "Engineering" },
+        { "name": "Welding and Fabrication", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "tutume-brigade",
+      "universityName": "Tutume Brigade",
+      "universityShort": "Tutume",
+      "programmes": [
+        { "name": "Automotive Mechanics", "field": "Engineering" },
+        { "name": "Electrical Installation", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "zwenshambe-brigade",
+      "universityName": "Zwenshambe Brigade",
+      "universityShort": "Zwenshambe",
+      "programmes": [
+        { "name": "Carpentry and Joinery", "field": "Engineering" },
+        { "name": "Plumbing and Pipe Fitting", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "gips",
+      "universityName": "Gaborone Institute of Professional Studies",
+      "universityShort": "GIPS",
+      "officialUrl": "https://www.gips.ac.bw/",
+      "programmes": [
+        { "name": "Diploma in Business Management", "field": "Business" },
+        { "name": "Certificate in Accounting", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Human Resource Management", "field": "Business" }
+      ]
+    },
+    {
+      "universityId": "lcibs",
+      "universityName": "London College of International Business Studies (LCIBS) Botswana",
+      "universityShort": "LCIBS",
+      "programmes": [
+        { "name": "Diploma in Business Administration", "field": "Business" },
+        { "name": "Certificate in Marketing", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "bcet",
+      "universityName": "Botswana College of Engineering and Technology (BCET)",
+      "universityShort": "BCET",
+      "programmes": [
+        { "name": "National Diploma in Electrical Engineering", "field": "Engineering" },
+        { "name": "National Diploma in Mechanical Engineering", "field": "Engineering" }
+      ]
+    },
+    {
+      "universityId": "ihs",
+      "universityName": "Institute of Health Sciences (IHS)",
+      "universityShort": "IHS",
+      "programmes": [
+        { "name": "Diploma in General Nursing", "field": "Health" },
+        { "name": "Diploma in Midwifery", "field": "Health" }
+      ]
+    },
+    {
+      "universityId": "oodi",
+      "universityName": "Oodi College of Applied Arts and Technology",
+      "universityShort": "Oodi",
+      "programmes": [
+        { "name": "Diploma in Fashion Design", "field": "Humanities" },
+        { "name": "Certificate in Textile Technology", "field": "Humanities", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "kanye-sda-nursing",
+      "universityName": "Kanye Seventh Day Adventist College of Nursing",
+      "universityShort": "Kanye SDA Nursing",
+      "programmes": [
+        { "name": "Diploma in General Nursing", "field": "Health" },
+        { "name": "Certificate in Nursing Assistant", "field": "Health", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "awil-college",
+      "universityName": "Awil College",
+      "universityShort": "Awil",
+      "programmes": [
+        { "name": "Diploma in Business Management", "field": "Business" },
+        { "name": "Certificate in Office Administration", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "assembly-bible-college",
+      "universityName": "Assembly Bible College",
+      "universityShort": "Assembly Bible",
+      "programmes": [
+        { "name": "Certificate in Biblical Studies", "field": "Humanities", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Theology", "field": "Humanities" }
+      ]
+    },
+    {
+      "universityId": "bibf",
+      "universityName": "Botswana Institute of Banking and Finance",
+      "universityShort": "BIBF",
+      "officialUrl": "https://www.bibf.ac.bw/",
+      "programmes": [
+        { "name": "Certificate in Banking Operations", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Banking and Finance", "field": "Business" }
+      ]
+    }
+  ]
+}

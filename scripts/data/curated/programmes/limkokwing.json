@@ -1,0 +1,29 @@
+{
+  "universityId": "limkokwing",
+  "universityName": "Limkokwing University of Creative Technology",
+  "universityShort": "Limkokwing",
+  "officialUrl": "https://www.limkokwing.net/botswana/",
+  "applyUrl": "https://www.limkokwing.net/botswana/admissions",
+  "sourceLabel": "Limkokwing Botswana faculty programme lists",
+  "programmes": [
+    { "name": "BSc in Software Engineering", "faculty": "Faculty of Information Communication Technology", "field": "Technology" },
+    { "name": "BSc in Information Technology Security", "faculty": "Faculty of Information Communication Technology", "field": "Technology" },
+    { "name": "BA in Creative Multimedia", "faculty": "Faculty of Information Communication Technology", "field": "Technology" },
+    { "name": "BSc in Information Systems", "faculty": "Faculty of Information Communication Technology", "field": "Technology" },
+    { "name": "Diploma in Information Technology", "faculty": "Faculty of Information Communication Technology", "field": "Technology" },
+    { "name": "BA in Visual Communication", "faculty": "Faculty of Design Innovation", "field": "Humanities" },
+    { "name": "BA in Industrial Design", "faculty": "Faculty of Design Innovation", "field": "Humanities" },
+    { "name": "Diploma in Fashion Design", "faculty": "Faculty of Design Innovation", "field": "Humanities" },
+    { "name": "BBus in International Business", "faculty": "Faculty of Business and Globalisation", "field": "Business" },
+    { "name": "BBus in Finance and Banking", "faculty": "Faculty of Business and Globalisation", "field": "Business" },
+    { "name": "BBus in Tourism Management", "faculty": "Faculty of Business and Globalisation", "field": "Business" },
+    { "name": "BBus in Hospitality Management", "faculty": "Faculty of Business and Globalisation", "field": "Business" },
+    { "name": "BA in Interior Architecture", "faculty": "Faculty of Architecture and the Built Environment", "field": "Engineering" },
+    { "name": "Associate Degree in Architectural Technology", "faculty": "Faculty of Architecture and the Built Environment", "field": "Engineering" },
+    { "name": "Certificate in Construction Management", "faculty": "Faculty of Architecture and the Built Environment", "field": "Engineering", "duration": "1 year", "durationYears": 1 },
+    { "name": "BA in Professional Communication", "faculty": "Faculty of Communication, Media and Broadcasting", "field": "Humanities" },
+    { "name": "BA in Digital Film and Television", "faculty": "Faculty of Communication, Media and Broadcasting", "field": "Humanities" },
+    { "name": "BA in Broadcasting and Journalism", "faculty": "Faculty of Communication, Media and Broadcasting", "field": "Humanities" },
+    { "name": "BA in Events Management", "faculty": "Faculty of Communication, Media and Broadcasting", "field": "Business" }
+  ]
+}
