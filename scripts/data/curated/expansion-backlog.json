@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "note": "Research tracker for programme and incentive expansion. Status: done | in_progress | needs_pdf | needs_user | research",
+  "updatedAt": "2026-07-08",
+  "institutions": [
+    { "universityId": "ub", "programmes": "done", "incentives": "done", "notes": "208 programmes; accommodation and payment plan incentives merged." },
+    { "universityId": "biust", "programmes": "done", "incentives": "done", "notes": "Expanded from campaign school lists; on-campus accommodation added." },
+    { "universityId": "botho", "programmes": "needs_pdf", "incentives": "done", "notes": "37 programmes curated; drop Botho-University-2026-Botswana-Campus-Prospectus_copy.pdf into docs/ for full merge." },
+    { "universityId": "limkokwing", "programmes": "done", "incentives": "done", "notes": "Faculty programme expansion + laptop/bursary/accommodation incentives." },
+    { "universityId": "bac", "programmes": "done", "incentives": "done", "notes": "30 programmes; payment plan incentive added." },
+    { "universityId": "ba-isago", "programmes": "done", "incentives": "research", "notes": "Commerce/education/law/built environment programmes added from faculty pages." },
+    { "universityId": "bou", "programmes": "done", "incentives": "done", "notes": "20 programmes; distance-learning cost benefit noted." },
+    { "universityId": "abm", "programmes": "done", "incentives": "research", "notes": "12 programmes; verify student offers with institution." },
+    { "universityId": "gtc", "programmes": "done", "incentives": "research", "notes": "10 programmes; prospectus merge pending." },
+    { "universityId": "guc", "programmes": "done", "incentives": "research", "notes": "126 programmes from brochure merge; verify incentives." },
+    { "universityId": "new-era", "programmes": "done", "incentives": "research", "notes": "59 programmes from prospectus merge." },
+    { "universityId": "buan", "programmes": "done", "incentives": "research", "notes": "37 programmes from BQA merge." },
+    { "universityId": "botswana-accountancy-training", "programmes": "done", "incentives": "research", "notes": "BICA qualification levels added; verify tuition provider incentives." },
+    { "universityId": "kgale", "programmes": "done", "incentives": "needs_user", "notes": "Website unavailable during research; stub programmes added — user to confirm." },
+    { "universityId": "bohss", "programmes": "done", "incentives": "research", "notes": "Training programmes added; primarily research/CPD rather than degrees." },
+    { "universityId": "bamalete-nursing", "programmes": "done", "incentives": "research", "notes": "Midwifery diploma from official BLSoN site." },
+    { "universityId": "roads-training-centre", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "dawn-training", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "cep-training", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "learneasy", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "stargems", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "insurance-training-institute", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "crackit", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "aafm", "programmes": "done", "incentives": "needs_user", "notes": "Aviation stub programmes — user to supply official syllabus." },
+    { "universityId": "africa-insurance-training-institute", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "delta-training-academy", "programmes": "done", "incentives": "needs_user", "notes": "Stub programmes — user to supply official prospectus." },
+    { "universityId": "tlokweng-coe", "programmes": "done", "incentives": "research", "notes": "Expanded to 3 education diplomas." },
+    { "universityId": "serowe-coe", "programmes": "done", "incentives": "research", "notes": "Expanded to 4 education diplomas." },
+    { "universityId": "molepolole-coe", "programmes": "done", "incentives": "research", "notes": "Expanded to 3 education diplomas." },
+    { "universityId": "tonota-coe", "programmes": "done", "incentives": "research", "notes": "Expanded to 3 education diplomas." }
+  ],
+  "agentNextSteps": [
+    "Run merge-botho-prospectus-2026.mjs when Botho PDF is available",
+    "Research verified incentives for BA ISAGO, ABM, GUC from official sites",
+    "Replace stub programmes for training institutes when user provides prospectuses"
+  ],
+  "userNextSteps": [
+    "Add prospectuses to docs/ using naming convention: {Institution}_Prospectus_copy.pdf",
+    "Share incentive flyers or fee discount pages for institutions marked needs_user",
+    "Review programme diffs for stub institutions before treating as verified"
+  ]
+}

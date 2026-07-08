@@ -1,0 +1,152 @@
+{
+  "note": "55-target institutions that previously had zero programmes",
+  "institutions": [
+    {
+      "universityId": "botswana-accountancy-training",
+      "universityName": "Botswana Institute of Chartered Accountants Training Centre",
+      "universityShort": "BICA Training",
+      "officialUrl": "https://www.bica.org.bw/bica-qualification",
+      "applyUrl": "https://www.bica.org.bw/bica-qualification",
+      "programmes": [
+        { "name": "BICA Qualification — Certificate Level", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "BICA Qualification — Professional Level", "field": "Business", "duration": "2 years", "durationYears": 2 },
+        { "name": "BICA Qualification — Advanced Level", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "kgale",
+      "universityName": "Kgale College",
+      "universityShort": "Kgale",
+      "officialUrl": "https://www.kgalecollege.ac.bw/",
+      "applyUrl": "https://www.kgalecollege.ac.bw/",
+      "programmes": [
+        { "name": "Diploma in Business Management", "field": "Business" },
+        { "name": "Diploma in Information Technology", "field": "Technology" },
+        { "name": "Diploma in Social Development", "field": "Humanities" },
+        { "name": "Certificate in Computer Applications", "field": "Technology", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "bohss",
+      "universityName": "Botswana Harvard Health Sciences",
+      "universityShort": "BOHSS",
+      "officialUrl": "https://www.bhp.org.bw/training",
+      "applyUrl": "https://www.bhp.org.bw/training",
+      "programmes": [
+        { "name": "HIV Clinical Training Programme", "field": "Health", "duration": "Short course", "durationYears": null },
+        { "name": "Non-Communicable Disease Management CPD", "field": "Health", "duration": "Short course", "durationYears": null },
+        { "name": "Laboratory Research Training Fellowship", "field": "Health", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "roads-training-centre",
+      "universityName": "Roads Training Centre",
+      "universityShort": "RTC",
+      "programmes": [
+        { "name": "Certificate in Road Construction", "field": "Engineering", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Roads Engineering", "field": "Engineering" },
+        { "name": "Certificate in Bituminous Surfacing", "field": "Engineering", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "dawn-training",
+      "universityName": "Dawn Training Institute",
+      "universityShort": "Dawn",
+      "programmes": [
+        { "name": "Certificate in Business Studies", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Business Management", "field": "Business" },
+        { "name": "Certificate in Office Administration", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "cep-training",
+      "universityName": "CEP Training Institute",
+      "universityShort": "CEP",
+      "programmes": [
+        { "name": "Certificate in Entrepreneurship", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Project Management", "field": "Business" },
+        { "name": "Certificate in Customer Service", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "learneasy",
+      "universityName": "LEARNeasy Training Institute",
+      "universityShort": "LEARNeasy",
+      "programmes": [
+        { "name": "Certificate in Basic Computer Skills", "field": "Technology", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Information Technology", "field": "Technology" },
+        { "name": "Certificate in Business English", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "stargems",
+      "universityName": "Stargems Diamond Training Institute",
+      "universityShort": "Stargems",
+      "programmes": [
+        { "name": "Certificate in Diamond Grading", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Gemology", "field": "Business" },
+        { "name": "Certificate in Jewellery Design", "field": "Humanities", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "insurance-training-institute",
+      "universityName": "Insurance Training Institute",
+      "universityShort": "ITI",
+      "programmes": [
+        { "name": "Certificate in Insurance Foundation", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Insurance and Risk Management", "field": "Business" },
+        { "name": "Certificate in Underwriting", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "crackit",
+      "universityName": "CrackiT College",
+      "universityShort": "CrackiT",
+      "programmes": [
+        { "name": "Certificate in Information Technology", "field": "Technology", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Software Development", "field": "Technology" },
+        { "name": "Certificate in Graphic Design", "field": "Humanities", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "bamalete-nursing",
+      "universityName": "Bamalete Lutheran School of Nursing",
+      "universityShort": "Bamalete Nursing",
+      "officialUrl": "http://www.blhson.ac.bw/",
+      "applyUrl": "http://www.blhson.ac.bw/",
+      "programmes": [
+        { "name": "Diploma in Midwifery", "field": "Health", "duration": "2 years", "durationYears": 2 }
+      ]
+    },
+    {
+      "universityId": "aafm",
+      "universityName": "Aviation Academy Flying Mission (AAFM)",
+      "universityShort": "AAFM",
+      "programmes": [
+        { "name": "Private Pilot Licence (PPL)", "field": "Engineering", "duration": "1 year", "durationYears": 1 },
+        { "name": "Commercial Pilot Licence (CPL)", "field": "Engineering", "duration": "2 years", "durationYears": 2 },
+        { "name": "Certificate in Aviation Ground Operations", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "africa-insurance-training-institute",
+      "universityName": "Africa Insurance Training Institute",
+      "universityShort": "AITI",
+      "programmes": [
+        { "name": "Certificate in General Insurance", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Insurance Practice", "field": "Business" },
+        { "name": "Certificate in Claims Management", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    },
+    {
+      "universityId": "delta-training-academy",
+      "universityName": "Delta Training Academy",
+      "universityShort": "Delta",
+      "programmes": [
+        { "name": "Certificate in Hospitality Operations", "field": "Business", "duration": "1 year", "durationYears": 1 },
+        { "name": "Diploma in Tourism and Hospitality", "field": "Business" },
+        { "name": "Certificate in Food Production", "field": "Business", "duration": "1 year", "durationYears": 1 }
+      ]
+    }
+  ]
+}

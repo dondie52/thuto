@@ -90,6 +90,7 @@ const EMPTY_UNIVERSITY_FORM = {
   applyUrl: "",
   campusPhoto: "",
   resourcesJson: "[]",
+  studentIncentivesJson: "[]",
   published: true,
 };
 
@@ -673,6 +674,7 @@ export default function Admin() {
       applyUrl: university.applyUrl || "",
       campusPhoto: university.campusPhoto || university.campusImage || "",
       resourcesJson: toJson(university.resources),
+      studentIncentivesJson: toJson(university.studentIncentives),
       published: true,
     });
   }
@@ -740,6 +742,17 @@ export default function Admin() {
           );
         }
       }
+      const studentIncentives = parseJsonArray(universityForm.studentIncentivesJson, "Student incentives");
+      for (const [index, incentive] of studentIncentives.entries()) {
+        if (!String(incentive?.label || "").trim()) {
+          throw new Error(`Student incentives[${index}] must include a label.`);
+        }
+        if (incentive?.sourceUrl && !isAllowedExternalResourceUrl(incentive.sourceUrl)) {
+          throw new Error(
+            `Student incentives[${index}] must link to an official institution URL (Thuto/Supabase hosting is not allowed).`,
+          );
+        }
+      }
       const patch = {
         id: universityForm.id.trim(),
         name: universityForm.name.trim(),
@@ -752,6 +765,7 @@ export default function Admin() {
         applyUrl: universityForm.applyUrl.trim(),
         campusPhoto: universityForm.campusPhoto.trim(),
         resources,
+        studentIncentives,
       };
       await saveUniversityOverride({ id: patch.id, patch, published: universityForm.published });
       setNotice("University page saved.");
@@ -1213,8 +1227,18 @@ export default function Admin() {
                 className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 font-mono text-xs normal-case tracking-normal text-stone-800"
               />
             </label>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Student incentives JSON
+              <textarea
+                rows={5}
+                value={universityForm.studentIncentivesJson}
+                onChange={(event) => setUniversityForm((form) => ({ ...form, studentIncentivesJson: event.target.value }))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 font-mono text-xs normal-case tracking-normal text-stone-800"
+              />
+            </label>
             <p className="text-xs leading-relaxed text-stone-500">
-              Resource URLs must point to official institution websites. Thuto does not host prospectuses or PDFs.
+              Resource and incentive URLs must point to official institution websites. Categories: accommodation, laptop,
+              discount, bursary, other.
             </p>
             <div className="flex flex-wrap items-center gap-2">
               <label className="flex items-center gap-2 rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-semibold text-brand-900">

@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "note": "Curated student incentives backed by official sources. Edit then run: node scripts/merge-student-incentives.mjs",
+  "universities": [
+    {
+      "universityId": "limkokwing",
+      "sourceLabel": "Limkokwing University of Creative Technology",
+      "replace": true,
+      "studentIncentives": [
+        {
+          "category": "laptop",
+          "label": "Free laptop and smartphone for government-sponsored students",
+          "sourceUrl": "https://www.limkokwing.net/botswana/admissions",
+          "sourceLabel": "Limkokwing Botswana admissions"
+        },
+        {
+          "category": "bursary",
+          "label": "Special bursary assistance for private students",
+          "sourceUrl": "https://www.limkokwing.net/botswana/admissions",
+          "sourceLabel": "Limkokwing Botswana admissions"
+        },
+        {
+          "category": "accommodation",
+          "label": "Accommodation facilitation available for students",
+          "detail": "Contact admissions for current hostel and off-campus options.",
+          "sourceUrl": "https://www.limkokwing.net/botswana/admissions",
+          "sourceLabel": "Limkokwing Botswana admissions"
+        }
+      ]
+    },
+    {
+      "universityId": "ub",
+      "sourceLabel": "University of Botswana",
+      "replace": true,
+      "studentIncentives": [
+        {
+          "category": "accommodation",
+          "label": "On-campus residence accommodation for registered full-time students",
+          "detail": "Apply online via the Residential Management System after academic registration. Places are limited and not guaranteed — priority is given to new students and those from faraway places.",
+          "sourceUrl": "https://www.ub.bw/study/registration-requirements",
+          "sourceLabel": "University of Botswana"
+        },
+        {
+          "category": "discount",
+          "label": "Tuition fee payment plan available",
+          "detail": "Instalment options for eligible students — see the official fees schedule and payment plan contract.",
+          "sourceUrl": "https://www.ub.bw/sites/default/files/2021-09/Revised-Payment-Plan-Contract-07092021.pdf",
+          "sourceLabel": "University of Botswana fees"
+        }
+      ]
+    },
+    {
+      "universityId": "biust",
+      "sourceLabel": "BIUST",
+      "replace": true,
+      "studentIncentives": [
+        {
+          "category": "accommodation",
+          "label": "On-campus student accommodation",
+          "detail": "BIUST provides student housing on campus. Contact Student Affairs for availability and application deadlines.",
+          "sourceUrl": "https://www.biust.ac.bw/student-affairs/",
+          "sourceLabel": "BIUST Student Affairs"
+        }
+      ]
+    },
+    {
+      "universityId": "botho",
+      "sourceLabel": "Botho University",
+      "replace": true,
+      "studentIncentives": [
+        {
+          "category": "accommodation",
+          "label": "Student accommodation at Gaborone and Francistown campuses",
+          "detail": "Botho University offers on-campus housing. Enquire with the student affairs office for availability and fees.",
+          "sourceUrl": "https://www.bothouniversity.ac.bw/student-life",
+          "sourceLabel": "Botho University"
+        }
+      ]
+    },
+    {
+      "universityId": "bac",
+      "sourceLabel": "Botswana School of Business Sciences",
+      "replace": true,
+      "studentIncentives": [
+        {
+          "category": "discount",
+          "label": "Flexible tuition payment options",
+          "detail": "BSBS offers instalment plans for self-sponsored students — confirm current terms with the finance office.",
+          "sourceUrl": "https://www.bac.ac.bw/",
+          "sourceLabel": "Botswana School of Business Sciences"
+        }
+      ]
+    },
+    {
+      "universityId": "bou",
+      "sourceLabel": "Botswana Open University",
+      "replace": true,
+      "studentIncentives": [
+        {
+          "category": "discount",
+          "label": "Distance learning reduces relocation and accommodation costs",
+          "detail": "BOU programmes are designed for flexible study — many students learn from home without relocating.",
+          "sourceUrl": "https://www.bou.ac.bw/",
+          "sourceLabel": "Botswana Open University"
+        }
+      ]
+    }
+  ]
+}
