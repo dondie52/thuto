@@ -86,7 +86,87 @@
         "sourceUrl": "https://www.ub.bw/sites/default/files/2021-09/Revised-Payment-Plan-Contract-07092021.pdf",
         "sourceLabel": "University of Botswana fees"
       }
-    ]
+    ],
+    "feeSchedule": {
+      "currency": "BWP",
+      "basis": "per_credit",
+      "groups": [
+        {
+          "id": "science-engineering",
+          "name": "Science & Engineering",
+          "aliases": [
+            "Science",
+            "Engineering",
+            "Technology",
+            "Computing",
+            "Faculty of Science",
+            "Faculty of Engineering and Technology",
+            "Faculty of Science & Technology",
+            "School of Engineering"
+          ],
+          "fields": [
+            "Engineering",
+            "Technology",
+            "Science"
+          ],
+          "perCredit": 1240,
+          "totalCredits": 360,
+          "note": "Includes faculties of science, engineering, and technology programmes."
+        },
+        {
+          "id": "medicine",
+          "name": "School of Medicine",
+          "aliases": [
+            "Medicine",
+            "School of Medicine",
+            "Medical"
+          ],
+          "fields": [
+            "Medicine",
+            "Health"
+          ],
+          "perCredit": 1380,
+          "note": "Medicine programmes use a higher per-credit rate than other health sciences."
+        },
+        {
+          "id": "other-faculties",
+          "name": "Other faculties",
+          "aliases": [
+            "Business",
+            "Humanities",
+            "Education",
+            "Social Sciences",
+            "Health Sciences",
+            "Law",
+            "Faculty of Humanities",
+            "Faculty of Business",
+            "Faculty of Education"
+          ],
+          "fields": [
+            "Business",
+            "Education",
+            "Law",
+            "Humanities",
+            "Social Sciences",
+            "Health",
+            "Creative",
+            "Agriculture"
+          ],
+          "perCredit": 940,
+          "totalCredits": 360,
+          "note": "Business, humanities, education, law, and most other undergraduate faculties."
+        }
+      ],
+      "academicYear": "2025/26",
+      "audience": "citizen",
+      "audienceNote": "Resident and SADC/African student rates. International and non-resident rates are higher — see the official schedule.",
+      "description": "UB charges tuition per credit. Multiply your registered credits each semester by the faculty rate below. A normal full-time undergraduate load is 30 credits per semester.",
+      "normalSemesterCredits": 30,
+      "semestersPerYear": 2,
+      "sourceUrl": "https://www.ub.bw/sites/default/files/2025-07/University_of_Botswana_2025-26_Schedule_of_Fees_Final-14072025.pdf",
+      "sourceLabel": "University of Botswana",
+      "updatedAt": "2025-07-14"
+    }
   },
   {
     "id": "biust",
@@ -237,6 +317,13 @@
         "url": "https://www.bothouniversity.ac.bw/admissions",
         "format": "Web page",
         "sourceLabel": "Botho University"
+      },
+      {
+        "title": "2026 fee schedule",
+        "category": "Fees",
+        "url": "https://www.bothouniversity.com/fees",
+        "format": "Web page",
+        "sourceLabel": "Botho University"
       }
     ],
     "shortName": "Botho",
@@ -248,7 +335,65 @@
         "sourceUrl": "https://www.bothouniversity.ac.bw/student-life",
         "sourceLabel": "Botho University"
       }
-    ]
+    ],
+    "feeSchedule": {
+      "currency": "BWP",
+      "basis": "per_credit",
+      "groups": [
+        {
+          "id": "engineering",
+          "name": "Engineering",
+          "aliases": [
+            "Engineering",
+            "Faculty of Engineering",
+            "Mechanical Engineering"
+          ],
+          "fields": [
+            "Engineering"
+          ],
+          "perCredit": 600,
+          "totalCredits": 600,
+          "note": "All engineering programmes (campus learning). 600 credits over 5 years ≈ P360,000 total at current rates."
+        },
+        {
+          "id": "general",
+          "name": "General programmes",
+          "aliases": [
+            "Business",
+            "Faculty of Business and Accounting",
+            "Health",
+            "Education",
+            "Computing",
+            "Technology",
+            "Law",
+            "Humanities",
+            "Faculty of Health & Education"
+          ],
+          "fields": [
+            "Business",
+            "Technology",
+            "Health",
+            "Education",
+            "Law",
+            "Humanities",
+            "Social Sciences",
+            "Creative"
+          ],
+          "perCredit": 420,
+          "totalCredits": 480,
+          "note": "Business, health, education, computing, law, and most other undergraduate faculties."
+        }
+      ],
+      "academicYear": "2026",
+      "audience": "citizen",
+      "audienceNote": "Botswana campus learning rates for citizens and residents. Online campus uses USD per-credit rates.",
+      "description": "Botho uses a pay-as-you-learn credit model. Each module has a credit value (often 10 or 20). Tuition = credits registered × fee per credit. A normal full-time semester is 60 credits.",
+      "normalSemesterCredits": 60,
+      "semestersPerYear": 2,
+      "sourceUrl": "https://www.bothouniversity.com/fees",
+      "sourceLabel": "Botho University",
+      "updatedAt": "2026-07-08"
+    }
   },
   {
     "id": "ba-isago",
@@ -524,7 +669,85 @@
         "sourceUrl": "https://www.bou.ac.bw/",
         "sourceLabel": "Botswana Open University"
       }
-    ]
+    ],
+    "feeSchedule": {
+      "currency": "BWP",
+      "basis": "per_semester",
+      "groups": [
+        {
+          "id": "diploma",
+          "name": "Diploma programmes",
+          "aliases": [
+            "Diploma",
+            "Human Resources",
+            "Business Management",
+            "Marketing"
+          ],
+          "fields": [
+            "Business",
+            "Education",
+            "Humanities"
+          ],
+          "totalProgramme": 16140,
+          "durationYears": 3,
+          "note": "Typical diploma total for citizens (e.g. DBUSM, DMM, DHUM) — verify your programme code."
+        },
+        {
+          "id": "undergraduate-education",
+          "name": "Education degrees",
+          "aliases": [
+            "Education",
+            "Bachelor of Education",
+            "Primary",
+            "Early Childhood"
+          ],
+          "fields": [
+            "Education"
+          ],
+          "totalProgramme": 58000,
+          "durationYears": 4,
+          "note": "BEd programmes (e.g. BPRIM, BEDECE) — totals vary slightly by specialisation."
+        },
+        {
+          "id": "undergraduate-business",
+          "name": "Business & commerce degrees",
+          "aliases": [
+            "Commerce",
+            "Business Administration",
+            "Human Resources"
+          ],
+          "fields": [
+            "Business"
+          ],
+          "totalProgramme": 55400,
+          "durationYears": 4,
+          "note": "BCOMHR, BBA, and related business degrees."
+        },
+        {
+          "id": "undergraduate-technology",
+          "name": "Technology degrees",
+          "aliases": [
+            "Technology",
+            "Information Systems",
+            "Public Health"
+          ],
+          "fields": [
+            "Technology",
+            "Health"
+          ],
+          "totalProgramme": 57104,
+          "durationYears": 4,
+          "note": "BTECHIS, BScPH, and related programmes."
+        }
+      ],
+      "academicYear": "2026/27",
+      "audience": "citizen",
+      "audienceNote": "BOU publishes fixed semester fees per programme rather than a single per-credit rate. Figures below are indicative totals from the official fee structure.",
+      "description": "BOU charges fixed semester fees that vary by programme. Diploma, degree, and postgraduate programmes each have their own published totals — check the official fee PDF for your exact programme code.",
+      "sourceUrl": "https://www.bou.ac.bw/media/attachments/2026/04/28/2026_programme_fees.pdf",
+      "sourceLabel": "Botswana Open University",
+      "updatedAt": "2026-04-28"
+    }
   },
   {
     "id": "boitekanelo",

@@ -37,6 +37,7 @@ import { fetchVerifiedInstitutionIds } from "../lib/partner.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
 import ProgrammeThemeHero from "../components/ProgrammeThemeHero.jsx";
 import ProgrammeModulesSection from "../components/ProgrammeModulesSection.jsx";
+import ProgrammeFeeSection from "../components/ProgrammeFeeSection.jsx";
 
 const REQ_LABEL = Object.fromEntries(SUBJECT_FIELDS.map(({ key, label }) => [key, label]));
 
@@ -123,13 +124,6 @@ export default function ProgrammeDetail() {
     predictorSnap.grades != null && predictorSnap.total != null
       ? evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total)
       : null;
-
-  const fees = programme.fees;
-  const hasFees =
-    fees &&
-    typeof fees.domestic === "number" &&
-    Number.isFinite(fees.domestic) &&
-    fees.currency;
 
   const inCompare = isSelected(programme.id);
   const compareToggleDisabled = !inCompare && !canAdd;
@@ -349,47 +343,7 @@ export default function ProgrammeDetail() {
 
       <ProgrammeModulesSection programme={programme} />
 
-      <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 shadow-sm">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Fee &amp; funding</h2>
-          {isDtefSponsored ? (
-            <span
-              className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-950"
-              title="This programme or institution is on Thuto's DTEF sponsorship list — confirm eligibility with DTEF"
-            >
-              <span className="size-1.5 rounded-full bg-emerald-600" aria-hidden />
-              DTEF Sponsored
-            </span>
-          ) : null}
-        </div>
-        {hasFees ? (
-          <p className="mt-2 text-sm text-slate-700">
-            <span className="font-medium text-slate-800">Estimated fees: </span>
-            from approximately{" "}
-            <strong>
-              {fees.currency} {fees.domestic.toLocaleString()}
-            </strong>
-            {fees.per ? ` per ${fees.per}` : ""} (domestic). Figures are indicative — always confirm with the
-            institution.
-          </p>
-        ) : (
-          <p className="mt-2 text-sm text-slate-700">
-            <span className="font-medium text-slate-800">Estimated fees: </span>
-            not listed in Thuto yet. Check the institution&apos;s fee schedule or prospectus.
-          </p>
-        )}
-        {fees?.note ? <p className="mt-2 text-sm text-amber-950/90">{fees.note}</p> : null}
-        {isDtefSponsored ? (
-          <p className="mt-3 text-sm text-emerald-950/90">
-            Listed as eligible for government tertiary sponsorship through DTEF. Final eligibility depends on DTEF rules,
-            your results, and available places — confirm on the{" "}
-            <Link to="/sponsorships" className="font-medium text-emerald-900 underline hover:text-emerald-950">
-              sponsorship guide
-            </Link>
-            .
-          </p>
-        ) : null}
-      </section>
+      <ProgrammeFeeSection programme={programme} university={university} isDtefSponsored={isDtefSponsored} />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Career prospects</h2>
