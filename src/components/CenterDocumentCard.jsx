@@ -5,7 +5,8 @@ import { documentTypeLabel, formatFileSize } from "../lib/thutoCenter.js";
  * @param {{ document: import('../lib/thutoCenter.js').normalizeDocument extends Function ? ReturnType<import('../lib/thutoCenter.js').normalizeDocument> : object, unlocked?: boolean, isPro?: boolean }} props
  */
 export default function CenterDocumentCard({ document, unlocked = false, isPro = false }) {
-  const canAccess = unlocked || isPro;
+  const isOfficial = document.source === "official";
+  const canAccess = unlocked || isPro || isOfficial;
 
   return (
     <article className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm transition hover:border-brand-200 hover:shadow-md">
@@ -21,7 +22,11 @@ export default function CenterDocumentCard({ document, unlocked = false, isPro =
           </h3>
           <p className="mt-1 text-sm text-stone-600">{document.universityName || document.universityId}</p>
         </div>
-        {canAccess ? (
+        {isOfficial ? (
+          <span className="shrink-0 rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-sky-800">
+            Official
+          </span>
+        ) : canAccess ? (
           <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-800">
             {isPro ? "Pro" : "Unlocked"}
           </span>

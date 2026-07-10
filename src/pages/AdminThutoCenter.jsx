@@ -147,12 +147,20 @@ export default function AdminThutoCenter() {
             Review student uploads for Botswana copyright and academic integrity compliance.
           </p>
         </div>
-        <Link
-          to="/center/policy"
-          className="focus-ring rounded-xl border border-brand-200 bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-800"
-        >
-          View policy
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to="/admin/center/upload"
+            className="focus-ring rounded-xl bg-brand-700 px-3 py-2 text-xs font-semibold text-white hover:bg-brand-800"
+          >
+            Upload official document
+          </Link>
+          <Link
+            to="/center/policy"
+            className="focus-ring rounded-xl border border-brand-200 bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-800"
+          >
+            View policy
+          </Link>
+        </div>
       </header>
 
       <div className="flex flex-wrap gap-2">
@@ -185,6 +193,7 @@ export default function AdminThutoCenter() {
                   <h2 className="font-semibold text-brand-900">{document.title}</h2>
                   <p className="text-sm text-stone-600">
                     {document.courseCode} · {document.universityName} · {documentTypeLabel(document.documentType)}
+                    {document.source === "official" ? " · Official" : ""}
                   </p>
                 </div>
                 <StatusBadge status={document.status} />

@@ -1,15 +1,16 @@
 import { GRADE_POINTS } from "../lib/admissions.js";
+import { SCIENCE_DOUBLE_SUBJECT_ID } from "../lib/bgcseSubjects.js";
 
 const GRADE_OPTIONS = ["", ...Object.keys(GRADE_POINTS)];
 
 /**
  * Shared grade rows + best-six summary (predictor and fit finder).
  * @param {{
- *   rows: Array<{ key: string, subjectId: string, grade: string }>,
+ *   rows: Array<{ key: string, subjectId: string, grade: string, grade2?: string }>,
  *   chosenSubjectIds: Set<string>,
  *   validationMessage: string | null,
  *   breakdown: { total: number, counted: Array<{ subjectId: string, label: string, grade: string, points: number }>, dropped: Array<{ subjectId: string, label: string, grade: string, points: number }>, invalid: string | null } | null,
- *   updateRow: (rowKey: string, patch: Partial<{ subjectId: string, grade: string }>) => void,
+ *   updateRow: (rowKey: string, patch: Partial<{ subjectId: string, grade: string, grade2: string }>) => void,
  *   addRow: () => void,
  *   removeRow: (rowKey: string) => void,
  *   canAdd: boolean,
@@ -31,61 +32,106 @@ export default function PredictorGradeSection({
     <div id="predictor-grade-section" className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
       <fieldset className="space-y-3">
         <legend className="text-sm font-semibold text-brand-800">Add your subjects and grades</legend>
-        <p className="text-sm text-slate-600">Thuto updates points as soon as each subject has a grade.</p>
+        <p className="text-sm text-slate-600">
+          Thuto updates points as soon as each subject has a grade. Science Double Award uses two component grades
+          (e.g. CC = 12 pts).
+        </p>
         <ul className="space-y-3">
-          {rows.map((row) => (
-            <li
-              key={row.key}
-              className="flex flex-col gap-2 rounded-lg border border-brand-100 bg-brand-50/40 p-3 sm:flex-row sm:flex-wrap sm:items-end"
-            >
-              <div className="min-w-0 flex-1 sm:max-w-md">
-                <label htmlFor={`subj-${row.key}`} className="block text-xs font-medium text-slate-600">
-                  Subject
-                </label>
-                <select
-                  id={`subj-${row.key}`}
-                  value={row.subjectId}
-                  onChange={(e) => updateRow(row.key, { subjectId: e.target.value })}
-                  className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
-                >
-                  <option value="">Select subject…</option>
-                  {subjects.map((s) => (
-                    <option
-                      key={s.id}
-                      value={s.id}
-                      disabled={Boolean(s.id && chosenSubjectIds.has(s.id) && row.subjectId !== s.id)}
-                    >
-                      {s.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="w-full sm:w-28">
-                <label htmlFor={`grade-${row.key}`} className="block text-xs font-medium text-slate-600">
-                  Grade
-                </label>
-                <select
-                  id={`grade-${row.key}`}
-                  value={row.grade}
-                  onChange={(e) => updateRow(row.key, { grade: e.target.value })}
-                  className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
-                >
-                  {GRADE_OPTIONS.map((g) => (
-                    <option key={g || "empty"} value={g}>
-                      {g === "" ? "-" : g}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <button
-                type="button"
-                onClick={() => removeRow(row.key)}
-                className="rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 sm:shrink-0"
+          {rows.map((row) => {
+            const isDoubleAward = row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID;
+            return (
+              <li
+                key={row.key}
+                className="flex flex-col gap-2 rounded-lg border border-brand-100 bg-brand-50/40 p-3 sm:flex-row sm:flex-wrap sm:items-end"
               >
-                Remove
-              </button>
-            </li>
-          ))}
+                <div className="min-w-0 flex-1 sm:max-w-md">
+                  <label htmlFor={`subj-${row.key}`} className="block text-xs font-medium text-slate-600">
+                    Subject
+                  </label>
+                  <select
+                    id={`subj-${row.key}`}
+                    value={row.subjectId}
+                    onChange={(e) => updateRow(row.key, { subjectId: e.target.value })}
+                    className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  >
+                    <option value="">Select subject…</option>
+                    {subjects.map((s) => (
+                      <option
+                        key={s.id}
+                        value={s.id}
+                        disabled={Boolean(s.id && chosenSubjectIds.has(s.id) && row.subjectId !== s.id)}
+                      >
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {isDoubleAward ? (
+                  <>
+                    <div className="w-full sm:w-28">
+                      <label htmlFor={`grade1-${row.key}`} className="block text-xs font-medium text-slate-600">
+                        Component 1
+                      </label>
+                      <select
+                        id={`grade1-${row.key}`}
+                        value={row.grade}
+                        onChange={(e) => updateRow(row.key, { grade: e.target.value })}
+                        className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                      >
+                        {GRADE_OPTIONS.map((g) => (
+                          <option key={g || "empty"} value={g}>
+                            {g === "" ? "-" : g}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="w-full sm:w-28">
+                      <label htmlFor={`grade2-${row.key}`} className="block text-xs font-medium text-slate-600">
+                        Component 2
+                      </label>
+                      <select
+                        id={`grade2-${row.key}`}
+                        value={row.grade2 || ""}
+                        onChange={(e) => updateRow(row.key, { grade2: e.target.value })}
+                        className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                      >
+                        {GRADE_OPTIONS.map((g) => (
+                          <option key={`g2-${g || "empty"}`} value={g}>
+                            {g === "" ? "-" : g}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full sm:w-28">
+                    <label htmlFor={`grade-${row.key}`} className="block text-xs font-medium text-slate-600">
+                      Grade
+                    </label>
+                    <select
+                      id={`grade-${row.key}`}
+                      value={row.grade}
+                      onChange={(e) => updateRow(row.key, { grade: e.target.value })}
+                      className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    >
+                      {GRADE_OPTIONS.map((g) => (
+                        <option key={g || "empty"} value={g}>
+                          {g === "" ? "-" : g}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => removeRow(row.key)}
+                  className="rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 sm:shrink-0"
+                >
+                  Remove
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </fieldset>
 

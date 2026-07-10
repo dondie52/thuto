@@ -46,6 +46,7 @@ const Partner = lazy(() => import("./pages/Partner.jsx"));
 const Partners = lazy(() => import("./pages/Partners.jsx"));
 const ExternalRedirect = lazy(() => import("./pages/ExternalRedirect.jsx"));
 const AdminThutoCenter = lazy(() => import("./pages/AdminThutoCenter.jsx"));
+const AdminCenterUpload = lazy(() => import("./pages/AdminCenterUpload.jsx"));
 const ThutoCenter = lazy(() => import("./pages/ThutoCenter.jsx"));
 const ThutoCenterUpload = lazy(() => import("./pages/ThutoCenterUpload.jsx"));
 const ThutoCenterDocument = lazy(() => import("./pages/ThutoCenterDocument.jsx"));
@@ -88,6 +89,7 @@ export default function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/feed" element={<AdminFeed />} />
             <Route path="/admin/center" element={<AdminThutoCenter />} />
+            <Route path="/admin/center/upload" element={<AdminCenterUpload />} />
             <Route path="/assistant" element={<Assistant />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/onboarding" element={<Onboarding />} />

@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BGCSE_SUBJECTS } from "../lib/bgcseSubjects.js";
 import { usePredictorGradeInput } from "../hooks/usePredictorGradeInput.js";
+import { useProfileGradePersistence } from "../hooks/useProfileGradePersistence.js";
 import { useBookmarks } from "../hooks/useBookmarks.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
 import PredictorGradeSection from "../components/PredictorGradeSection.jsx";
 import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import {
@@ -23,6 +25,7 @@ const STEPS = /** @type {const} */ (["grades", "profile", "results"]);
 
 export default function FitFinder() {
   useDocumentTitle("Programme fit finder | Thuto");
+  const { user } = useAuth();
   const [step, setStep] = useState(/** @type {typeof STEPS[number]} */ ("grades"));
   const [programmes, setProgrammes] = useState([]);
   const [loadError, setLoadError] = useState(null);
@@ -40,7 +43,16 @@ export default function FitFinder() {
     removeRow,
     canAdd,
     bgcseSubjects,
+    replaceRows,
   } = usePredictorGradeInput();
+
+  useProfileGradePersistence({
+    user,
+    rows,
+    replaceRows,
+    validationMessage,
+    breakdown,
+  });
 
   useEffect(() => {
     let cancelled = false;

@@ -161,6 +161,7 @@ export default function ThutoCenterDocument() {
 
   const isOwner = user?.id === document.uploaderId;
   const isPublished = document.status === "published";
+  const isOfficial = document.source === "official";
 
   return (
     <div className="space-y-6">
@@ -173,7 +174,14 @@ export default function ThutoCenterDocument() {
           {document.courseCode} · {document.faculty}
         </p>
         <h1 className="font-display text-2xl font-bold text-brand-900">{document.title}</h1>
-        <p className="text-sm text-stone-600">{document.universityName}</p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-sm text-stone-600">{document.universityName}</p>
+          {isOfficial ? (
+            <span className="rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-sky-800">
+              Official
+            </span>
+          ) : null}
+        </div>
       </header>
 
       {!isPublished ? (
@@ -232,7 +240,7 @@ export default function ThutoCenterDocument() {
               </Link>{" "}
               to unlock or download.
             </p>
-          ) : isOwner || canDownload || isPremium ? (
+          ) : isOwner || canDownload || isPremium || isOfficial ? (
             <button
               type="button"
               disabled={busy === "download"}

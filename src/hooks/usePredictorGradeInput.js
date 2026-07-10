@@ -5,14 +5,14 @@ import {
   PREDICTOR_BEST_SIX_STORAGE_KEY,
   PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY,
 } from "../lib/admissions.js";
-import { BGCSE_SUBJECTS } from "../lib/bgcseSubjects.js";
+import { BGCSE_SUBJECTS, SCIENCE_DOUBLE_SUBJECT_ID } from "../lib/bgcseSubjects.js";
 
 function newRow() {
   const key =
     typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
       ? crypto.randomUUID()
       : `r-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-  return { key, subjectId: "", grade: "" };
+  return { key, subjectId: "", grade: "", grade2: "" };
 }
 
 function toRow(row = {}) {
@@ -24,6 +24,7 @@ function toRow(row = {}) {
         : `r-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`),
     subjectId: row.subjectId || "",
     grade: row.grade || "",
+    grade2: row.grade2 || "",
   };
 }
 
@@ -40,12 +41,17 @@ export function usePredictorGradeInput() {
   );
 
   const validationMessage = useMemo(() => {
-    const hasSelection = rows.some((r) => r.subjectId && r.grade?.trim());
+    const hasSelection = rows.some((r) => r.subjectId && (r.grade?.trim() || r.grade2?.trim()));
     if (!hasSelection) return "Add at least one subject and choose a grade.";
     for (const r of rows) {
-      if (!r.subjectId && !r.grade?.trim()) continue;
+      if (!r.subjectId && !r.grade?.trim() && !r.grade2?.trim()) continue;
       if (r.subjectId && !r.grade?.trim()) return "Choose a grade for each selected subject.";
-      if (!r.subjectId && r.grade?.trim()) return "Choose a subject for each grade entered.";
+      if (!r.subjectId && (r.grade?.trim() || r.grade2?.trim())) {
+        return "Choose a subject for each grade entered.";
+      }
+      if (r.subjectId === SCIENCE_DOUBLE_SUBJECT_ID && r.grade?.trim() && !r.grade2?.trim()) {
+        return "Science Double Award needs two component grades (e.g. C and C for CC).";
+      }
     }
     return null;
   }, [rows]);
@@ -55,6 +61,7 @@ export function usePredictorGradeInput() {
     const gradeRows = rows.filter((r) => r.subjectId && r.grade?.trim()).map((r) => ({
       subjectId: r.subjectId,
       grade: r.grade,
+      grade2: r.grade2,
     }));
     return computeBestSixBreakdown(gradeRows);
   }, [rows, validationMessage]);
@@ -63,7 +70,7 @@ export function usePredictorGradeInput() {
     if (!breakdown || breakdown.invalid) return null;
     const gradeRows = rows
       .filter((r) => r.subjectId && r.grade?.trim())
-      .map((r) => ({ subjectId: r.subjectId, grade: r.grade }));
+      .map((r) => ({ subjectId: r.subjectId, grade: r.grade, grade2: r.grade2 }));
     return rowsToRequirementGrades(gradeRows);
   }, [rows, breakdown]);
 
@@ -79,7 +86,19 @@ export function usePredictorGradeInput() {
   }, [breakdown, requirementGrades]);
 
   function updateRow(rowKey, patch) {
-    setRows((prev) => prev.map((r) => (r.key === rowKey ? { ...r, ...patch } : r)));
+    setRows((prev) =>
+      prev.map((r) => {
+        if (r.key !== rowKey) return r;
+        const next = { ...r, ...patch };
+        if (patch.subjectId != null && patch.subjectId !== SCIENCE_DOUBLE_SUBJECT_ID) {
+          next.grade2 = "";
+        }
+        if (patch.subjectId === SCIENCE_DOUBLE_SUBJECT_ID) {
+          next.grade2 = next.grade2 || "";
+        }
+        return next;
+      }),
+    );
   }
 
   function addRow() {
