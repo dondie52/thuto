@@ -9,7 +9,9 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useEntitlements } from "../hooks/useEntitlements.js";
 import { useAuth } from "../lib/auth.jsx";
 import { compareSelectionHref, getCompareIds, setCompareIds } from "../lib/compareSelection.js";
-import { fetchProgrammes } from "../lib/programmesData.js";
+import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
+import { fetchUniversities } from "../lib/universitiesData.js";
+import { getProgrammeFeeCompareValue } from "../lib/universityFees.js";
 import { getCompareMax } from "../lib/premium.js";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
@@ -160,6 +162,7 @@ function MobileCompareCards({
   minPtsHigh,
   feeLow,
   feeHigh,
+  universityByProgrammeId,
   showDeadlineRow,
   showAcceptanceChance,
   careersPerProgramme,
@@ -172,11 +175,12 @@ function MobileCompareCards({
         const minHigh = Number.isFinite(p.minPoints) && p.minPoints === minPtsHigh && minPtsLow !== minPtsHigh;
         const minLabel = comparisonLabel(p.minPoints, minLow, minHigh);
         const fee = p.fees;
+        const scheduleFee = getProgrammeFeeCompareValue(p, universityByProgrammeId?.get(p.id));
         const feeText =
           fee && typeof fee.domestic === "number" && fee.currency
             ? `${fee.currency} ${fee.domestic.toLocaleString()}${fee.per ? ` / ${fee.per}` : ""}`
-            : null;
-        const dom = fee?.domestic;
+            : scheduleFee.text;
+        const dom = fee?.domestic ?? scheduleFee.value;
         const feeLowInSet =
           typeof dom === "number" &&
           Number.isFinite(dom) &&
@@ -313,6 +317,7 @@ export default function CompareProgrammes() {
   const compareMax = getCompareMax(isPremium);
   const [searchParams, setSearchParams] = useSearchParams();
   const [allProgrammes, setAllProgrammes] = useState([]);
+  const [universities, setUniversities] = useState([]);
   const [error, setError] = useState(null);
   const [storedCompareIds, setStoredCompareIds] = useState(() => getCompareIds(compareMax));
 
@@ -333,9 +338,12 @@ export default function CompareProgrammes() {
   useEffect(() => {
     let cancelled = false;
     const ac = new AbortController();
-    fetchProgrammes({ signal: ac.signal })
-      .then((data) => {
-        if (!cancelled) setAllProgrammes(data);
+    Promise.all([fetchProgrammes({ signal: ac.signal }), fetchUniversities({ signal: ac.signal })])
+      .then(([programmes, { list }]) => {
+        if (!cancelled) {
+          setAllProgrammes(programmes);
+          setUniversities(list);
+        }
       })
       .catch((e) => {
         if (!cancelled) setError(e.message ?? "Load failed");
@@ -395,8 +403,21 @@ export default function CompareProgrammes() {
   const minPtsHigh = minPointsList.length ? Math.max(...minPointsList) : null;
   const reqKeys = useMemo(() => requirementKeys(selected), [selected]);
 
+  const universityByProgrammeId = useMemo(() => {
+    const map = new Map();
+    for (const programme of allProgrammes) {
+      const university = universities.find((u) => programmeBelongsToUniversity(programme, u));
+      if (university) map.set(programme.id, university);
+    }
+    return map;
+  }, [allProgrammes, universities]);
+
   const feeDomesticList = selected
-    .map((p) => p.fees?.domestic)
+    .map((p) => {
+      const direct = p.fees?.domestic;
+      if (typeof direct === "number" && Number.isFinite(direct)) return direct;
+      return getProgrammeFeeCompareValue(p, universityByProgrammeId.get(p.id)).value;
+    })
     .filter((n) => typeof n === "number" && Number.isFinite(n));
   const feeLow = feeDomesticList.length ? Math.min(...feeDomesticList) : null;
   const feeHigh = feeDomesticList.length ? Math.max(...feeDomesticList) : null;
@@ -600,6 +621,7 @@ export default function CompareProgrammes() {
         minPtsHigh={minPtsHigh}
         feeLow={feeLow}
         feeHigh={feeHigh}
+        universityByProgrammeId={universityByProgrammeId}
         showDeadlineRow={showDeadlineRow}
         showAcceptanceChance={entitlements.acceptanceChance}
         careersPerProgramme={entitlements.careersPerProgramme}
@@ -747,11 +769,12 @@ export default function CompareProgrammes() {
               <th className={ROW_HEADER_CLASS}>Fees (approx.)</th>
               {selected.map((p) => {
                 const f = p.fees;
+                const scheduleFee = getProgrammeFeeCompareValue(p, universityByProgrammeId.get(p.id));
                 const text =
                   f && typeof f.domestic === "number" && f.currency
                     ? `${f.currency} ${f.domestic.toLocaleString()}${f.per ? ` / ${f.per}` : ""}`
-                    : null;
-                const dom = f?.domestic;
+                    : scheduleFee.text;
+                const dom = f?.domestic ?? scheduleFee.value;
                 const low =
                   typeof dom === "number" &&
                   Number.isFinite(dom) &&
