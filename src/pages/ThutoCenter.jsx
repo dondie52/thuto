@@ -46,6 +46,7 @@ export default function ThutoCenter() {
     faculty: "",
     courseCode: "",
     documentType: "",
+    source: "",
     search: "",
   });
   const debouncedSearch = useDebouncedValue(filters.search);
@@ -60,9 +61,10 @@ export default function ThutoCenter() {
       faculty: filters.faculty,
       courseCode: filters.courseCode,
       documentType: filters.documentType,
+      source: filters.source,
       search: debouncedSearch,
     }),
-    [filters.universityId, filters.faculty, filters.courseCode, filters.documentType, debouncedSearch],
+    [filters.universityId, filters.faculty, filters.courseCode, filters.documentType, filters.source, debouncedSearch],
   );
 
   const queryKey = useMemo(() => JSON.stringify(queryFilters), [queryFilters]);
@@ -259,6 +261,18 @@ export default function ThutoCenter() {
                   {type.label}
                 </option>
               ))}
+            </select>
+          </label>
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium text-stone-700">Source</span>
+            <select
+              value={filters.source}
+              onChange={(event) => setFilters((prev) => ({ ...prev, source: event.target.value }))}
+              className="w-full rounded-xl border border-stone-200 px-3 py-2.5"
+            >
+              <option value="">All sources</option>
+              <option value="official">Official / curated</option>
+              <option value="peer">Student uploads</option>
             </select>
           </label>
           <label className="block text-sm sm:col-span-2">

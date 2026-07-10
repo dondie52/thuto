@@ -1,4 +1,4 @@
-import { BGCSE_SUBJECTS, SUBJECTS_BY_ID } from "./bgcseSubjects.js";
+import { BGCSE_SUBJECTS, SCIENCE_DOUBLE_SUBJECT_ID, SUBJECTS_BY_ID } from "./bgcseSubjects.js";
 
 const GRADE_ALIASES = {
   "A+": "A*",
@@ -266,11 +266,41 @@ function extractGradeFromLine(line) {
 
 function splitLabelAndGrade(line) {
   const grade = extractGradeFromLine(line);
-  if (!grade) return { label: line, grade: "" };
+  if (!grade) return { label: line, grade: "", grade2: "" };
   const upper = line.toUpperCase();
   const gradeIndex = upper.lastIndexOf(grade === "A*" ? "A*" : grade);
   const label = gradeIndex >= 0 ? line.slice(0, gradeIndex) : line;
-  return { label, grade };
+  return { label, grade, grade2: "" };
+}
+
+function extractDoubleAwardGradesFromTail(line) {
+  const tail = String(line || "").trim().toUpperCase();
+  if (!tail) return null;
+  if (tail.startsWith("A*") && tail.length >= 3 && gradeToPoints(tail[2]) != null) {
+    return { grade1: "A*", grade2: tail[2] };
+  }
+  if (tail.length >= 2) {
+    const g1 = tail[0];
+    const g2 = tail[1];
+    if (gradeToPoints(g1) != null && gradeToPoints(g2) != null) {
+      return { grade1: g1, grade2: g2 };
+    }
+  }
+  return null;
+}
+
+function gradeToPoints(grade) {
+  const g = String(grade || "").trim().toUpperCase();
+  return VALID_GRADES.has(g) ? 1 : null;
+}
+
+function extractScienceDoubleAwardFromLine(line) {
+  const upper = String(line || "").toUpperCase();
+  const marker = /(?:SCIENCE\s+DOUBLE\s+AWARD|DOUBLE\s+AWARD\s+SCIENCE|DOUBLE\s+SCIENCE)/;
+  const match = upper.match(marker);
+  if (!match) return null;
+  const tail = upper.slice(match.index + match[0].length).trim();
+  return extractDoubleAwardGradesFromTail(tail);
 }
 
 function cleanOcrLine(line) {
@@ -296,6 +326,18 @@ export function parseRowsFromText(text) {
     if (!lower || seen.has(lower)) continue;
     seen.add(lower);
 
+    const scienceDouble = extractScienceDoubleAwardFromLine(line);
+    if (scienceDouble) {
+      rows.push({
+        key: makeKey(),
+        subjectId: SCIENCE_DOUBLE_SUBJECT_ID,
+        grade: scienceDouble.grade1,
+        grade2: scienceDouble.grade2,
+        sourceLabel: "Science Double Award",
+      });
+      continue;
+    }
+
     const { label, grade } = splitLabelAndGrade(line);
     if (!grade || !VALID_GRADES.has(grade)) continue;
 
@@ -307,6 +349,7 @@ export function parseRowsFromText(text) {
       key: makeKey(),
       subjectId,
       grade,
+      grade2: "",
       sourceLabel: sourceLabel || line,
     });
   }
@@ -329,6 +372,10 @@ function createIssues(rows) {
       issues.push({ rowKey: row.key, type: "missing_grade" });
     } else if (!VALID_GRADES.has(row.grade)) {
       issues.push({ rowKey: row.key, type: "invalid_grade" });
+    } else if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID && !row.grade2) {
+      issues.push({ rowKey: row.key, type: "missing_grade2" });
+    } else if (row.grade2 && !VALID_GRADES.has(row.grade2)) {
+      issues.push({ rowKey: row.key, type: "invalid_grade2" });
     }
   }
   return issues;
@@ -340,6 +387,7 @@ function countReadyRows(rows) {
 
   for (const row of rows) {
     if (!row.subjectId || !VALID_GRADES.has(row.grade) || seenSubjects.has(row.subjectId)) continue;
+    if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID && !VALID_GRADES.has(row.grade2)) continue;
     seenSubjects.add(row.subjectId);
     count += 1;
   }

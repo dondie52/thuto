@@ -132,6 +132,7 @@ export default function Onboarding() {
               key: `saved-${entry.subjectId}-${index}`,
               subjectId: entry.subjectId,
               grade: entry.grade,
+              grade2: entry.grade2 || "",
             })),
           );
         }
@@ -185,7 +186,7 @@ export default function Onboarding() {
     if (gradesReady) {
       const entries = rows
         .filter((row) => row.subjectId && row.grade?.trim())
-        .map((row) => ({ subjectId: row.subjectId, grade: row.grade }));
+        .map((row) => ({ subjectId: row.subjectId, grade: row.grade, grade2: row.grade2 }));
       await saveGradeEntries(entries);
     }
   }

@@ -2,6 +2,9 @@ function subject(id, label, { examBoards, requirementKey = null, aliases = [] })
   return { id, label, examBoards, requirementKey, aliases };
 }
 
+/** BGCSE Science Double Award — two component grades, points summed for best-six. */
+export const SCIENCE_DOUBLE_SUBJECT_ID = "science_double";
+
 /**
  * Shared subject catalog for predictor-style flows.
  * `requirementKey` connects to programme `subjectRequirements`; only keep keys
@@ -23,7 +26,7 @@ export const BGCSE_SUBJECTS = [
     requirementKey: "math",
     aliases: ["maths", "mathematics syllabus d", "extended mathematics"],
   }),
-  subject("science_double", "Science Double Award", {
+  subject(SCIENCE_DOUBLE_SUBJECT_ID, "Science Double Award", {
     examBoards: ["bgcse"],
     requirementKey: "science",
     aliases: ["double award science", "science double", "double science"],

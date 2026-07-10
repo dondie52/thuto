@@ -83,7 +83,7 @@ export async function fetchTargetInstitutions() {
 }
 
 /**
- * @param {Array<{ subjectId: string, grade: string }>} entries
+ * @param {Array<{ subjectId: string, grade: string, grade2?: string }>} entries
  */
 export async function saveGradeEntries(entries) {
   const supabase = assertSupabase();
@@ -94,6 +94,7 @@ export async function saveGradeEntries(entries) {
       user_id: userId,
       subject_id: entry.subjectId,
       grade: String(entry.grade).trim().toUpperCase(),
+      grade2: entry.grade2?.trim() ? String(entry.grade2).trim().toUpperCase() : null,
       sort_order: index,
     }));
 
@@ -108,18 +109,22 @@ export async function saveGradeEntries(entries) {
 }
 
 /**
- * @returns {Promise<Array<{ subjectId: string, grade: string }>>}
+ * @returns {Promise<Array<{ subjectId: string, grade: string, grade2?: string }>>}
  */
 export async function fetchGradeEntries() {
   const supabase = assertSupabase();
   const userId = await currentUserId();
   const { data, error } = await supabase
     .from("user_grade_entries")
-    .select("subject_id, grade, sort_order")
+    .select("subject_id, grade, grade2, sort_order")
     .eq("user_id", userId)
     .order("sort_order", { ascending: true });
   if (error) throw error;
-  return (data || []).map((row) => ({ subjectId: row.subject_id, grade: row.grade }));
+  return (data || []).map((row) => ({
+    subjectId: row.subject_id,
+    grade: row.grade,
+    grade2: row.grade2 || "",
+  }));
 }
 
 /**

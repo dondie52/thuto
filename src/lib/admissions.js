@@ -1,4 +1,6 @@
-import { SUBJECTS_BY_ID } from "./bgcseSubjects.js";
+import { SCIENCE_DOUBLE_SUBJECT_ID, SUBJECTS_BY_ID } from "./bgcseSubjects.js";
+
+export { SCIENCE_DOUBLE_SUBJECT_ID };
 
 /**
  * Official Botswana BGCSE grade points for admission scoring.
@@ -38,6 +40,69 @@ export function gradeToPoints(grade) {
 }
 
 /**
+ * Science Double Award uses two component grades; admission points are the sum of both.
+ * @param {string | undefined | null} grade1
+ * @param {string | undefined | null} [grade2]
+ */
+export function scienceDoubleAwardPoints(grade1, grade2) {
+  const g1 = gradeToPoints(grade1);
+  const g2 = gradeToPoints(grade2);
+  if (g1 == null || g2 == null) return null;
+  return g1 + g2;
+}
+
+/**
+ * Parse a combined double-award grade string (e.g. "CC", "A*B") into two components.
+ * @param {string | undefined | null} combined
+ * @returns {{ grade1: string, grade2: string } | null}
+ */
+export function parseDoubleAwardGrades(combined) {
+  const raw = String(combined || "").trim().toUpperCase();
+  if (!raw) return null;
+  if (raw.startsWith("A*") && raw.length >= 3) {
+    const g1 = "A*";
+    const g2 = raw.slice(2, 3);
+    if (gradeToPoints(g2) != null) return { grade1: g1, grade2: g2 };
+  }
+  if (raw.length >= 2) {
+    const g1 = raw[0];
+    const g2 = raw[1];
+    if (gradeToPoints(g1) != null && gradeToPoints(g2) != null) {
+      return { grade1: g1, grade2: g2 };
+    }
+  }
+  return null;
+}
+
+/** Weaker of two grades (used for programme science requirements). */
+export function weakerGrade(grade1, grade2) {
+  const p1 = gradeToPoints(grade1);
+  const p2 = gradeToPoints(grade2);
+  if (p1 == null || p2 == null) return null;
+  return p1 <= p2 ? String(grade1).trim().toUpperCase() : String(grade2).trim().toUpperCase();
+}
+
+/**
+ * @param {{ subjectId: string, grade: string, grade2?: string }} row
+ */
+export function rowAdmissionPoints(row) {
+  if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID) {
+    return scienceDoubleAwardPoints(row.grade, row.grade2);
+  }
+  return gradeToPoints(row.grade);
+}
+
+/**
+ * @param {{ subjectId: string, grade: string, grade2?: string }} row
+ */
+export function formatRowGradeDisplay(row) {
+  if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID && row.grade?.trim() && row.grade2?.trim()) {
+    return `${row.grade.trim().toUpperCase()}${row.grade2.trim().toUpperCase()}`;
+  }
+  return row.grade?.trim().toUpperCase() || "";
+}
+
+/**
  * Sum of the best six subject points from entered grades (fewer than six subjects → sum all entered).
  * @param {Record<string, string>} gradesBySubject
  */
@@ -53,12 +118,13 @@ export function computeBestSixTotal(gradesBySubject) {
 }
 
 /**
- * @typedef {{ subjectId: string, grade: string }} GradeRow
+ * @typedef {{ subjectId: string, grade: string, grade2?: string }} GradeRow
  * @typedef {{ subjectId: string, label: string, grade: string, points: number }} CountedEntry
  */
 
 /**
  * Best-six breakdown from distinct subject rows (one grade per BGCSE subject).
+ * Science Double Award counts both component grades toward points (e.g. CC = 12).
  * @param {GradeRow[]} rows
  * @returns {{ total: number, counted: CountedEntry[], dropped: CountedEntry[], invalid: string | null }}
  */
@@ -67,19 +133,47 @@ export function computeBestSixBreakdown(rows) {
   for (const row of rows) {
     const g = row.grade?.trim();
     if (!g) continue;
+    const meta = SUBJECTS_BY_ID[row.subjectId];
+    if (!meta) {
+      return { total: 0, counted: [], dropped: [], invalid: "Unknown subject in row." };
+    }
+
+    if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID) {
+      const g2 = row.grade2?.trim();
+      if (!g2) {
+        return {
+          total: 0,
+          counted: [],
+          dropped: [],
+          invalid: `${meta.label} needs two component grades (e.g. CC or BB).`,
+        };
+      }
+      const p = scienceDoubleAwardPoints(g, g2);
+      if (p == null) {
+        return {
+          total: 0,
+          counted: [],
+          dropped: [],
+          invalid: `Invalid grades for ${meta.label}. Use A*, A–G, or U for each component.`,
+        };
+      }
+      scored.push({
+        subjectId: row.subjectId,
+        label: meta.label,
+        grade: formatRowGradeDisplay(row),
+        points: p,
+      });
+      continue;
+    }
+
     const p = gradeToPoints(g);
     if (p == null) {
-      const meta = SUBJECTS_BY_ID[row.subjectId];
       return {
         total: 0,
         counted: [],
         dropped: [],
-        invalid: `Invalid grade for ${meta?.label ?? row.subjectId}. Use A*, A–G, or U.`,
+        invalid: `Invalid grade for ${meta.label}. Use A*, A–G, or U.`,
       };
-    }
-    const meta = SUBJECTS_BY_ID[row.subjectId];
-    if (!meta) {
-      return { total: 0, counted: [], dropped: [], invalid: "Unknown subject in row." };
     }
     scored.push({
       subjectId: row.subjectId,
@@ -110,11 +204,22 @@ export function rowsToRequirementGrades(rows) {
   for (const row of rows) {
     const g = row.grade?.trim();
     if (!g) continue;
-    const pts = gradeToPoints(g);
-    if (pts == null) continue;
     const meta = SUBJECTS_BY_ID[row.subjectId];
     if (!meta?.requirementKey) continue;
     const k = meta.requirementKey;
+
+    if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID) {
+      const weaker = weakerGrade(g, row.grade2);
+      const pts = weaker != null ? gradeToPoints(weaker) : null;
+      if (pts == null) continue;
+      if (best[k] == null || pts > best[k].points) {
+        best[k] = { grade: weaker, points: pts };
+      }
+      continue;
+    }
+
+    const pts = gradeToPoints(g);
+    if (pts == null) continue;
     if (best[k] == null || pts > best[k].points) {
       best[k] = { grade: g.toUpperCase(), points: pts };
     }

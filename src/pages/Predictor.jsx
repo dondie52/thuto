@@ -5,6 +5,7 @@ import {
   clearPredictorSession,
 } from "../lib/admissions.js";
 import { usePredictorGradeInput } from "../hooks/usePredictorGradeInput.js";
+import { useProfileGradePersistence } from "../hooks/useProfileGradePersistence.js";
 import PredictorGradeSection from "../components/PredictorGradeSection.jsx";
 import ProgrammePredictorResults from "../components/ProgrammePredictorResults.jsx";
 import CertificateImportCard from "../components/CertificateImportCard.jsx";
@@ -58,6 +59,14 @@ export default function Predictor() {
     bgcseSubjects,
   } = usePredictorGradeInput();
 
+  const { gradesNotice, clearSavedGrades } = useProfileGradePersistence({
+    user,
+    rows,
+    replaceRows,
+    validationMessage,
+    breakdown,
+  });
+
   useEffect(() => {
     let cancelled = false;
     const ac = new AbortController();
@@ -101,6 +110,7 @@ export default function Predictor() {
 
   function handleReset() {
     clearPredictorSession();
+    clearSavedGrades();
     resetRows();
     hasAutoScrolledToResultsRef.current = false;
     setShareFeedback(null);
@@ -147,7 +157,8 @@ export default function Predictor() {
           Thuto calculates your best-six points and shows programmes you may qualify for.
         </p>
         <p className="mt-2 text-xs text-slate-500">
-          A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Best-six maximum = 48 pts.
+          A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Science Double Award sums both components (CC = 12).
+          Best-six maximum = 48 pts.
         </p>
       </div>
 
@@ -199,6 +210,12 @@ export default function Predictor() {
               message="Upload a certificate photo or PDF to auto-fill grades with Thuto Pro. Free accounts can type grades manually below."
             />
           )}
+
+          {gradesNotice ? (
+            <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900" role="status">
+              {gradesNotice}
+            </p>
+          ) : null}
 
           <PredictorGradeSection
             rows={rows}

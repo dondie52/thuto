@@ -22,8 +22,14 @@ English Language A
 Mathematics B
 Biology C
 Setswana B
-Science Double Award C
+Science Double Award CC
 Physical Education D
+`;
+
+const DOUBLE_AWARD_TEXT = `
+BGCSE Statement of Results
+Science Double Award CC
+English Language A
 `;
 
 function assert(condition, message) {
@@ -59,6 +65,10 @@ const readyCount = certificateRows.filter(
     all.findIndex((other) => other.subjectId === row.subjectId) === index,
 ).length;
 assert(readyCount >= 2, "certificate has at least two unique ready rows");
+
+const doubleAwardRows = parseRowsFromText(DOUBLE_AWARD_TEXT);
+const scienceRow = doubleAwardRows.find((row) => row.subjectId === "science_double");
+assert(scienceRow?.grade === "C" && scienceRow?.grade2 === "C", "science double award CC parses two components");
 
 if (process.exitCode) {
   console.error("\nCertificate import tests failed.");

@@ -22,7 +22,7 @@ export {
 } from "./thutoCenterPolicy.js";
 
 const DOCUMENT_SELECT =
-  "id,uploader_id,title,description,document_type,university_id,university_name,faculty,course_code,academic_year,exam_session,storage_path,file_name,file_size,mime_type,page_count,status,moderation_reason,download_count,helpful_count,report_count,published_at,created_at,updated_at";
+  "id,uploader_id,title,description,document_type,university_id,university_name,faculty,course_code,academic_year,exam_session,storage_path,file_name,file_size,mime_type,page_count,status,source,moderation_reason,download_count,helpful_count,report_count,published_at,created_at,updated_at";
 
 const ALLOWED_MIME_TYPES = new Set([
   "application/pdf",
@@ -75,6 +75,7 @@ function normalizeDocument(row, extras = {}) {
     mimeType: row.mime_type || "",
     pageCount: row.page_count,
     status: row.status || "pending_review",
+    source: row.source || "peer",
     moderationReason: row.moderation_reason || "",
     downloadCount: row.download_count || 0,
     helpfulCount: row.helpful_count || 0,
@@ -102,6 +103,7 @@ export async function fetchCenterDocuments({
   faculty = "",
   courseCode = "",
   documentType = "",
+  source = "",
   search = "",
   limit = 60,
 } = {}) {
@@ -117,6 +119,7 @@ export async function fetchCenterDocuments({
   if (universityId) query = query.eq("university_id", universityId);
   if (faculty) query = query.eq("faculty", faculty);
   if (documentType) query = query.eq("document_type", documentType);
+  if (source) query = query.eq("source", source);
   if (courseCode.trim()) query = query.ilike("course_code", `%${courseCode.trim()}%`);
   if (search.trim()) {
     const term = `%${search.trim()}%`;
@@ -316,6 +319,86 @@ export async function uploadCenterDocument({
   return normalizeDocument(data);
 }
 
+/**
+ * Admin upload — publishes immediately as an official curated document (no moderation queue).
+ */
+export async function uploadAdminCenterDocument({
+  file,
+  title,
+  description = "",
+  documentType,
+  universityId,
+  universityName,
+  faculty,
+  courseCode,
+  academicYear = "",
+  examSession = "",
+}) {
+  const supabase = assertSupabase();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user?.id) throw new Error("Admin sign-in required.");
+
+  if (!file) throw new Error("Choose a file to upload.");
+  if (!ALLOWED_MIME_TYPES.has(file.type)) {
+    throw new Error("File type not allowed. Use PDF, Word, JPEG, PNG, or WebP.");
+  }
+  if (file.size > CENTER_MAX_FILE_BYTES) {
+    throw new Error("File is too large. Maximum size is 15 MB.");
+  }
+  if (!title?.trim()) throw new Error("Add a title for the document.");
+  if (!universityId?.trim()) throw new Error("Select a university.");
+  if (!faculty?.trim()) throw new Error("Select a faculty.");
+  if (!courseCode?.trim()) throw new Error("Add a course code.");
+
+  const documentId = randomId();
+  const path = `${user.id}/${documentId}/${safeFileName(file.name)}`;
+  const now = new Date().toISOString();
+
+  const { error: uploadError } = await supabase.storage.from("thuto-center-docs").upload(path, file, {
+    cacheControl: "3600",
+    upsert: false,
+    contentType: file.type,
+  });
+  if (uploadError) throw uploadError;
+
+  const { data, error } = await supabase
+    .from("center_documents")
+    .insert({
+      id: documentId,
+      uploader_id: user.id,
+      title: title.trim(),
+      description: description.trim(),
+      document_type: documentType,
+      university_id: universityId.trim(),
+      university_name: universityName?.trim() || "",
+      faculty: faculty.trim(),
+      course_code: courseCode.trim().toUpperCase(),
+      academic_year: academicYear.trim() || null,
+      exam_session: examSession.trim() || null,
+      storage_path: path,
+      file_name: file.name,
+      file_size: file.size,
+      mime_type: file.type,
+      status: "published",
+      source: "official",
+      published_at: now,
+      policy_version: CENTER_POLICY_VERSION,
+      policy_accepted_at: now,
+      copyright_declaration: true,
+    })
+    .select(DOCUMENT_SELECT)
+    .single();
+
+  if (error) {
+    await supabase.storage.from("thuto-center-docs").remove([path]);
+    throw error;
+  }
+
+  return normalizeDocument(data);
+}
+
 export async function unlockCenterDocument(documentId) {
   const supabase = assertSupabase();
   const { data, error } = await supabase.rpc("center_unlock_document", { p_document_id: documentId });
@@ -333,6 +416,7 @@ export async function canDownloadCenterDocument(documentId, profile) {
 
   const doc = await fetchCenterDocument(documentId);
   if (!doc) return false;
+  if (doc.source === "official") return true;
   if (doc.uploaderId === user.id) return true;
 
   const { data, error } = await supabase.rpc("center_user_can_download", {
