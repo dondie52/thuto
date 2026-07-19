@@ -14,7 +14,6 @@ export const primaryToolNavLinks = [
     description: "Campus notes, past papers, and study materials from students",
     icon: "center",
   },
-  { to: "/internships", label: "Internships", description: "Attachments and graduate programmes", icon: "internships" },
   {
     to: "/postgraduate-studies",
     label: "Postgraduate Studies",

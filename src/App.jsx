@@ -34,10 +34,7 @@ const Profile = lazy(() => import("./pages/Profile.jsx"));
 const Privacy = lazy(() => import("./pages/Privacy.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Sponsorships = lazy(() => import("./pages/Sponsorships.jsx"));
-const Internships = lazy(() => import("./pages/Internships.jsx"));
 const PostgraduateStudies = lazy(() => import("./pages/PostgraduateStudies.jsx"));
-const Study = lazy(() => import("./pages/Study.jsx"));
-const StudySubject = lazy(() => import("./pages/StudySubject.jsx"));
 const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
 const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
@@ -105,10 +102,12 @@ export default function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/share" element={<ShareAdmissionResult />} />
             <Route path="/sponsorships" element={<Sponsorships />} />
-            <Route path="/internships" element={<Internships />} />
+            {/* Internships stay in the community feed — not a standalone Thuto product surface. */}
+            <Route path="/internships" element={<Navigate to="/feed" replace />} />
             <Route path="/postgraduate-studies" element={<PostgraduateStudies />} />
-            <Route path="/study" element={<Study />} />
-            <Route path="/study/:subjectId" element={<StudySubject />} />
+            {/* BGCSE Study / Learning Passport removed — Thuto focuses on higher education. */}
+            <Route path="/study" element={<Navigate to="/predictor" replace />} />
+            <Route path="/study/:subjectId" element={<Navigate to="/predictor" replace />} />
             <Route path="/center" element={<ThutoCenter />} />
             <Route path="/center/upload" element={<ThutoCenterUpload />} />
             <Route path="/center/policy" element={<ThutoCenterPolicy />} />

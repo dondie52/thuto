@@ -2,9 +2,7 @@ export const PAGE_CONTENT_META = [
   { pageKey: "landing", label: "Landing page" },
   { pageKey: "home", label: "App home" },
   { pageKey: "sponsorships", label: "Sponsorships" },
-  { pageKey: "internships", label: "Internships" },
   { pageKey: "postgraduateStudies", label: "Postgraduate Studies" },
-  { pageKey: "study", label: "BGCSE Study" },
   { pageKey: "support", label: "Support" },
   { pageKey: "disclaimer", label: "Disclaimer" },
   { pageKey: "privacy", label: "Privacy" },
@@ -72,7 +70,7 @@ export const PAGE_CONTENT_DEFAULTS = {
       badgeSuffix: "logos",
       ctaSignedIn: "View all universities",
       ctaGuest: "Explore universities",
-      note: "Profiles include locations, programmes, and application timing.",
+      note: "Logos identify institutions in the directory only. Thuto is not affiliated with any listed provider.",
       featuredUniversityIds: [
         "ub",
         "biust",
@@ -114,7 +112,7 @@ export const PAGE_CONTENT_DEFAULTS = {
       tagline: "Botswana Tertiary Companion",
       signedInCta: "Open full app",
       guestCta: "See app features",
-      note: "Thuto does not process applications or payments. Eligibility and programme details in the app are indicative; confirm with each university.",
+      note: "Thuto is not affiliated with any listed institution. Logos and names are for directory identification only. Eligibility details are indicative — confirm with each university.",
     },
   },
   home: {
@@ -205,8 +203,8 @@ export const PAGE_CONTENT_DEFAULTS = {
       body: "BDF, employers, and other private sponsors - summaries from their official posts. No in-app applications.",
       emptyTitle: "No private sponsorship posts yet",
       emptyBody: "When a sponsor like BDF publishes a window, add it in Supabase and it will appear here.",
-      internshipLinkText: "See internships",
-      internshipPrefix: "Looking for internship openings?",
+      feedLinkText: "Open the community feed",
+      feedPrefix: "Internship and attachment posts belong in the community feed.",
     },
     dtef: {
       portalUrl: "https://tef.gov.bw",
@@ -327,7 +325,8 @@ export const PAGE_CONTENT_DEFAULTS = {
     paragraphs: [
       "Thuto (Botswana Tertiary Companion) provides programme information and rough eligibility estimates for planning purposes only. Minimum points, subject rules, fees, and deadlines in the app may be incomplete, out of date, or simplified compared with official university sources.",
       "Nothing in Thuto constitutes an offer of admission, legal advice, or a substitute for each institution's official prospectus, website, or admissions office. You are responsible for verifying every requirement before you apply or pay any fees.",
-      "Thuto is an independent educational directory and is not affiliated, endorsed, or partnered with any listed university or examination council. While we strive to keep admission requirements and deadlines accurate, institutional details change frequently. Application dates and portals are provided solely for convenience. Users must verify all critical dates and submit official applications directly via the verified institutional websites opened through this application.",
+      "Thuto is an independent educational directory and is not affiliated, endorsed, or partnered with any listed university, college, training centre, or examination council. Institution names and logos appear only to help students identify providers in the directory. Their presence does not mean sponsorship, endorsement, partnership, or official status.",
+      "While we strive to keep admission requirements and deadlines accurate, institutional details change frequently. Application dates and portals are provided solely for convenience. Users must verify all critical dates and submit official applications directly via the verified institutional websites opened through this application.",
       "Thuto accepts no liability for missed deadlines, outdated information, or application errors. Always confirm dates and requirements on the institution's official website before you apply.",
       "Thuto does not process university applications or tuition fees. We do not transmit application forms to universities on your behalf and do not collect institution application fees. Optional Thuto Pro plans are one-time payments billed through Stripe for in-app features.",
       "Thuto may use sample or bundled data in development; where live feeds are configured, treat them as convenience only and still confirm critical dates directly with the institution.",
@@ -336,7 +335,7 @@ export const PAGE_CONTENT_DEFAULTS = {
     contentRemoval: {
       heading: "IP & content removal",
       paragraphs: [
-        "If you represent a listed institution and are uncomfortable with how your details, links, or references appear in Thuto, contact us at legal@thutoapp.com before pursuing formal action.",
+        "If you represent a listed institution and are uncomfortable with how your name, logo, details, links, or references appear in Thuto, contact us at legal@thutoapp.com before pursuing formal action.",
         "We will review takedown or correction requests in good faith and respond as promptly as we can.",
       ],
     },

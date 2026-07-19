@@ -40,7 +40,6 @@ function ToolIcon({ name }) {
 const primaryToolItems = drawerPrimaryToolItems;
 
 const moreToolItems = [
-  { to: "/study", label: "BGCSE Study", description: "Revision links and subject-to-programme bridges", icon: "study" },
   { to: "/fit-finder", label: "Fit Finder", description: "Discover programmes suited to you", icon: "fit" },
   { to: "/partners", label: "Partners", description: "Institution partnerships and advertising on Thuto", icon: "partners" },
   { to: "/settings", label: "General Settings", description: "App preferences and data controls", icon: "settings" },

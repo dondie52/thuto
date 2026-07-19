@@ -1,6 +1,64 @@
 const CAMPUS_DIR = "university-campuses";
 
-/** Institution IDs used for campus photo and alias resolution (logos disabled for compliance). */
+/** Bundled logo paths by institution id (fallback when JSON omits `logo`). */
+export const UNIVERSITY_LOGO_BY_ID = {
+  ub: "university-logos/ub.jpg",
+  biust: "university-logos/biust.jpg",
+  bac: "university-logos/bac.jpg",
+  botho: "university-logos/botho.jpg",
+  "ba-isago": "university-logos/ba-isago.jpg",
+  abm: "university-logos/abm.jpg",
+  limkokwing: "university-logos/limkokwing.jpg",
+  bou: "university-logos/bou.jpg",
+  boitekanelo: "university-logos/boitekanelo.jpg",
+  "new-era": "university-logos/new-era.jpg",
+  fctve: "university-logos/fctve.jpg",
+  isbs: "university-logos/isbs.png",
+  "fire-college": "university-logos/fire-college.png",
+  lcibs: "university-logos/lcibs.png",
+  "logan-business-college": "university-logos/logan-business-college.png",
+  "gaborone-commercial-college": "university-logos/gaborone-commercial-college.png",
+  gtc: "university-logos/gtc.jpeg",
+  bcet: "university-logos/bcet.jpeg",
+  ihs: "university-logos/ihs.jpeg",
+  "pillar-of-success": "university-logos/pillar-of-success.jpeg",
+  buan: "university-logos/buan.jpg",
+  "mega-size-college": "university-logos/mega-size-college.jpeg",
+  "bosa-bosele": "university-logos/bosa-bosele.jpeg",
+  "naledi-training-institute": "university-logos/naledi.jpg",
+  gips: "university-logos/gips.jpeg",
+  idm: "university-logos/idm.jpeg",
+  guc: "university-logos/guc.jpeg",
+  oodi: "university-logos/oodi.jpeg",
+  "roads-training-centre": "university-logos/roads-training-centre.jpeg",
+  "dawn-training": "university-logos/dawn-training.jpeg",
+  learneasy: "university-logos/learneasy.jpeg",
+  stargems: "university-logos/stargems.jpeg",
+  "homeland-college": "university-logos/homeland-college.jpeg",
+  "botswana-accountancy-training": "university-logos/botswana-accountancy-training.jpeg",
+  "serowe-coe": "university-logos/serowe-coe.jpeg",
+  "tlokweng-coe": "university-logos/tlokweng-coe.jpeg",
+  "molepolole-coe": "university-logos/molepolole-coe.jpeg",
+  "cep-training": "university-logos/cep-training.jpeg",
+  gcca: "university-logos/gcca.jpeg",
+  tebelopele: "university-logos/tebelopele.jpeg",
+  "byte-size-college": "university-logos/byte-size-college.jpeg",
+  "insurance-training-institute": "university-logos/insurance-training-institute.jpeg",
+  realic: "university-logos/realic.jpeg",
+  crackit: "university-logos/crackit.jpeg",
+  "palapye-technical-college": "university-logos/palapye-technical-college.jpeg",
+  bibf: "university-logos/bibf.jpeg",
+  "tonota-coe": "university-logos/tonota-coe.jpeg",
+  aafm: "university-logos/aafm.jpeg",
+  "africa-insurance-training-institute": "university-logos/africa-insurance-training-institute.jpeg",
+  "awil-college": "university-logos/awil-college.jpeg",
+  "delta-training-academy": "university-logos/delta-training-academy.jpeg",
+  "elsimate-institute": "university-logos/elsimate-institute.jpeg",
+  "nampol-college-of-education": "university-logos/nampol-college-of-education.jpeg",
+  "kanye-sda-nursing": "university-logos/kanye-sda-nursing.svg",
+};
+
+/** Institution IDs used for campus photo and alias resolution. */
 export const UNIVERSITY_KNOWN_IDS = new Set([
   "ub",
   "biust",
@@ -178,12 +236,22 @@ export function deriveUniversityInitials(university) {
   return initials || label.slice(0, 3).toUpperCase();
 }
 
+/** Resolve a public logo path for an institution (relative to site base). */
 export function resolveUniversityLogo(university) {
-  if (import.meta.env.VITE_SHOW_OFFICIAL_LOGOS === "true") {
-    const logo = university?.logo;
-    return typeof logo === "string" ? logo.trim() : "";
-  }
-  return "";
+  const explicit = typeof university?.logo === "string" ? university.logo.trim() : "";
+  if (explicit) return explicit;
+  const id = resolveUniversityId(university) || String(university?.id || "").trim();
+  return UNIVERSITY_LOGO_BY_ID[id] || "";
+}
+
+/** Absolute URL for a bundled or remote university logo path. */
+export function resolveUniversityLogoUrl(university) {
+  const path = resolveUniversityLogo(university);
+  if (!path) return "";
+  if (/^https?:\/\//i.test(path)) return path;
+  const base = import.meta.env?.BASE_URL || "/";
+  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+  return `${normalizedBase}${path.replace(/^\//, "")}`;
 }
 
 export function resolveUniversityCampusPhoto(university) {

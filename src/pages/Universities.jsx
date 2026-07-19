@@ -207,6 +207,13 @@ export default function Universities() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Tertiary Institutions</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+          Names and logos identify providers in this directory only. Thuto is not affiliated with any listed institution.{" "}
+          <Link to="/disclaimer" className="font-semibold text-brand-800 underline">
+            Read the disclaimer
+          </Link>
+          .
+        </p>
       </div>
 
       {error && (

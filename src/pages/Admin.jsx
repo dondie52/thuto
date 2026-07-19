@@ -54,7 +54,7 @@ const CONTROL_LINKS = [
   { to: "/universities", label: "Universities", description: "Check institution pages, resources, and application windows." },
   { to: "/sponsorships", label: "Sponsorships", description: "Review public sponsorship cards from live opportunity data." },
   { to: "/partners", label: "Partners page", description: "Review the public partner marketing page and inquiry form." },
-  { to: "/internships", label: "Internships", description: "Review internship cards from live opportunity data." },
+  { to: "/feed", label: "Community feed", description: "Internship and opportunity posts appear in the feed, not as a separate product surface." },
   { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Review postgraduate programmes hub and scholarship posts." },
   { to: "/settings", label: "Settings", description: "Open account settings for the current operator." },
 ];

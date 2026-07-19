@@ -89,9 +89,9 @@ function PrivateSponsorshipPanel({ content }) {
           emptyBody={content.privateSponsorships?.emptyBody}
         />
         <p className="mt-4 text-sm text-slate-600">
-          {content.privateSponsorships?.internshipPrefix}{" "}
-          <Link to="/internships" className="font-semibold text-brand-800 underline">
-            {content.privateSponsorships?.internshipLinkText}
+          {content.privateSponsorships?.feedPrefix}{" "}
+          <Link to="/feed" className="font-semibold text-brand-800 underline">
+            {content.privateSponsorships?.feedLinkText}
           </Link>
         </p>
       </div>

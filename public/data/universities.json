@@ -166,7 +166,8 @@
       "sourceUrl": "https://www.ub.bw/sites/default/files/2025-07/University_of_Botswana_2025-26_Schedule_of_Fees_Final-14072025.pdf",
       "sourceLabel": "University of Botswana",
       "updatedAt": "2025-07-14"
-    }
+    },
+    "logo": "university-logos/ub.jpg"
   },
   {
     "id": "biust",
@@ -248,7 +249,8 @@
         "sourceUrl": "https://www.biust.ac.bw/student-affairs/",
         "sourceLabel": "BIUST Student Affairs"
       }
-    ]
+    ],
+    "logo": "university-logos/biust.jpg"
   },
   {
     "id": "bac",
@@ -288,7 +290,8 @@
         "sourceUrl": "https://www.bac.ac.bw/",
         "sourceLabel": "Botswana School of Business Sciences"
       }
-    ]
+    ],
+    "logo": "university-logos/bac.jpg"
   },
   {
     "id": "botho",
@@ -393,7 +396,8 @@
       "sourceUrl": "https://www.bothouniversity.com/fees",
       "sourceLabel": "Botho University",
       "updatedAt": "2026-07-08"
-    }
+    },
+    "logo": "university-logos/botho.jpg"
   },
   {
     "id": "ba-isago",
@@ -459,7 +463,8 @@
         "sourceLabel": "BA ISAGO University"
       }
     ],
-    "shortName": "BA ISAGO"
+    "shortName": "BA ISAGO",
+    "logo": "university-logos/ba-isago.jpg"
   },
   {
     "id": "abm",
@@ -497,7 +502,8 @@
         "sourceLabel": "Government of Botswana"
       }
     ],
-    "shortName": "ABM"
+    "shortName": "ABM",
+    "logo": "university-logos/abm.jpg"
   },
   {
     "id": "limkokwing",
@@ -556,7 +562,8 @@
         "sourceUrl": "https://www.limkokwing.net/botswana/admissions",
         "sourceLabel": "Limkokwing Botswana admissions"
       }
-    ]
+    ],
+    "logo": "university-logos/limkokwing.jpg"
   },
   {
     "id": "gtc",
@@ -587,7 +594,8 @@
         "sourceLabel": "Gaborone Technical College"
       }
     ],
-    "shortName": "GTC"
+    "shortName": "GTC",
+    "logo": "university-logos/gtc.jpeg"
   },
   {
     "id": "bou",
@@ -747,7 +755,8 @@
       "sourceUrl": "https://www.bou.ac.bw/media/attachments/2026/04/28/2026_programme_fees.pdf",
       "sourceLabel": "Botswana Open University",
       "updatedAt": "2026-04-28"
-    }
+    },
+    "logo": "university-logos/bou.jpg"
   },
   {
     "id": "boitekanelo",
@@ -820,7 +829,8 @@
         "sourceLabel": "Boitekanelo College"
       }
     ],
-    "shortName": "Boitekanelo"
+    "shortName": "Boitekanelo",
+    "logo": "university-logos/boitekanelo.jpg"
   },
   {
     "id": "new-era",
@@ -858,7 +868,8 @@
         "sourceLabel": "New Era College"
       }
     ],
-    "shortName": "New Era"
+    "shortName": "New Era",
+    "logo": "university-logos/new-era.jpg"
   },
   {
     "id": "gips",
@@ -889,7 +900,8 @@
         "sourceLabel": "Gaborone Institute of Professional Studies"
       }
     ],
-    "shortName": "GIPS"
+    "shortName": "GIPS",
+    "logo": "university-logos/gips.jpeg"
   },
   {
     "id": "botswana-accountancy-training",
@@ -920,7 +932,8 @@
         "sourceLabel": "Botswana Institute of Chartered Accountants Training Centre"
       }
     ],
-    "shortName": "BICA Training"
+    "shortName": "BICA Training",
+    "logo": "university-logos/botswana-accountancy-training.jpeg"
   },
   {
     "id": "chobe-brigade",
@@ -1016,7 +1029,8 @@
         "sourceLabel": "Imperial School of Business and Science"
       }
     ],
-    "shortName": "ISBS"
+    "shortName": "ISBS",
+    "logo": "university-logos/isbs.png"
   },
   {
     "id": "idm",
@@ -1051,7 +1065,8 @@
         "sourceLabel": "Institute of Development Management (IDM) Botswana"
       }
     ],
-    "shortName": "IDM"
+    "shortName": "IDM",
+    "logo": "university-logos/idm.jpeg"
   },
   {
     "id": "fire-college",
@@ -1100,7 +1115,8 @@
         "sourceLabel": "College of Fire & Safety (Fire College)"
       }
     ],
-    "shortName": "Fire College"
+    "shortName": "Fire College",
+    "logo": "university-logos/fire-college.png"
   },
   {
     "id": "lcibs",
@@ -1135,7 +1151,8 @@
         "sourceLabel": "London College of International Business Studies (LCIBS) Botswana"
       }
     ],
-    "shortName": "LCIBS"
+    "shortName": "LCIBS",
+    "logo": "university-logos/lcibs.png"
   },
   {
     "id": "bcet",
@@ -1151,7 +1168,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "BCET"
+    "shortName": "BCET",
+    "logo": "university-logos/bcet.jpeg"
   },
   {
     "id": "fctve",
@@ -1164,7 +1182,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "FCTVE"
+    "shortName": "FCTVE",
+    "logo": "university-logos/fctve.jpg"
   },
   {
     "id": "ihs",
@@ -1180,7 +1199,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "IHS"
+    "shortName": "IHS",
+    "logo": "university-logos/ihs.jpeg"
   },
   {
     "id": "guc",
@@ -1215,7 +1235,8 @@
         "sourceLabel": "Gaborone University College of Law and Professional Studies (GUC)"
       }
     ],
-    "shortName": "GUC"
+    "shortName": "GUC",
+    "logo": "university-logos/guc.jpeg"
   },
   {
     "id": "pillar-of-success",
@@ -1228,7 +1249,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Pillar of Success"
+    "shortName": "Pillar of Success",
+    "logo": "university-logos/pillar-of-success.jpeg"
   },
   {
     "id": "oodi",
@@ -1244,7 +1266,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "OCAAT"
+    "shortName": "OCAAT",
+    "logo": "university-logos/oodi.jpeg"
   },
   {
     "id": "buan",
@@ -1317,7 +1340,8 @@
         "sourceLabel": "Botswana University of Agriculture and Natural Resources"
       }
     ],
-    "shortName": "BUAN"
+    "shortName": "BUAN",
+    "logo": "university-logos/buan.jpg"
   },
   {
     "id": "logan-business-college",
@@ -1333,7 +1357,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "LBC"
+    "shortName": "LBC",
+    "logo": "university-logos/logan-business-college.png"
   },
   {
     "id": "mega-size-college",
@@ -1349,7 +1374,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Mega Size"
+    "shortName": "Mega Size",
+    "logo": "university-logos/mega-size-college.jpeg"
   },
   {
     "id": "kanye-sda-nursing",
@@ -1380,7 +1406,8 @@
         "sourceLabel": "Kanye Seventh Day Adventist College of Nursing"
       }
     ],
-    "shortName": "Kanye SDA Nursing"
+    "shortName": "Kanye SDA Nursing",
+    "logo": "university-logos/kanye-sda-nursing.svg"
   },
   {
     "id": "bosa-bosele",
@@ -1396,7 +1423,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Bosa Bosele"
+    "shortName": "Bosa Bosele",
+    "logo": "university-logos/bosa-bosele.jpeg"
   },
   {
     "id": "tlokweng-coe",
@@ -1412,7 +1440,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Tlokweng CoE"
+    "shortName": "Tlokweng CoE",
+    "logo": "university-logos/tlokweng-coe.jpeg"
   },
   {
     "id": "serowe-coe",
@@ -1428,7 +1457,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Serowe CoE"
+    "shortName": "Serowe CoE",
+    "logo": "university-logos/serowe-coe.jpeg"
   },
   {
     "id": "molepolole-coe",
@@ -1444,7 +1474,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Molepolole CoE"
+    "shortName": "Molepolole CoE",
+    "logo": "university-logos/molepolole-coe.jpeg"
   },
   {
     "id": "roads-training-centre",
@@ -1460,7 +1491,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "RTC"
+    "shortName": "RTC",
+    "logo": "university-logos/roads-training-centre.jpeg"
   },
   {
     "id": "dawn-training",
@@ -1476,7 +1508,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Dawn"
+    "shortName": "Dawn",
+    "logo": "university-logos/dawn-training.jpeg"
   },
   {
     "id": "cep-training",
@@ -1492,7 +1525,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "CEP"
+    "shortName": "CEP",
+    "logo": "university-logos/cep-training.jpeg"
   },
   {
     "id": "learneasy",
@@ -1508,7 +1542,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "LEARNeasy"
+    "shortName": "LEARNeasy",
+    "logo": "university-logos/learneasy.jpeg"
   },
   {
     "id": "stargems",
@@ -1524,7 +1559,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Stargems"
+    "shortName": "Stargems",
+    "logo": "university-logos/stargems.jpeg"
   },
   {
     "id": "homeland-college",
@@ -1540,7 +1576,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Homeland"
+    "shortName": "Homeland",
+    "logo": "university-logos/homeland-college.jpeg"
   },
   {
     "id": "gcca",
@@ -1556,7 +1593,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "GCCA"
+    "shortName": "GCCA",
+    "logo": "university-logos/gcca.jpeg"
   },
   {
     "id": "gaborone-commercial-college",
@@ -1572,7 +1610,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "GCC"
+    "shortName": "GCC",
+    "logo": "university-logos/gaborone-commercial-college.png"
   },
   {
     "id": "tebelopele",
@@ -1588,7 +1627,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Tebelopele"
+    "shortName": "Tebelopele",
+    "logo": "university-logos/tebelopele.jpeg"
   },
   {
     "id": "byte-size-college",
@@ -1604,7 +1644,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Byte Size"
+    "shortName": "Byte Size",
+    "logo": "university-logos/byte-size-college.jpeg"
   },
   {
     "id": "insurance-training-institute",
@@ -1620,7 +1661,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "ITI"
+    "shortName": "ITI",
+    "logo": "university-logos/insurance-training-institute.jpeg"
   },
   {
     "id": "realic",
@@ -1636,7 +1678,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Realic"
+    "shortName": "Realic",
+    "logo": "university-logos/realic.jpeg"
   },
   {
     "id": "crackit",
@@ -1652,7 +1695,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "CrackiT"
+    "shortName": "CrackiT",
+    "logo": "university-logos/crackit.jpeg"
   },
   {
     "id": "palapye-technical-college",
@@ -1676,7 +1720,8 @@
         "sourceLabel": "Government of Botswana"
       }
     ],
-    "shortName": "Palapye TC"
+    "shortName": "Palapye TC",
+    "logo": "university-logos/palapye-technical-college.jpeg"
   },
   {
     "id": "assembly-bible-college",
@@ -1723,7 +1768,8 @@
         "sourceLabel": "Botswana Institute of Banking and Finance"
       }
     ],
-    "shortName": "BIBF"
+    "shortName": "BIBF",
+    "logo": "university-logos/bibf.jpeg"
   },
   {
     "id": "tonota-coe",
@@ -1739,7 +1785,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Tonota CoE"
+    "shortName": "Tonota CoE",
+    "logo": "university-logos/tonota-coe.jpeg"
   },
   {
     "id": "bamalete-nursing",
@@ -1771,7 +1818,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "AAFM"
+    "shortName": "AAFM",
+    "logo": "university-logos/aafm.jpeg"
   },
   {
     "id": "jwaneng-technical-college",
@@ -1811,7 +1859,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "AITI"
+    "shortName": "AITI",
+    "logo": "university-logos/africa-insurance-training-institute.jpeg"
   },
   {
     "id": "awil-college",
@@ -1827,7 +1876,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Awil"
+    "shortName": "Awil",
+    "logo": "university-logos/awil-college.jpeg"
   },
   {
     "id": "delta-training-academy",
@@ -1843,7 +1893,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Delta"
+    "shortName": "Delta",
+    "logo": "university-logos/delta-training-academy.jpeg"
   },
   {
     "id": "naledi-training-institute",
@@ -1854,7 +1905,8 @@
     "phone": "+267 71458649 / +267 77851168",
     "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/naledi.jpg"
   },
   {
     "id": "elsimate-institute",
@@ -1869,7 +1921,8 @@
     "academicYearStart": null,
     "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/elsimate-institute.jpeg"
   },
   {
     "id": "nampol-college-of-education",
@@ -1884,7 +1937,8 @@
     "academicYearStart": null,
     "applyUrl": "https://nce.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "logo": "university-logos/nampol-college-of-education.jpeg"
   },
   {
     "id": "barolong-brigade",

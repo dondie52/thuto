@@ -1,4 +1,7 @@
-import { deriveUniversityInitials } from "../src/lib/universityBranding.js";
+import {
+  deriveUniversityInitials,
+  resolveUniversityLogo,
+} from "../src/lib/universityBranding.js";
 
 function assert(condition, message) {
   if (!condition) {
@@ -40,3 +43,15 @@ assert(
   deriveUniversityInitials({ name: "BA ISAGO University" }) === "BA",
   "BA ISAGO keeps BA token",
 );
+
+assert(
+  resolveUniversityLogo({ id: "ub", logo: "university-logos/ub.jpg" }) === "university-logos/ub.jpg",
+  "explicit logo path is preferred",
+);
+
+assert(
+  resolveUniversityLogo({ id: "biust" }) === "university-logos/biust.jpg",
+  "bundled logo map covers BIUST",
+);
+
+assert(resolveUniversityLogo({ id: "unknown-college-xyz" }) === "", "missing logo returns empty string");

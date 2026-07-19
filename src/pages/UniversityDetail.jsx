@@ -235,6 +235,12 @@ export default function UniversityDetail() {
               {isVerified ? <InstitutionVerificationBadge /> : null}
             </div>
             <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
+            <p className="mt-2 text-xs leading-relaxed text-slate-500">
+              Directory listing only — Thuto is not affiliated with this institution.{" "}
+              <Link to="/disclaimer" className="font-semibold text-brand-800 underline">
+                Disclaimer
+              </Link>
+            </p>
           </div>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-slate-700">{university.description}</p>

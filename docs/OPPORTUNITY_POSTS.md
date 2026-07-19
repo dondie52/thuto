@@ -1,6 +1,6 @@
-# Opportunity posts (internships & private sponsorship)
+# Opportunity posts (private sponsorship & feed internships)
 
-Manual “Facebook-style” announcements for **internships** and **private sponsorship** (e.g. BDF). Students read posts in the app; applications stay on the original channel (Facebook, employer site, etc.).
+Manual “Facebook-style” announcements for **private sponsorship** (e.g. BDF) and optional **internship** rows. Private sponsorships appear on `/sponsorships`. Internship openings are **not** a standalone Thuto product surface — they belong in the **community feed** (`/feed`) when students or admins share them. Applications stay on the original channel (Facebook, employer site, etc.).
 
 ## One-time setup
 
@@ -17,7 +17,7 @@ Manual “Facebook-style” announcements for **internships** and **private spon
 4. Add a flyer image in either way:
    - Choose **Upload flyer/image** to upload a gallery image to the public `opportunity-images` Supabase Storage bucket.
    - Or paste an existing public URL into **Image URL**.
-5. Save. The post appears on `/sponsorships` (private sponsorship) or `/internships` if it is marked **Published**.
+5. Save. Private sponsorship posts appear on `/sponsorships` when marked **Published**. Prefer posting internship openings in the community feed rather than as a dedicated page.
 
 Superuser uploads require the latest storage policy migration. Public users can read images, but only authenticated users listed in `public.feed_admins` can write to `opportunity-images`.
 
@@ -39,7 +39,7 @@ Superuser uploads require the latest storage policy migration. Public users can 
 | `expires_at` | Optional — post hides after this time |
 | `sort_order` | Higher = listed first when dates match |
 
-3. Save. The post appears on `/sponsorships` (private) or `/internships` within seconds for users.
+3. Save. Private sponsorship posts appear on `/sponsorships` within seconds for users.
 
 ## Support feedback repair
 
@@ -62,4 +62,5 @@ If the Superuser page shows `Could not find the table 'public.support_feedback' 
 | Route | Content |
 |-------|---------|
 | `/sponsorships` | DTEF government guide + **private sponsorship** feed |
-| `/internships` | **Internship** feed |
+| `/feed` | Community posts, including internship / attachment shares |
+| `/internships` | Redirects to `/feed` (legacy URL) |

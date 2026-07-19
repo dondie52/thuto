@@ -7,9 +7,12 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 ## Product identity
 
 - **Name**: Thuto (short for *Botswana Tertiary Companion* — “BTC” in README).
-- **Audience**: Students exploring Botswana undergraduate programmes, admission points, and application logistics.
+- **Audience**: Students exploring **higher education** in Botswana — undergraduate and postgraduate programmes, admission points, sponsorships, and application logistics.
+- **Focus**: Tertiary companion only. Secondary-school revision (e.g. Learning Passport / BGCSE Study) is out of scope; the BGCSE predictor remains as an admission-planning tool.
+- **Edge**: Deep **localisation** — country-by-country expansion across Africa with local exam systems, institutions, and sponsorship routes, rather than a generic global edtech clone.
 - **Form factor**: **Progressive Web App (PWA)** — installable, offline-friendly static build; no required backend for core flows.
 - **Stack**: **Vite 5** + **React 18** + **React Router 6** + **Tailwind CSS 3**; optional **Supabase** for community features.
+- **Affiliation**: Independent directory. Institution names and logos identify providers only; Thuto is not affiliated with listed universities or councils (see Disclaimer).
 
 ---
 
