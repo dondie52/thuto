@@ -193,6 +193,7 @@ export function categorizeUniversity(university) {
     name.includes("brigade") ||
     name.includes("technical") ||
     name.includes("vocational training") ||
+    name.includes("tvet") ||
     name.includes(" vtc") ||
     /\bvtc\b/.test(name)
   ) {
