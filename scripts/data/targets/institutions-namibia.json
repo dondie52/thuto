@@ -1,0 +1,2070 @@
+[
+  {
+    "id": "african-institute-of-marine-studies",
+    "nameCanonical": "African Institute of Marine Studies",
+    "nameShort": "AIMS",
+    "aliases": [
+      "African Institute of Marine Studies",
+      "AIMS"
+    ],
+    "location": "Arandis",
+    "country": "na",
+    "website": "https://www.aims.com.na/",
+    "programmes": [
+      "National Certificate: N4 Engineering Studies oe: ccreaon s conona on ongong quay assurance status of the courses in the country of orig",
+      "National Trade Certificate in Electrical General(Level 1)",
+      "National Trade Certificate in Electrical General(Level 2)",
+      "National Trade Certificate in Electrical General(Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation Services and Food and Beverage Services)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverages Operations)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 3) (Core Commercial Cookery)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 3) (Front Office Operations)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 4) (Advanced Commercial CookerySkills)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "african-leadership-institute",
+    "nameCanonical": "African Leadership Institute",
+    "nameShort": "ALI",
+    "aliases": [
+      "African Leadership Institute",
+      "ALI"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Transformational Leadership(Level 5)",
+      "Diploma in Transformational Leadership(Level 6)",
+      "Certificate in Entrepreneurship(Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "alba-chipamba-training-centre",
+    "nameCanonical": "Alba Chipamba Training Centre",
+    "nameShort": "Alba Chipamba",
+    "aliases": [
+      "Alba Chipamba Training Centre",
+      "Alba Chipamba"
+    ],
+    "location": "Rundu",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in General Nursingand MidwiferyScience(Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "anistemi-college",
+    "nameCanonical": "Anistemi College and Training Centre",
+    "nameShort": "Anistemi",
+    "aliases": [
+      "Anistemi College and Training Centre",
+      "Anistemi"
+    ],
+    "location": "Usakos",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Information Communication Technology (Level 1) (Computing Fundamentals)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Hospitality (Level 2) (Accommodation Services and Food Beverage Services)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "atlantic-training-institution",
+    "nameCanonical": "Atlantic Training Institution",
+    "nameShort": "Atlantic",
+    "aliases": [
+      "Atlantic Training Institution",
+      "Atlantic"
+    ],
+    "location": "Oshakati",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Health Care Administration (Level 4)",
+      "Certificate in Dental Assistant (Level 4)",
+      "Certificate in Enrolled Nursing and Midwifery Science (Level 6)",
+      "National Vocational Certificate in Counselling Services (Community Counselling) (Level 3)",
+      "National Vocational Diploma in Counselling Services (Counselling Supervision) (Level 6)",
+      "National Vocational Certificate in Preventive Health (Level 4) (Occupational Health and Safety) with Strands as Supervisor and Safety",
+      "National Vocational Diploma in Preventive Health (Level 5) (Occupational Health and Safety) Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "botho-namibia",
+    "nameCanonical": "Botho University (Namibia)",
+    "nameShort": "Botho Namibia",
+    "aliases": [
+      "Botho University (Namibia)",
+      "Botho Namibia"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Computer Networking (Level 6)",
+      "Diploma in Software Engineering (Level 6)",
+      "Diploma in Retail Management(Level 6)",
+      "Diploma in SupplyChain Management(Level 6)",
+      "Bachelor of Science (Honours) in Computing",
+      "Bachelor of Science(Honours)in Mobile Computing",
+      "Bachelor of Science(Honours)in Health Information Management",
+      "Bachelor of Science Honours in Accounting",
+      "Bachelor of Science Honours in Business Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "brilliant-training-college",
+    "nameCanonical": "Brilliant Training College",
+    "nameShort": "Brilliant College",
+    "aliases": [
+      "Brilliant Training College",
+      "Brilliant College"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibian-college-of-open-learning",
+    "nameCanonical": "Namibian College of Open Learning",
+    "nameShort": "NAMCOL",
+    "aliases": [
+      "Namibian College of Open Learning",
+      "NAMCOL"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "business-school-of-excellence",
+    "nameCanonical": "Business School of Excellence",
+    "nameShort": "BSE",
+    "aliases": [
+      "Business School of Excellence",
+      "BSE"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Wholesale and Retail Distribution(Level 2)",
+      "National Vocational Certificate in Wholesale and Retail Operations(Level 2)",
+      "National Vocational Certificate in Merchandiser (Level 3)",
+      "National Vocational Certificate in Wholesale and Retail(Frontline Supervision) (Level 3)",
+      "National Vocational Certificate in Wholesale and Retail (Operations Supervision) (Level 4)",
+      "National Vocational Diploma in Retail Buyer(Level 5)",
+      "Higher Certificate in Procurement Management(Level 5)",
+      "Higher Certificate in Project Management(Level 5)",
+      "Higher Certificate in Logistics Management(Level 5)",
+      "Diploma: Logistics and SupplyChain Management(Level 6)",
+      "Bachelor of Business Administration in Logistics and Supply Chain Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "clocknet-vocational-training-centre",
+    "nameCanonical": "Clocknet Vocational Training Centre",
+    "nameShort": "CVTC",
+    "aliases": [
+      "Clocknet Vocational Training Centre",
+      "CVTC"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services(Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 3)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 4)",
+      "National Vocational Certificate in ClothingProduction(Level 1)",
+      "National Vocational Certificate in ClothingProduction(Level 2)",
+      "National Vocational Certificate in Counselling Services (Community Counselling) (Level 3)",
+      "National Vocational Diploma in Counselling Services (Counselling Supervision) (Level 6)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) with Special Strands in Accommodation Services and food and",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverage Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 4) (Advanced Commercial CookerySkills)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "college-of-the-arts",
+    "nameCanonical": "College of the Arts",
+    "nameShort": "COTA",
+    "aliases": [
+      "College of the Arts",
+      "COTA"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibian-academy-for-tourism-and-hospitality",
+    "nameCanonical": "Namibian Academy for Tourism and Hospitality",
+    "nameShort": "NATH",
+    "aliases": [
+      "Namibian Academy for Tourism and Hospitality",
+      "NATH"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in PerformingArts(Level 3)",
+      "Diploma in Fashion Design(Level 5)",
+      "Diploma in New Media Design(Level 5)",
+      "Diploma in Visual Arts(Level 5)",
+      "Diploma in Radio Production (Level 5)",
+      "Diploma in Television Production(Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "dapp-vocational-training-school",
+    "nameCanonical": "DAPP Vocational Training School",
+    "nameShort": "DAPP",
+    "aliases": [
+      "DAPP Vocational Training School",
+      "DAPP"
+    ],
+    "location": "Outapi",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 3) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Horticulture and Crops Production (Level 2)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)",
+      "National Vocational Certificate in Agriculture (Level 4)",
+      "Diploma in Early Childhood Development (ECD) Teaching (Level 6)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "eenhana-vocational-training-centre",
+    "nameCanonical": "Eenhana Vocational Training Centre",
+    "nameShort": "EVTC",
+    "aliases": [
+      "Eenhana Vocational Training Centre",
+      "EVTC"
+    ],
+    "location": "Eenhana",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 3) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 2)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Level 3) (Boilermaking)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 4)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Bricklaying and Plastering) (Level 4)",
+      "National Vocational Certificate in Metal Fabrication (Level 4) (Welding)",
+      "National Vocational Certificate in Metal Fabrication (Boilermaking) (Level 4)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 1)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 3)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 4)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Technician)(Level 5)",
+      "National Vocational Certificate in Automotive Engineering (Vehicle Collison Repair and Spray Painting) (Level 3)",
+      "National Vocational Diploma in Civil and Building Services Engineering (Building and Civil Construction Management) (Level 5)",
+      "National Vocational Certificate in Facility Maintenance (Facility Maintenance Worker) (Level 2)",
+      "National Vocational Certificate in Facility Maintenance (Facility Maintenance Technician) (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "eureka-medical-institute",
+    "nameCanonical": "Eureka Medical Institute Services",
+    "nameShort": "Eureka Medical",
+    "aliases": [
+      "Eureka Medical Institute Services",
+      "Eureka Medical"
+    ],
+    "location": "Katima Mulilo",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Enrolled Nursing and Midwifery Science (Level 6)",
+      "Certificate in Nursing Auxiliary (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "exedin-training-academy",
+    "nameCanonical": "Exedin Training Academy",
+    "nameShort": "Exedin",
+    "aliases": [
+      "Exedin Training Academy",
+      "Exedin"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Office Administration (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "frameworks-africa-consultancy",
+    "nameCanonical": "Frameworks Africa Consultancy",
+    "nameShort": "Frameworks Africa",
+    "aliases": [
+      "Frameworks Africa Consultancy",
+      "Frameworks Africa"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "gobabis-vocational-training-centre",
+    "nameCanonical": "Gobabis Vocational Training Centre",
+    "nameShort": "GVTC",
+    "aliases": [
+      "Gobabis Vocational Training Centre",
+      "GVTC"
+    ],
+    "location": "Gobabis",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 1)",
+      "National Vocational Certificate in Air Conditioningand Refrigeration(Level 2)",
+      "National Vocational Certificate in Air Conditioningand Refrigeration(Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "goldstone-software-engineering-institute",
+    "nameCanonical": "Goldstone Software Engineering Institute",
+    "nameShort": "Goldstone",
+    "aliases": [
+      "Goldstone Software Engineering Institute",
+      "Goldstone"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Information Technology (Level 4)",
+      "Diploma in Information Technology (Level 5)",
+      "Certificate in Business Administration and Management(Level 4)",
+      "Diploma in Business Administration and Management(Level 5)",
+      "Certificate in Human Resources and Management(Level 4)",
+      "Diploma in Human Resources and Management(Level 5)",
+      "Diploma in Software Engineering (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "headstart-montessori-teacher-training-college",
+    "nameCanonical": "Headstart Montessori Teacher Training College",
+    "nameShort": "Headstart Montessori",
+    "aliases": [
+      "Headstart Montessori Teacher Training College",
+      "Headstart Montessori"
+    ],
+    "location": "Walvis Bay",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Early Childhood Development and Pre-Primary Teaching (Level 5) (Montessori Specialisation)",
+      "Diploma in Primary Teaching (Level 6) (Montessori Specialisation)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "heritage-management-institute",
+    "nameCanonical": "Heritage Management Institute",
+    "nameShort": "HMI",
+    "aliases": [
+      "Heritage Management Institute",
+      "HMI"
+    ],
+    "location": "Namibia",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Counselling Services (Community Counselling) (Level 3)",
+      "National Vocational Diploma in Counselling Services (Counselling Supervision) (Level 6)",
+      "National Vocational Diploma in Building and Civil Construction Management (Level 5)",
+      "National Vocational Certificate in Wholesale and Retail Operations (Level 2)",
+      "National Vocational Certificate in Wholesale and Retail Distribution (Level 2)",
+      "National Vocational Certificate in Preventive Health (Level 4) (Occupational Health and Safety) with Strands as Supervisor and Safety",
+      "National Vocational Diploma in Preventive Health (Level 5) (Occupational Health and Safety) Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "homestead-skills-and-technical-education-academy",
+    "nameCanonical": "Homestead Skills and Technical Education Academy",
+    "nameShort": "HSTEA",
+    "aliases": [
+      "Homestead Skills and Technical Education Academy",
+      "HSTEA"
+    ],
+    "location": "Ongula Ya Netanga",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation services and Food and Beverage services)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Housekeeping Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (Advanced Commercial Cookery Skills)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Local Guide)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Apprentice Guide)",
+      "National Vocational Certificate in Clothing Production (Level 4)",
+      "National Vocational Certificate in Clothing Production (Level 2)",
+      "National Vocational Certificate in Clothing Production (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "i-care-health-training-institute",
+    "nameCanonical": "I-Care Health Training Institute",
+    "nameShort": "I-Care",
+    "aliases": [
+      "I-Care Health Training Institute",
+      "I-Care"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Enrolled Nurse and Midwife/Accoucheur (Level 6)",
+      "Bachelor of Nursing and Midwifery Science Honours"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "insurance-institute-of-namibia",
+    "nameCanonical": "Insurance Institute of Namibia",
+    "nameShort": "IIN",
+    "aliases": [
+      "Insurance Institute of Namibia",
+      "IIN"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibian-maritime-and-fisheries-institute",
+    "nameCanonical": "Namibian Maritime and Fisheries Institute",
+    "nameShort": "NAMFI",
+    "aliases": [
+      "Namibian Maritime and Fisheries Institute",
+      "NAMFI"
+    ],
+    "location": "Walvis Bay",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Short Term Insurance (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "institute-for-open-learning",
+    "nameCanonical": "Institute for Open Learning",
+    "nameShort": "IOL",
+    "aliases": [
+      "Institute for Open Learning",
+      "IOL"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in EarlyChildhood Education(Level 5)",
+      "Diploma in EarlyChildhood Education(Level 6)",
+      "Certificate in Policing (Level 5)",
+      "Diploma in Policing (Level 6)",
+      "Diploma in Junior PrimaryEducation(Level 7)",
+      "Bachelor of Education in Senior PrimaryEducation",
+      "Diploma in Senior PrimaryEducation(Level 7)",
+      "Diploma in SecondaryEducation(Level 7)",
+      "Diploma in Education Secondary (Level 7)",
+      "Diploma in Education: SecondaryEducation(Level 7)",
+      "Bachelor of Education Honours"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "international-training-college-lingua",
+    "nameCanonical": "International Training College – Lingua",
+    "nameShort": "Lingua",
+    "aliases": [
+      "International Training College – Lingua",
+      "Lingua"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in EarlyChildhood Development(Level 3)",
+      "Certificate in EarlyChildhood Development(Level 4)",
+      "Diploma in EarlyChildhood Development(Level 5)",
+      "Diploma in EarlyChildhood Development(Level 6)",
+      "Certificate in Information Technology (Level 3)",
+      "Diploma in Pre and Junior PrimarEducation(Level 6)",
+      "Bachelor of Education in Pre and Junior PrimaryEducation",
+      "Bachelor of Education in Pre and Junior PrimaryEducation Honours",
+      "Diploma in Senior PrimaryEducation(Level 6)",
+      "Bachelor of Education in Senior PrimaryEducation",
+      "Bachelor of Education in Senior PrimaryEducation Honours",
+      "Diploma in Junior SecondaryEducation(Level 6)",
+      "Bachelor of Education in SecondaryEducation",
+      "Certificate in Hospitality",
+      "Diploma in Hospitality",
+      "Bachelor of Hospitality Management Bachelor of Hospitality Management Honours Master of Tourism and Hospitality Management Master of Science in Computer Science Certificate in Business Administration (Level 4",
+      "Bachelor of Information Technology",
+      "Certificate in Travel and Tourism (Level 1) Certificate in Travel and Tourism (Level 2) Certificate in Travel and Tourism (Level 3) Certificate in Travel and Tourism (Level 4) Diploma in Travel and Tourism (Leve",
+      "Diploma in Information Technology",
+      "Diploma in Accounting and Finance (Level 7) Certificate in Labour Law (Level 4) Diploma in Labour Law (Level 5) Diploma in Labour Law (Level 6) Bachelor of Commerce in Law Bachelor of Arts in Law Certificate",
+      "Certificate in Health Care Giving",
+      "Bachelor of Education in Secondary Education Honours Certificate in Hospitality",
+      "Bachelor of Hospitality Management Bachelor of Hospitality Management Honours Master of Tourism and Hospitality Management Master of Science in Computer Science Certificat",
+      "Bachelor of Information Technology Honours (Software Development) Bachelor of Information Technology Honours (Management Information Systems) Bachelor of Information Techn",
+      "Bachelor of Human Resource Management Diploma in Information Technology",
+      "Bachelor of Tourism Management Bachelor of Tourism Management Honours Bachelor of Business Administration Bachelor of Business Administration Honours Diploma in Human Reso",
+      "Bachelor of Human Resource Management (Honours) Diploma in Accounting and Finance (Level 5) Bachelor of Accounting and Finance Honours Certificate in Accounting and Financ",
+      "Bachelor of Accounting and Finance Certificate in Information Technology",
+      "Bachelor of Commerce in Law Bachelor of Arts in Law Certificate in Health Care Giving"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "international-university-of-management",
+    "nameCanonical": "International University of Management",
+    "nameShort": "IUM",
+    "aliases": [
+      "International University of Management",
+      "IUM"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Counselling Services (Community Counselling) (Level 3)",
+      "National Vocational Diploma in CounsellingServices(CounsellingSupervision) (Level 6)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 3)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 3) (Apprentice Guide)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 3) (Local Guide)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 3) (Transfer Driver)",
+      "National Vocational Certificate in Hospitalityand Tourism(Level 3) (National Guide)",
+      "National Trade Certificate in Electrical General(Level 1)",
+      "National Trade Certificate in Electrical General(Level 2)",
+      "National Trade Certificate in Electrical General(Level 3)",
+      "Bachelor of Science in Electronics Engineering Honours",
+      "Bachelor of Environmental Management and Sustainable Development Honours",
+      "Bachelor of Climate Change Mitigation and Adaptation Honours",
+      "Bachelor of Conservation Agriculture Honours",
+      "Diploma in Education (Pre and Junior Primary) (Level 7)",
+      "Bachelor of Education in Pre and Junior Primary Education Honours",
+      "Bachelor of Education in Senior Primary Education Honours",
+      "Bachelor of Education in Secondary Education Honours",
+      "Bachelor of Education-Educational Leadership, Management and Policy Honours",
+      "Certificate in Business Information Systems (Level 5)",
+      "Diploma in Business Information Systems (Level 6)",
+      "Bachelor of Science in Business Information Systems",
+      "Bachelor of Science in Business Information Systems Honours",
+      "Certificate in Marketing Management (Level 5)",
+      "Diploma in Marketing Management (Level 6)",
+      "Bachelor of Marketing Management",
+      "Bachelor of Marketing Management Honours",
+      "Bachelor of Accounting Honours",
+      "Certificate in Finance Management (Level 5)",
+      "Diploma in Finance Management (Level 6)",
+      "Bachelor of Finance Management Bachelor of Finance Management Honours Postgraduate Diploma in Finance Management (Level 8) Bachelor of Science in Software Development Bachelor of Science in Software Developme",
+      "Diploma in Finance Management (Level 6) Certificate in Finance Management (Level 5) Certificate in Business Administration (Level 5) Diploma in Business Administration (Level 6) Bachelor of Business Administ",
+      "Diploma in Education (Pre and Junior Primary) (Level 7) Bachelor of Education in Senior Primary Education Honours Bachelor of Education in Secondary Education Honours Certificate in Business Information Syst",
+      "Certificate in Secretarial and Office Administration (Level 4)",
+      "Diploma in Office Administration and Management (Level 5)",
+      "Certificate in Sustainable Ocean and Aquaculture Management (Level 5)",
+      "Diploma in Sustainable Ocean and Aquaculture Management (Level 6)",
+      "Bachelor of Science in Sustainable Ocean and Aquaculture Management Honours",
+      "Bachelor of Finance Management",
+      "Bachelor of Finance Management Honours",
+      "Certificate in Business Administration (Level 5)",
+      "Diploma in Business Administration (Level 6)",
+      "Bachelor of Business Administration",
+      "Bachelor of Business Administration Honours",
+      "Certificate in Human Resource Management (Level 5)",
+      "Diploma in Human Resource Management (Level 6)",
+      "Bachelor of Human Resource Management",
+      "Bachelor of Human Resource Management Honours",
+      "Bachelor of Finance Management Bachelor of Finance Management Honours Postgraduate Diploma in Finance Management (Level 8) Bachelor of Science in Software Development Bach",
+      "Bachelor of Tourism, Hospitality and Events Management Bachelor of Tourism, Hospitality and Events Management Honours Master of Science in Tourism and Hospitality Manageme",
+      "Bachelor of Nursing Honours Certificate in Business Administration (Level 5) Diploma in Business Administration (Level 6) Bachelor of Business Administration Bachelor of B",
+      "Bachelor of Human Resource Management Bachelor of Human Resource Management Honours Certificate in Health and Wellness Studies (Level 5) Diploma in Health and Wellness Stu",
+      "Bachelor of Health and Wellness Studies Bachelor of Health and Wellness Studies Honours Master in International Relations, Diplomacy and Management Doctor of Philosophy in",
+      "Bachelor of Transport and Logistics Management Honours Postgraduate Diploma in Transport and Logistics Studies (Level 8) Diploma in Maritime and Port Management (Level 6)",
+      "Bachelor of Science in Ecotourism and Protected Areas Management Honours",
+      "Bachelor of Education in Secondary Education Honours Diploma in Education (Pre and Junior Primary) (Level 7) Bachelor of Education in Senior Primary Education Honours Bach",
+      "Bachelor of Science in Business Information Systems Bachelor of Science in Business Information Systems Honours Certificate in Marketing Management (Level 5) Diploma in Ma",
+      "Bachelor of Marketing Management Bachelor of Marketing Management Honours Bachelor of Finance Management Bachelor of Finance Management Honours Postgraduate Diploma in Fin",
+      "Bachelor of Science in Software Development Bachelor of Science in Software Development Honours Certificate in Tourism, Hospitality and Events Management (Level 5) Diploma",
+      "Bachelor of Tourism, Hospitality and Events Management Bachelor of Tourism, Hospitality and Events Management Honours",
+      "Bachelor of Business Administration Bachelor of Business Administration Honours Certificate in Human Resource Management (Level 5) Diploma in Human Resource Management (Le",
+      "Bachelor of Human Resource Management Bachelor of Human Resource Management Honours",
+      "Bachelor of Education in Senior Primary Education Honours Bachelor of Education in Secondary Education Honours Certificate in Business Information Systems (Level 5) Diplom",
+      "Bachelor of Environmental Management and Sustainable Development Honours Bachelor of Marketing Management Bachelor of Marketing Management Honours Certificate in Finance M",
+      "Bachelor of Tourism, Hospitality and Events Management Certificate in Business Administration (Level 5) Diploma in Business Administration (Level 6) Bachelor of Business A",
+      "Bachelor of Business Administration Honours Certificate in Human Resource Management (Level 5) Diploma in Human Resource Management (Level 6) Bachelor of Human Resource Ma",
+      "Bachelor of Human Resource Management Honours Certificate in Bookkeeping (Level 4) Diploma in Bookkeeping (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kambaku-hospitality-college",
+    "nameCanonical": "Kambaku Hospitality College",
+    "nameShort": "Kambaku",
+    "aliases": [
+      "Kambaku Hospitality College",
+      "Kambaku"
+    ],
+    "location": "Namibia",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation services and Food and Beverage services)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "katutura-youth-enterprise-centre",
+    "nameCanonical": "Katutura Youth Enterprise Centre",
+    "nameShort": "KAYEC",
+    "aliases": [
+      "Katutura Youth Enterprise Centre",
+      "KAYEC"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Civil & Building Services Engineering (Level 1) (Bricklaying & Plastering)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "labour-resource-and-research-institute",
+    "nameCanonical": "Labour Resource and Research Institute",
+    "nameShort": "LaRRI",
+    "aliases": [
+      "Labour Resource and Research Institute",
+      "LaRRI"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Labour Studies (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "limkokwing-namibia",
+    "nameCanonical": "Limkokwing University of Creative Technology (Namibia)",
+    "nameShort": "Limkokwing Namibia",
+    "aliases": [
+      "Limkokwing University of Creative Technology (Namibia)",
+      "Limkokwing Namibia"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mapac-technical-training-institute",
+    "nameCanonical": "Mapac Technical Training Institute",
+    "nameShort": "Mapac",
+    "aliases": [
+      "Mapac Technical Training Institute",
+      "Mapac"
+    ],
+    "location": "Oshakati",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 2)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "marco-mpollo-vocational-training-centre",
+    "nameCanonical": "Marco Mpollo Vocational Training Centre",
+    "nameShort": "MMVTC",
+    "aliases": [
+      "Marco Mpollo Vocational Training Centre",
+      "MMVTC"
+    ],
+    "location": "Oshakati",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Business Services (Level 3) (Office Administration)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation Services and Food and Beverage Services)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in Business Services (Level 1) (Office Administration)",
+      "National Vocational Certificate in Business Services (Level 2) (Office Administration)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronic) (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (Advanced Commercial Cookery Skills)",
+      "National Vocational Certificate in Counselling Services (Community Counselling) (Level 3)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverage Operations)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Welding) (Level 3)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 1)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 2)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "maven-consultancy",
+    "nameCanonical": "Maven Consultancy",
+    "nameShort": "Maven",
+    "aliases": [
+      "Maven Consultancy",
+      "Maven"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "millennium-training-institute",
+    "nameCanonical": "Millennium Training Institute",
+    "nameShort": "Millennium",
+    "aliases": [
+      "Millennium Training Institute",
+      "Millennium"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Counselling Services (Community Counselling) (Level 3)",
+      "National Vocational Diploma in Counselling Services (Counselling Supervision) (Level 6)",
+      "National Vocational Certificate in Preventative Health (Level 4) (Occupational Health and Safety) Management with Strands as",
+      "National Vocational Diploma in Preventative Health (Level 5) (Occupational Health and Safety) Management",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 1)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 2)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation Services and Food and Beverage Services)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibia-defence-force-training-establishment-vtc",
+    "nameCanonical": "Namibia Defence Force Training Establishment Vocational Training Centre",
+    "nameShort": "NDF TE VTC",
+    "aliases": [
+      "Namibia Defence Force Training Establishment Vocational Training Centre",
+      "NDF TE VTC"
+    ],
+    "location": "Namibia",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 3) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Level 3) (Welding)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 1)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 2)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in General Construction (Level 1) (Carpentry)",
+      "National Vocational Certificate in General Construction (Level 2) (Carpentry)",
+      "National Vocational Certificate in General Construction (Level 3) (Carpentry)",
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 2)",
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibia-command-and-staff-college",
+    "nameCanonical": "Namibia Command and Staff College",
+    "nameShort": "NCSC",
+    "aliases": [
+      "Namibia Command and Staff College",
+      "NCSC"
+    ],
+    "location": "Okahandja",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Military Science (Junior Staff Course) (Level 6)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibia-community-skills-development-foundation",
+    "nameCanonical": "Namibia Community Skills Development Foundation",
+    "nameShort": "COSDEF",
+    "aliases": [
+      "Namibia Community Skills Development Foundation",
+      "COSDEF"
+    ],
+    "location": "Swakopmund",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Clothing Production (Level 2)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation Services and Food and Beverage Services)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "Certificate in Fashion Design and Accessories (Level 2)",
+      "Certificate in Jewellery Design and Manufacturing (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Cosmetology – Foundation (Level 2)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibian-correctional-service",
+    "nameCanonical": "Namibian Correctional Service",
+    "nameShort": "NCS",
+    "aliases": [
+      "Namibian Correctional Service",
+      "NCS"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Clothing Production (Level 1)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibia-evangelical-theological-seminary",
+    "nameCanonical": "Namibia Evangelical Theological Seminary",
+    "nameShort": "NETS",
+    "aliases": [
+      "Namibia Evangelical Theological Seminary",
+      "NETS"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Christian Ministry (Level 3)",
+      "Certificate in Theology (Level 4)",
+      "Diploma in Ministry (Level 5)",
+      "Diploma in Theology (Level 6)",
+      "Bachelor of Theology",
+      "Bachelor of Theology Honours",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Apprentice Guide)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Local Guide)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Transfer Driver)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (National Guide)",
+      "Certificate in Local Government Studies (Level 4)",
+      "Diploma in Education for Development (Level 6)",
+      "Certificate in Education for Development (Level 4)",
+      "Certificate in Early Childhood Development (Level 5)",
+      "Diploma in Youth and Community Development (Level 6)",
+      "Diploma in Early Childhood and Pre-Primary Education (Level 7)",
+      "Bachelor of Education in Early Childhood Development and Pre-Primary Education Honours",
+      "Bachelor of Education in Early Childhood and Junior Primary Education",
+      "Diploma in Community-Based Work with Children and Youth (Level 6)",
+      "Certificate in English Communication (Level 3)",
+      "Diploma in Sign Language Interpreting (Level 7)",
+      "Certificate in Business and Entrepreneurship (Level 5)",
+      "Diploma in Business and Entrepreneurship (Level 6)",
+      "Certificate in Community-based Work with Children and Youth (Level 4)",
+      "Bachelor of Arts in Youth and Community Development",
+      "Bachelor of Business and Entrepreneurship",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Level 3) (Welding)",
+      "National Vocational Certificate in Metal Fabrication (Level 4) (Welding)",
+      "National Vocational Certificate in Automotive Mechanics (Level 1)",
+      "National Vocational Certificate in Automotive Engineering (Level 2) (Automotive Mechanics)",
+      "National Vocational Certificate in Automotive Engineering (Level 3) (Automotive Mechanics)",
+      "National Vocational Certificate in Preventative Health (Level 4) (Occupational Health and Safety) Management with Strands as",
+      "National Vocational Diploma in Preventative Health (Level 5) (Occupational Health and Safety) Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibian-police-force",
+    "nameCanonical": "Namibian Police Force",
+    "nameShort": "NAMPOL Namibia",
+    "aliases": [
+      "Namibian Police Force",
+      "NAMPOL Namibia"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Policing (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "nile-vocational-training-centre",
+    "nameCanonical": "NILE Vocational Training Centre",
+    "nameShort": "NILE VTC",
+    "aliases": [
+      "NILE Vocational Training Centre",
+      "NILE VTC"
+    ],
+    "location": "Oniipa",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) with Specialist Strands in Accommodation Services and Food and",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Front Office Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Housekeeping Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverage Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "Certificate in Electrical General (Modular qualification of Namibia Trade Testing Centre) (Level 1)",
+      "Certificate in Electrical General (Modular qualification of Namibia Trade Testing Centre) (Level 2)",
+      "Certificate in Electrical General (Modular qualification of Namibia Trade Testing Centre) (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibian-institute-of-mining-and-technology",
+    "nameCanonical": "Namibian Institute of Mining and Technology",
+    "nameShort": "NIMT",
+    "aliases": [
+      "Namibian Institute of Mining and Technology",
+      "NIMT"
+    ],
+    "location": "Arandis",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Diesel Mechanics) (Level 3)",
+      "National Vocational Certificate in Mechanical Engineering (Boilermaking) (Level 3)",
+      "National Vocational Certificate in Mechanical Engineering (Fitting and Turning) (Level 3)",
+      "National Vocational Certificate in Electrical Engineering (Instrumentation) (Level 3)",
+      "National Vocational Certificate in Electrical Engineering (Air-Conditioning and Refrigeration) (Level 3)",
+      "National Vocational Certificate in General Construction (Carpentry and Joinery) (Level 3)",
+      "National Vocational Certificate in Clothing Production (Industrial) (Level 3)",
+      "National Vocational Certificate in General Construction (Plumbing and Pipe-Fitting) (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Autotronics) (Level 3)",
+      "National Vocational Certificate in Electrical Engineering (Millwright) (Level 3)",
+      "National Vocational Certificate in Mechanical Engineering (Bricklaying and Plastering (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namibia-institute-of-public-administration-and-management",
+    "nameCanonical": "Namibia Institute of Public Administration and Management",
+    "nameShort": "NIPAM",
+    "aliases": [
+      "Namibia Institute of Public Administration and Management",
+      "NIPAM"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Public Sector Management(Level 7)",
+      "Certificate in Public Sector Management (Level 6)",
+      "Diploma in Marine Navigation (Fishing Vessel Operations) (Level 5)",
+      "Diploma in Marine Engineering (Fishing Vessel Operations) (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namvoc-vocational-institute",
+    "nameCanonical": "NamVoc Vocational Institute",
+    "nameShort": "NamVoc",
+    "aliases": [
+      "NamVoc Vocational Institute",
+      "NamVoc"
+    ],
+    "location": "Okakarara",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 1)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 2)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 3)",
+      "National Vocational Certificate in Livestock Husbandry (Level 2)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 1)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 2)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 3)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 3) (Bricklaying and Plastering)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "nakayale-vocational-training-centre",
+    "nameCanonical": "Nakayale Vocational Training Centre",
+    "nameShort": "Nakayale VTC",
+    "aliases": [
+      "Nakayale Vocational Training Centre",
+      "Nakayale VTC"
+    ],
+    "location": "Outapi",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Housekeeping Operations)",
+      "National Vocational Diploma in Building and Civil Construction Management (Level 5)",
+      "National Vocational Certificate in Financial Services (Insurance Intermediary) (Level 4)",
+      "National Vocational Certificate in Information and Communication Technology – Foundation (Level 2)",
+      "National Vocational Certificate in Information and Communication Technology (Computer System Support) (Level 3)",
+      "National Vocational Certificate in Information and Communication Technology (Networking) (Level 4)",
+      "National Vocational Certificate in Information and Communication Technology (Networking) (Level 5)",
+      "National Vocational Certificate in Information and Communication Technology (Telecommunication and Wireless Technology) (Level",
+      "National Vocational Certificate in Business Services (Level 1) (Office Administration)",
+      "National Vocational Certificate in Business Services (Level 2 (Office Administration)",
+      "National Vocational Certificate in Business Services (Level 3) (Office Administration)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) with Specialist Strands in Accommodation Services and Food and",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverage Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Front Office Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (Advance Commercial Cookery Skills)",
+      "National Vocational Certificate in Wholesale and Retail Operations (Level 2)",
+      "National Vocational Certificate in Wholesale and Retail Distributions (Level 2)",
+      "National Vocational Certificate in Wholesale and Retail Frontline Supervision (Level 3)",
+      "National Vocational Certificate in Merchandiser (Level 3)",
+      "National Vocational Certificate in Wholesale and Retail Operations Supervision (Level 4)",
+      "Certificate in Electrical Engineering (N1 to N3) (Modular Qualification of Namibia Trade Testing Centre)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namwater-human-resource-development-centre",
+    "nameCanonical": "NamWater Human Resource Development Centre",
+    "nameShort": "NamWater HRDC",
+    "aliases": [
+      "NamWater Human Resource Development Centre",
+      "NamWater HRDC"
+    ],
+    "location": "Namibia",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in General Construction (Level 1) (Carpentry)",
+      "National Vocational Certificate in General Construction (Level 2) (Carpentry)",
+      "National Vocational Certificate in General Construction (Level 3) (Carpentry)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Road Construction and Maintenance (Level 3) (Heavy Plant Operations-Heavy Plant Operator) with",
+      "National Trade Certificate in Electrical General (Level 1)",
+      "National Trade Certificate in Electrical General (Level 2)",
+      "National Trade Certificate in Water Care (Level 1)",
+      "National Trade Certificate in Water Care (Level 2)",
+      "National Trade Certificate in Water Care (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "national-institute-of-technology-namibia",
+    "nameCanonical": "National Institute of Technology",
+    "nameShort": "NIT Namibia",
+    "aliases": [
+      "National Institute of Technology",
+      "NIT Namibia"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Accounting and Finance (Level 6)",
+      "Certificate in Accounting and Finance (Level 4)",
+      "Bachelor of Technology in Accounting and Finance",
+      "Certificate in Logistics and Transport Operations (Level 4)",
+      "Diploma in Logistics and Transport Operations (Level 5)",
+      "Diploma in Logistics and Transport Management (Level 6)",
+      "Bachelor of Technology in Logistics and Transport Management",
+      "Diploma in Accounting and Finance (Level 5)",
+      "Certificate in Digital Marketing (Level 4)",
+      "Diploma in Digital Marketing (Level 5)",
+      "Diploma in Digital Marketing Management (Level 6)",
+      "Bachelor of Technology in Digital Marketing Management",
+      "Certificate in Procurement and Supply Operations (Level 4)",
+      "Diploma in Procurement and Supply Operations (Level 5)",
+      "Diploma in Procurement and Supply Management (Level 6)",
+      "Bachelor of Technology in Procurement and Supply Management",
+      "Certificate in Health and Social Care Management (Level 4)",
+      "Diploma in Health and Social Care Management (Level 5)",
+      "Diploma in Health and Social Care Management (Level 6)",
+      "Bachelor of Technology in Health and Social Care Management",
+      "Certificate in Occupational Health and Safety Practice (Level 4)",
+      "Diploma in Occupational Health and Safety Practice (Level 5)",
+      "Diploma in Occupational Health and Safety Management (Level 6)",
+      "Bachelor of Technology in Occupational Health and Safety Management",
+      "Certificate in Biomedical Sciences (Level 4)",
+      "Diploma in Biomedical Sciences (Level 5)",
+      "Diploma in Biomedical Sciences (Level 6)",
+      "Bachelor of Technology in Biomedical Sciences",
+      "Certificate in Education and Training (Level 4)",
+      "Diploma in Education and Training (Level 5)",
+      "Diploma in Education and Training Management (Level 6)",
+      "Bachelor of Technology in Education and Training Management",
+      "Certificate in Business Management (Level 4)",
+      "Diploma in Business Management (Level 5)",
+      "Diploma in Business Management (Level 6)",
+      "Bachelor of Technology in Business Management",
+      "Certificate in Mechanical Engineering (Level 4)",
+      "Diploma in Mechanical Engineering (Level 5)",
+      "Diploma in Mechanical Engineering (Level 6)",
+      "Bachelor of Technology in Mechanical Engineering",
+      "Certificate in Electrical and Electronic Engineering (Level 4)",
+      "Diploma in Electrical and Electronic Engineering (Level 5)",
+      "Diploma in Electrical and Electronic Engineering (Level 6)",
+      "Bachelor of Technology in Electrical and Electronic Engineering",
+      "Certificate in Civil Engineering (Level 4)",
+      "Diploma in Civil Engineering (Level 5)",
+      "Bachelor of Technology in Civil Engineering",
+      "Certificate in Network Engineering (Level 4)",
+      "Diploma in Network Engineering (Level 5)",
+      "Diploma in Network Engineering (Level 6)",
+      "Bachelor of Technology in Network Engineering",
+      "Certificate in Software Engineering (Level 4)",
+      "Diploma in Software Engineering (Level 5)",
+      "Diploma in Software Engineering (Level 6)",
+      "Bachelor of Technology in Software Engineering",
+      "Certificate in Cyber Security (Level 4)",
+      "Diploma in Cyber Security (Level 5)",
+      "Diploma in Cyber Security (Level 6)",
+      "Bachelor of Technology in Cyber Security",
+      "Certificate in Therapeutic Counselling (Level 4)",
+      "Diploma in Therapeutic Counselling (Level 5)",
+      "Diploma in Therapeutic Counselling (Level 6)",
+      "Bachelor of Technology in Therapeutic Counselling",
+      "Diploma in Civil Engineering (Level 6)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "national-youth-service-namibia",
+    "nameCanonical": "National Youth Service",
+    "nameShort": "NYS Namibia",
+    "aliases": [
+      "National Youth Service",
+      "NYS Namibia"
+    ],
+    "location": "Rietfontein",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation Services and Food and Beverage Services)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (Front Office Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (Housekeeping Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverage Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (Advanced Commercial Cookery Skills)",
+      "National Vocational Certificate in Cosmetology-Foundation (Level 2)",
+      "National Vocational Certificate in Cosmetology (Hairdressing) (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 4)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 2)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 3)",
+      "National Vocational Certificate in Agriculture (Level 4)",
+      "National Vocational Diploma in Farm Management (Level 5)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 2)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 3) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Welding) (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)",
+      "National Vocational Certificate in Livestock Husbandry (Level 2)",
+      "National Vocational Certificate in Livestock Production (Level 3)",
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Clothing Production (Level 2)",
+      "National Vocational Certificate in Clothing Production (Level 3)",
+      "National Vocational Certificate in Clothing Production (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ngato-vocational-training-centre",
+    "nameCanonical": "Ngato Vocational Training Centre",
+    "nameShort": "Ngato VTC",
+    "aliases": [
+      "Ngato Vocational Training Centre",
+      "Ngato VTC"
+    ],
+    "location": "Rundu",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services(Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 3)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "niche-training-academy",
+    "nameCanonical": "Niche Training Academy",
+    "nameShort": "Niche",
+    "aliases": [
+      "Niche Training Academy",
+      "Niche"
+    ],
+    "location": "Walvis Bay",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Metal Fabrication(Level 2)",
+      "National Vocational Certificate in Metal Fabrication(Boilermaking) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication(Boilermaking) (Level 4)",
+      "National Vocational Certificate in Metal Fabrication (Welding) (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "nirvana-academy",
+    "nameCanonical": "Nirvana Academy and Investment",
+    "nameShort": "Nirvana",
+    "aliases": [
+      "Nirvana Academy and Investment",
+      "Nirvana"
+    ],
+    "location": "Walvis Bay",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Firefighting and Rescue Operations (Level 1)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ol-academy",
+    "nameCanonical": "O&L Academy",
+    "nameShort": "O&L Academy",
+    "aliases": [
+      "O&L Academy",
+      "O&L Academy"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Hospitality General Management (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "okakarara-vocational-training-centre",
+    "nameCanonical": "Okakarara Vocational Training Centre",
+    "nameShort": "Okakarara VTC",
+    "aliases": [
+      "Okakarara Vocational Training Centre",
+      "Okakarara VTC"
+    ],
+    "location": "Okakarara",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 3) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Level 3) (Boilermaking)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Front Office Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Front Office Operations)",
+      "National Vocational Certificate in Automotive Engineering (Level 1) (Automotive Mechanics)",
+      "National Vocational Certificate in Automotive Engineering (Level 2) (Automotive Mechanics)",
+      "National Vocational Certificate in Automotive Engineering (Level 3) (Automotive Mechanics)",
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Clothing Production (Level 2)",
+      "National Vocational Certificate in Clothing Production (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Housekeeping Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverage Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) with Specialist Strands in Accommodation Services and Food and",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in General Construction (Level 1) (Carpentry)",
+      "National Vocational Certificate in General Construction (Level 2) (Carpentry)",
+      "National Vocational Certificate in General Construction (Level 3) (Carpentry)",
+      "National Vocational Certificate in Business (Office Administration) (Level 4)",
+      "National Vocational Certificate in Hospitality and Tourism (Front Office Operations) (Level 4)",
+      "National Vocational Certificate in Information and Communication Technology (Foundation) (Level 2)",
+      "National Vocational Certificate in Information and Communication Technology (Computer System) (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 4)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Cosmetology – (Foundation) (Level 2)",
+      "National Vocational Certificate in Cosmetology (Beauty Therapy) (Level 3)",
+      "National Vocational Certificate in Cosmetology (Beauty Therapy) (Level 4)",
+      "National Vocational Certificate in Cosmetology (Nail Technology) (Level 3)",
+      "National Vocational Certificate in Cosmetology (Nail Technology) (Level 4)",
+      "National Vocational Certificate in Facility Maintenance (Facility Maintenance Worker) (Level 2)",
+      "National Vocational Certificate in Facility (Facility Maintenance Technician) (Level 3)",
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 2)",
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 3)",
+      "National Vocational Certificate in Electrical Engineering (Electrical General) (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ondagwa-commercial-college",
+    "nameCanonical": "Ondangwa Commercial College",
+    "nameShort": "OCC",
+    "aliases": [
+      "Ondangwa Commercial College",
+      "OCC"
+    ],
+    "location": "Ondangwa",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Certificate in Electrical Engineering (Electrical General) (Level 2)",
+      "National Certificate in Electrical Engineering (Electrical General) (Level 3)",
+      "National Certificate in Electrical Engineering (Electrical General) (Level 4)",
+      "National Vocational Diploma in Electrical Engineering (Electrical Energy) (Level 5)",
+      "National Vocational Certificate in Preventative Health (Level 4) Occupational Health and Safety with Strands as Supervisor and Safety",
+      "National Vocational Diploma in Preventative Health (Level 5) (Occupational Health and Safety Management)",
+      "National Vocational Certificate in Counselling Services (Community Counselling) (Level 3)",
+      "National Vocational Diploma in Counselling Services (Counselling Supervision) (Level 6)",
+      "National Vocational Certificate in Hospitality and Tourism Food & Beverage Services (Level 2) (Strand B)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery Skills)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 1)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 2)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 3)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 4)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Technician) (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ongha-vocational-training-centre",
+    "nameCanonical": "Ongha Vocational Training Centre",
+    "nameShort": "Ongha VTC",
+    "aliases": [
+      "Ongha Vocational Training Centre",
+      "Ongha VTC"
+    ],
+    "location": "Ongha",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "philippi-trust-namibia",
+    "nameCanonical": "Philippi Trust Namibia",
+    "nameShort": "Philippi",
+    "aliases": [
+      "Philippi Trust Namibia",
+      "Philippi"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Certificate in Counselling Services (Level 3) (Community Counselling)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "pmt-health-care-institution",
+    "nameCanonical": "PMT Health Care Institution",
+    "nameShort": "PMT",
+    "aliases": [
+      "PMT Health Care Institution",
+      "PMT"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Enrolled Nursing and Midwifery Science (Level 6)",
+      "National Vocational Diploma in Preventative Health (Level 4) (Occupational Health and Safety) with strands as Supervisor and Safety",
+      "National Vocational Diploma in Preventative Health"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "rehoboth-institute-of-technology",
+    "nameCanonical": "Rehoboth Institute of Technology",
+    "nameShort": "REHOTEC",
+    "aliases": [
+      "Rehoboth Institute of Technology",
+      "REHOTEC"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in EarlyChildhood Development(Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "rik-technical-college",
+    "nameCanonical": "R.I.K Technical College",
+    "nameShort": "RIK",
+    "aliases": [
+      "R.I.K Technical College",
+      "RIK"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Metal Fabrication(Level 2)",
+      "National Vocational Certificate in Metal Fabrication(Boilermaking) (Level 4)",
+      "National Vocational Certificate in Metal Fabrication(Welding) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication(Welding) (Level 4)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Livestock Husbandry (Level 2)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services(Office Administration) (Level 2)",
+      "National Vocational Certificate in Crop and Horticulture Production(Level 3)",
+      "National Vocational Certificate in Livestock Production(Level 3)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance(Level 1)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance(Level 2)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance(Level 3)",
+      "National Vocational Certificate in Agriculture (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "river-higher-institute-of-technology",
+    "nameCanonical": "River Higher Institute of Technology",
+    "nameShort": "RHIT",
+    "aliases": [
+      "River Higher Institute of Technology",
+      "RHIT"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Travel, Tourism and Hospitality Management (Level 5)",
+      "Diploma in Travel, Tourism and Hospitality Management (Level 6)",
+      "Diploma in Food and Beverage Management (Level 5)",
+      "Diploma in Events Management (Level 5)",
+      "Bachelor of Commerce in Travel, Tourism and Hospitality Management",
+      "Bachelor of Arts in Events Management",
+      "Diploma in Business Management (Level 5)",
+      "Diploma in Business Management (Level 6)",
+      "Diploma in Accounting and Finance Management (Level 5)",
+      "Diploma in Accounting and Finance Management (Level 6)",
+      "Certificate in Electrical and Electronic Engineering (Level 4)",
+      "Diploma in Electrical and Electronic Engineering (Level 5)",
+      "Certificate in Telecommunication Systems (Level 4)",
+      "Diploma in Telecommunication Systems (Level 5)",
+      "Diploma in Human Resources Management (Level 5)",
+      "Diploma in Human Resources Management (Level 6)",
+      "Certificate in Electrical Installation (Level 4)",
+      "Diploma in Electrical Installation (Level 5)",
+      "Bachelor of Commerce in Human Resources Management",
+      "Bachelor of Commerce in Business Management",
+      "Diploma in Information Technology (Level 5)",
+      "Diploma in Information Technology (Level 6)",
+      "Certificate in Secretarial and Administrative Studies (Level 4)",
+      "Diploma in Secretarial and Administrative Studies (Level 5)",
+      "Diploma in Pre and Junior Primary Education (Level 6)",
+      "Bachelor of Education in Senior Primary Education Honours",
+      "Bachelor of Education in Secondary Education Honours",
+      "Bachelor of Nursing and Midwifery Science Honours",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 1)",
+      "National Vocational Certificate in Solar Equipment Installation and Maintenance (Level 2)",
+      "National Vocational Certificate in Electrical Engineering (Electronics) (Level 2)",
+      "National Vocational Certificate in Electrical Engineering (Electronics) (Level 3)",
+      "National Vocational Certificate in Information and Communication Technology – Foundation (Level 2)",
+      "National Vocational Certificate in Information and Communication Technology (Computer Systems Support) (Level 3)",
+      "National Vocational Certificate in Information and Communication Technology (Web Development) (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "rundu-vocational-training-centre",
+    "nameCanonical": "Rundu Vocational Training Centre",
+    "nameShort": "RVTC",
+    "aliases": [
+      "Rundu Vocational Training Centre",
+      "RVTC"
+    ],
+    "location": "Rundu",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 3) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Service Engineering (Level 4) (Bricklaying and Construction)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 4)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 2)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 3)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 4)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Boiler Making) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication (Welding) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication (Boiler Making) (Level 4)",
+      "National Vocational Certificate in Metal Fabrication (Welding) (Level 4)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 4)",
+      "National Vocational Diploma in Automotive Engineering (Automotive Mechatronics) (Level 5)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 2)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 3)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Trade Certificate in Electrical General (Level 1)",
+      "National Trade Certificate in Electrical General (Level 2)",
+      "National Trade Certificate in Electrical General (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "shadonai-beauty-school",
+    "nameCanonical": "Shadonai Beauty School",
+    "nameShort": "Shadonai",
+    "aliases": [
+      "Shadonai Beauty School",
+      "Shadonai"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Nail Technology (Level 4)",
+      "Diploma in Spa Therapy (Level 5)",
+      "Diploma in Hairdressing (Level 5)",
+      "Diploma in Beauty Therapy (Level 5)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "shalom-vocational-training-centre",
+    "nameCanonical": "Shalom Vocational Training Centre",
+    "nameShort": "Shalom VTC",
+    "aliases": [
+      "Shalom Vocational Training Centre",
+      "Shalom VTC"
+    ],
+    "location": "Grootfontein",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)",
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Clothing Production (Level 2)",
+      "National Vocational Certificate in Clothing Production (Level 3)",
+      "National Vocational Certificate in Clothing Production (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "shiramed-medical-institute",
+    "nameCanonical": "Shiramed Medical Institute",
+    "nameShort": "Shiramed",
+    "aliases": [
+      "Shiramed Medical Institute",
+      "Shiramed"
+    ],
+    "location": "Katima Mulilo",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Enrolled Nursing and Midwifery Science (Level 6)",
+      "Diploma in General Nursing and Midwifery Science (Level 7)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "siya-institute-of-vocational-education",
+    "nameCanonical": "Siya Institute of Vocational Education and Training",
+    "nameShort": "Siya",
+    "aliases": [
+      "Siya Institute of Vocational Education and Training",
+      "Siya"
+    ],
+    "location": "Namibia",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Electrical General (Level 1) (Modular)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "southern-africa-school-of-project-management",
+    "nameCanonical": "Southern Africa School of Project Management",
+    "nameShort": "SASPM",
+    "aliases": [
+      "Southern Africa School of Project Management",
+      "SASPM"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Project Management (Level 6)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "st-antony-universal-college",
+    "nameCanonical": "St Antony Universal College",
+    "nameShort": "St Antony",
+    "aliases": [
+      "St Antony Universal College",
+      "St Antony"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Preventive Health (Level 4) (Occupational Health and Safety) Management with Strands as",
+      "National Vocational Diploma in Preventive Health (Level 5) (Occupational Health and Safety) Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "st-benedict-vocational-training-centre",
+    "nameCanonical": "St Benedict Vocational Training Centre",
+    "nameShort": "St Benedict VTC",
+    "aliases": [
+      "St Benedict Vocational Training Centre",
+      "St Benedict VTC"
+    ],
+    "location": "Namibia",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation Services and Food and Beverage Services)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "st-charles-lwanga-major-seminary",
+    "nameCanonical": "St. Charles Lwanga Major Seminary",
+    "nameShort": "St Charles Lwanga",
+    "aliases": [
+      "St. Charles Lwanga Major Seminary",
+      "St Charles Lwanga"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Diploma in Philosophy (Level 6)",
+      "Diploma in Theology (Level 6)",
+      "Bachelor of Philosophy",
+      "Bachelor of Theology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "sunshine-private-college",
+    "nameCanonical": "Sunshine Private College",
+    "nameShort": "Sunshine",
+    "aliases": [
+      "Sunshine Private College",
+      "Sunshine"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Bachelor of Education Honours in Junior Primary",
+      "Bachelor of Education Honours in Senior Primary",
+      "Diploma in Early Childhood Development and Junior Primary Education (Level 6)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "symanek-specialised-college",
+    "nameCanonical": "Symanek Specialised College",
+    "nameShort": "Symanek",
+    "aliases": [
+      "Symanek Specialised College",
+      "Symanek"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Preventive Health (Level 4) (Occupational Health and Safety) Management with Strands as",
+      "National Vocational Diploma in Preventive Health (Level 5) (Occupational Health and Safety) Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "triumphant-college",
+    "nameCanonical": "Triumphant College",
+    "nameShort": "Triumphant",
+    "aliases": [
+      "Triumphant College",
+      "Triumphant"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "tulipohamba-training-and-assessment-institute",
+    "nameCanonical": "Tulipohamba Training and Assessment Institute",
+    "nameShort": "TTAI",
+    "aliases": [
+      "Tulipohamba Training and Assessment Institute",
+      "TTAI"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Occupational Health and Safety (Level 4)",
+      "Diploma in Occupational Health and Safety (Level 6)",
+      "Diploma in Community Health Education (Level 6)",
+      "Diploma in Health Care Service Management (Level 6)",
+      "Diploma in Counselling (Level 6)",
+      "Certificate in Dental Surgery Assisting (Level 4)",
+      "Certificate in Community Health Education (Level 4)",
+      "Certificate in Counselling (Level 4)",
+      "Certificate in Healthcare Service Management (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "united-lutheran-theological-seminary",
+    "nameCanonical": "United Lutheran Theological Seminary – Paulinum",
+    "nameShort": "ULTS Paulinum",
+    "aliases": [
+      "United Lutheran Theological Seminary – Paulinum",
+      "ULTS Paulinum"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Theology (Level 5)",
+      "Diploma in Theology (Level 6)",
+      "Bachelor of TheologyLevel 7"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "valombola-vocational-training-centre",
+    "nameCanonical": "Valombola Vocational Training Centre",
+    "nameShort": "Valombola VTC",
+    "aliases": [
+      "Valombola Vocational Training Centre",
+      "Valombola VTC"
+    ],
+    "location": "Ongwediva",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 1) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 2) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Level 3) (Bricklaying and Plastering)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Manufacturing (Joinery & Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Manufacturing (Joinery & Cabinet Making) (Level 2)",
+      "National Vocational Certificate in Manufacturing (Joinery & Cabinet Making) (Level 3)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Welding) (Level 3)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 1)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 2)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 3)",
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Clothing Production (Level 2)",
+      "National Vocational Certificate in Clothing Production (Level 3)",
+      "National Vocational Certificate in Automotive Engineering (Foundation) (Level 2)",
+      "National Vocational Certificate in Automotive Engineering (Automotive Mechatronics) (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism - Accommodation Services and Food and Beverage Services (Level 2)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Front Office Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Housekeeping Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Food Preparation)",
+      "National Vocational Certificate in Hospitality and Tourism (Front Office Operations) (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism (House Keeping Operations) (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism (Food and Beverage Operations) (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism (Core Commercial Cookery Skills) (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "welwitchia-university",
+    "nameCanonical": "Welwitchia University",
+    "nameShort": "Welwitchia",
+    "aliases": [
+      "Welwitchia University",
+      "Welwitchia"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "Certificate in Pharmacy (Level 5)",
+      "Diploma in Environmental Health Science (Level 6)",
+      "Certificate for Enrolled Nurse Midwife/Accoucheur (Level 6)",
+      "Bachelor of Nursing and Midwifery Science Honours",
+      "Certificate in Health Sciences Foundation (Level 4)",
+      "Certificate for Enrolled Nurse-Midwife/Accoucheur (Level 6)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 2)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 3)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Livestock Husbandry (Level 2)",
+      "National Vocational Certificate in Livestock Production (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "windhoek-vocational-training-centre",
+    "nameCanonical": "Windhoek Vocational Training Centre",
+    "nameShort": "WVTC",
+    "aliases": [
+      "Windhoek Vocational Training Centre",
+      "WVTC"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Services (Office Administration) (Level 1)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 2)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 3)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)",
+      "National Vocational Certificate in Electrical Engineering (Electronics) (Level 2)",
+      "National Vocational Certificate in Electrical Engineering (Electronics) (Level 3)",
+      "National Vocational Certificate in Electrical Engineering (Electronics) (Level 4)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 1)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 2)",
+      "National Vocational Certificate in Air Conditioning and Refrigeration (Level 3)",
+      "National Vocational Certificate in Boilermaker (Level 1)",
+      "National Vocational Certificate in Boilermaker (Level 2)",
+      "National Vocational Certificate in Boilermaker (Level 3)",
+      "National Vocational Certificate in Bricklaying and Plastering (Level 1)",
+      "National Vocational Certificate in Bricklaying and Plastering (Level 2)",
+      "National Vocational Certificate in Bricklaying and Plastering (Level 3)",
+      "National Vocational Certificate in Electrical General (Level 1)",
+      "National Vocational Certificate in Electrical General (Level 2)",
+      "National Vocational Certificate in Electrical General (Level 3)",
+      "National Vocational Certificate in Fitter and Turner (Fitter Machinist) (Level 1)",
+      "National Vocational Certificate in Fitter and Turner (Fitter Machinist) (Level 2)",
+      "National Vocational Certificate in Fitter and Turner (Fitter Machinist) (Level 3)",
+      "National Vocational Certificate in Joinery and Cabinet Making (Level 1)",
+      "National Vocational Certificate in Joinery and Cabinet Making (Level 2)",
+      "National Vocational Certificate in Joinery and Cabinet Making (Level 3)",
+      "National Vocational Certificate in Plumbing and Pipefitting (Level 1)",
+      "National Vocational Certificate in Plumbing and Pipefitting (Level 2)",
+      "National Vocational Certificate in Plumbing and Pipefitting (Level 3)",
+      "National Vocational Certificate in Welding and Metal Fabrication (Level 1)",
+      "National Vocational Certificate in Welding and Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Welding and Metal Fabrication (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "wolwedans-desert-academy",
+    "nameCanonical": "Wolwedans Foundation Trust Desert Academy",
+    "nameShort": "Wolwedans",
+    "aliases": [
+      "Wolwedans Foundation Trust Desert Academy",
+      "Wolwedans"
+    ],
+    "location": "Windhoek",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Hospitality and Tourism (Level 2) (Accommodation Services and Food and Beverage Services)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Food and Beverage Operations)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 3) (Core Commercial Cookery)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "zambezi-vocational-training-centre",
+    "nameCanonical": "Zambezi Vocational Training Centre",
+    "nameShort": "ZVTC",
+    "aliases": [
+      "Zambezi Vocational Training Centre",
+      "ZVTC"
+    ],
+    "location": "Zambezi",
+    "country": "na",
+    "website": "",
+    "programmes": [
+      "National Vocational Certificate in Business Service (Office Administration) (Level 1)",
+      "National Vocational Certificate in Service (Office Administration) (Level 2)",
+      "National Vocational Certificate in Service (Office Administration) (Level 3)",
+      "National Vocational Certificate in Clothing Production (Level 1)",
+      "National Vocational Certificate in Clothing Production (Level 2)",
+      "National Vocational Certificate in Civil Building Services (Bricklaying and Plastering) (Level 1)",
+      "National Vocational Certificate in Civil Building Services (Bricklaying and Plastering) (Level 2)",
+      "National Vocational Certificate in Civil Building Services (Bricklaying and Plastering) (Level 3)",
+      "National Vocational Certificate in Information Communication Technology (Computing Fundamentals) (Level 1)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 1)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 2)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 3)",
+      "National Vocational Certificate in Metal Fabrication (Level 2)",
+      "National Vocational Certificate in Metal Fabrication (Boiler making) (Level 3)",
+      "National Vocational Certificate in Civil Building and Service Engineering (Plumbing) (Level 1)",
+      "National Vocational Certificate in Civil Building and Service Engineering (Plumbing) (Level 2)",
+      "National Vocational Certificate in Civil Building and Service Engineering (Plumbing) (Level 3)",
+      "National Vocational Certificate in Hospitality and Tourism (Food and Beverage Operations) (Level 2)",
+      "National Vocational Certificate in Hospitality and Tourism (Food Preparation) (Level 2)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 2)",
+      "National Vocational Certificate in Crop and Horticulture Production (Level 3)",
+      "National Vocational Certificate in Farm Machinery and Infrastructure (Level 3)",
+      "National Vocational Certificate in Horticulture and Crop Husbandry (Level 2)",
+      "National Vocational Certificate in Agriculture (Level 4)",
+      "National Vocational Certificate in Hospitality and Tourism (Level 4) (Advanced Commercial Cookery Skills)",
+      "National Vocational Certificate in Clothing Production (Level 4)",
+      "National Vocational Certificate in Manufacturing (Joinery and Cabinet Making) (Level 4)",
+      "National Vocational Certificate in Metal Fabrication (Boiler Making) (Level 4)",
+      "National Vocational Certificate in Metal Fabrication (Welding) (Level 4)",
+      "National Vocational Certificate in Business Services (Office Administration) (Level 4)",
+      "National Vocational Certificate in Civil and Building Services Engineering (Plumbing) (Level 4)"
+    ],
+    "allowNoProgrammes": true
+  }
+]

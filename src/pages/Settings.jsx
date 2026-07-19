@@ -1,19 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteAccountForm from "../components/profile/DeleteAccountForm.jsx";
+import MarketCountrySelect from "../components/MarketCountrySelect.jsx";
 import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY } from "../lib/admissions.js";
 import { STORAGE_KEY as BOOKMARK_STORAGE_KEY } from "../lib/bookmarks.js";
 import { openBillingPortal, canManageStripeBilling } from "../lib/billing.js";
 import { syncToCloud } from "../lib/cloudSync.js";
 import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { resolveMarketCountry, setMarketCountry } from "../lib/marketCountry.js";
 import { formatPremiumUntil } from "../lib/premium.js";
 
 export default function Settings() {
   useDocumentTitle("General Settings | Thuto");
-  const { supabaseConfigured, user, profile, isPremium, isSuperuser } = useAuth();
+  const { supabaseConfigured, user, profile, saveProfile, isPremium, isSuperuser } = useAuth();
   const [notice, setNotice] = useState("");
   const [billingLoading, setBillingLoading] = useState(false);
+  const [country, setCountry] = useState(() => resolveMarketCountry(profile));
+  const [countrySaving, setCountrySaving] = useState(false);
+
+  useEffect(() => {
+    if (profile?.country) setCountry(profile.country);
+  }, [profile?.country]);
+
+  async function handleCountryChange(nextCountry) {
+    setCountry(nextCountry);
+    setMarketCountry(nextCountry);
+    setNotice("");
+    if (!user) {
+      setNotice("Country preference saved on this device.");
+      return;
+    }
+    setCountrySaving(true);
+    try {
+      await saveProfile({ country: nextCountry });
+      setNotice("Country preference saved.");
+    } catch (err) {
+      setNotice(err?.message || "Could not save country preference.");
+    } finally {
+      setCountrySaving(false);
+    }
+  }
 
   function clearPredictor() {
     try {
@@ -68,6 +95,21 @@ export default function Settings() {
           Manage your account, billing, local data, and app preferences for this device.
         </p>
       </div>
+
+      <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+        <h2 className="font-display text-xl font-semibold text-brand-900">Country / market</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          Choose which country&apos;s institutions and programmes you see across Thuto.
+        </p>
+        <div className="mt-4">
+          <MarketCountrySelect
+            id="settings-country"
+            value={country}
+            onChange={handleCountryChange}
+            disabled={countrySaving}
+          />
+        </div>
+      </section>
 
       <section className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <h2 className="font-display text-xl font-semibold text-brand-900">Account</h2>

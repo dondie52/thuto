@@ -3,6 +3,7 @@ import { deleteAccount as deleteAccountRequest } from "./account.js";
 import { buildAuthRedirectUrl } from "./authRedirect.js";
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 import { isPremiumActive } from "./premium.js";
+import { setMarketCountry } from "./marketCountry.js";
 import { normalizeProfileRow, updateUserProfile } from "./profile.js";
 
 const LEGACY_ACCOUNT_MODE_KEY = "thuto-account-mode";
@@ -31,7 +32,7 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase
       .from("profiles")
       .select(
-        "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until",
+        "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, country, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until",
       )
       .eq("id", userId)
       .maybeSingle();
@@ -51,14 +52,17 @@ export function AuthProvider({ children }) {
           return null;
         }
         const normalizedLegacy = normalizeProfileRow(legacyBootstrapped);
+        if (normalizedLegacy?.country) setMarketCountry(normalizedLegacy.country);
         setProfile(normalizedLegacy);
         return normalizedLegacy;
       }
       const normalizedBootstrapped = normalizeProfileRow(bootstrapped);
+      if (normalizedBootstrapped?.country) setMarketCountry(normalizedBootstrapped.country);
       setProfile(normalizedBootstrapped);
       return normalizedBootstrapped;
     }
     const normalized = normalizeProfileRow(data);
+    if (normalized?.country) setMarketCountry(normalized.country);
     setProfile(normalized);
     return normalized;
   }, []);
@@ -100,14 +104,12 @@ export function AuthProvider({ children }) {
     return nextIsSuperuser;
   }, [session?.user?.id]);
 
-  const saveProfile = useCallback(
-    async (patch) => {
-      const updated = await updateUserProfile(patch);
-      setProfile(updated);
-      return updated;
-    },
-    [],
-  );
+  const saveProfile = useCallback(async (patch) => {
+    const updated = await updateUserProfile(patch);
+    if (updated?.country) setMarketCountry(updated.country);
+    setProfile(updated);
+    return updated;
+  }, []);
 
   useEffect(() => {
     try {

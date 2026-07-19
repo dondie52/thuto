@@ -416,8 +416,8 @@ export default function Admin() {
 
   async function loadContentCatalog() {
     const [universitiesResult, programmes] = await Promise.all([
-      fetchUniversities({ includeDrafts: true }),
-      fetchProgrammes({ includeDrafts: true }),
+      fetchUniversities({ includeDrafts: true, includeAllCountries: true }),
+      fetchProgrammes({ includeDrafts: true, includeAllCountries: true }),
     ]);
     setContentUniversities(universitiesResult.list);
     setContentProgrammes(programmes);

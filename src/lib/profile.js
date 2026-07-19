@@ -7,7 +7,7 @@ const MAX_DISTINCTION = 120;
 const MAX_BIO = 150;
 
 const PROFILE_SELECT =
-  "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, message_privacy, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until";
+  "id, full_name, username, bio, avatar_url, university_id, university_name, university_status, distinction, syllabus_type, sponsorship_intent, fields_of_interest, message_privacy, country, onboarding_completed_at, onboarding_skipped_at, stripe_customer_id, payment_provider, premium_status, premium_plan, premium_until";
 
 function isProfileUpdateRpcMissing(error) {
   const code = String(error?.code || "").trim();
@@ -87,6 +87,7 @@ function safeFileName(name) {
  * @property {'bgcse' | 'igcse' | 'as_level' | 'o_level' | null} syllabus_type
  * @property {'dtef' | 'private' | 'self_funded' | null} sponsorship_intent
  * @property {string[]} fields_of_interest
+ * @property {'bw' | 'na'} country
  * @property {string | null} onboarding_completed_at
  * @property {string | null} onboarding_skipped_at
  * @property {string | null} stripe_customer_id
@@ -98,6 +99,7 @@ function safeFileName(name) {
 
 export function normalizeProfileRow(row) {
   if (!row) return null;
+  const country = row.country === "na" ? "na" : "bw";
   return {
     id: row.id,
     full_name: row.full_name || "",
@@ -112,6 +114,7 @@ export function normalizeProfileRow(row) {
     sponsorship_intent: row.sponsorship_intent || "",
     fields_of_interest: Array.isArray(row.fields_of_interest) ? row.fields_of_interest : [],
     message_privacy: row.message_privacy || "everyone",
+    country,
     onboarding_completed_at: row.onboarding_completed_at || null,
     onboarding_skipped_at: row.onboarding_skipped_at || null,
     stripe_customer_id: row.stripe_customer_id || null,
@@ -177,6 +180,7 @@ export async function uploadProfileAvatar(file) {
  *   sponsorshipIntent?: string,
  *   fieldsOfInterest?: string[],
  *   messagePrivacy?: string,
+ *   country?: string,
  * }} patch
  */
 export async function updateUserProfile(patch) {
@@ -234,6 +238,10 @@ export async function updateUserProfile(patch) {
     const privacy = String(patch.messagePrivacy || "").trim();
     updates.message_privacy =
       privacy === "connections_only" || privacy === "followers_only" ? privacy : "everyone";
+  }
+  if (patch.country !== undefined) {
+    const country = String(patch.country || "").trim().toLowerCase();
+    updates.country = country === "na" ? "na" : "bw";
   }
 
   if (!Object.keys(updates).length) {

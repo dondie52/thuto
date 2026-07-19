@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchTargetInstitutions, saveTargetInstitutions } from "../lib/onboarding.js";
+import { resolveMarketCountry, setMarketCountry } from "../lib/marketCountry.js";
 import { formatAuthorUniversity, PROFILE_SCHEMA_UNAVAILABLE_MESSAGE } from "../lib/profile.js";
 import FieldInterestPills from "./onboarding/FieldInterestPills.jsx";
 import InstitutionMultiSelect from "./onboarding/InstitutionMultiSelect.jsx";
+import MarketCountrySelect from "./MarketCountrySelect.jsx";
 import UsernameInput from "./onboarding/UsernameInput.jsx";
 import { normalizeUsername } from "../lib/username.js";
 
@@ -43,6 +45,7 @@ function useProfileEditFormState(profile, onSave, disabled) {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [usernameValid, setUsernameValid] = useState(true);
+  const [country, setCountry] = useState(() => resolveMarketCountry(profile));
   const [targetInstitutionIds, setTargetInstitutionIds] = useState([]);
   const [fieldsOfInterest, setFieldsOfInterest] = useState([]);
   const [distinction, setDistinction] = useState("");
@@ -54,9 +57,12 @@ function useProfileEditFormState(profile, onSave, disabled) {
 
   useEffect(() => {
     let active = true;
-    fetchUniversities()
+    setMarketCountry(country);
+    fetchUniversities({ country })
       .then(({ list }) => {
-        if (active) setUniversities(list);
+        if (!active) return;
+        setUniversities(list);
+        setTargetInstitutionIds((current) => current.filter((id) => list.some((uni) => uni.id === id)));
       })
       .catch(() => {
         if (active) setUniversities([]);
@@ -64,7 +70,7 @@ function useProfileEditFormState(profile, onSave, disabled) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [country]);
 
   useEffect(() => {
     setFullName(profile?.full_name || "");
@@ -75,6 +81,7 @@ function useProfileEditFormState(profile, onSave, disabled) {
     setDistinction(profile?.distinction || "");
     setAvatarUrl(profile?.avatar_url || "");
     setMessagePrivacy(profile?.message_privacy || "everyone");
+    if (profile?.country) setCountry(profile.country);
   }, [profile]);
 
   useEffect(() => {
@@ -113,6 +120,7 @@ function useProfileEditFormState(profile, onSave, disabled) {
     setNotice("");
     try {
       const primary = universities.find((uni) => uni.id === targetInstitutionIds[0]);
+      setMarketCountry(country);
       await onSave({
         fullName,
         username: normalizeUsername(username),
@@ -128,6 +136,7 @@ function useProfileEditFormState(profile, onSave, disabled) {
             : "aspiring"
           : "",
         messagePrivacy,
+        country,
       });
       await saveTargetInstitutions(targetInstitutionIds);
       setNotice("Saved.");
@@ -150,6 +159,8 @@ function useProfileEditFormState(profile, onSave, disabled) {
     setBio,
     usernameValid,
     setUsernameValid,
+    country,
+    setCountry,
     targetInstitutionIds,
     setTargetInstitutionIds,
     fieldsOfInterest,
@@ -235,24 +246,41 @@ export function ProfileAboutFields() {
 }
 
 export function ProfileUniversitiesFields() {
-  const { universities, targetInstitutionIds, setTargetInstitutionIds, disabled, isSaving } =
-    useProfileEditFormContext();
+  const {
+    universities,
+    targetInstitutionIds,
+    setTargetInstitutionIds,
+    country,
+    setCountry,
+    disabled,
+    isSaving,
+  } = useProfileEditFormContext();
 
   return (
-    <div>
-      <div className="mt-2">
-        <InstitutionMultiSelect
-          universities={universities}
-          selectedIds={targetInstitutionIds}
-          onChange={setTargetInstitutionIds}
-          max={MAX_INSTITUTIONS}
-          disabled={disabled || isSaving}
-        />
+    <div className="space-y-4">
+      <MarketCountrySelect
+        id="profile-country"
+        value={country}
+        onChange={setCountry}
+        disabled={disabled || isSaving}
+        label="Country"
+        hint="Changing country updates the institution list and clears selections from the other market."
+      />
+      <div>
+        <div className="mt-2">
+          <InstitutionMultiSelect
+            universities={universities}
+            selectedIds={targetInstitutionIds}
+            onChange={setTargetInstitutionIds}
+            max={MAX_INSTITUTIONS}
+            disabled={disabled || isSaving}
+          />
+        </div>
+        <p className="mt-2 text-xs text-stone-500">
+          {targetInstitutionIds.length} of {MAX_INSTITUTIONS} selected • Select up to {MAX_INSTITUTIONS} institutions to
+          seed your feed.
+        </p>
       </div>
-      <p className="mt-2 text-xs text-stone-500">
-        {targetInstitutionIds.length} of {MAX_INSTITUTIONS} selected • Select up to {MAX_INSTITUTIONS} institutions to
-        seed your feed.
-      </p>
     </div>
   );
 }

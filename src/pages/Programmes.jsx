@@ -11,8 +11,11 @@ import ProgrammeBookmarkButton from "../components/ProgrammeBookmarkButton.jsx";
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import EligibilityPill from "../components/EligibilityPill.jsx";
 import CompareSelectionBar from "../components/CompareSelectionBar.jsx";
+import MarketCountrySelect from "../components/MarketCountrySelect.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useEntitlements } from "../hooks/useEntitlements.js";
+import { useAuth } from "../lib/auth.jsx";
+import { marketCountryLabel, resolveMarketCountry, setMarketCountry } from "../lib/marketCountry.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import {
   getProgrammeCareers,
@@ -57,10 +60,12 @@ export default function Programmes() {
           : "Programmes | Thuto",
   );
   const location = useLocation();
+  const { profile, saveProfile, user } = useAuth();
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [country, setCountry] = useState(() => resolveMarketCountry(profile));
   const { toggle, isBookmarked } = useBookmarks();
   const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
   const { entitlements } = useEntitlements();
@@ -102,9 +107,14 @@ export default function Programmes() {
   );
 
   useEffect(() => {
+    if (profile?.country) setCountry(profile.country);
+  }, [profile?.country]);
+
+  useEffect(() => {
     let cancelled = false;
     setIsLoading(true);
-    fetchProgrammes()
+    setMarketCountry(country);
+    fetchProgrammes({ country })
       .then((data) => {
         if (!cancelled) {
           setProgrammes(Array.isArray(data) ? data : []);
@@ -120,7 +130,19 @@ export default function Programmes() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [country]);
+
+  async function handleCountryChange(nextCountry) {
+    setCountry(nextCountry);
+    setMarketCountry(nextCountry);
+    if (user && profile) {
+      try {
+        await saveProfile({ country: nextCountry });
+      } catch {
+        /* guest preference still applies */
+      }
+    }
+  }
 
   const universities = useMemo(() => {
     const set = new Set(programmes.map((p) => p.university).filter(Boolean));
@@ -249,6 +271,13 @@ export default function Programmes() {
       ) : null}
 
       <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+        <MarketCountrySelect
+          id="programmes-country"
+          value={country}
+          onChange={handleCountryChange}
+          label="Country"
+          hint={`Browsing ${marketCountryLabel(country)} programmes.`}
+        />
         <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
           <div>
             <label htmlFor="prog-search" className="block text-xs font-medium text-slate-600">
