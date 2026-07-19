@@ -99,6 +99,20 @@ create policy "read_verified" on submissions
 
 ---
 
+## Expansion strategy — country-by-country localisation
+
+Thuto’s edge is being **local**, not a generic global edtech product. Expand **one African country at a time** until coverage is broad:
+
+- Local secondary-exit / admissions exam models (Botswana BGCSE today; do not force one regional scale onto every market)
+- Local institution and programme catalogues with verified apply links and windows
+- Local funding / sponsorship routes and copy
+- Local community feed norms and moderation context
+- Clear non-affiliation with listed institutions (logos for identification only)
+
+**Current live market**: Botswana. Multi-country UI (country selector, per-country data packs) is **not** built yet — treat this as the product direction for future work, not a generic “one catalogue for everywhere” rewrite.
+
+---
+
 ## Remaining work - quality / post-launch
 
 ### 4. ESLint + basic tests

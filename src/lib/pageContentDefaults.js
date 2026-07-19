@@ -2,9 +2,7 @@ export const PAGE_CONTENT_META = [
   { pageKey: "landing", label: "Landing page" },
   { pageKey: "home", label: "App home" },
   { pageKey: "sponsorships", label: "Sponsorships" },
-  { pageKey: "internships", label: "Internships" },
   { pageKey: "postgraduateStudies", label: "Postgraduate Studies" },
-  { pageKey: "study", label: "BGCSE Study" },
   { pageKey: "support", label: "Support" },
   { pageKey: "disclaimer", label: "Disclaimer" },
   { pageKey: "privacy", label: "Privacy" },
@@ -73,6 +71,8 @@ export const PAGE_CONTENT_DEFAULTS = {
       ctaSignedIn: "View all universities",
       ctaGuest: "Explore universities",
       note: "Profiles include locations, programmes, and application timing.",
+      affiliationNote:
+        "Thuto is not affiliated with, endorsed by, or partnered with any listed institution. Logos are shown for identification only — always verify details on the official website.",
       featuredUniversityIds: [
         "ub",
         "biust",
@@ -162,28 +162,6 @@ export const PAGE_CONTENT_DEFAULTS = {
       emptyBody: "Upload notes or past papers to Thuto Centre to be featured here.",
     },
   },
-  study: {
-    hero: {
-      kicker: "BGCSE Study",
-      title: "Revise for exams, plan for university",
-      body: "A bridge between BGCSE revision and tertiary planning. Thuto links to official Learning Passport content and shows which programmes depend on each subject — we do not host curriculum materials here.",
-    },
-    featured: {
-      heading: "Official revision platforms",
-      body: "Open these resources in your browser or the Learning Passport app. Sign in with your school username where required.",
-      attribution: "Content on Learning Passport is provided by the Ministry of Education and Skills Development, UNICEF, and Microsoft.",
-    },
-    subjects: {
-      heading: "BGCSE subjects",
-      body: "Pick a subject for revision links, study tips, and related university programmes in Thuto.",
-    },
-    verify: {
-      title: "Tie revision to your admission plan",
-      body: "After studying, enter your grades in the Predictor to see which programmes you may qualify for.",
-      linkLabel: "Open Predictor",
-    },
-    footerNote: "Thuto does not host curriculum content. External links open official platforms.",
-  },
   sponsorships: {
     hero: {
       kicker: "Sponsorships",
@@ -205,8 +183,6 @@ export const PAGE_CONTENT_DEFAULTS = {
       body: "BDF, employers, and other private sponsors - summaries from their official posts. No in-app applications.",
       emptyTitle: "No private sponsorship posts yet",
       emptyBody: "When a sponsor like BDF publishes a window, add it in Supabase and it will appear here.",
-      internshipLinkText: "See internships",
-      internshipPrefix: "Looking for internship openings?",
     },
     dtef: {
       portalUrl: "https://tef.gov.bw",
@@ -246,24 +222,6 @@ export const PAGE_CONTENT_DEFAULTS = {
       title: "Verify before you rely on this page",
       body: "Sponsorship rules change. Cross-check every detail with official DTEF notices, the live portal, or the call centre numbers above.",
       linkLabel: "Check university profiles",
-    },
-  },
-  internships: {
-    hero: {
-      kicker: "Internships",
-      title: "Latest openings",
-      body: "Short updates copied from official pages and social posts - employers, ministries, and private organisations. Thuto does not accept applications here; follow each post to apply on the original channel.",
-    },
-    announcements: {
-      heading: "Announcements",
-      body: "Newest posts first. Expired windows are hidden automatically.",
-      emptyTitle: "No internship posts yet",
-      emptyBody: "When an opportunity is published, it will show up here with details and a flyer image.",
-    },
-    verify: {
-      title: "Verify on the official source",
-      body: "Deadlines and requirements can change after a post goes live. Always confirm on the employer's website or social page before you apply.",
-      linkLabel: "Private sponsorship posts",
     },
   },
   postgraduateStudies: {
@@ -418,6 +376,8 @@ export const PAGE_CONTENT_DEFAULTS = {
     logos: {
       heading: "Institutions on Thuto",
       body: "Verified partners manage their own profiles. Other listings are informational until claimed.",
+      affiliationNote:
+        "Thuto is not affiliated with, endorsed by, or partnered with any listed institution. Logos are shown for identification only.",
       featuredUniversityIds: ["ub", "biust", "buan", "botho", "bac", "bou", "limkokwing"],
     },
     why: {

@@ -1,4 +1,6 @@
-import { deriveUniversityInitials } from "../lib/universityBranding.js";
+import { useState } from "react";
+import { deriveUniversityInitials, resolveUniversityLogo } from "../lib/universityBranding.js";
+import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
 
 const SIZE_CLASS = {
   sm: "h-10 min-w-10 px-2 text-xs",
@@ -7,8 +9,42 @@ const SIZE_CLASS = {
   xl: "h-20 min-w-20 px-4 text-lg",
 };
 
+const IMAGE_FRAME_CLASS = {
+  sm: "h-10 w-10 p-1.5",
+  md: "h-14 w-14 p-2",
+  lg: "h-16 w-16 p-2",
+  xl: "h-20 w-20 p-2.5",
+};
+
 export default function UniversityInitialsBadge({ university, size = "md", className = "" }) {
+  const [imageFailed, setImageFailed] = useState(false);
   const sizeClass = SIZE_CLASS[size] || SIZE_CLASS.md;
+  const frameClass = IMAGE_FRAME_CLASS[size] || IMAGE_FRAME_CLASS.md;
+  const logoPath = resolveUniversityLogo(university);
+  const logoUrl = logoPath ? resolveProgrammeThemeUrl(logoPath) : "";
+  const name = String(university?.name || "Institution").trim() || "Institution";
+
+  if (logoUrl && !imageFailed) {
+    return (
+      <span
+        className={[
+          "inline-flex items-center justify-center overflow-hidden rounded-xl border border-brand-100 bg-white",
+          frameClass,
+          className,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <img
+          src={logoUrl}
+          alt={`${name} logo`}
+          className="max-h-full max-w-full object-contain"
+          loading="lazy"
+          onError={() => setImageFailed(true)}
+        />
+      </span>
+    );
+  }
 
   return (
     <span

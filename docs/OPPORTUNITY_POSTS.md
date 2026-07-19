@@ -1,6 +1,8 @@
-# Opportunity posts (internships & private sponsorship)
+# Opportunity posts (private sponsorship & postgraduate scholarships)
 
-Manual “Facebook-style” announcements for **internships** and **private sponsorship** (e.g. BDF). Students read posts in the app; applications stay on the original channel (Facebook, employer site, etc.).
+Manual “Facebook-style” announcements for **private sponsorship** (e.g. BDF) and **postgraduate scholarships**. Students read posts in the app; applications stay on the original channel (Facebook, employer site, etc.).
+
+Internship openings are **not** an official Thuto service page. Share them in the community **Feed** with category `internship` instead.
 
 ## One-time setup
 
@@ -12,12 +14,12 @@ Manual “Facebook-style” announcements for **internships** and **private spon
 ## Adding a post from Superuser
 
 1. Open `/admin`, sign in with a Thuto superuser account, and choose **Opportunities**.
-2. Choose **Private sponsorship** or **Internship**.
+2. Choose **Private sponsorship** or **Postgraduate scholarship**.
 3. Paste the sponsor, title, body, optional source URL, expiry date, and sort order.
 4. Add a flyer image in either way:
    - Choose **Upload flyer/image** to upload a gallery image to the public `opportunity-images` Supabase Storage bucket.
    - Or paste an existing public URL into **Image URL**.
-5. Save. The post appears on `/sponsorships` (private sponsorship) or `/internships` if it is marked **Published**.
+5. Save. The post appears on `/sponsorships` (private sponsorship) or `/postgraduate-studies` (postgraduate scholarship) if it is marked **Published**.
 
 Superuser uploads require the latest storage policy migration. Public users can read images, but only authenticated users listed in `public.feed_admins` can write to `opportunity-images`.
 
@@ -28,7 +30,7 @@ Superuser uploads require the latest storage policy migration. Public users can 
 
 | Column | Example |
 |--------|---------|
-| `category` | `private_sponsorship` or `internship` |
+| `category` | `private_sponsorship` or `postgraduate_scholarship` |
 | `sponsor` | `BDF` |
 | `title` | `Officer cadet sponsorship 2026` |
 | `body` | Full text from the Facebook post (requirements, dates, contacts) |
@@ -39,7 +41,7 @@ Superuser uploads require the latest storage policy migration. Public users can 
 | `expires_at` | Optional — post hides after this time |
 | `sort_order` | Higher = listed first when dates match |
 
-3. Save. The post appears on `/sponsorships` (private) or `/internships` within seconds for users.
+3. Save. The post appears on `/sponsorships` (private) or `/postgraduate-studies` within seconds for users.
 
 ## Support feedback repair
 
@@ -62,4 +64,5 @@ If the Superuser page shows `Could not find the table 'public.support_feedback' 
 | Route | Content |
 |-------|---------|
 | `/sponsorships` | DTEF government guide + **private sponsorship** feed |
-| `/internships` | **Internship** feed |
+| `/postgraduate-studies` | Postgraduate programmes hub + **postgraduate scholarship** feed |
+| `/feed` | Community posts, including optional **Internship** category |

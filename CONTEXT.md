@@ -8,6 +8,8 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 - **Name**: Thuto (short for *Botswana Tertiary Companion* — “BTC” in README).
 - **Audience**: Students exploring Botswana undergraduate programmes, admission points, and application logistics.
+- **Focus**: Higher-education guidance (predictor, programmes, institutions, funding, community feed) — not secondary-school curriculum hosting.
+- **Expansion strategy**: Localise **country by country** across Africa (local exam systems, institution catalogues, admissions rules, copy). Botswana is the live market today; avoid a generic global edtech clone.
 - **Form factor**: **Progressive Web App (PWA)** — installable, offline-friendly static build; no required backend for core flows.
 - **Stack**: **Vite 5** + **React 18** + **React Router 6** + **Tailwind CSS 3**; optional **Supabase** for community features.
 
@@ -47,6 +49,7 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 ### Universities (`/universities`, `/universities/:id`)
 
 - List and detail from **`public/data/universities.json`**.
+- Institution marks use bundled logos under `public/university-logos/` (with initials fallback). Thuto is **not affiliated** with listed institutions; affiliation notes appear near logo surfaces and on `/disclaimer`.
 - **Remote override**: optional `VITE_UNIVERSITIES_REMOTE_URL` — fetch JSON at runtime (`cache: 'no-store'`), merge rows **by `id`** into bundled data for fresh application windows and links (see README + `.env.example`).
 
 ### Saved programmes (`/saved`)
@@ -55,10 +58,11 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 ### Scroll Feed (`/feed`, `/admin/feed`)
 
-- Signed-in community feed for posts, images, comments, reactions, and reports.
+- Signed-in community feed for posts, images, comments, reactions, and reports (categories include opportunities such as **internship** posts from the community).
 - Posts/comments are moderated by the Supabase Edge Function `feed-moderation`; safe content can auto-publish, uncertain content goes to admin review, and unsafe content is rejected.
 - Admin users are seeded in `feed_admins` and can approve, reject, remove, or restore content in `/admin/feed`.
 - Schema lives in `supabase/migrations/20260530120000_scroll_feed.sql`; client helpers live in `src/lib/feed.js`.
+- There is **no** dedicated Internships service page; `/internships` redirects to `/feed`.
 
 ### Compare (`/compare`)
 
@@ -181,6 +185,9 @@ From **`.env.example`** (Vite `VITE_*` prefix):
 | `/saved` | Bookmarked programmes |
 | `/compare` | Compare selection |
 | `/share` | Share admission result (Supabase optional) |
+| `/sponsorships` | Funding routes + private sponsorship posts |
+| `/internships` | Redirect → `/feed` (internship posts live in the feed) |
+| `/study`, `/study/:subjectId` | Redirect → `/predictor` (BGCSE Study / Learning Passport removed) |
 | `/disclaimer`, `/privacy` | Legal |
 | `*` | Not found |
 

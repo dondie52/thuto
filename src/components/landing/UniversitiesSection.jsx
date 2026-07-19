@@ -224,14 +224,19 @@ export default function UniversitiesSection({ content }) {
           </div>
         </div>
 
-        <div className="logo-showcase-copy mt-8 flex flex-wrap items-center gap-4">
-          <Link
-            to={landingTo(isSignedIn, "/universities", "#universities")}
-            className="focus-ring landing-motion-press inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-brand-800"
-          >
-            {isSignedIn ? content?.ctaSignedIn : content?.ctaGuest}
-          </Link>
-          <span className="text-sm text-slate-500">{content?.note}</span>
+        <div className="logo-showcase-copy mt-8 flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              to={landingTo(isSignedIn, "/universities", "#universities")}
+              className="focus-ring landing-motion-press inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-brand-800"
+            >
+              {isSignedIn ? content?.ctaSignedIn : content?.ctaGuest}
+            </Link>
+            <span className="text-sm text-slate-500">{content?.note}</span>
+          </div>
+          {content?.affiliationNote ? (
+            <p className="max-w-3xl text-xs leading-relaxed text-slate-500">{content.affiliationNote}</p>
+          ) : null}
         </div>
       </div>
     </section>

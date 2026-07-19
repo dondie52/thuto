@@ -116,8 +116,9 @@ The assistant uses a hybrid flow:
 
 ## Scroll Feed with AI moderation
 
-The `/feed` page is a signed-in community feed for student updates: opportunities, scholarships, internships,
-deadlines, study tips, events, notices, questions, stories, campus life, and general student posts.
+The `/feed` page is a signed-in community feed for student updates: opportunities, scholarships, internship
+posts from the community, deadlines, tips, events, notices, questions, stories, campus life, and general posts.
+There is no separate Internships service page — use the feed’s Internship category instead.
 
 Safety model:
 
