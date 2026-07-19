@@ -1,0 +1,536 @@
+[
+  {
+    "id": "aaa-school-of-advertising",
+    "nameCanonical": "AAA School of Advertising (Pty) Ltd",
+    "nameShort": "ASAT",
+    "aliases": [
+      "AAA School of Advertising (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Higher Certificate in Digital Marketing (NQF level",
+      "Higher Certificate in Marketing Communication",
+      "Higher Certificate in Visual Communications",
+      "Diploma in Marketing Communications",
+      "Diploma in Visual Communication (HEQSF",
+      "Bachelor of Arts in Marketing Communication",
+      "Bachelor of Arts in Creative Brand Communication",
+      "Higher Certificate in Facilities Management",
+      "Advanced Certificate in Facility Management",
+      "Higher Certificate in Television and Screen Media",
+      "Diploma in Audio Technology (HEQSF Aligned,"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "boston-media-house",
+    "nameCanonical": "Boston Media House (Pty) Ltd",
+    "nameShort": "BMH",
+    "aliases": [
+      "Boston Media House (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "camelot-international",
+    "nameCanonical": "Camelot International (Pty) Ltd",
+    "nameShort": "CIP",
+    "aliases": [
+      "Camelot International (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Advanced Certificate in Art"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "city-varsity",
+    "nameCanonical": "City Varsity (Pty) Ltd",
+    "nameShort": "CVT",
+    "aliases": [
+      "City Varsity (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Advanced Certificate in Art"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "commerce-and-computer-college-of-south-africa",
+    "nameCanonical": "Commerce and Computer College of South Africa (Pty) Ltd",
+    "nameShort": "CCCSAT",
+    "aliases": [
+      "Commerce and Computer College of South Africa (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "cornerstone-institute",
+    "nameCanonical": "Cornerstone Institute (RF) NPC",
+    "nameShort": "CIN",
+    "aliases": [
+      "Cornerstone Institute (RF) NPC"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.cornerstone.ac.za",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "cranefield-college",
+    "nameCanonical": "Cranefield College (Pty) Ltd",
+    "nameShort": "CCT",
+    "aliases": [
+      "Cranefield College (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "da-vinci-institute-for-technology-management",
+    "nameCanonical": "Da Vinci Institute for Technology Management (Pty) Ltd",
+    "nameShort": "DVITMT",
+    "aliases": [
+      "Da Vinci Institute for Technology Management (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.davinci.ac.za",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "damelin",
+    "nameCanonical": "Damelin (Pty) Ltd",
+    "nameShort": "DT",
+    "aliases": [
+      "Damelin (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "east-london-management-institute",
+    "nameCanonical": "East London Management Institute (Pty) Ltd",
+    "nameShort": "ELMI",
+    "aliases": [
+      "East London Management Institute (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Higher Certificate in Auxiliary"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ecotraining",
+    "nameCanonical": "EcoTraining (Pty) Ltd",
+    "nameShort": "ET",
+    "aliases": [
+      "EcoTraining (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "eduvos",
+    "nameCanonical": "Eduvos (Pty) Ltd",
+    "nameShort": "ET",
+    "aliases": [
+      "Eduvos (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "emmanuel-verpleegskool",
+    "nameCanonical": "Emmanuel Verpleegskool (Pty) Ltd",
+    "nameShort": "EVT",
+    "aliases": [
+      "Emmanuel Verpleegskool (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "exercise-teachers-academy",
+    "nameCanonical": "Exercise Teachers Academy (Pty) Ltd",
+    "nameShort": "ETAT",
+    "aliases": [
+      "Exercise Teachers Academy (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Higher Certificate in Coaching Science (HEQSF",
+      "Higher Certificate in Fitness (HEQSF Aligned,",
+      "Higher Certificate in Sports, Recreation and Fitness",
+      "Advanced Certificate in Coaching Science (HEQSF",
+      "Advanced Certificate in Fitness in Special populations",
+      "Advanced Certificate in Fitness in Sport Conditioning",
+      "Advanced Certificate in Sport, Recreation and Fitness",
+      "Diploma in Sport and Exercise (HEQSF Aligned,"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "icesa-city-campus",
+    "nameCanonical": "ICESA City Campus (Pty) Ltd",
+    "nameShort": "ICCT",
+    "aliases": [
+      "ICESA City Campus (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Higher Certificate in Auxiliary"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ikusasa-lethu-nursing-school",
+    "nameCanonical": "Ikusasa Lethu Nursing School (Pty) Ltd",
+    "nameShort": "ILNS",
+    "aliases": [
+      "Ikusasa Lethu Nursing School (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Higher Certificate in Auxiliary"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "inscape-education-group",
+    "nameCanonical": "Inscape Education Group (Pty) Ltd",
+    "nameShort": "IEGT",
+    "aliases": [
+      "Inscape Education Group (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts Honours in Design (HEQSF"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "lisof",
+    "nameCanonical": "LISOF (Pty) Ltd",
+    "nameShort": "LT",
+    "aliases": [
+      "LISOF (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.lcbm.ac.za",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "lyceum-college",
+    "nameCanonical": "Lyceum College (Pty) Ltd",
+    "nameShort": "LCT",
+    "aliases": [
+      "Lyceum College (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Diploma: Management)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mediclinic",
+    "nameCanonical": "MEDICLINIC (Pty) Ltd",
+    "nameShort": "MT",
+    "aliases": [
+      "MEDICLINIC (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Higher Certificate in Banking Services (HEQSF",
+      "Higher Certificate in Financial Planning (HEQSF",
+      "Higher Certificate in Financial Products (HEQSF",
+      "Higher Certificate in Management Development",
+      "Higher Certificate in Short Term Insurance (HEQSF",
+      "Advanced Certificate in Banking Services (HEQSF",
+      "Advanced Certificate in Financial Planning (HEQSF",
+      "Advanced Certificate in Management (HEQSF",
+      "Advanced Certificate in Short-Term Insurance",
+      "Bachelor of Business Administration (HEQSF",
+      "Bachelor of Commerce (HEQSF Aligned, NQF",
+      "Bachelor of Commerce in Accounting (NQF Level 7,",
+      "Postgraduate Diploma in Accounting (HEQSF",
+      "Postgraduate Diploma in Banking (HEQSF Aligned,",
+      "Postgraduate Diploma in Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "monash-south-africa",
+    "nameCanonical": "Monash South Africa Limited (Incorporated in Australia External Profit Company)",
+    "nameShort": "MSAL",
+    "aliases": [
+      "Monash South Africa Limited (Incorporated in Australia External Profit Company)"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Diploma in Community Development",
+      "Diploma in Entrepreneurial and",
+      "Postgraduate Diploma in Management",
+      "Postgraduate Diploma in Accounting",
+      "Postgraduate Diploma in Water",
+      "Postgraduate Diploma in Public",
+      "Postgraduate Diploma in Business",
+      "Postgraduate Diploma in Corporate",
+      "Bachelor of Engineering in Electrical",
+      "Bachelor of Engineering in Mechanical",
+      "Bachelor of Child and Youth Care",
+      "Bachelor of Computer and Information"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "pm-academy",
+    "nameCanonical": "PM Academy (Pty) Ltd",
+    "nameShort": "PAT",
+    "aliases": [
+      "PM Academy (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "prestige-academy",
+    "nameCanonical": "Prestige Academy (Pty) Ltd",
+    "nameShort": "PAT",
+    "aliases": [
+      "Prestige Academy (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "private-hotel-school-the",
+    "nameCanonical": "Private Hotel School (Pty) Ltd (The)",
+    "nameShort": "PHST",
+    "aliases": [
+      "Private Hotel School (Pty) Ltd (The)"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "production-management-institute-of-southern-africa-pmi",
+    "nameCanonical": "Production Management Institute of Southern Africa (Pty) Ltd (PMI)",
+    "nameShort": "PMI",
+    "aliases": [
+      "Production Management Institute of Southern Africa (Pty) Ltd (PMI)"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "red-and-yellow-creative-school-of-business",
+    "nameCanonical": "Red and Yellow Creative School of Business (Pty) Ltd",
+    "nameShort": "RYCSBT",
+    "aliases": [
+      "Red and Yellow Creative School of Business (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "regenesys-management",
+    "nameCanonical": "Regenesys Management (Pty) Ltd",
+    "nameShort": "RMT",
+    "aliases": [
+      "Regenesys Management (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "regent-business-school",
+    "nameCanonical": "Regent Business School (Pty) Ltd",
+    "nameShort": "RBST",
+    "aliases": [
+      "Regent Business School (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.regent.ac.za",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "richfield-graduate-institute-of-technology",
+    "nameCanonical": "Richfield Graduate Institute of Technology (Pty) Ltd",
+    "nameShort": "RGIT",
+    "aliases": [
+      "Richfield Graduate Institute of Technology (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "south-african-college-of-applied-psychology-the",
+    "nameCanonical": "South African College of Applied Psychology (Pty) Ltd (The)",
+    "nameShort": "SACAPT",
+    "aliases": [
+      "South African College of Applied Psychology (Pty) Ltd (The)"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.smms.ac.za",
+    "programmes": [
+      "Higher Certificate in Counselling and Communication",
+      "Higher Certificate in Human Resources Management",
+      "Diploma in Counselling and Communication Skills",
+      "Bachelor of Applied Social Science (HEQSF",
+      "Postgraduate Diploma in Coaching (HEQSF",
+      "Bachelor of Psychology (HEQSF Aligned, NQF"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "south-african-school-of-motion-picture-medium-live-performance-afda-the",
+    "nameCanonical": "South African School of Motion Picture Medium & Live Performance (Pty) Ltd /AFDA (The)",
+    "nameShort": "SASMPMLP",
+    "aliases": [
+      "South African School of Motion Picture Medium & Live Performance (Pty) Ltd /AFDA (The)"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "southern-business-school",
+    "nameCanonical": "Southern Business School (Pty) Ltd",
+    "nameShort": "SBST",
+    "aliases": [
+      "Southern Business School (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.sbs.ac.za",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "stadio",
+    "nameCanonical": "Stadio (Pty) Ltd",
+    "nameShort": "ST",
+    "aliases": [
+      "Stadio (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.eite.ac.za",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "stellenbosch-graduate-institute",
+    "nameCanonical": "Stellenbosch Graduate Institute (Pty) Ltd",
+    "nameShort": "SGIT",
+    "aliases": [
+      "Stellenbosch Graduate Institute (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "the-independent-institute-of-education",
+    "nameCanonical": "The Independent Institute of Education (Pty) Ltd",
+    "nameShort": "IIET",
+    "aliases": [
+      "The Independent Institute of Education (Pty) Ltd"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "https://www.iie.ac.za",
+    "programmes": [
+      "Higher Certificate in Art and Design (HEQSF",
+      "Higher Certificate in Bookkeeping (HEQSF",
+      "Higher Certificate in Brand Building Practice",
+      "Higher Certificate in Business Principles and Practice",
+      "Higher Certificate in Communication Practices",
+      "Higher Certificate in Computer Technical Support",
+      "Higher Certificate in Construction and Engineering"
+    ],
+    "allowNoProgrammes": true
+  }
+]

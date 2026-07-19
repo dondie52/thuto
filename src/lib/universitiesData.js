@@ -158,6 +158,26 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   "namibia-evangelical-theological-seminary": "biblical-theological-studies",
   "united-lutheran-theological-seminary": "biblical-theological-studies",
   "st-charles-lwanga-major-seminary": "biblical-theological-studies",
+  // Zimbabwe
+  "university-of-zimbabwe": "universities",
+  "national-university-of-science-and-technology-zimbabwe": "universities",
+  "midlands-state-university": "universities",
+  "africa-university": "universities",
+  "zimbabwe-open-university": "universities",
+  "harare-institute-of-technology": "universities",
+  // Zambia
+  "university-of-zambia": "universities",
+  "copperbelt-university": "universities",
+  "mulungushi-university": "universities",
+  "cavendish-university": "universities",
+  "chalimbana-university": "universities",
+  // South Africa (private HEIs from DHET register)
+  "the-independent-institute-of-education": "universities",
+  "eduvos": "universities",
+  "stadio": "universities",
+  "regent-business-school": "universities",
+  "da-vinci-institute-for-technology-management": "universities",
+  "milpark": "universities",
 };
 
 /**

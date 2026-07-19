@@ -248,7 +248,7 @@ export default function Universities() {
           value={country}
           onChange={handleCountryChange}
           label="Country"
-          hint="Switch markets to browse Botswana or Namibia institutions."
+          hint="Switch markets to browse institutions by country."
         />
         <div>
           <label htmlFor="institution-name-search" className="block text-xs font-medium text-slate-600">

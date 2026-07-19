@@ -1,0 +1,2278 @@
+[
+  {
+    "id": "africa-research-university",
+    "nameCanonical": "Africa Research University",
+    "nameShort": "ARU",
+    "aliases": [
+      "Africa Research University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Doctor of Philosophy in Development Studies",
+      "Master of Business Administration",
+      "Master of Education (Education Management)",
+      "Master of Philosophy in Development Studies",
+      "Master of Public Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "african-christian-university",
+    "nameCanonical": "African Christian University",
+    "nameShort": "ACU",
+    "aliases": [
+      "African Christian University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Theology",
+      "Bachelor of Early Childhood Education with a Minor in Christian Education",
+      "Certificate in Biblical Studies",
+      "Diploma in Biblical Studies"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "agape-school-of-nursing",
+    "nameCanonical": "Agape School of Nursing",
+    "nameShort": "ASN",
+    "aliases": [
+      "Agape School of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "arthur-davison-college",
+    "nameCanonical": "Arthur Davison College",
+    "nameShort": "ADC",
+    "aliases": [
+      "Arthur Davison College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Paediatric Nursing- In-Service Training"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "berea-theological-university",
+    "nameCanonical": "Berea Theological University",
+    "nameShort": "BTU",
+    "aliases": [
+      "Berea Theological University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Chaplaincy",
+      "Bachelor of Arts in Ministry and Leadership",
+      "Bachelor of Arts in Theology",
+      "Diploma in Theology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "bethel-university",
+    "nameCanonical": "Bethel University",
+    "nameShort": "BU",
+    "aliases": [
+      "Bethel University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Business Administration (Human Resources Management)",
+      "Bachelor of Business Administration in Accounting",
+      "Bachelor of Education (Religious Education)",
+      "Bachelor of Education in Home Economics",
+      "Bachelor of Education in Music",
+      "Bachelor of Science in Agribusiness",
+      "Bachelor of Education (History)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "blessings-university-of",
+    "nameCanonical": "Blessings University of",
+    "nameShort": "BU",
+    "aliases": [
+      "Blessings University of"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "brook-besor-university",
+    "nameCanonical": "Brook Besor University",
+    "nameShort": "BBU",
+    "aliases": [
+      "Brook Besor University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Economics",
+      "Bachelor of Arts in Education",
+      "Bachelor of Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "cavendish-university",
+    "nameCanonical": "Cavendish University",
+    "nameShort": "CU",
+    "aliases": [
+      "Cavendish University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accountancy",
+      "Bachelor of Arts in Banking and Finance",
+      "Bachelor of Arts in Economics",
+      "Bachelor of Arts in Public Relations",
+      "Bachelor of Arts in Purchasing and Supply",
+      "Bachelor of Arts with Education",
+      "Bachelor of Arts with Education in Commerce and Accounts",
+      "Bachelor of Arts with Education in Religion and English",
+      "Bachelor of Arts with Education in Religious Studies",
+      "Bachelor of Business Administration",
+      "Bachelor of Development Studies",
+      "Bachelor of Information and Technology",
+      "Bachelor of Journalism and Mass Communication",
+      "Bachelor of Laws",
+      "Bachelor of Mass Communication and Public Relations",
+      "Bachelor of Mediciine and Surgery",
+      "Bachelor of Science in Clinical Science",
+      "Bachelor of Science in Computing",
+      "Bachelor of Science in Nursing",
+      "Bachelor of Science in Nursing and Midwifery",
+      "Bachelor of Science in Project Management",
+      "Master of Arts in Public Relations",
+      "Master of Business Administration (Human Resource)",
+      "Master of Development Studies",
+      "Master of Laws in Constitutionalism and Human Rights",
+      "Master of Laws in International Business Law",
+      "Master of Public Health",
+      "Master of Public Health in Global Health",
+      "Master of Social Work",
+      "Postgraduate Diploma In Monitoring And Evaluation",
+      "Postgraduate Diploma in Teaching Methods and Learning Resources",
+      "Bachelor in Bible Studies",
+      "Diploma in Bible Studies",
+      "Diploma in Primary Education",
+      "Master of Arts in Christian Studies"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "chalimbana-university",
+    "nameCanonical": "Chalimbana University",
+    "nameShort": "CU",
+    "aliases": [
+      "Chalimbana University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Gender Studies",
+      "Bachelor of Arts in Music",
+      "Bachelor of Arts in Policing and Security Studies",
+      "Bachelor of Business Administration in Entrepreneurship",
+      "Bachelor of Business Studies with Education",
+      "Bachelor of Education (Secondary)",
+      "Bachelor of Home Economics",
+      "Bachelor of Science in Purchasing and Supply Chain Management",
+      "Bachelor of Special Education with a Teaching Subject",
+      "Bachelor of Sports Management",
+      "Master of Business Administration - General",
+      "Master of Business Administration - Marketing",
+      "Master of Business Studies with Education",
+      "Master of Education in Educational Leadership and Management",
+      "Master of Science in Purchasing and Supply Chain Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "chibuluma-college-of",
+    "nameCanonical": "Chibuluma College of",
+    "nameShort": "CC",
+    "aliases": [
+      "Chibuluma College of"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "chreso-university",
+    "nameCanonical": "Chreso University",
+    "nameShort": "CU",
+    "aliases": [
+      "Chreso University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Leadership and Practical Theology",
+      "Bachelor of Arts with Education (Civic Education and English)",
+      "Bachelor of Arts with Education (Primary)",
+      "Bachelor of Arts with Education (Religious Education and English)",
+      "Bachelor of Business Administration (Finance)",
+      "Bachelor of Business Administration (Human Resources Management)",
+      "Bachelor of Science in Nursing",
+      "Bachelor of Science in Psychology and Counselling",
+      "Bachelor of Science in Public Health",
+      "Diploma in Business Administration",
+      "Diploma in Clinical Medicine",
+      "Diploma in Secondary Education",
+      "Master of Business Administration (Finance)",
+      "Master of Business Administration (General)",
+      "Master of Business Administration (Human Resource Management)",
+      "Master of Business Administration in Project Management",
+      "Master of Public Health",
+      "Master of Science in Psychology and Counselling",
+      "Postgraduate Diploma in Leadership and Governance",
+      "Postgraduate Diploma in Teaching Methodology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "citizen-university-college",
+    "nameCanonical": "Citizen University College",
+    "nameShort": "CUC",
+    "aliases": [
+      "Citizen University College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Development Studies",
+      "Bachelor of Primary Education",
+      "Bachelor of Secondary Education",
+      "Diploma in Secondary Education",
+      "Bachelor of Arts with Education (English and Religious Studies)",
+      "Bachelor of Arts with Education (Mathematics and Business Studies)",
+      "Bachelor of Arts with Education (Mathematics and Religious Studies)",
+      "Bachelor of Arts with Education (Religious Studies and History)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "city-university-of-science-and",
+    "nameCanonical": "City University of Science and",
+    "nameShort": "CUS",
+    "aliases": [
+      "City University of Science and"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Computer Science",
+      "Bachelor of Education (Early Childhood Education)",
+      "Bachelor of Education (Secondary Education)",
+      "Bachelor of Engineering in Civil Engineering",
+      "Bachelor of Engineering in Mechanical Engineering",
+      "Bachelor of Science in Environmental Health",
+      "Diploma in Clinical Medicine",
+      "Diploma in Early Childhood Education",
+      "Diploma in Nursing",
+      "Primary Teachers Diploma"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "copperbelt-university",
+    "nameCanonical": "Copperbelt University",
+    "nameShort": "CU",
+    "aliases": [
+      "Copperbelt University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accountancy",
+      "Bachelor of Aeronautical Engineering",
+      "Bachelor of Architecture",
+      "Bachelor of Arts in Governance and Social Development",
+      "Bachelor of Arts in Peace and Conflict Studies",
+      "Bachelor of Arts in Public Administration",
+      "Bachelor of Computer Engineering",
+      "Bachelor of Dental Surgery",
+      "Bachelor of Development Studies",
+      "Bachelor of Engineering in Aeromechanical Systems Engineering",
+      "Bachelor of Engineering in Chemical Engineering",
+      "Bachelor of Engineering in Civil Engineering",
+      "Bachelor of Engineering in Electrical and Electronic Engineering",
+      "Bachelor of Engineering in Electromechanical Engineering",
+      "Bachelor of Engineering in Environmental Engineering",
+      "Bachelor of Engineering in Geomatic Engineering",
+      "Bachelor of Engineering in Metallurgical Engineering",
+      "Bachelor of Engineering in Minerals Engineering",
+      "Bachelor of Engineering in Mining Engineering",
+      "Bachelor of Engineering in Telecommunications",
+      "Bachelor of Information Technology",
+      "Bachelor of Information Technology with Education",
+      "Bachelor of Insurance and Pensions",
+      "Bachelor of Laws",
+      "Bachelor of Mechanical and Railway Systems Engineering",
+      "Bachelor of Mechanical Engineering",
+      "Bachelor of Mechatronics Engineering",
+      "Bachelor of Medicine and Surgery",
+      "Bachelor of Music (Performance)",
+      "Bachelor of Occupational Safety and Health",
+      "Bachelor of Purchasing and Supply",
+      "Bachelor of Science Clinical Medicine",
+      "Bachelor of Science in Aquatic Resources",
+      "Bachelor of Science in Aquatic Resources Management",
+      "Bachelor of Science in Bioenergy Science",
+      "Bachelor of Science in Biology (Biodiversity and Ecology)",
+      "Bachelor of Science in Biology (Entomology)",
+      "Bachelor of Science in Biology (Biotechnology)",
+      "Bachelor of Science in Biology with Education",
+      "Bachelor of Science in Biomedical Sciences",
+      "Bachelor of Science in Chemistry",
+      "Bachelor of Science in Chemistry with Education",
+      "Bachelor of Science in Construction Management",
+      "Bachelor of Science in Environmental Health",
+      "Bachelor of Science in Forestry",
+      "Bachelor of Science in Hospitality and Tourism Management",
+      "Bachelor of Science in Information and Communication Technology",
+      "Bachelor of Science in Information Systems",
+      "Bachelor of Science in Mathematics",
+      "Bachelor of Science in Mathematics with Education",
+      "Bachelor of Science in Mining and Exploration Geology",
+      "Bachelor of Science in Physics with Education",
+      "Bachelor of Science in Plant and Environmental Sciences",
+      "Bachelor of Science in Public Health",
+      "Bachelor of Science in Pure Physics",
+      "Bachelor of Science in Quantity Surveying",
+      "Bachelor of Science in Real Estate Management",
+      "Bachelor of Science in Science in Biology (Microbiology)",
+      "Bachelor of Science in Sustainable Natural Resources Management and",
+      "Bachelor of Science in Urban and Regional Planning",
+      "Bachelor of Science in Wildlife Management",
+      "Bachelor of Transport and Logistics",
+      "Certificate in Metallurgy",
+      "Certificate in Mining",
+      "Diploma in Accountancy",
+      "Diploma in Business Administration",
+      "Diploma in Chemical Technology",
+      "Diploma in Civil Engineering",
+      "Diploma in Construction Management",
+      "Diploma in Electrical Engineering",
+      "Diploma in Electronics Engineering",
+      "Diploma in Environmental Technology",
+      "Diploma in Human Resource Management",
+      "Diploma in Industrial Electronics Engineering",
+      "Diploma in Information Technology",
+      "Diploma in Metallurgy",
+      "Diploma in Paralegal Studies",
+      "Diploma in Telecommunications",
+      "Doctor of Philosophy in Educational Management, Leadership and",
+      "Doctor of Philosophy in Business Studies",
+      "Doctor of Philosophy in Chemistry",
+      "Doctor of Philosophy in Chemistry Education",
+      "Doctor of Philosophy in Civil Engineering",
+      "Doctor of Philosophy in Climate Change",
+      "Doctor of Philosophy in Construction Management",
+      "Doctor of Philosophy in Electrical Engineering",
+      "Doctor of Philosophy in Geology",
+      "Doctor of Philosophy in Mathematics and Science Education",
+      "Doctor of Philosophy in Mathematics Education",
+      "Doctor of Philosophy in Mechanical Engineering",
+      "Doctor of Philosophy in Peace and Conflict Studies",
+      "Doctor of Philosophy in Physics Education",
+      "Doctor of Philosophy in Project Management",
+      "Doctor of Philosophy in Quantity Surveying",
+      "Doctor of Philosophy in Real Estate Studies",
+      "Doctor of Philosophy in Sustainable Agriculture",
+      "Doctor of Philosophy in Sustainable Mining",
+      "Doctor of Philosophy in Tropical Ecology and Biodiversity Management",
+      "Doctor of Philosophy in Urban and Regional Planning",
+      "Master of Arts in Economic Policy"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "copperstone-university",
+    "nameCanonical": "Copperstone University",
+    "nameShort": "CU",
+    "aliases": [
+      "Copperstone University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Development Studies",
+      "Bachelor of Engineering in Electrical Engineering",
+      "Bachelor of Human Resource Management",
+      "Bachelor of Logistics and Transport",
+      "Bachelor of Mechanical Engineering",
+      "Bachelor of Science in Computer Science",
+      "Bachelor of Science in Forensic Accounting and Auditing",
+      "Bachelor of Science in Marketing",
+      "Bachelor of Science in Occupational Health",
+      "Bachelor of Social work",
+      "Diploma in Building and Construction",
+      "Diploma in Business Administration",
+      "Diploma in Electrical Engineering",
+      "Diploma in Marketing",
+      "Diploma in Mechanical Engineering",
+      "Diploma in Mining Engineering",
+      "Diploma in Social Work",
+      "Master of Development Studies"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "dmi-st-eugene-university",
+    "nameCanonical": "DMI-St. Eugene University",
+    "nameShort": "DEU",
+    "aliases": [
+      "DMI-St. Eugene University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Secondary Education (Civic Education and Religious",
+      "Bachelor of Arts in Secondary Education (Civic Education and English)",
+      "Bachelor of Arts in Secondary Education (Geography and History)",
+      "Bachelor of Arts with Education (English)",
+      "Bachelor of Arts with Education (History)",
+      "Bachelor of Business Administration",
+      "Bachelor of Computer Science",
+      "Bachelor of Education (Biology)",
+      "Bachelor of Education (Primary Education)",
+      "Bachelor of Engineering in Computer Science Engineering",
+      "Bachelor of Science in Business Information System",
+      "Bachelor of Science in Business Management",
+      "Bachelor of Science in Digital Marketing",
+      "Bachelor of Science in Graphics, Multimedia and Animation",
+      "Bachelor of Science in Hardware, Networking and Security Administration",
+      "Bachelor of Science in Secondary Education (Biology and Chemistry)",
+      "Bachelor of Science in Secondary Education (Information",
+      "Bachelor of Science in Secondary Education (Mathematics and Biology)",
+      "Bachelor of Science in Secondary Education (Physics and Chemistry)",
+      "Bachelor of Science with Education in Mathematics",
+      "Diploma in Business Management",
+      "Diploma in Clinical Medicine",
+      "Diploma in Commerce",
+      "Diploma in Computer Science",
+      "Diploma in Environmental Health",
+      "Diploma in Nursing",
+      "Master of Business Administration",
+      "Master of Business Administration in Finance and International Business",
+      "Master of Business Administration in Human Resources Management",
+      "Master of Commerce in Accounts and Finance",
+      "Master of Education - Educational Administration and Management",
+      "Master of Education (Biology)",
+      "Master of Education (Chemistry)",
+      "Master of Education (Civic Education)",
+      "Master of Education (Geography Education)",
+      "Master of Education (Mathematics Education)",
+      "Master of Education in Physics Education",
+      "Master of Science in Computer Science",
+      "Master of Social Work Specialised in Community Development",
+      "Master of Social Work Specialised in Project Management, Monitoring",
+      "Post Graduate Diploma in Teaching Methodology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "dovecot-college-of-health",
+    "nameCanonical": "Dovecot College of Health",
+    "nameShort": "DCH",
+    "aliases": [
+      "Dovecot College of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing",
+      "Diploma in Clinical medicine"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "eden-university",
+    "nameCanonical": "Eden University",
+    "nameShort": "EU",
+    "aliases": [
+      "Eden University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Laws",
+      "Bachelor of Medicine and Bachelor of Surgery",
+      "Bachelor of Science in Biology",
+      "Bachelor of Science in Environmental Health",
+      "Bachelor of Science in Nursing",
+      "Diploma in Midwifery"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "evangelical-university",
+    "nameCanonical": "Evangelical University",
+    "nameShort": "EU",
+    "aliases": [
+      "Evangelical University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Ministry Studies",
+      "Diploma in Missions and Development"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "e-lyon-nursing-institute-of",
+    "nameCanonical": "E’lyon Nursing Institute of",
+    "nameShort": "ENI",
+    "aliases": [
+      "E’lyon Nursing Institute of"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "fountain-of-peace",
+    "nameCanonical": "Fountain of Peace",
+    "nameShort": "FP",
+    "aliases": [
+      "Fountain of Peace"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing",
+      "Diploma in Midwifery"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "gideon-robert-university",
+    "nameCanonical": "Gideon Robert University",
+    "nameShort": "GRU",
+    "aliases": [
+      "Gideon Robert University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accountancy",
+      "Bachelor of Arts with Education (Civic Education)",
+      "Bachelor of Arts with Education in Geography",
+      "Bachelor of Business Administration",
+      "Bachelor of Human Resource Management",
+      "Bachelor of Medicine and Surgery",
+      "Bachelor of Public Health",
+      "Bachelor of Science in Biochemistry Sciences",
+      "Bachelor of Science in Clinical Medicine",
+      "Bachelor of Science in Nursing",
+      "Diploma in Clinical Medicine",
+      "Diploma in Registered Nursing (Mapanza Campus)",
+      "Master of Education in Civic Education",
+      "Master of Education in Linguistics",
+      "Post Graduate Diploma in Teaching Methodology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "glory-academy-college",
+    "nameCanonical": "Glory Academy College",
+    "nameShort": "GAC",
+    "aliases": [
+      "Glory Academy College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "harvest-university",
+    "nameCanonical": "Harvest University",
+    "nameShort": "HU",
+    "aliases": [
+      "Harvest University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Animal Science and Production",
+      "Bachelor of Science in Environmental Health",
+      "Diploma in Environmental Health",
+      "Bachelor of Business Administration",
+      "Bachelor of Education (Primary Education)",
+      "Bachelor of Education in Arts and Business Studies",
+      "Bachelor of Education in Business Studies",
+      "Bachelor of Human Resources Management",
+      "Bachelor of Public Administration and Development",
+      "Bachelor of Science in Agriculture Science",
+      "Bachelor of Science in Environmental Management System",
+      "Bachelor of Science in Information and Communication Technology with",
+      "Bachelor of Social Work"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ideal-college-of-health-and",
+    "nameCanonical": "Ideal College of Health and",
+    "nameShort": "ICH",
+    "aliases": [
+      "Ideal College of Health and"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "itawa-college-of-nursing",
+    "nameCanonical": "Itawa College of Nursing",
+    "nameShort": "ICN",
+    "aliases": [
+      "Itawa College of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "jamodha-university-college",
+    "nameCanonical": "Jamodha University College",
+    "nameShort": "JUC",
+    "aliases": [
+      "Jamodha University College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Sociology and Social Work",
+      "Bachelor of Business Administration",
+      "Bachelor of Development Studies",
+      "Bachelor of Education in Primary Education",
+      "Bachelor of Laws"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "justo-mwale-university",
+    "nameCanonical": "Justo Mwale University",
+    "nameShort": "JMU",
+    "aliases": [
+      "Justo Mwale University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Master of Chaplaincy",
+      "Master of Education in Religious Studies",
+      "Post Graduate Diploma in Teaching Methodology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kafue-institute-of-health",
+    "nameCanonical": "Kafue Institute of Health",
+    "nameShort": "KIH",
+    "aliases": [
+      "Kafue Institute of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kalulushi-college-of-nursing",
+    "nameCanonical": "Kalulushi College of Nursing",
+    "nameShort": "KCN",
+    "aliases": [
+      "Kalulushi College of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kalulushi-training-centre",
+    "nameCanonical": "Kalulushi Training Centre",
+    "nameShort": "KTC",
+    "aliases": [
+      "Kalulushi Training Centre"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Clinical Medicine"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kapasa-makasa-university",
+    "nameCanonical": "Kapasa Makasa University",
+    "nameShort": "KMU",
+    "aliases": [
+      "Kapasa Makasa University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Science in Agroforestry",
+      "Bachelor of Science in Animal Science",
+      "Bachelor of Science in Aquaculture",
+      "Bachelor of Science in Cyber Security",
+      "Bachelor of Science in Fisheries",
+      "Bachelor of Science in Fisheries and Aquaculture",
+      "Bachelor of Science in Fisheries Management",
+      "Bachelor of Science in Information Communication Technology with",
+      "Bachelor of Science in Sustainable Agriculture"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kent-college-of-nursing-and",
+    "nameCanonical": "Kent College of Nursing and",
+    "nameShort": "KCN",
+    "aliases": [
+      "Kent College of Nursing and"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kopaline-university",
+    "nameCanonical": "Kopaline University",
+    "nameShort": "KU",
+    "aliases": [
+      "Kopaline University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Business Administration",
+      "Bachelor of Development Studies",
+      "Bachelor of Education (Early Childhood Education)",
+      "Bachelor of Science in Human Resource Management",
+      "Bachelor of Arts in Development Studies",
+      "Bachelor of Arts in Journalism and Mass Communication",
+      "Bachelor of Arts in Marketing",
+      "Bachelor of Arts in Public Administration",
+      "Bachelor of Arts in Public Relations",
+      "Bachelor of Business in Information Technology",
+      "Bachelor of Education in Early Childhood Education",
+      "Bachelor of Education in Primary Education",
+      "Bachelor of laws",
+      "Bachelor of Science in Banking and Finance",
+      "Bachelor of Science in Climate Change, Environment and Sustainable",
+      "Bachelor of Science in Environmental Protection and Management",
+      "Bachelor of Science in Food and Nutrition",
+      "Bachelor of Science in Wildlife Conservation and Management",
+      "Diploma in Nursing",
+      "Bachelor of Medicine and Surgery (MBChB)",
+      "Bachelor of Pharmacy",
+      "Bachelor of Science in Biology with Education",
+      "Bachelor of Science in Environmental Health",
+      "Bachelor of Science in Medical Imaging (Ultrasonography)",
+      "Bachelor of Science in Nursing",
+      "Bachelor of Science in Nutrition and Dietetics",
+      "Bachelor of Science in Physiotherapy",
+      "Bachelor of Science in Public Health",
+      "Diploma in Physiotherapy",
+      "Master of Public Health"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "kwame-nkrumah-university",
+    "nameCanonical": "Kwame Nkrumah University",
+    "nameShort": "KNU",
+    "aliases": [
+      "Kwame Nkrumah University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor Arts in Entrepreneurship",
+      "Bachelor of Accountancy",
+      "Bachelor of Arts in Economics",
+      "Bachelor of Arts in Educational Administration and Management",
+      "Bachelor of Arts in Human Resource Management",
+      "Bachelor of Arts with Education (Civic Education)",
+      "Bachelor of Arts with Education (English)",
+      "Bachelor of Arts with Education (French Language)",
+      "Bachelor of Arts with Education (Geography)",
+      "Bachelor of Arts with Education (Linguistics and African Languages)",
+      "Bachelor of Arts with Education (Religious Studies)",
+      "Bachelor of Arts with Education (Special Needs Education)",
+      "Bachelor of Arts with Education in Linguistics and African Languages",
+      "Bachelor of Business Administration",
+      "Bachelor of Business Studies with Education",
+      "Bachelor of Education (Early Childhood Education)",
+      "Bachelor of Education (Physical Education and Sport)",
+      "Bachelor of Education (Primary Education)",
+      "Bachelor of Education in Educational Psychology",
+      "Bachelor of Entrepreneurship with Education",
+      "Bachelor of Information and Communication Technology with",
+      "Bachelor of Science in Design and Technology with Education",
+      "Bachelor of Science in Marketing",
+      "Bachelor of Science in Procurement and Supply Chain Management",
+      "Bachelor of Science with Education (Biology)",
+      "Bachelor of Science with Education - Physics",
+      "Bachelor of Science with Education (Chemistry)",
+      "Bachelor of Science with Education (Mathematics)",
+      "Certificate in Special Needs Education",
+      "Diploma in Agriculture Science Education",
+      "Diploma in Early Childhood Education",
+      "Diploma in Teaching Methodology",
+      "Master of Arts in History",
+      "Master of Arts in Linguistic Science",
+      "Master of Arts in Religious Studies",
+      "Master of Business Administration (Executive)",
+      "Master of Business Administration (Finance)",
+      "Master of Business Administration (General)",
+      "Master of Business Studies",
+      "Master of Education in Mathematics Education",
+      "Master of Education in Science Education",
+      "Master of Education in Sociology of Education",
+      "Master of Educational Administration and Leadership",
+      "Primary Teachers Diploma"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "london-american-university",
+    "nameCanonical": "London American University",
+    "nameShort": "LAU",
+    "aliases": [
+      "London American University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Business Administration",
+      "Bachelor of Science in Business Information Systems",
+      "Diploma in Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "luapula-school-of-health",
+    "nameCanonical": "Luapula School of Health",
+    "nameShort": "LSH",
+    "aliases": [
+      "Luapula School of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "lusaka-goldsmiths-university",
+    "nameCanonical": "Lusaka Goldsmiths University",
+    "nameShort": "LGU",
+    "aliases": [
+      "Lusaka Goldsmiths University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Business Administration",
+      "Bachelor of Laws",
+      "Diploma in Law"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "lusaka-institute-of-applied",
+    "nameCanonical": "Lusaka Institute of Applied",
+    "nameShort": "LIA",
+    "aliases": [
+      "Lusaka Institute of Applied"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing",
+      "Diploma in Clinical Medicine"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "macha-school-of-nursing",
+    "nameCanonical": "Macha School of Nursing",
+    "nameShort": "MSN",
+    "aliases": [
+      "Macha School of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mansfield-university",
+    "nameCanonical": "Mansfield University",
+    "nameShort": "MU",
+    "aliases": [
+      "Mansfield University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Junior Secondary Teachers Diploma in Computer Studies",
+      "Junior Secondary Teachers Diploma in Business Studies",
+      "Secondary Diploma in Business Studies"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mission-college-of-nursing",
+    "nameCanonical": "Mission College of Nursing",
+    "nameShort": "MCN",
+    "aliases": [
+      "Mission College of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mkushi-college-of-health",
+    "nameCanonical": "Mkushi College of Health",
+    "nameShort": "MCH",
+    "aliases": [
+      "Mkushi College of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing",
+      "Diploma in Clinical Medicine"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "monze-school-of-nursing",
+    "nameCanonical": "Monze School of Nursing",
+    "nameShort": "MSN",
+    "aliases": [
+      "Monze School of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "muchinga-college-of-health",
+    "nameCanonical": "Muchinga College of Health",
+    "nameShort": "MCH",
+    "aliases": [
+      "Muchinga College of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mufulira-professional-college",
+    "nameCanonical": "Mufulira Professional College",
+    "nameShort": "MPC",
+    "aliases": [
+      "Mufulira Professional College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mukuba-institute-of-health",
+    "nameCanonical": "Mukuba Institute of Health",
+    "nameShort": "MIH",
+    "aliases": [
+      "Mukuba Institute of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mukuba-university",
+    "nameCanonical": "Mukuba University",
+    "nameShort": "MU",
+    "aliases": [
+      "Mukuba University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Education (Biology)",
+      "Bachelor of Education in Chemistry",
+      "Bachelor of Education in Geography",
+      "Bachelor of Education in Guidance and Counselling",
+      "Bachelor of Education in Nutritional Sciences",
+      "Bachelor of Education in Physics",
+      "Bachelor of Education in Textile and Clothing",
+      "Bachelor of Science in Agribusiness Management and Entrepreneurship",
+      "Bachelor of Science in Biology",
+      "Bachelor of Science in Chemistry",
+      "Bachelor of Science in Crop Production",
+      "Bachelor of Science in Environmental and Climate Change",
+      "Bachelor of Science in Information Systems and Digital Business",
+      "Bachelor of Science in Mathematics and Statistics",
+      "Bachelor of Science in Mathematics with Education",
+      "Bachelor of Science in Nutritional Science",
+      "Bachelor of Science in Physics",
+      "Diploma in Home Economics",
+      "Master of Education in Educational Management and Administration",
+      "Master of Education in Quality Assurance",
+      "Master of Education in Science Education",
+      "Master of Science in Chemistry",
+      "Master of Science in Ecology, Biodiversity and Ecosystems",
+      "Master of Science in Nutritional Science",
+      "Master of Science in Physics"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mulungushi-university",
+    "nameCanonical": "Mulungushi University",
+    "nameShort": "MU",
+    "aliases": [
+      "Mulungushi University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accounting and Finance",
+      "Bachelor of Arts in Communication Studies",
+      "Bachelor of Arts in Development Planning and Management",
+      "Bachelor of Arts in Governance and Development",
+      "Bachelor of Arts in Labour and Human Resource Management",
+      "Bachelor of Arts in Local Government Finance",
+      "Bachelor of Arts in Office Management",
+      "Bachelor of Arts with Education (English and Chinese)",
+      "Bachelor of Arts with Education (English and Religious Studies)",
+      "Bachelor of Arts with Education (Geography and Physical Education",
+      "Bachelor of Biomedical Sciences",
+      "Bachelor of business Administration and entrepreneurship",
+      "Bachelor of Business Studies with Education",
+      "Bachelor of Commerce",
+      "Bachelor of Development Studies",
+      "Bachelor of Economics",
+      "Bachelor of Economics and Finance",
+      "Bachelor of Education in Primary Teaching",
+      "Bachelor of Engineering in Agricultural Engineering",
+      "Bachelor of Engineering in Civil Engineering",
+      "Bachelor of Engineering in Electrical and Electronic Engineering",
+      "Bachelor of Engineering in Industrial Engineering",
+      "Bachelor of Engineering in Mechanical Engineering",
+      "Bachelor of Human Resource Management",
+      "Bachelor of Information and Communication Technology with",
+      "Bachelor of Information Systems",
+      "Bachelor of Labour and Employment Relations",
+      "Bachelor of Medicine and Bachelor and Surgery",
+      "Bachelor of Pharmacy",
+      "Bachelor of Science- Agriculture",
+      "Bachelor of Science Computer Science",
+      "Bachelor of Science in Agribusiness Management",
+      "Bachelor of Science in Biochemistry",
+      "Bachelor of Science in Business Informatics",
+      "Bachelor of Science in Chemistry",
+      "Bachelor of Science in Cyber Security",
+      "Bachelor of Science in Data Science",
+      "Bachelor of Science in Economics and Statistics",
+      "Bachelor of Science in Laboratory Technology",
+      "Bachelor of Science in Medical Physics",
+      "Bachelor of Science, Environmental Studies",
+      "Diploma in Teaching Methodology",
+      "Doctor of Philosophy in Information Systems",
+      "Doctor of Philosophy in Information Technology",
+      "Master of Arts in Economics",
+      "Master of Arts in Educational Administration and Leadership",
+      "Master of Arts in Educational Policy, Planning and Management",
+      "Master of Arts in Journalism and Mass Communication",
+      "Master of Arts in Linguistic Science",
+      "Master of Arts in Literature",
+      "Master of Arts in Religious Studies",
+      "Master of Business Administration and Leadership",
+      "Master of Computer Science with Artificial Intelligence",
+      "Master of Disaster Studies",
+      "Master of Education in Curriculum Studies",
+      "Master of Education in Measurement, Assessment and Evaluation",
+      "Master of Engineering in Project Management",
+      "Master of Labour and Employment Relations",
+      "Master of Laws",
+      "Master of Science in Accounting and Finance",
+      "Master of Science in Agriculture with Education",
+      "Master of Science in Biochemistry",
+      "Master of Science in Chemical Pathology",
+      "Master of Science in Computer Science",
+      "Master of Science in Cyber Security",
+      "Master of Science in Data Science and Big Data",
+      "Master of Science in Human Anatomy",
+      "Master of Science in Human Resource Management",
+      "Master of Science in Immuno Pathology",
+      "Master of Science in Information Technology",
+      "Master of Transformative Community Development",
+      "Masters of Business Administration",
+      "Masters of Business Administration and Entrepreneurship",
+      "Masters of Computer Science"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mwami-college-of-nursing",
+    "nameCanonical": "Mwami College of Nursing",
+    "nameShort": "MCN",
+    "aliases": [
+      "Mwami College of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "namwianga-mission-college",
+    "nameCanonical": "Namwianga Mission College",
+    "nameShort": "NMC",
+    "aliases": [
+      "Namwianga Mission College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "national-college-of-health",
+    "nameCanonical": "National College of Health",
+    "nameShort": "NCH",
+    "aliases": [
+      "National College of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing",
+      "1. Diploma in Nursing",
+      "Diploma in Community Health Assistant",
+      "Certificate in Community Health Assistant"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "north-western-college-of",
+    "nameCanonical": "North Western College of",
+    "nameShort": "NWC",
+    "aliases": [
+      "North Western College of"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Clinical medicine",
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "northrise-university",
+    "nameCanonical": "Northrise University",
+    "nameShort": "NU",
+    "aliases": [
+      "Northrise University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Certificate in Teaching Methodology",
+      "Bachelor of Business Administration",
+      "Bachelor of Finance and Accounting",
+      "Bachelor of Human Resource Management",
+      "Bachelor of Information Technology",
+      "Bachelor of Laws",
+      "Bachelor of Science in Computer Science",
+      "Bachelor of Science Nursing",
+      "Bachelor of Theology",
+      "Diploma in Human Resource Management",
+      "Executive Master of Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "open-window-university",
+    "nameCanonical": "Open Window University",
+    "nameShort": "OWU",
+    "aliases": [
+      "Open Window University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Design Arts",
+      "Bachelor of Arts in Experimental Media",
+      "Bachelor of Arts in Interaction Design",
+      "Bachelor of Arts in Moving Image",
+      "Bachelor of Commerce in Marketing and Management Science",
+      "Bachelor of Computing",
+      "Certificate in Film and Design Essentials",
+      "Master of Arts in Creative Arts",
+      "Master of Commerce in Marketing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "palabana-university",
+    "nameCanonical": "Palabana University",
+    "nameShort": "PU",
+    "aliases": [
+      "Palabana University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Agriculture Science with Education",
+      "Bachelor of Animal Science",
+      "Bachelor of Aquaculture and Fisheries Science",
+      "Diploma in Animal Production"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "phoenix-open-university",
+    "nameCanonical": "Phoenix Open University",
+    "nameShort": "POU",
+    "aliases": [
+      "Phoenix Open University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts with Education (Civic Education and English)",
+      "Bachelor of Business Studies with Education",
+      "Master of Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "pillar-of-knowledge-college",
+    "nameCanonical": "Pillar of Knowledge College",
+    "nameShort": "PKC",
+    "aliases": [
+      "Pillar of Knowledge College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "plains-of-mamre-college",
+    "nameCanonical": "Plains of Mamre College",
+    "nameShort": "PMC",
+    "aliases": [
+      "Plains of Mamre College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "premium-school-of-health",
+    "nameCanonical": "Premium School of Health",
+    "nameShort": "PSH",
+    "aliases": [
+      "Premium School of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Clinical Medicine",
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "rockview-university",
+    "nameCanonical": "Rockview University",
+    "nameShort": "RU",
+    "aliases": [
+      "Rockview University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accountancy (Main Campus)",
+      "Bachelor of Accountancy (Ndola Campus)",
+      "Bachelor of Arts in Economics (Main Campus)",
+      "Bachelor of Arts in Economics (Ndola Campus)",
+      "Bachelor of Arts with Education (Civic Education and English) (Main",
+      "Bachelor of Arts with Education (Civic Education and English) (Ndola",
+      "Bachelor of Arts with Education (English Language and Literature) (Main",
+      "Bachelor of Arts with Education (History and English) (Main Campus)",
+      "Bachelor of Arts with Education (History and English) (Ndola Campus)",
+      "Bachelor of Arts with Education in Civic Education and Geography (Main",
+      "Bachelor of Business Administration (Main Campus)",
+      "Bachelor of Business Administration (Ndola Campus)",
+      "Bachelor of Education (Geography and Mathematics) (Main Campus)",
+      "Bachelor of Education (Geography and Mathematics) (Ndola Campus)",
+      "Bachelor of Education in Education Administration and Management",
+      "Bachelor of Laws (Main Campus)",
+      "Bachelor of Public Health (Main Campus)",
+      "Bachelor of Science in Agriculture Science (Main Campus)",
+      "Bachelor of Science in Education in (Home Economics) (Main Campus)",
+      "Bachelor of Science in Education in (Home Economics) (Ndola Campus)",
+      "Bachelor of Science in Food and Nutrition (Main Campus)",
+      "Bachelor of Science with Education (Physics and Chemistry) (Main",
+      "Bachelor of Science with Education (Physics and Chemistry) (Ndola",
+      "Bachelor of Science with Education in Agriculture (Main Campus)",
+      "Bachelor of Science with Education in Agriculture (Ndola Campus)",
+      "Bachelor of Science with Education in Textile Design and Technology",
+      "Diploma in Business Management (Main Campus)",
+      "Diploma in Business Management (Ndola Campus)",
+      "Diploma in Clinical Medicine (Main Campus)",
+      "Diploma in Early Childhood Education (Main Campus)",
+      "Diploma in Nursing (Chipata Campus)",
+      "Diploma in Secondary Teaching (Business Studies) (Main Campus)",
+      "Diploma in Secondary Teaching (Business Studies) (Ndola Campus)",
+      "Diploma in Secondary Teaching (Religious Studies and Mathematics)",
+      "Diploma in Secondary Teaching (Social Sciences and English) (Main",
+      "Diploma in Secondary Teaching (Social Sciences and English) (Ndola",
+      "Diploma in Secondary Teaching (Zambian Languages and English) (Main",
+      "Diploma in Secondary Teaching (Zambian Languages and English)",
+      "Master of Arts in Civic Education (Main Campus)",
+      "Master of Business Administration – Finance (Main Campus)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "rusangu-university",
+    "nameCanonical": "Rusangu University",
+    "nameShort": "RU",
+    "aliases": [
+      "Rusangu University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in History with Education",
+      "Bachelor of Arts with Education in History",
+      "Bachelor of Arts with Education in Music",
+      "Bachelor of Science General and Business Agriculture",
+      "Bachelor of Science in Biomedical Science",
+      "Bachelor of Science in Geography",
+      "Bachelor of Science in Mathematics",
+      "Bachelor of Science Nursing (Lusaka Campus)",
+      "Bachelor of Science Nursing (Monze Campus)",
+      "Bachelor of Science with Education (Geography)",
+      "Bachelor of Science with Education - Agriculture Science",
+      "Bachelor of Science with Education in Biology",
+      "Bachelor of Science with Education in Mathematics",
+      "Master of Educational Administration and Curriculum Development",
+      "Master of Public Health",
+      "Master of Science in Agriculture with Education",
+      "Master of Science with Education in Geography and Environmental"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "sancta-maria-college",
+    "nameCanonical": "Sancta Maria College",
+    "nameShort": "SMC",
+    "aliases": [
+      "Sancta Maria College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "sanridge-institute-of-health",
+    "nameCanonical": "Sanridge Institute of Health",
+    "nameShort": "SIH",
+    "aliases": [
+      "Sanridge Institute of Health"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "shalom-school-of-health-and",
+    "nameCanonical": "Shalom School of Health and",
+    "nameShort": "SSH",
+    "aliases": [
+      "Shalom School of Health and"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing",
+      "Diploma in Clinical medicine",
+      "Diploma in Environmental Health"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "silver-maple-college-of",
+    "nameCanonical": "Silver Maple College of",
+    "nameShort": "SMC",
+    "aliases": [
+      "Silver Maple College of"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "south-valley-university",
+    "nameCanonical": "South Valley University",
+    "nameShort": "SVU",
+    "aliases": [
+      "South Valley University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Science in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "st-bonaventure-university",
+    "nameCanonical": "St. Bonaventure University",
+    "nameShort": "SBU",
+    "aliases": [
+      "St. Bonaventure University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Philosophy",
+      "Diploma in Philosophy",
+      "Diploma in Philosophy and Religious Studies"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "st-dominic-s-major-seminary",
+    "nameCanonical": "St. Dominic’s Major Seminary",
+    "nameShort": "SDMS",
+    "aliases": [
+      "St. Dominic’s Major Seminary"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Theology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "st-joseph-college-of-nursing",
+    "nameCanonical": "St. Joseph College of Nursing",
+    "nameShort": "SJCN",
+    "aliases": [
+      "St. Joseph College of Nursing"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "st-philomena-college",
+    "nameCanonical": "St. Philomena College",
+    "nameShort": "SPC",
+    "aliases": [
+      "St. Philomena College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing",
+      "Diploma in Clinical Medicine"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "sunningdale-university",
+    "nameCanonical": "Sunningdale University",
+    "nameShort": "SU",
+    "aliases": [
+      "Sunningdale University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Science in Banking and Finance",
+      "Bachelor of Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "supershine-university",
+    "nameCanonical": "Supershine University",
+    "nameShort": "SU",
+    "aliases": [
+      "Supershine University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Science in Business Administration",
+      "Bachelor of Arts in Economics",
+      "Bachelor of Education (Primary Education)",
+      "Bachelor of Education (Secondary Education)",
+      "Bachelor of Social Work",
+      "Bachelor of Arts in Public Administration",
+      "Master of Social Work",
+      "Master of Science in Economics and Finance"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "texila-american-university",
+    "nameCanonical": "Texila American University",
+    "nameShort": "TAU",
+    "aliases": [
+      "Texila American University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Medicine and Bachelor of Surgery",
+      "Bachelor of Science in Artificial Intelligenece",
+      "Bachelor of Science in Banking and Insurance",
+      "Bachelor of Science in Cyber Security",
+      "Bachelor of Science in Data Management and Warehousing",
+      "Bachelor of Science in Digital Forensics",
+      "Bachelor of Science in Finance And Accounting",
+      "Bachelor of Science in Hospitality Management",
+      "Bachelor of Science in Human Resource Management",
+      "Bachelor of Science in Information Technology",
+      "Bachelor of Science in Project Management",
+      "Bachelor of Science in Software Development",
+      "Bachelor of Science in Tourism Management",
+      "Bachelor Science in Marketing",
+      "Master of Project Management",
+      "Master of Science in Banking and Insurance",
+      "Master of Science in Human Resource Management",
+      "Master of Science in Marketing",
+      "Master of Science in Project Management",
+      "Bachelor of Arts in Bible Theology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "trinity-university",
+    "nameCanonical": "Trinity University",
+    "nameShort": "TU",
+    "aliases": [
+      "Trinity University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "unicohs-university-college",
+    "nameCanonical": "UNICOHS University College",
+    "nameShort": "UUC",
+    "aliases": [
+      "UNICOHS University College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Environmental Health",
+      "Bachelor of Public Health",
+      "Bachelor of Science in Nursing",
+      "Diploma in Environmental Health Technology",
+      "Diploma in Registered Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "unicaf-university-zambia",
+    "nameCanonical": "Unicaf University Zambia",
+    "nameShort": "UUZ",
+    "aliases": [
+      "Unicaf University Zambia"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor In Hospitality Management",
+      "Bachelor of Arts in English Language and Literature",
+      "Bachelor of Arts in Pre - Primary Education",
+      "Bachelor of Arts in Public Administration and International Relations",
+      "Bachelor of Arts in Public Relations and Mass Communication",
+      "Bachelor of Business Administration",
+      "Bachelor of Human Resource Management",
+      "Bachelor of Laws",
+      "Bachelor of Marketing Management",
+      "Bachelor of Primary Education",
+      "Bachelor of Science Accounting",
+      "Bachelor of Science in Occupational Health and Safety Management",
+      "Bachelor of Science in Project Management",
+      "Doctor of Philosophy in Business Studies",
+      "Doctor of Philosophy in Education",
+      "Doctorate of Business Administration",
+      "Master in Literature",
+      "Master of Arts in Educational Leadership and Management",
+      "Master of Arts in English Language and Literature",
+      "Master of Arts with Education",
+      "Master of Business Administration",
+      "Master of Business Administration (Finance)",
+      "Master of Business Administration (Health Management)",
+      "Master of Business Administration (Management)",
+      "Master of Business Administration in Entrepreneurship",
+      "Master of Business Administration in Human Resource Management",
+      "Master of Business Administration in Management Information Systems",
+      "Master of Business Administration in Marketing",
+      "Master of Business Administration in Oil, Gas and Energy Management",
+      "Master of Business Administration in Project Management",
+      "Master of Education in Leadership and Management",
+      "Master of Laws",
+      "Master of Public Administration",
+      "Master of Science in Managerial Psychology",
+      "Master of Science in Computer Science",
+      "Master of Science in HealthCare Management",
+      "Master of Science in Sustainable Development",
+      "Masters Web Design and Development",
+      "Diploma in Theology",
+      "Bachelor of Theology",
+      "Diploma in Diaconal Ministry"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "university-of-africa",
+    "nameCanonical": "University of Africa",
+    "nameShort": "UA",
+    "aliases": [
+      "University of Africa"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Public Administration",
+      "Bachelor of Education (Primary)",
+      "Bachelor of Human Resource Management",
+      "Bachelor of Science in Agribusiness Management",
+      "Bachelor of Science in Sustainable Health and Environmental Studies",
+      "Bachelor of Transport and Logistics",
+      "Diploma in Business Administration",
+      "Diploma in Human Resource Management",
+      "Diploma in Law",
+      "Diploma in Marketing",
+      "Diploma in Occupational Health and Safety Environment",
+      "Diploma in Primary Education",
+      "Diploma in Secondary Education",
+      "Diploma in Transport and Logistics",
+      "Masters in Literacy and Literacy Studies and Development",
+      "Postgraduate Diploma in Teaching Methodology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "university-of-edenberg",
+    "nameCanonical": "University of Edenberg",
+    "nameShort": "UE",
+    "aliases": [
+      "University of Edenberg"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Business Administration",
+      "Bachelor of Education in Primary Education",
+      "Bachelor of Education in Secondary Education",
+      "Bachelor of Public Administration",
+      "Master of Education in Education Administration and Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "university-of-kabwe",
+    "nameCanonical": "University of Kabwe",
+    "nameShort": "UK",
+    "aliases": [
+      "University of Kabwe"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accounting and Finance",
+      "Bachelor of Arts in Social Work",
+      "Bachelor of Business Administration",
+      "Bachelor of Economics",
+      "Bachelor of Entrepreneurship and Innovation",
+      "Bachelor of Finance and Financial Technology",
+      "Bachelor of Marketing",
+      "Bachelor of Public Administration",
+      "Bachelor of Science in Agribusiness and Entrepreneurship",
+      "Bachelor of Science in Environmental Management",
+      "Bachelor of Science in Mathematics",
+      "Bachelor of Science in Mathematics with Statistics"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "university-of-lusaka",
+    "nameCanonical": "University of Lusaka",
+    "nameShort": "UL",
+    "aliases": [
+      "University of Lusaka"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Economics",
+      "Bachelor of Business Administration",
+      "Bachelor of Laws",
+      "Bachelor of Medicine and Bachelor of Surgery",
+      "Bachelor of Science in Actuarial Science",
+      "Bachelor of Science in Biomedical Science",
+      "Bachelor of Science in Nursing",
+      "Bachelor of Science in Real Estate Management",
+      "Certificate in Health Informatics",
+      "Diploma in Nursing",
+      "Executive Master of Business Administration in Leadership and Wealth",
+      "Master of Arts in Development Studies",
+      "Master of Arts in Peace and Security Studies",
+      "Master of Business Administration",
+      "Master of Business Administration - Finance",
+      "Master of Business Administration in Health Care Management",
+      "Master of Education in Education Administration and Management",
+      "Master of Political Science and International Relations",
+      "Master of Science in Accounting and Finance",
+      "Master of Science in Auditing",
+      "Master of Science in Economics and Finance",
+      "Master of Science in Environmental Management",
+      "Master of Science in Insurance and Pensions Management",
+      "Master of Science in Marketing Management",
+      "Master of Science in Procurement and Supply Chain Management",
+      "Master of Science in Project Management",
+      "Master of Science in Public Finance and Taxation",
+      "Master of Science in Risk Management",
+      "Post Graduate Diploma in Supervision and Examination of Students",
+      "Postgraduate Diploma in Quality Assurance in Higher Education",
+      "Postgraduate Diploma in Teaching Methodology"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "university-of-zambia",
+    "nameCanonical": "University of Zambia",
+    "nameShort": "UZ",
+    "aliases": [
+      "University of Zambia"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Mineral Science (Geology)",
+      "Bachelor of Agricultural Sciences in Plant Science",
+      "Bachelor of Agricultural Sciences in Soil Sciences",
+      "Bachelor of Arts in Adult Education",
+      "Bachelor of Arts in Communication Science",
+      "Bachelor of Arts in Demography",
+      "Bachelor of Arts in Development Studies",
+      "Bachelor of Arts in French",
+      "Bachelor of Arts in Gender Studies",
+      "Bachelor of Arts in Philosophy and applied Ethics",
+      "Bachelor of Arts in Photography",
+      "Bachelor of Arts in Political Science",
+      "Bachelor of Arts in Population Studies",
+      "Bachelor of Arts in Public Administration",
+      "Bachelor of Arts in Public Relations and Advertising",
+      "Bachelor of Arts in Records and Archives Administration",
+      "Bachelor of Arts with Library and Information Science",
+      "Bachelor of Education Environmental Education",
+      "Bachelor of Education in Chinese Language Teaching",
+      "Bachelor of Education in Educational Administration and Management",
+      "Bachelor of Education in Zambian Cultures and Ceremonies",
+      "Bachelor of Education with Special Education",
+      "Bachelor of Engineering (Agricultural Engineering)",
+      "Bachelor of Engineering (Civil and Environmental Engineering)",
+      "Bachelor of Engineering (Electrical and Electronic Engineering)",
+      "Bachelor of Engineering (Mechanical Engineering)",
+      "Bachelor of Engineering in Geomatic Engineering",
+      "Bachelor of Laws",
+      "Bachelor of Medicine and Bachelor of Surgery",
+      "Bachelor of Mineral Sciences (Metallurgy and Mineral Processing)",
+      "Bachelor of Mineral Sciences (Mining Engineering)",
+      "Bachelor of Science (Actuarial Science)",
+      "Bachelor of Science (Agricultural Extension)",
+      "Bachelor of Science (Animal Science)",
+      "Bachelor of Science (Chemistry)",
+      "Bachelor of Science in Agriculture Economics",
+      "Bachelor of Science in Agronomy",
+      "Bachelor of Science in Biomedical Sciences",
+      "Bachelor of Science in Entomology",
+      "Bachelor of Science in Environmental and Natural Resources",
+      "Bachelor of Science in Environmental Health",
+      "Bachelor of Science in Food Science and Technology",
+      "Bachelor of Science in Human Nutrition",
+      "Bachelor of Science in Microbiology",
+      "Bachelor of Science in Midwifery",
+      "Bachelor of Science in Molecular Biology",
+      "Bachelor of Science in Parasitology",
+      "Bachelor of Science in Pharmacy",
+      "Bachelor of Science in Physics",
+      "Bachelor of Science in Physiotherapy",
+      "Bachelor of Science in Radiography",
+      "Bachelor of Veterinary Medicine",
+      "Certificate in Metallurgical Engineering",
+      "Diploma in Adult Education",
+      "Diploma in Business Administration",
+      "Diploma in Computer Studies",
+      "Diploma in Guidance and counselling",
+      "Diploma in Human Resource Management",
+      "Diploma in Midwifery",
+      "Diploma in Nursing",
+      "Doctor of Education in Educational Psychology",
+      "Doctor of Education in Special Education",
+      "Doctor of Philosophy in Guidance and Counselling",
+      "Master of Adult Education",
+      "Master of Arts in Archaeology",
+      "Master of Arts in Gender and Development",
+      "Master of Arts in History",
+      "Master of Arts in Linguistics",
+      "Master of Arts in Peace and Conflict Management",
+      "Master of Business Administration - Finance",
+      "Master of Business Administration General",
+      "Master of Business Administration Management Strategy",
+      "Master of Education Educational Administration and Planning",
+      "Master of Education in Civic Education",
+      "Master of Education in Educational Administration",
+      "Master of Education in Guidance and Counselling",
+      "Master of Education in Mathematics",
+      "Master of Education in Religious Studies",
+      "Master of Education in Speech and Language Communication",
+      "Master of Education Science Education",
+      "Master of Education with Special Education",
+      "Master of Engineering in Agricultural Engineering",
+      "Master of Engineering in Agriculture Engineering",
+      "Master of Engineering in Construction Management",
+      "Master of Engineering in Renewable Energy Engineering",
+      "Master of Laws",
+      "Master of Medicine in Anaesthesia",
+      "Master of Medicine in Anaesthesia and intensive Care",
+      "Master of Medicine in Anatomical Pathology",
+      "Master of Medicine in Clinical Neuropsychology",
+      "Master of Medicine in Gastroenterology and Internal Medicine",
+      "Master of Medicine in General Surgery",
+      "Master of Medicine in Internal Medicine",
+      "Master of Medicine in Internal Medicine and Infectious Diseases",
+      "Master of medicine in Ophthalmology",
+      "Master of Medicine in Orthopaedics and Trauma Surgery",
+      "Master of Medicine in Paediatric Surgery",
+      "Master of Medicine in Paediatrics and Child Health",
+      "Master of Medicine in Psychiatry",
+      "Master of Science in Accounting and Finance"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "victoria-falls-university-of",
+    "nameCanonical": "Victoria Falls University of",
+    "nameShort": "VFU",
+    "aliases": [
+      "Victoria Falls University of"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Information Technology with Education",
+      "Bachelor of Education (Primary)"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "woodlands-university-college",
+    "nameCanonical": "Woodlands University College",
+    "nameShort": "WUC",
+    "aliases": [
+      "Woodlands University College"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Public Health",
+      "Diploma in Clinical Medicine",
+      "Diploma in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "zcas-university",
+    "nameCanonical": "ZCAS University",
+    "nameShort": "ZU",
+    "aliases": [
+      "ZCAS University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accounting and Finance",
+      "Bachelor of Arts in Development Studies",
+      "Bachelor of Arts in Human Resource Management",
+      "Bachelor of Arts in Public Administration and Management",
+      "Bachelor of Business Administration",
+      "Bachelor of Business Administration in Applied Accounting",
+      "Bachelor of Business Entrepreneurship",
+      "Bachelor of Laws",
+      "Bachelor of Laws in Commercial Laws",
+      "Bachelor of Science in Accounting and Finance",
+      "Bachelor of Science in Business Computing",
+      "Bachelor of Science in Business Mathematics with Computing",
+      "Bachelor of Science in Computer Science",
+      "Bachelor of Science in Computing with Education",
+      "Bachelor of Science in Cyber Security",
+      "Bachelor of Science in Digital Marketing",
+      "Bachelor of Science in Monitoring and Evaluation",
+      "Bachelor of Science in Software Engineering",
+      "Doctor of Business Administration",
+      "Doctor of Philosophy in Business Administration",
+      "Doctor of Philosophy in Computer Science",
+      "Doctor of Philosophy in Computing and Data Science",
+      "Doctor of Philosophy in Information Systems",
+      "Doctor of Philosophy in Information Technology",
+      "Doctorate of Business Administration",
+      "Master of Business Administration (International Business)",
+      "Master of Business Administration Finance",
+      "Master of Business Administration",
+      "Master of Business in Procurement and Logistics",
+      "Master of Commerce",
+      "Master of Laws in Corporate and Commercial Laws",
+      "Master of Science in Accounting and Finance",
+      "Master of Science in Business Leadership and Management",
+      "Master of Science in Computing with Education",
+      "Master of Science in Digital Marketing",
+      "Master of Science in Financial Services",
+      "Master of Science in Information Technology",
+      "Master of Science in Monitoring and Evaluation",
+      "Master of Science in Project Management",
+      "Master of Science in Trade and Trade Policy",
+      "Postgraduate Diploma in Project Management"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "zambia-catholic-university",
+    "nameCanonical": "Zambia Catholic University",
+    "nameShort": "ZCU",
+    "aliases": [
+      "Zambia Catholic University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Journalism and Mass Communication",
+      "Bachelor of Arts in Primary Education (Lusaka)",
+      "Bachelor of Arts in Public Relations",
+      "Bachelor of Commerce with Education",
+      "Bachelor of Economics",
+      "Bachelor of Mass Communication",
+      "Bachelor of Science in Information Communication Technology with",
+      "Diploma in Occupational Health and Safety Environment (Lusaka)",
+      "Diploma in Primary Education",
+      "Master of Arts in Educational Administration and Planning",
+      "Master of Arts in Gender and Development",
+      "Master of Arts in Linguistics",
+      "Master of Arts in Peace and Conflict Studies",
+      "Master of Arts in Religious Studies",
+      "Master of Business Administration"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "zambia-university-college-of",
+    "nameCanonical": "Zambia University College of",
+    "nameShort": "ZUC",
+    "aliases": [
+      "Zambia University College of"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Accountancy",
+      "Bachelor of Business Administration",
+      "Bachelor of Engineering in Electrical and Electronics Engineering",
+      "Bachelor of Engineering in Telecommunications and Electronics",
+      "Bachelor of Science in Cyber Security",
+      "Bachelor of Science in Information and Communication Technology",
+      "Bachelor of Science in Software Engineering"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "zambian-christian-university",
+    "nameCanonical": "Zambian Christian University",
+    "nameShort": "ZCU",
+    "aliases": [
+      "Zambian Christian University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Business Studies",
+      "Bachelor of Science in Nursing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "zambian-open-university",
+    "nameCanonical": "Zambian Open University",
+    "nameShort": "ZOU",
+    "aliases": [
+      "Zambian Open University"
+    ],
+    "location": "Zambia",
+    "country": "zm",
+    "website": "",
+    "programmes": [
+      "Bachelor of Agriculture Science with Education",
+      "Bachelor of Arts in Development Studies",
+      "Bachelor of Arts in Fine Arts",
+      "Bachelor of Arts in Paralegal Studies",
+      "Bachelor of Arts in Policing and Security Studies",
+      "Bachelor of Arts in Public Administration",
+      "Bachelor of Arts in Social Work",
+      "Bachelor of Arts in Sociology",
+      "Bachelor of Arts Information Technology",
+      "Bachelor of Business Administration",
+      "Bachelor of Business Administration (Accounting)",
+      "Bachelor of Business in Banking and Finance",
+      "Bachelor of Business in Human Resource Management",
+      "Bachelor of Education (Early Childhood Education)",
+      "Bachelor of Education (Primary Education)",
+      "Bachelor of Education (Secondary Education)",
+      "Bachelor of Education in Adult Education",
+      "Bachelor of Education in Special Education",
+      "Bachelor of Guidance and Counselling",
+      "Bachelor of Laws",
+      "Bachelor of Science in Agribusiness Management",
+      "Bachelor of Science in Agricultural Economics",
+      "Bachelor of Science in Agricultural Extension",
+      "Bachelor of Science in Animal Science",
+      "Bachelor of Science in Financial Mathematics and Economics",
+      "Bachelor of Science in Horticulture",
+      "Bachelor of Science in Plant Sciences",
+      "Diploma in Early Childhood Education",
+      "Doctor of Philosophy in Applied Linguistics",
+      "Doctor of Philosophy in Business Administration",
+      "Doctor of Philosophy in Criminal Justice",
+      "Doctor of Philosophy in Development Studies",
+      "Doctor of Philosophy in Early Childhood",
+      "Doctor of Philosophy in Education Administration and Management",
+      "Doctor of Philosophy in Geography",
+      "Doctor of Philosophy in History",
+      "Doctor of Philosophy in Law",
+      "Doctor of Philosophy in Public Administration",
+      "Doctor of Philosophy in Religious Studies",
+      "Doctor of Philosophy in Sociology",
+      "Doctor of Philosophy in Transformative Community Development",
+      "Master of Arts in Transformative Community Development",
+      "Master of Arts in English Language and Linguistics",
+      "Master of Arts in History",
+      "Master of Arts in Religious Studies",
+      "Master of Arts in Sociology",
+      "Master of Arts in Trade Development and International Relations",
+      "Master of Arts in Trade Development Studies",
+      "Master of Business Administration",
+      "Master of Business Administration (Project Management)",
+      "Master of Business Administration in Human Resource Management",
+      "Master of Criminal Justice",
+      "Master of Education in Early Childhood Education",
+      "Master of Education in Literacy and Development",
+      "Master of Education in Management and Administration",
+      "Master of Laws",
+      "Master of Public Administration",
+      "Master of Science in Geography",
+      "Bachelor of Public Health",
+      "Bachelor of Science in Clinical Sciences",
+      "Diploma in Environmental Health",
+      "Diploma in Pharmacy",
+      "Master of Public Health"
+    ],
+    "allowNoProgrammes": true
+  }
+]
