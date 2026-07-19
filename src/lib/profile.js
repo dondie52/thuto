@@ -87,7 +87,7 @@ function safeFileName(name) {
  * @property {'bgcse' | 'igcse' | 'as_level' | 'o_level' | null} syllabus_type
  * @property {'dtef' | 'private' | 'self_funded' | null} sponsorship_intent
  * @property {string[]} fields_of_interest
- * @property {'bw' | 'na'} country
+ * @property {'bw' | 'na' | 'zw' | 'zm' | 'za'} country
  * @property {string | null} onboarding_completed_at
  * @property {string | null} onboarding_skipped_at
  * @property {string | null} stripe_customer_id
@@ -97,9 +97,14 @@ function safeFileName(name) {
  * @property {string | null} premium_until
  */
 
+const PROFILE_COUNTRIES = new Set(["bw", "na", "zw", "zm", "za"]);
+
 export function normalizeProfileRow(row) {
   if (!row) return null;
-  const country = row.country === "na" ? "na" : "bw";
+  const rawCountry = String(row.country || "")
+    .trim()
+    .toLowerCase();
+  const country = PROFILE_COUNTRIES.has(rawCountry) ? rawCountry : "bw";
   return {
     id: row.id,
     full_name: row.full_name || "",
@@ -241,7 +246,7 @@ export async function updateUserProfile(patch) {
   }
   if (patch.country !== undefined) {
     const country = String(patch.country || "").trim().toLowerCase();
-    updates.country = country === "na" ? "na" : "bw";
+    updates.country = PROFILE_COUNTRIES.has(country) ? country : "bw";
   }
 
   if (!Object.keys(updates).length) {
