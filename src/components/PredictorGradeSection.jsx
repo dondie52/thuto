@@ -1,21 +1,7 @@
-import { GRADE_POINTS } from "../lib/admissions.js";
 import { SCIENCE_DOUBLE_SUBJECT_ID } from "../lib/bgcseSubjects.js";
 
-const GRADE_OPTIONS = ["", ...Object.keys(GRADE_POINTS)];
-
 /**
- * Shared grade rows + best-six summary (predictor and fit finder).
- * @param {{
- *   rows: Array<{ key: string, subjectId: string, grade: string, grade2?: string }>,
- *   chosenSubjectIds: Set<string>,
- *   validationMessage: string | null,
- *   breakdown: { total: number, counted: Array<{ subjectId: string, label: string, grade: string, points: number }>, dropped: Array<{ subjectId: string, label: string, grade: string, points: number }>, invalid: string | null } | null,
- *   updateRow: (rowKey: string, patch: Partial<{ subjectId: string, grade: string, grade2: string }>) => void,
- *   addRow: () => void,
- *   removeRow: (rowKey: string) => void,
- *   canAdd: boolean,
- *   subjects: Array<{ id: string, label: string }>,
- * }} props
+ * Shared grade rows + aggregate summary (predictor and fit finder).
  */
 export default function PredictorGradeSection({
   rows,
@@ -27,18 +13,22 @@ export default function PredictorGradeSection({
   removeRow,
   canAdd,
   subjects,
+  gradeOptions = ["A*", "A", "B", "C", "D", "E", "F", "G", "U"],
+  helpText = "Thuto updates points as soon as each subject has a grade.",
+  allowScienceDouble = true,
 }) {
+  const options = ["", ...gradeOptions];
   return (
     <div id="predictor-grade-section" className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
       <fieldset className="space-y-3">
         <legend className="text-sm font-semibold text-brand-800">Add your subjects and grades</legend>
         <p className="text-sm text-slate-600">
-          Thuto updates points as soon as each subject has a grade. Science Double Award uses two component grades
-          (e.g. CC = 12 pts).
+          {helpText}
+          {allowScienceDouble ? " Science Double Award uses two component grades (e.g. CC = 12 pts)." : ""}
         </p>
         <ul className="space-y-3">
           {rows.map((row) => {
-            const isDoubleAward = row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID;
+            const isDoubleAward = allowScienceDouble && row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID;
             return (
               <li
                 key={row.key}
@@ -55,15 +45,17 @@ export default function PredictorGradeSection({
                     className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
                   >
                     <option value="">Select subject…</option>
-                    {subjects.map((s) => (
-                      <option
-                        key={s.id}
-                        value={s.id}
-                        disabled={Boolean(s.id && chosenSubjectIds.has(s.id) && row.subjectId !== s.id)}
-                      >
-                        {s.label}
-                      </option>
-                    ))}
+                    {subjects
+                      .filter((s) => allowScienceDouble || s.id !== SCIENCE_DOUBLE_SUBJECT_ID)
+                      .map((s) => (
+                        <option
+                          key={s.id}
+                          value={s.id}
+                          disabled={Boolean(s.id && chosenSubjectIds.has(s.id) && row.subjectId !== s.id)}
+                        >
+                          {s.label}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 {isDoubleAward ? (
@@ -78,7 +70,7 @@ export default function PredictorGradeSection({
                         onChange={(e) => updateRow(row.key, { grade: e.target.value })}
                         className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
                       >
-                        {GRADE_OPTIONS.map((g) => (
+                        {options.map((g) => (
                           <option key={g || "empty"} value={g}>
                             {g === "" ? "-" : g}
                           </option>
@@ -95,7 +87,7 @@ export default function PredictorGradeSection({
                         onChange={(e) => updateRow(row.key, { grade2: e.target.value })}
                         className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
                       >
-                        {GRADE_OPTIONS.map((g) => (
+                        {options.map((g) => (
                           <option key={`g2-${g || "empty"}`} value={g}>
                             {g === "" ? "-" : g}
                           </option>
@@ -114,7 +106,7 @@ export default function PredictorGradeSection({
                       onChange={(e) => updateRow(row.key, { grade: e.target.value })}
                       className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
                     >
-                      {GRADE_OPTIONS.map((g) => (
+                      {options.map((g) => (
                         <option key={g || "empty"} value={g}>
                           {g === "" ? "-" : g}
                         </option>
@@ -146,48 +138,50 @@ export default function PredictorGradeSection({
         </button>
       </div>
 
-      {validationMessage && (
+      {validationMessage ? (
         <p className="text-sm text-amber-800" role="status">
           {validationMessage}
         </p>
-      )}
+      ) : null}
 
-      {breakdown?.invalid && (
+      {breakdown?.invalid ? (
         <p className="text-sm text-red-800" role="alert">
           {breakdown.invalid}
         </p>
-      )}
+      ) : null}
 
-      {breakdown && !breakdown.invalid && breakdown.counted.length > 0 && (
+      {breakdown && !breakdown.invalid && breakdown.counted.length > 0 ? (
         <div className="space-y-3 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 text-sm text-emerald-950">
           <p>
-            <strong className="text-brand-900">Best-six total:</strong>{" "}
-            <span className="text-lg font-bold text-brand-800">{breakdown.total}</span> pts
+            <strong className="text-brand-900">{breakdown.aggregateLabel || "Best-six total"}:</strong>{" "}
+            <span className="text-lg font-bold text-brand-800">{breakdown.total}</span>
+            {breakdown.aggregateLabel?.includes("APS") ? "" : " pts"}
           </p>
           <div>
-            <p className="font-medium text-brand-900">Counted toward best six</p>
+            <p className="font-medium text-brand-900">Counted toward total</p>
             <ul className="mt-1 list-inside list-disc text-emerald-900">
               {breakdown.counted.map((e) => (
                 <li key={e.subjectId}>
-                  {e.label}: {e.grade} ({e.points} pts)
+                  {e.label}: {e.grade} ({e.points}
+                  {breakdown.aggregateLabel?.includes("APS") ? "" : " pts"})
                 </li>
               ))}
             </ul>
           </div>
-          {breakdown.dropped.length > 0 && (
+          {breakdown.dropped.length > 0 ? (
             <div>
-              <p className="font-medium text-emerald-900">Not counted (lower grades than your top six)</p>
+              <p className="font-medium text-emerald-900">Not counted (lower than your top six)</p>
               <ul className="mt-1 list-inside list-disc text-emerald-800">
                 {breakdown.dropped.map((e) => (
                   <li key={e.subjectId}>
-                    {e.label}: {e.grade} ({e.points} pts)
+                    {e.label}: {e.grade} ({e.points})
                   </li>
                 ))}
               </ul>
             </div>
-          )}
+          ) : null}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

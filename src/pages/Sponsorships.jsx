@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import OpportunityPostsFeed from "../components/OpportunityPostsFeed.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
@@ -8,6 +8,9 @@ import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 import UpgradePrompt from "../components/UpgradePrompt.jsx";
 import { useEntitlements } from "../hooks/useEntitlements.js";
+import { useAuth } from "../lib/auth.jsx";
+import { resolveMarketCountry } from "../lib/marketCountry.js";
+import { governmentFundingForCountry } from "../lib/marketLocales.js";
 
 const FUNDING_ROUTE = {
   GOVERNMENT: "government",
@@ -123,42 +126,52 @@ function InstitutionScholarshipsPanel() {
   );
 }
 
-function GovernmentSponsorshipPanel({ content, contacts, steps, portalUrl }) {
+function GovernmentSponsorshipPanel({ gov, verify }) {
+  const hasPortal = Boolean(gov.portalUrl);
   return (
     <>
       <section className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-sm">
         <div className="border-b border-brand-100 bg-gradient-to-r from-brand-800 to-[#0d4a45] px-4 py-4 text-white sm:px-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">{content.dtef?.kicker}</p>
-          <h2 className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">{content.dtef?.heading}</h2>
-          <p className="mt-1 text-sm text-brand-100/95">{content.dtef?.subheading}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-200">{gov.kicker}</p>
+          <h2 className="mt-1 font-display text-xl font-semibold leading-snug sm:text-2xl">{gov.heading}</h2>
+          <p className="mt-1 text-sm text-brand-100/95">{gov.subheading}</p>
         </div>
 
         <div className="space-y-5 p-4 sm:p-6">
-          <p className="text-sm leading-relaxed text-slate-600">{content.dtef?.intro}</p>
+          <p className="text-sm leading-relaxed text-slate-600">{gov.intro}</p>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <ExternalSiteLink
-              href={portalUrl}
-              variant="primary"
-              institutionName="DTEF"
-              useInterstitial
-              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
-            >
-              {content.dtef?.portalButtonLabel}
-              <IconExternal className="h-4 w-4 opacity-90" />
-            </ExternalSiteLink>
-            <span className="text-xs text-slate-500 sm:ml-1">{portalUrl}</span>
+            {hasPortal ? (
+              <ExternalSiteLink
+                href={gov.portalUrl}
+                variant="primary"
+                institutionName={gov.schemeLabel}
+                useInterstitial
+                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
+              >
+                {gov.portalButtonLabel}
+                <IconExternal className="h-4 w-4 opacity-90" />
+              </ExternalSiteLink>
+            ) : (
+              <Link
+                to="/universities"
+                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800"
+              >
+                {gov.portalButtonLabel}
+              </Link>
+            )}
+            {hasPortal ? <span className="text-xs text-slate-500 sm:ml-1">{gov.portalUrl}</span> : null}
           </div>
 
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-stone-800">
-            <p className="font-semibold text-stone-900">{content.dtef?.warningTitle}</p>
-            <p className="mt-1 leading-relaxed">{content.dtef?.warningBody}</p>
+            <p className="font-semibold text-stone-900">{gov.warningTitle}</p>
+            <p className="mt-1 leading-relaxed">{gov.warningBody}</p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-brand-900">{content.dtef?.contactsHeading}</h3>
+            <h3 className="text-sm font-semibold text-brand-900">{gov.contactsHeading}</h3>
             <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-              {contacts.map((row) => (
+              {(gov.contacts || []).map((row) => (
                 <li key={`${row.label}-${row.detail}`} className="flex items-start gap-3 rounded-xl border border-stone-200/80 bg-stone-50/80 px-3 py-3">
                   <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-brand-700 shadow-sm ring-1 ring-stone-200/80">
                     <IconPhone />
@@ -179,13 +192,13 @@ function GovernmentSponsorshipPanel({ content, contacts, steps, portalUrl }) {
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-xs leading-relaxed text-slate-500">{content.dtef?.contactsNote}</p>
+            <p className="mt-2 text-xs leading-relaxed text-slate-500">{gov.contactsNote}</p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-brand-900">{content.dtef?.stepsHeading}</h3>
+            <h3 className="text-sm font-semibold text-brand-900">{gov.stepsHeading}</h3>
             <ol className="mt-3 space-y-0 divide-y divide-stone-200/90 rounded-xl border border-stone-200/90 bg-stone-50/50">
-              {steps.map((step, index) => (
+              {(gov.steps || []).map((step, index) => (
                 <li key={`${step.title}-${index}`} className="flex gap-3 px-3 py-3.5 sm:gap-4 sm:px-4">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-bold text-white shadow-sm" aria-hidden>
                     {index + 1}
@@ -202,19 +215,19 @@ function GovernmentSponsorshipPanel({ content, contacts, steps, portalUrl }) {
       </section>
 
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-        <p className="text-sm font-semibold text-stone-900">{content.verify?.title}</p>
-        <p className="mt-1 text-sm leading-relaxed text-stone-700">{content.verify?.body}</p>
+        <p className="text-sm font-semibold text-stone-900">{verify?.title || "Verify before you rely on this page"}</p>
+        <p className="mt-1 text-sm leading-relaxed text-stone-700">{gov.verifyBody || verify?.body}</p>
         <Link to="/universities" className="mt-3 inline-flex text-sm font-semibold text-brand-800 underline">
-          {content.verify?.linkLabel}
+          {verify?.linkLabel || "Check university profiles"}
         </Link>
       </div>
     </>
   );
 }
 
-function FundingRoutePanel({ routeId, content, contacts, steps, portalUrl }) {
+function FundingRoutePanel({ routeId, content, gov }) {
   if (routeId === FUNDING_ROUTE.GOVERNMENT) {
-    return <GovernmentSponsorshipPanel content={content} contacts={contacts} steps={steps} portalUrl={portalUrl} />;
+    return <GovernmentSponsorshipPanel gov={gov} verify={content.verify} />;
   }
   if (routeId === FUNDING_ROUTE.INSTITUTION) return <InstitutionScholarshipsPanel />;
   if (routeId === FUNDING_ROUTE.PRIVATE) return <PrivateSponsorshipPanel content={content} />;
@@ -224,13 +237,26 @@ function FundingRoutePanel({ routeId, content, contacts, steps, portalUrl }) {
 export default function Sponsorships() {
   useDocumentTitle("Sponsorships | Thuto");
   const { entitlements } = useEntitlements();
+  const { profile } = useAuth();
+  const marketCountry = resolveMarketCountry(profile);
+  const gov = useMemo(() => governmentFundingForCountry(marketCountry), [marketCountry]);
   const { content } = usePageContent("sponsorships", PAGE_CONTENT_DEFAULTS.sponsorships);
   const [activeRoute, setActiveRoute] = useState(null);
   const detailRef = useRef(null);
-  const fundingRoutes = Array.isArray(content.fundingRoutes?.items) ? content.fundingRoutes.items : [];
-  const contacts = Array.isArray(content.dtef?.contacts) ? content.dtef.contacts : [];
-  const steps = Array.isArray(content.dtef?.steps) ? content.dtef.steps : [];
-  const portalUrl = content.dtef?.portalUrl || "https://tef.gov.bw";
+
+  const fundingRoutes = useMemo(() => {
+    const defaults = Array.isArray(content.fundingRoutes?.items) ? content.fundingRoutes.items : [];
+    return defaults.map((route) => {
+      if (route.icon === "government") {
+        return {
+          ...route,
+          title: gov.fundingRouteTitle || route.title,
+          body: gov.fundingRouteBody || route.body,
+        };
+      }
+      return route;
+    });
+  }, [content.fundingRoutes?.items, gov]);
 
   useEffect(() => {
     if (activeRoute && detailRef.current) {
@@ -246,6 +272,9 @@ export default function Sponsorships() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Sponsorships</h1>
+        <p className="mt-1 text-sm text-slate-600">
+          Funding guidance for your selected study destination. Thuto does not submit applications to funders.
+        </p>
       </div>
 
       {!entitlements.sponsorshipAlerts ? (
@@ -283,21 +312,10 @@ export default function Sponsorships() {
       </div>
 
       {activeRoute ? (
-        <div id={`funding-route-${activeRoute}`} ref={detailRef} className="space-y-6">
-          <FundingRoutePanel
-            routeId={activeRoute}
-            content={content}
-            contacts={contacts}
-            steps={steps}
-            portalUrl={portalUrl}
-          />
+        <div ref={detailRef} id={`funding-route-${activeRoute}`}>
+          <FundingRoutePanel routeId={activeRoute} content={content} gov={gov} />
         </div>
       ) : null}
-
-      <p className="text-center text-sm leading-relaxed text-slate-500">
-        Thuto does not submit applications to funders - always apply through the official portals and contacts listed
-        for each route.
-      </p>
     </div>
   );
 }

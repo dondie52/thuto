@@ -2,6 +2,9 @@
  * Faculty-level tuition fee schedules (per-credit and per-semester models).
  */
 
+import { defaultCurrencyForCountry, resolveDisplayCurrency } from "./marketLocales.js";
+import { resolveMarketCountry } from "./marketCountry.js";
+
 const ENGINEERING_RE = /\bengineering\b/i;
 const MEDICINE_RE = /\b(medicine|mbbs|medical\s+school)\b/i;
 
@@ -9,19 +12,24 @@ const MEDICINE_RE = /\b(medicine|mbbs|medical\s+school)\b/i;
  * @param {number | null | undefined} amount
  * @param {string} [currency]
  */
-export function formatFeeAmount(amount, currency = "BWP") {
+export function formatFeeAmount(amount, currency) {
   if (amount == null || !Number.isFinite(amount)) return null;
-  return `${currency} ${Math.round(amount).toLocaleString()}`;
+  const code = currency || defaultCurrencyForCountry(resolveMarketCountry());
+  return `${code} ${Math.round(amount).toLocaleString()}`;
 }
 
 /**
  * @param {object} schedule
  * @param {object} group
+ * @param {string | null | undefined} [fallbackCountry]
  */
-export function computeGroupEstimates(schedule, group) {
+export function computeGroupEstimates(schedule, group, fallbackCountry) {
   if (!schedule || !group) return null;
 
-  const currency = schedule.currency || "BWP";
+  const currency = resolveDisplayCurrency(
+    { currency: schedule.currency, country: fallbackCountry },
+    resolveMarketCountry(),
+  );
   const semestersPerYear = schedule.semestersPerYear ?? 2;
   const normalSemesterCredits = schedule.normalSemesterCredits ?? null;
 
@@ -134,16 +142,17 @@ function groupMatchesProgramme(programme, group) {
 export function lookupProgrammeFeeGroup(university, programme) {
   const schedule = university?.feeSchedule;
   if (!schedule?.groups?.length || !programme) return null;
+  const country = university?.country;
 
   for (const group of schedule.groups) {
     if (groupMatchesProgramme(programme, group)) {
-      return { schedule, group, estimates: computeGroupEstimates(schedule, group) };
+      return { schedule, group, estimates: computeGroupEstimates(schedule, group, country) };
     }
   }
 
   const fallback = schedule.groups.find((g) => g.id === "other-faculties" || g.id === "general");
   if (fallback) {
-    return { schedule, group: fallback, estimates: computeGroupEstimates(schedule, fallback) };
+    return { schedule, group: fallback, estimates: computeGroupEstimates(schedule, fallback, country) };
   }
 
   return null;
@@ -155,11 +164,13 @@ export function lookupProgrammeFeeGroup(university, programme) {
 export function getUniversityFeeSchedule(university) {
   const schedule = university?.feeSchedule;
   if (!schedule?.groups?.length) return null;
+  const country = university?.country;
   return {
     ...schedule,
+    currency: resolveDisplayCurrency({ currency: schedule.currency, country }, resolveMarketCountry()),
     groups: schedule.groups.map((group) => ({
       ...group,
-      estimates: computeGroupEstimates(schedule, group),
+      estimates: computeGroupEstimates(schedule, group, country),
     })),
   };
 }
@@ -208,15 +219,19 @@ export function getProgrammeFeeCompareValue(programme, university) {
 export function resolveProgrammeFees(programme, university) {
   const direct = programme?.fees;
   const hasDirect =
-    direct &&
-    typeof direct.domestic === "number" &&
-    Number.isFinite(direct.domestic) &&
-    direct.currency;
+    direct && typeof direct.domestic === "number" && Number.isFinite(direct.domestic);
 
   if (hasDirect) {
+    const currency = resolveDisplayCurrency(
+      {
+        currency: direct.currency,
+        country: programme?.country || university?.country,
+      },
+      resolveMarketCountry(),
+    );
     return {
       source: "programme",
-      fees: direct,
+      fees: { ...direct, currency },
       scheduleLookup: null,
     };
   }

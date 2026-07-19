@@ -6,6 +6,7 @@ import {
   PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY,
 } from "../lib/admissions.js";
 import { BGCSE_SUBJECTS, SCIENCE_DOUBLE_SUBJECT_ID } from "../lib/bgcseSubjects.js";
+import { getGradingProfile, gradeOptionsForSyllabus } from "../lib/gradingSystems.js";
 
 function newRow() {
   const key =
@@ -29,16 +30,20 @@ function toRow(row = {}) {
 }
 
 /**
- * Shared BGCSE row state, validation, best-six breakdown, requirement grades, and session sync
- * (same keys as the Admission predictor page).
+ * Shared grade-row state for predictor / onboarding / fit finder.
+ * @param {{ syllabusType?: string | null }} [options]
  */
-export function usePredictorGradeInput() {
+export function usePredictorGradeInput(options = {}) {
+  const syllabusType = options.syllabusType || "bgcse";
+  const profile = getGradingProfile(syllabusType);
   const [rows, setRows] = useState(() => [newRow()]);
 
   const chosenSubjectIds = useMemo(
     () => new Set(rows.map((r) => r.subjectId).filter(Boolean)),
     [rows],
   );
+
+  const gradeOptions = useMemo(() => gradeOptionsForSyllabus(syllabusType), [syllabusType]);
 
   const validationMessage = useMemo(() => {
     const hasSelection = rows.some((r) => r.subjectId && (r.grade?.trim() || r.grade2?.trim()));
@@ -49,12 +54,17 @@ export function usePredictorGradeInput() {
       if (!r.subjectId && (r.grade?.trim() || r.grade2?.trim())) {
         return "Choose a subject for each grade entered.";
       }
-      if (r.subjectId === SCIENCE_DOUBLE_SUBJECT_ID && r.grade?.trim() && !r.grade2?.trim()) {
+      if (
+        profile.allowsScienceDouble &&
+        r.subjectId === SCIENCE_DOUBLE_SUBJECT_ID &&
+        r.grade?.trim() &&
+        !r.grade2?.trim()
+      ) {
         return "Science Double Award needs two component grades (e.g. C and C for CC).";
       }
     }
     return null;
-  }, [rows]);
+  }, [rows, profile.allowsScienceDouble]);
 
   const breakdown = useMemo(() => {
     if (validationMessage) return null;
@@ -63,8 +73,8 @@ export function usePredictorGradeInput() {
       grade: r.grade,
       grade2: r.grade2,
     }));
-    return computeBestSixBreakdown(gradeRows);
-  }, [rows, validationMessage]);
+    return computeBestSixBreakdown(gradeRows, syllabusType);
+  }, [rows, validationMessage, syllabusType]);
 
   const requirementGrades = useMemo(() => {
     if (!breakdown || breakdown.invalid) return null;
@@ -139,7 +149,8 @@ export function usePredictorGradeInput() {
     resetRows,
     replaceRows,
     canAdd: rows.length < 12,
-    /** All predictor subjects for select options */
     bgcseSubjects: BGCSE_SUBJECTS,
+    gradeOptions,
+    gradingProfile: profile,
   };
 }

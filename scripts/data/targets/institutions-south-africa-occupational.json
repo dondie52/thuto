@@ -1,0 +1,740 @@
+[
+  {
+    "id": "boland-tvet-college",
+    "nameCanonical": "Boland TVET College",
+    "nameShort": "Boland",
+    "aliases": [
+      "Boland TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "buffalo-city-tvet-college",
+    "nameCanonical": "Buffalo City TVET College",
+    "nameShort": "Buffalo City",
+    "aliases": [
+      "Buffalo City TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "capricorn-tvet-college",
+    "nameCanonical": "Capricorn TVET College",
+    "nameShort": "Capricorn",
+    "aliases": [
+      "Capricorn TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Fitter and Turner"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "coastal-tvet-college",
+    "nameCanonical": "Coastal TVET College",
+    "nameShort": "Coastal",
+    "aliases": [
+      "Coastal TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Management Assistant",
+      "Occupational Certificate: Marketing Coordinator",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Office Administrator",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Tourism Information Officer",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "college-of-cape-town-tvet-college",
+    "nameCanonical": "College of Cape Town TVET College",
+    "nameShort": "College of Cape Town",
+    "aliases": [
+      "College of Cape Town TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "east-cape-midlands-tvet-college",
+    "nameCanonical": "East Cape Midlands TVET College",
+    "nameShort": "East Cape Midlands",
+    "aliases": [
+      "East Cape Midlands TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Electrician"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ehlanzeni-tvet-college",
+    "nameCanonical": "Ehlanzeni TVET College",
+    "nameShort": "Ehlanzeni",
+    "aliases": [
+      "Ehlanzeni TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ekurhuleni-east-tvet-college",
+    "nameCanonical": "Ekurhuleni East TVET College",
+    "nameShort": "Ekurhuleni East",
+    "aliases": [
+      "Ekurhuleni East TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Electrician",
+      "Occupational Certificate: Plumber"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ekurhuleni-west-tvet-college",
+    "nameCanonical": "Ekurhuleni West TVET College",
+    "nameShort": "Ekurhuleni West",
+    "aliases": [
+      "Ekurhuleni West TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Electrician"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "elangeni-tvet-college",
+    "nameCanonical": "Elangeni TVET College",
+    "nameShort": "Elangeni",
+    "aliases": [
+      "Elangeni TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Aircraft Maintenance Mechanic",
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Bookkeeper",
+      "Occupational Certificate: CNC Milling Machinist (Toolmaker)",
+      "Occupational Certificate: CNC Turning Machinist (Toolmaker)",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Hairdressing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "esayidi-tvet-college",
+    "nameCanonical": "Esayidi TVET College",
+    "nameShort": "Esayidi",
+    "aliases": [
+      "Esayidi TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Cook",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Solar Photovoltaic Service Technician",
+      "Occupational Certificate: Tourism Information Officer"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "false-bay-tvet-college",
+    "nameCanonical": "False Bay TVET College",
+    "nameShort": "False Bay",
+    "aliases": [
+      "False Bay TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Bookkeeper",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Management Assistant",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Millwright",
+      "Occupational Certificate: Panel Beater",
+      "Occupational Certificate: Rigger",
+      "Occupational Certificate: Solar Photovoltaic Service Technician",
+      "Occupational Certificate: Tourism Information Officer",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "gert-sibande-tvet-college",
+    "nameCanonical": "Gert Sibande TVET College",
+    "nameShort": "Gert Sibande",
+    "aliases": [
+      "Gert Sibande TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Millwright",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "goldfields-tvet-college",
+    "nameCanonical": "Goldfields TVET College",
+    "nameShort": "Goldfields",
+    "aliases": [
+      "Goldfields TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Bookkeeper",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Tourism Information Officer",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ikhala-tvet-college",
+    "nameCanonical": "Ikhala TVET College",
+    "nameShort": "Ikhala",
+    "aliases": [
+      "Ikhala TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Cook"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "ingwe-tvet-college",
+    "nameCanonical": "Ingwe TVET College",
+    "nameShort": "Ingwe",
+    "aliases": [
+      "Ingwe TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "lephalale-tvet-college",
+    "nameCanonical": "Lephalale TVET College",
+    "nameShort": "Lephalale",
+    "aliases": [
+      "Lephalale TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "letaba-tvet-college",
+    "nameCanonical": "Letaba TVET College",
+    "nameShort": "Letaba",
+    "aliases": [
+      "Letaba TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "majuba-tvet-college",
+    "nameCanonical": "Majuba TVET College",
+    "nameShort": "Majuba",
+    "aliases": [
+      "Majuba TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Management Assistant",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Millwright",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "maluti-tvet-college",
+    "nameCanonical": "Maluti TVET College",
+    "nameShort": "Maluti",
+    "aliases": [
+      "Maluti TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Office Administrator",
+      "Occupational Certificate: Solar Photovoltaic Service Technician",
+      "Occupational Certificate: Transport Clerk"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mopani-tvet-college",
+    "nameCanonical": "Mopani TVET College",
+    "nameShort": "Mopani",
+    "aliases": [
+      "Mopani TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "motheo-tvet-college",
+    "nameCanonical": "Motheo TVET College",
+    "nameShort": "Motheo",
+    "aliases": [
+      "Motheo TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "National Occupational Certificate: Beauty Therapist",
+      "National Occupational Certificate: Fitness Instructor",
+      "Occupational Certificate: Artificial Intelligence Software Developer",
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Clearing and Forwarding Agent",
+      "Occupational Certificate: Cloud Administration",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Cybersecurity Analyst",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Freight Handler",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Internet of Things Developer",
+      "Occupational Certificate: Marketing Coordinator",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "mthashana-tvet-college",
+    "nameCanonical": "Mthashana TVET College",
+    "nameShort": "Mthashana",
+    "aliases": [
+      "Mthashana TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Management Assistant"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "nkangala-tvet-college",
+    "nameCanonical": "Nkangala TVET College",
+    "nameShort": "Nkangala",
+    "aliases": [
+      "Nkangala TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Millwright",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "northlink-tvet-college",
+    "nameCanonical": "Northlink TVET College",
+    "nameShort": "Northlink",
+    "aliases": [
+      "Northlink TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "National Occupational Certificate: Beauty Therapist",
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Millwright",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Solar Photovoltaic Service Technician",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "orbit-tvet-college",
+    "nameCanonical": "Orbit TVET College",
+    "nameShort": "Orbit",
+    "aliases": [
+      "Orbit TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Hairdressing"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "port-elizabeth-tvet-college",
+    "nameCanonical": "Port Elizabeth TVET College",
+    "nameShort": "Port Elizabeth",
+    "aliases": [
+      "Port Elizabeth TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Electrician",
+      "Occupational Certificate: Plumber"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "sedibeng-tvet-college",
+    "nameCanonical": "Sedibeng TVET College",
+    "nameShort": "Sedibeng",
+    "aliases": [
+      "Sedibeng TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "sekhukhune-tvet-college",
+    "nameCanonical": "Sekhukhune TVET College",
+    "nameShort": "Sekhukhune",
+    "aliases": [
+      "Sekhukhune TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "National Occupational Certificate: Beauty Therapist",
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "south-cape-tvet-college",
+    "nameCanonical": "South Cape TVET College",
+    "nameShort": "South Cape",
+    "aliases": [
+      "South Cape TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Automotive Motor Mechanic",
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Computer Technician",
+      "Occupational Certificate: Cook",
+      "Occupational Certificate: Early Childhood Development"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "thekwini-tvet-college",
+    "nameCanonical": "Thekwini TVET College",
+    "nameShort": "Thekwini",
+    "aliases": [
+      "Thekwini TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Supply Chain Practitioner"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "tshwane-north-tvet-college",
+    "nameCanonical": "Tshwane North TVET College",
+    "nameShort": "Tshwane North",
+    "aliases": [
+      "Tshwane North TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "umfolozi-tvet-college",
+    "nameCanonical": "Umfolozi TVET College",
+    "nameShort": "Umfolozi",
+    "aliases": [
+      "Umfolozi TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Artificial Intelligence Software Developer",
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Millwright",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Tourism Information Officer"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "vhembe-tvet-college",
+    "nameCanonical": "Vhembe TVET College",
+    "nameShort": "Vhembe",
+    "aliases": [
+      "Vhembe TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Plumber",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "vuselela-tvet-college",
+    "nameCanonical": "Vuselela TVET College",
+    "nameShort": "Vuselela",
+    "aliases": [
+      "Vuselela TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Carpenter",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Mechanical Fitter",
+      "Occupational Certificate: Millwright",
+      "Occupational Certificate: Solar Photovoltaic Service Technician",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "waterberg-tvet-college",
+    "nameCanonical": "Waterberg TVET College",
+    "nameShort": "Waterberg",
+    "aliases": [
+      "Waterberg TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Diesel Mechanic",
+      "Occupational Certificate: Early Childhood Development",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "west-coast-tvet-college",
+    "nameCanonical": "West Coast TVET College",
+    "nameShort": "West Coast",
+    "aliases": [
+      "West Coast TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Boilermaker",
+      "Occupational Certificate: Pipe Fitter"
+    ],
+    "allowNoProgrammes": true
+  },
+  {
+    "id": "western-tvet-college",
+    "nameCanonical": "Western TVET College",
+    "nameShort": "Western",
+    "aliases": [
+      "Western TVET College"
+    ],
+    "location": "South Africa",
+    "country": "za",
+    "website": "",
+    "programmes": [
+      "Occupational Certificate: Chef",
+      "Occupational Certificate: Fitter and Turner",
+      "Occupational Certificate: Hairdressing",
+      "Occupational Certificate: Welder"
+    ],
+    "allowNoProgrammes": true
+  }
+]

@@ -5,6 +5,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
+import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
 import {
   fetchInstitutionAnalytics,
   fetchInstitutionLeads,
@@ -150,7 +151,10 @@ export default function Partner() {
         applicationDeadline: programmeForm.applicationDeadline || null,
       };
       if (programmeForm.feesDomestic) {
-        patch.fees = { domestic: Number(programmeForm.feesDomestic), currency: "BWP" };
+        patch.fees = {
+          domestic: Number(programmeForm.feesDomestic),
+          currency: defaultCurrencyForCountry(university?.country),
+        };
       }
       if (programmeForm.minPoints) {
         patch.minPoints = Number(programmeForm.minPoints);
@@ -369,7 +373,7 @@ export default function Partner() {
                     value={programmeForm.feesDomestic}
                     onChange={(e) => setProgrammeForm((f) => ({ ...f, feesDomestic: e.target.value }))}
                     className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                    placeholder="Domestic fees (BWP)"
+                    placeholder={`Domestic fees (${defaultCurrencyForCountry(university?.country)})`}
                   />
                   <button
                     type="button"

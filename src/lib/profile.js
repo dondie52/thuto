@@ -1,4 +1,6 @@
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
+import { ALL_SYLLABUS_VALUES } from "./gradingSystems.js";
+import { ALL_SPONSORSHIP_VALUES } from "./marketLocales.js";
 
 export { isSupabaseConfigured };
 
@@ -84,8 +86,8 @@ function safeFileName(name) {
  * @property {string | null} university_name
  * @property {'studying' | 'aspiring' | null} university_status
  * @property {string | null} distinction
- * @property {'bgcse' | 'igcse' | 'as_level' | 'o_level' | null} syllabus_type
- * @property {'dtef' | 'private' | 'self_funded' | null} sponsorship_intent
+ * @property {string | null} syllabus_type
+ * @property {string | null} sponsorship_intent
  * @property {string[]} fields_of_interest
  * @property {'bw' | 'na' | 'zw' | 'zm' | 'za'} country
  * @property {string | null} onboarding_completed_at
@@ -98,6 +100,8 @@ function safeFileName(name) {
  */
 
 const PROFILE_COUNTRIES = new Set(["bw", "na", "zw", "zm", "za"]);
+const PROFILE_SYLLABI = new Set(ALL_SYLLABUS_VALUES);
+const PROFILE_SPONSORSHIP = new Set(ALL_SPONSORSHIP_VALUES);
 
 export function normalizeProfileRow(row) {
   if (!row) return null;
@@ -225,14 +229,11 @@ export async function updateUserProfile(patch) {
   }
   if (patch.syllabusType !== undefined) {
     const syllabus = String(patch.syllabusType || "").trim();
-    updates.syllabus_type =
-      syllabus === "bgcse" || syllabus === "igcse" || syllabus === "as_level" || syllabus === "o_level"
-        ? syllabus
-        : null;
+    updates.syllabus_type = PROFILE_SYLLABI.has(syllabus) ? syllabus : null;
   }
   if (patch.sponsorshipIntent !== undefined) {
     const intent = String(patch.sponsorshipIntent || "").trim();
-    updates.sponsorship_intent = intent === "dtef" || intent === "private" || intent === "self_funded" ? intent : null;
+    updates.sponsorship_intent = PROFILE_SPONSORSHIP.has(intent) ? intent : null;
   }
   if (patch.fieldsOfInterest !== undefined) {
     updates.fields_of_interest = Array.isArray(patch.fieldsOfInterest)

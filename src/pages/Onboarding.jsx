@@ -18,7 +18,12 @@ import {
   saveTargetInstitutions,
 } from "../lib/onboarding.js";
 import MarketCountrySelect from "../components/MarketCountrySelect.jsx";
-import { filterSubjectsBySyllabus, SPONSORSHIP_INTENT_OPTIONS, SYLLABUS_OPTIONS } from "../lib/syllabus.js";
+import {
+  filterSubjectsBySyllabus,
+  syllabusOptionsForCountry,
+  sponsorshipOptionsForCountry,
+  defaultSyllabusForCountry,
+} from "../lib/syllabus.js";
 import { resolveMarketCountry, setMarketCountry } from "../lib/marketCountry.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { normalizeUsername, validateUsername } from "../lib/username.js";
@@ -68,7 +73,12 @@ export default function Onboarding() {
     canAdd,
     replaceRows,
     bgcseSubjects,
-  } = usePredictorGradeInput();
+    gradeOptions,
+    gradingProfile,
+  } = usePredictorGradeInput({ syllabusType: syllabusType || defaultSyllabusForCountry(country) });
+
+  const syllabusOptions = useMemo(() => syllabusOptionsForCountry(country), [country]);
+  const sponsorshipOptions = useMemo(() => sponsorshipOptionsForCountry(country), [country]);
 
   const filteredSubjects = useMemo(
     () => filterSubjectsBySyllabus(syllabusType, bgcseSubjects),
@@ -112,6 +122,11 @@ export default function Onboarding() {
   useEffect(() => {
     let active = true;
     setMarketCountry(country);
+    // Reset syllabus/sponsorship when they no longer belong to the selected country.
+    const syllabi = syllabusOptionsForCountry(country).map((o) => o.value);
+    setSyllabusType((current) => (current && syllabi.includes(current) ? current : ""));
+    const funding = sponsorshipOptionsForCountry(country).map((o) => o.value);
+    setSponsorshipIntent((current) => (current && funding.includes(current) ? current : ""));
     fetchUniversities({ country })
       .then(({ list }) => {
         if (!active) return;
@@ -424,7 +439,7 @@ export default function Onboarding() {
             <h2 className="text-sm font-semibold text-brand-900">Syllabus / curriculum</h2>
             <p className="mt-1 text-xs text-stone-500">Required to unlock the Admission Predictor.</p>
             <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {SYLLABUS_OPTIONS.map((option) => {
+              {syllabusOptions.map((option) => {
                 const active = syllabusType === option.value;
                 return (
                   <button
@@ -455,6 +470,9 @@ export default function Onboarding() {
             removeRow={removeRow}
             canAdd={canAdd && Boolean(syllabusType)}
             subjects={filteredSubjects}
+            gradeOptions={gradeOptions}
+            helpText={gradingProfile.helpText}
+            allowScienceDouble={Boolean(gradingProfile.allowsScienceDouble)}
           />
         </section>
       ) : null}
@@ -464,7 +482,7 @@ export default function Onboarding() {
           <h2 className="text-sm font-semibold text-brand-900">Sponsorship intent</h2>
           <p className="text-sm text-slate-600">We use this to tailor scholarship and funding announcements in your feed.</p>
           <div className="space-y-2">
-            {SPONSORSHIP_INTENT_OPTIONS.map((option) => {
+            {sponsorshipOptions.map((option) => {
               const active = sponsorshipIntent === option.value;
               return (
                 <button

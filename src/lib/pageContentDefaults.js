@@ -166,13 +166,13 @@ export const PAGE_CONTENT_DEFAULTS = {
     hero: {
       kicker: "Sponsorships",
       title: "Funding routes",
-      body: "A first home for sponsorship notes, deadlines, and funding paths linked to Botswana study options. Thuto does not submit applications to funders - use the official portals and call centres below.",
-      portalTitle: "Online Tertiary Education Sponsorship",
-      portalNote: "Illustrative mark only - not an official Government of Botswana crest.",
+      body: "A first home for sponsorship notes, deadlines, and funding paths for your selected study destination. Thuto does not submit applications to funders — use the official portals below.",
+      portalTitle: "Government funding portals",
+      portalNote: "Illustrative guidance only — always verify on official sponsor sites.",
     },
     fundingRoutes: {
       items: [
-        { title: "Government sponsorship", body: "Public windows and required documents for national sponsorship schemes, including the DTEF online portal for new students.", icon: "government" },
+        { title: "Government sponsorship", body: "Public windows and required documents for national sponsorship schemes in your study destination.", icon: "government" },
         { title: "Institution scholarships", body: "Keep an eye on university-funded awards, merit support, and programme-specific funding notices.", icon: "campus" },
         { title: "Private and employer support", body: "Plan for bursaries, workplace support, and sector-linked funding where a programme connects to a sponsor.", icon: "briefcase" },
       ],
