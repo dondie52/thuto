@@ -14,25 +14,47 @@ export const PAGE_CONTENT_META = [
 export const PAGE_CONTENT_DEFAULTS = {
   landing: {
     hero: {
-      kicker: "Thuto - Botswana Tertiary Companion",
-      title: "Check what your BGCSE results may qualify you for",
-      body: "Start with real or estimated grades, see possible programme matches, and spot requirements to confirm before applications open.",
+      kicker: "Thuto - African tertiary companion",
+      title: "Plan your path to higher education in Africa",
+      body: "Check eligibility, compare programmes and universities, and spot deadlines — whether you apply at home, study in another African country, or come from outside the continent.",
       primaryCtaLabel: "Check eligibility",
       secondaryCtaLabel: "Browse programmes",
       note: "Thuto is planning guidance, not an admission decision. Always confirm final requirements with each institution.",
       image: "programme-themes/landing-hero-bw.jpg",
       stats: [
         { value: "55+", label: "institutions" },
-        { value: "Best six", label: "BGCSE scoring" },
+        { value: "5 countries", label: "live catalogues" },
         { value: "Shareable", label: "programme compare" },
+      ],
+    },
+    studentPathways: {
+      heading: "Three ways students use Thuto",
+      body: "We help students who want to apply within their home country, explore another African country as a regional or exchange student, or research African universities from outside the continent.",
+      note: "Admission predictors and local exam scoring are strongest in live markets today (Botswana first, with Namibia, Zimbabwe, Zambia, and South Africa expanding). Programme and institution research supports every pathway.",
+      pathways: [
+        {
+          title: "Apply in your home country",
+          body: "Explore universities and programmes where you live, check entry requirements, and build a shortlist before application windows close.",
+          icon: "home",
+        },
+        {
+          title: "Study in another African country",
+          body: "Compare institutions across Africa as a regional or exchange student — including SADC rates, visa notes, and official apply links where available.",
+          icon: "regional",
+        },
+        {
+          title: "Apply to Africa from abroad",
+          body: "Research African universities from outside the continent. Understand international student requirements, fees, and deadlines before you apply.",
+          icon: "global",
+        },
       ],
     },
     problem: {
       heading: "Choosing a course shouldn't be guesswork",
       items: [
-        "Many students are unsure which programmes their BGCSE points qualify for.",
-        "Comparing requirements across universities takes too much time.",
-        "Career paths and course details are often difficult to find before applying.",
+        "Many students are unsure which programmes their exam results qualify for — at home or abroad.",
+        "Comparing requirements across African universities takes too much time.",
+        "Career paths, fees, and application rules are often difficult to find before you apply.",
       ],
     },
     howItWorks: {
@@ -46,8 +68,8 @@ export const PAGE_CONTENT_DEFAULTS = {
     features: {
       introHeading: "Apply with more confidence",
       introBody: "Instead of opening multiple university websites and guessing where you qualify, check your eligibility first and use that result to build a clearer shortlist.",
-      heading: "Built for Botswana applicants",
-      body: "Designed for students comparing universities and programmes across Botswana.",
+      heading: "Built for African applicants",
+      body: "Designed for students comparing universities and programmes across Africa — starting with live catalogues in Botswana, Namibia, Zimbabwe, Zambia, and South Africa.",
       items: [
         { title: "Admission predictor", body: "Start with real or estimated BGCSE grades and see programmes you may qualify for.", to: "/predictor", guestHash: "#features", icon: "predictor" },
         { title: "Programme explorer", body: "Browse programmes, requirements, careers, and modules in one place.", to: "/programmes", guestHash: "#programmes", icon: "programmes" },
@@ -64,8 +86,8 @@ export const PAGE_CONTENT_DEFAULTS = {
     },
     universities: {
       kicker: "University directory",
-      heading: "Compare institutions across Botswana.",
-      body: "Browse universities and training institutions, then jump straight into their programmes.",
+      heading: "Compare institutions across Africa.",
+      body: "Browse universities and training institutions in your chosen country, then jump straight into their programmes.",
       featuredLabel: "Featured",
       badgeSuffix: "logos",
       ctaSignedIn: "View all universities",
@@ -100,7 +122,7 @@ export const PAGE_CONTENT_DEFAULTS = {
         "Thuto is a Botswana-built social education technology platform designed to provide accurate information about tertiary education in Africa.",
         "We help prospective students explore higher education options, predict their admission chances, and make confident decisions about their future, all in one place. From discovering the right programme to comparing institutions and connecting with opportunities and other students, Thuto puts the information and tools every student needs directly in their hands.",
         "We believe no student should miss out on the right opportunity simply because they didn't have access to the right information.",
-        "For institutions and partners, Thuto represents direct access to Botswana's next generation of qualified, motivated students, already researching, already deciding.",
+        "For institutions and partners, Thuto represents direct access to Africa's next generation of qualified, motivated students, already researching, already deciding.",
       ],
     },
     partnersTeaser: {
@@ -111,7 +133,7 @@ export const PAGE_CONTENT_DEFAULTS = {
     },
     footer: {
       brand: "Thuto",
-      tagline: "Botswana Tertiary Companion",
+      tagline: "African tertiary companion",
       signedInCta: "Open full app",
       guestCta: "See app features",
       note: "Thuto does not process applications or payments. Eligibility and programme details in the app are indicative; confirm with each university.",

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import Hero from "../components/landing/Hero.jsx";
+import StudentPathways from "../components/landing/StudentPathways.jsx";
 import ProblemSection from "../components/landing/ProblemSection.jsx";
 import HowItWorks from "../components/landing/HowItWorks.jsx";
 import Features from "../components/landing/Features.jsx";
@@ -15,7 +16,7 @@ import { usePageContent } from "../hooks/usePageContent.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
 export default function LandingPage() {
-  useDocumentTitle("Thuto - Botswana Tertiary Companion");
+  useDocumentTitle("Thuto - African tertiary companion");
   const { hash } = useLocation();
   const { content } = usePageContent("landing", PAGE_CONTENT_DEFAULTS.landing);
 
@@ -29,6 +30,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-1 flex-col">
       <Hero content={content.hero} />
+      <StudentPathways content={content.studentPathways} />
       <ProblemSection content={content.problem} />
       <HowItWorks content={content.howItWorks} />
       <Features content={content.features} />
