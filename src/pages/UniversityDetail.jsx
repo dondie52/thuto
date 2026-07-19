@@ -16,6 +16,8 @@ import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from 
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import UniversityStudentIncentives from "../components/UniversityStudentIncentives.jsx";
 import UniversityFacultyFeesSection from "../components/UniversityFacultyFeesSection.jsx";
+import InternationalApplicantsSection from "../components/InternationalApplicantsSection.jsx";
+import { resolveMarketCountry } from "../lib/marketCountry.js";
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
@@ -274,6 +276,11 @@ export default function UniversityDetail() {
           <UniversityApplicationBlock university={university} compact={false} profileLink={false} />
         </div>
       </section>
+
+      <InternationalApplicantsSection
+        university={university}
+        marketCountry={university.country || resolveMarketCountry()}
+      />
 
       {isVerified ? (
         <LeadInquiryForm institutionId={university.id} institutionName={university.name} />

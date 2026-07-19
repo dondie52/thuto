@@ -1,4 +1,5 @@
 import { SCIENCE_DOUBLE_SUBJECT_ID, SUBJECTS_BY_ID } from "./bgcseSubjects.js";
+import { getGradingProfile, gradeToPointsForSyllabus } from "./gradingSystems.js";
 
 export { SCIENCE_DOUBLE_SUBJECT_ID };
 
@@ -31,9 +32,11 @@ export const SUBJECT_FIELDS = [
 
 /**
  * @param {string | undefined | null} grade
+ * @param {string | null | undefined} [syllabusType]
  * @returns {number | null}
  */
-export function gradeToPoints(grade) {
+export function gradeToPoints(grade, syllabusType) {
+  if (syllabusType) return gradeToPointsForSyllabus(grade, syllabusType);
   if (grade == null || String(grade).trim() === "") return null;
   const g = String(grade).trim().toUpperCase();
   return Object.prototype.hasOwnProperty.call(GRADE_POINTS, g) ? GRADE_POINTS[g] : null;
@@ -44,9 +47,9 @@ export function gradeToPoints(grade) {
  * @param {string | undefined | null} grade1
  * @param {string | undefined | null} [grade2]
  */
-export function scienceDoubleAwardPoints(grade1, grade2) {
-  const g1 = gradeToPoints(grade1);
-  const g2 = gradeToPoints(grade2);
+export function scienceDoubleAwardPoints(grade1, grade2, syllabusType) {
+  const g1 = gradeToPoints(grade1, syllabusType);
+  const g2 = gradeToPoints(grade2, syllabusType);
   if (g1 == null || g2 == null) return null;
   return g1 + g2;
 }
@@ -123,22 +126,32 @@ export function computeBestSixTotal(gradesBySubject) {
  */
 
 /**
- * Best-six breakdown from distinct subject rows (one grade per BGCSE subject).
- * Science Double Award counts both component grades toward points (e.g. CC = 12).
+ * Best-six (or APS-style) breakdown from distinct subject rows.
  * @param {GradeRow[]} rows
- * @returns {{ total: number, counted: CountedEntry[], dropped: CountedEntry[], invalid: string | null }}
+ * @param {string | null | undefined} [syllabusType]
+ * @returns {{ total: number, counted: CountedEntry[], dropped: CountedEntry[], invalid: string | null, aggregateLabel?: string }}
  */
-export function computeBestSixBreakdown(rows) {
+export function computeBestSixBreakdown(rows, syllabusType) {
+  const profile = getGradingProfile(syllabusType || "bgcse");
   const scored = [];
   for (const row of rows) {
     const g = row.grade?.trim();
     if (!g) continue;
     const meta = SUBJECTS_BY_ID[row.subjectId];
     if (!meta) {
-      return { total: 0, counted: [], dropped: [], invalid: "Unknown subject in row." };
+      return { total: 0, counted: [], dropped: [], invalid: "Unknown subject in row.", aggregateLabel: profile.aggregateLabel };
     }
 
     if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID) {
+      if (!profile.allowsScienceDouble) {
+        return {
+          total: 0,
+          counted: [],
+          dropped: [],
+          invalid: `${profile.label} does not use Science Double Award in this predictor. Choose single subjects.`,
+          aggregateLabel: profile.aggregateLabel,
+        };
+      }
       const g2 = row.grade2?.trim();
       if (!g2) {
         return {
@@ -146,15 +159,17 @@ export function computeBestSixBreakdown(rows) {
           counted: [],
           dropped: [],
           invalid: `${meta.label} needs two component grades (e.g. CC or BB).`,
+          aggregateLabel: profile.aggregateLabel,
         };
       }
-      const p = scienceDoubleAwardPoints(g, g2);
+      const p = scienceDoubleAwardPoints(g, g2, syllabusType);
       if (p == null) {
         return {
           total: 0,
           counted: [],
           dropped: [],
-          invalid: `Invalid grades for ${meta.label}. Use A*, A–G, or U for each component.`,
+          invalid: `Invalid grades for ${meta.label}.`,
+          aggregateLabel: profile.aggregateLabel,
         };
       }
       scored.push({
@@ -166,13 +181,14 @@ export function computeBestSixBreakdown(rows) {
       continue;
     }
 
-    const p = gradeToPoints(g);
+    const p = gradeToPoints(g, syllabusType);
     if (p == null) {
       return {
         total: 0,
         counted: [],
         dropped: [],
-        invalid: `Invalid grade for ${meta.label}. Use A*, A–G, or U.`,
+        invalid: `Invalid grade for ${meta.label} under ${profile.label}.`,
+        aggregateLabel: profile.aggregateLabel,
       };
     }
     scored.push({
@@ -183,13 +199,14 @@ export function computeBestSixBreakdown(rows) {
     });
   }
   if (scored.length === 0) {
-    return { total: 0, counted: [], dropped: [], invalid: null };
+    return { total: 0, counted: [], dropped: [], invalid: null, aggregateLabel: profile.aggregateLabel };
   }
   const sorted = [...scored].sort((a, b) => b.points - a.points || a.label.localeCompare(b.label));
+  // APS and best-six both use top six subjects for a comparable guidance total.
   const counted = sorted.slice(0, 6);
   const dropped = sorted.slice(6);
   const total = counted.reduce((s, e) => s + e.points, 0);
-  return { total, counted, dropped, invalid: null };
+  return { total, counted, dropped, invalid: null, aggregateLabel: profile.aggregateLabel };
 }
 
 /**

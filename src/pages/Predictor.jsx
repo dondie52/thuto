@@ -44,6 +44,7 @@ export default function Predictor() {
   const [shareFeedback, setShareFeedback] = useState(null);
   const resultsSectionRef = useRef(null);
   const hasAutoScrolledToResultsRef = useRef(false);
+  const syllabusType = profile?.syllabus_type || "";
   const {
     rows,
     chosenSubjectIds,
@@ -57,7 +58,9 @@ export default function Predictor() {
     replaceRows,
     canAdd,
     bgcseSubjects,
-  } = usePredictorGradeInput();
+    gradeOptions,
+    gradingProfile,
+  } = usePredictorGradeInput({ syllabusType: syllabusType || "bgcse" });
 
   const { gradesNotice, clearSavedGrades } = useProfileGradePersistence({
     user,
@@ -142,7 +145,6 @@ export default function Predictor() {
   }
 
   const hasResults = Boolean(results && summary);
-  const syllabusType = profile?.syllabus_type || "";
   const predictorLocked = Boolean(user && !hasPredictorAccess(profile));
   const activeSubjects = useMemo(
     () => (syllabusType ? filterSubjectsBySyllabus(syllabusType, bgcseSubjects) : bgcseSubjects),
@@ -227,6 +229,9 @@ export default function Predictor() {
             removeRow={removeRow}
             canAdd={canAdd}
             subjects={activeSubjects}
+            gradeOptions={gradeOptions}
+            helpText={gradingProfile.helpText}
+            allowScienceDouble={Boolean(gradingProfile.allowsScienceDouble)}
           />
 
           <div className="flex flex-wrap items-center gap-3">

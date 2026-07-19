@@ -20,17 +20,22 @@ import {
 import { fetchProgrammes } from "../lib/programmesData.js";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";
+import { filterSubjectsBySyllabus, defaultSyllabusForCountry } from "../lib/syllabus.js";
+import { resolveMarketCountry } from "../lib/marketCountry.js";
 
 const STEPS = /** @type {const} */ (["grades", "profile", "results"]);
 
 export default function FitFinder() {
   useDocumentTitle("Programme fit finder | Thuto");
-  const { user } = useAuth();
+  const { user, profile: authProfile } = useAuth();
   const [step, setStep] = useState(/** @type {typeof STEPS[number]} */ ("grades"));
   const [programmes, setProgrammes] = useState([]);
   const [loadError, setLoadError] = useState(null);
   const [profile, setProfile] = useState(() => loadFitAnswersFromStorage());
   const { toggle, isBookmarked } = useBookmarks();
+
+  const syllabusType =
+    authProfile?.syllabus_type || defaultSyllabusForCountry(resolveMarketCountry(authProfile));
 
   const {
     rows,
@@ -44,8 +49,14 @@ export default function FitFinder() {
     canAdd,
     bgcseSubjects,
     replaceRows,
-  } = usePredictorGradeInput();
+    gradeOptions,
+    gradingProfile,
+  } = usePredictorGradeInput({ syllabusType });
 
+  const filteredSubjects = useMemo(
+    () => filterSubjectsBySyllabus(syllabusType, bgcseSubjects),
+    [syllabusType, bgcseSubjects],
+  );
   useProfileGradePersistence({
     user,
     rows,
@@ -174,7 +185,10 @@ export default function FitFinder() {
             addRow={addRow}
             removeRow={removeRow}
             canAdd={canAdd}
-            subjects={bgcseSubjects}
+            subjects={filteredSubjects}
+            gradeOptions={gradeOptions}
+            helpText={gradingProfile.helpText}
+            allowScienceDouble={Boolean(gradingProfile.allowsScienceDouble)}
           />
           <div className="flex flex-wrap items-center gap-3">
             <button

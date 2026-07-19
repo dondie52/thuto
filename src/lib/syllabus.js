@@ -1,17 +1,30 @@
-/** @typedef {'bgcse' | 'igcse' | 'as_level' | 'o_level'} SyllabusType */
+/** @typedef {import("./gradingSystems.js").GradingProfile} GradingProfile */
 
-export const SYLLABUS_OPTIONS = [
-  { value: "bgcse", label: "BGCSE" },
-  { value: "igcse", label: "IGCSE" },
-  { value: "as_level", label: "AS Level" },
-  { value: "o_level", label: "O-Level" },
-];
+import {
+  ALL_SYLLABUS_VALUES,
+  defaultSyllabusForCountry,
+  getGradingProfile,
+  syllabusOptionsForCountry,
+} from "./gradingSystems.js";
+import { ALL_SPONSORSHIP_VALUES, sponsorshipOptionsForCountry } from "./marketLocales.js";
+import { DEFAULT_MARKET_COUNTRY, resolveMarketCountry } from "./marketCountry.js";
 
-export const SPONSORSHIP_INTENT_OPTIONS = [
-  { value: "dtef", label: "DTEF (Government) Sponsorship" },
-  { value: "private", label: "Private / Corporate Funding" },
-  { value: "self_funded", label: "Self-Funded" },
-];
+/** @typedef {'bgcse' | 'igcse' | 'as_level' | 'o_level' | 'nssc' | 'zimsec_o' | 'zimsec_a' | 'ecz' | 'nsc_matric'} SyllabusType */
+
+/** @deprecated Prefer syllabusOptionsForCountry(country) */
+export const SYLLABUS_OPTIONS = syllabusOptionsForCountry("bw");
+
+/** @deprecated Prefer sponsorshipOptionsForCountry(country) */
+export const SPONSORSHIP_INTENT_OPTIONS = sponsorshipOptionsForCountry("bw");
+
+export {
+  ALL_SYLLABUS_VALUES,
+  ALL_SPONSORSHIP_VALUES,
+  defaultSyllabusForCountry,
+  getGradingProfile,
+  syllabusOptionsForCountry,
+  sponsorshipOptionsForCountry,
+};
 
 /**
  * Map syllabus types to exam board tags used in subject catalog.
@@ -23,6 +36,10 @@ export function examBoardsForSyllabus(syllabusType) {
   if (syllabusType === "igcse" || syllabusType === "as_level" || syllabusType === "o_level") {
     return ["igcse"];
   }
+  if (syllabusType === "nssc") return ["bgcse", "igcse"];
+  if (syllabusType === "zimsec_o" || syllabusType === "zimsec_a") return ["igcse", "bgcse"];
+  if (syllabusType === "ecz") return ["igcse", "bgcse"];
+  if (syllabusType === "nsc_matric") return ["igcse", "bgcse"];
   return ["bgcse", "igcse"];
 }
 
@@ -40,5 +57,23 @@ export function filterSubjectsBySyllabus(syllabusType, subjects) {
  * @param {string | null | undefined} syllabusType
  */
 export function canUsePredictor(syllabusType) {
-  return Boolean(syllabusType && SYLLABUS_OPTIONS.some((option) => option.value === syllabusType));
+  return Boolean(syllabusType && ALL_SYLLABUS_VALUES.includes(String(syllabusType)));
+}
+
+/**
+ * @param {string | null | undefined} sponsorshipIntent
+ */
+export function isValidSponsorshipIntent(sponsorshipIntent) {
+  return ALL_SPONSORSHIP_VALUES.includes(String(sponsorshipIntent || ""));
+}
+
+/**
+ * Drop sponsorship values that don't belong to the selected country.
+ * @param {string | null | undefined} sponsorshipIntent
+ * @param {string | null | undefined} country
+ */
+export function normalizeSponsorshipForCountry(sponsorshipIntent, country) {
+  const options = sponsorshipOptionsForCountry(country || resolveMarketCountry() || DEFAULT_MARKET_COUNTRY);
+  if (options.some((o) => o.value === sponsorshipIntent)) return sponsorshipIntent;
+  return null;
 }
