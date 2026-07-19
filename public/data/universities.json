@@ -167,7 +167,8 @@
       "sourceUrl": "https://www.ub.bw/sites/default/files/2025-07/University_of_Botswana_2025-26_Schedule_of_Fees_Final-14072025.pdf",
       "sourceLabel": "University of Botswana",
       "updatedAt": "2025-07-14"
-    }
+    },
+    "country": "bw"
   },
   {
     "id": "biust",
@@ -250,7 +251,8 @@
         "sourceUrl": "https://www.biust.ac.bw/student-affairs/",
         "sourceLabel": "BIUST Student Affairs"
       }
-    ]
+    ],
+    "country": "bw"
   },
   {
     "id": "bac",
@@ -291,7 +293,8 @@
         "sourceUrl": "https://www.bac.ac.bw/",
         "sourceLabel": "Botswana School of Business Sciences"
       }
-    ]
+    ],
+    "country": "bw"
   },
   {
     "id": "botho",
@@ -397,7 +400,8 @@
       "sourceUrl": "https://www.bothouniversity.com/fees",
       "sourceLabel": "Botho University",
       "updatedAt": "2026-07-08"
-    }
+    },
+    "country": "bw"
   },
   {
     "id": "ba-isago",
@@ -464,7 +468,8 @@
         "sourceLabel": "BA ISAGO University"
       }
     ],
-    "shortName": "BA ISAGO"
+    "shortName": "BA ISAGO",
+    "country": "bw"
   },
   {
     "id": "abm",
@@ -503,7 +508,8 @@
         "sourceLabel": "Government of Botswana"
       }
     ],
-    "shortName": "ABM"
+    "shortName": "ABM",
+    "country": "bw"
   },
   {
     "id": "limkokwing",
@@ -563,7 +569,8 @@
         "sourceUrl": "https://www.limkokwing.net/botswana/admissions",
         "sourceLabel": "Limkokwing Botswana admissions"
       }
-    ]
+    ],
+    "country": "bw"
   },
   {
     "id": "gtc",
@@ -595,7 +602,8 @@
         "sourceLabel": "Gaborone Technical College"
       }
     ],
-    "shortName": "GTC"
+    "shortName": "GTC",
+    "country": "bw"
   },
   {
     "id": "bou",
@@ -756,7 +764,8 @@
       "sourceUrl": "https://www.bou.ac.bw/media/attachments/2026/04/28/2026_programme_fees.pdf",
       "sourceLabel": "Botswana Open University",
       "updatedAt": "2026-04-28"
-    }
+    },
+    "country": "bw"
   },
   {
     "id": "boitekanelo",
@@ -830,7 +839,8 @@
         "sourceLabel": "Boitekanelo College"
       }
     ],
-    "shortName": "Boitekanelo"
+    "shortName": "Boitekanelo",
+    "country": "bw"
   },
   {
     "id": "new-era",
@@ -869,7 +879,8 @@
         "sourceLabel": "New Era College"
       }
     ],
-    "shortName": "New Era"
+    "shortName": "New Era",
+    "country": "bw"
   },
   {
     "id": "gips",
@@ -901,7 +912,8 @@
         "sourceLabel": "Gaborone Institute of Professional Studies"
       }
     ],
-    "shortName": "GIPS"
+    "shortName": "GIPS",
+    "country": "bw"
   },
   {
     "id": "botswana-accountancy-training",
@@ -933,7 +945,8 @@
         "sourceLabel": "Botswana Institute of Chartered Accountants Training Centre"
       }
     ],
-    "shortName": "BICA Training"
+    "shortName": "BICA Training",
+    "country": "bw"
   },
   {
     "id": "chobe-brigade",
@@ -957,7 +970,8 @@
         "format": "Web page",
         "sourceLabel": "Government of Botswana"
       }
-    ]
+    ],
+    "country": "bw"
   },
   {
     "id": "kgale",
@@ -971,7 +985,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://www.kgalecollege.ac.bw/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "country": "bw"
   },
   {
     "id": "bohss",
@@ -985,7 +1000,8 @@
     "academicYearStart": "2026-09",
     "applyUrl": "https://www.bhhrl.org/",
     "featured": false,
-    "sponsorshipTier": "standard"
+    "sponsorshipTier": "standard",
+    "country": "bw"
   },
   {
     "id": "isbs",
@@ -1031,7 +1047,8 @@
         "sourceLabel": "Imperial School of Business and Science"
       }
     ],
-    "shortName": "ISBS"
+    "shortName": "ISBS",
+    "country": "bw"
   },
   {
     "id": "idm",
@@ -1067,7 +1084,8 @@
         "sourceLabel": "Institute of Development Management (IDM) Botswana"
       }
     ],
-    "shortName": "IDM"
+    "shortName": "IDM",
+    "country": "bw"
   },
   {
     "id": "fire-college",
@@ -1117,7 +1135,8 @@
         "sourceLabel": "College of Fire & Safety (Fire College)"
       }
     ],
-    "shortName": "Fire College"
+    "shortName": "Fire College",
+    "country": "bw"
   },
   {
     "id": "lcibs",
@@ -1153,7 +1172,8 @@
         "sourceLabel": "London College of International Business Studies (LCIBS) Botswana"
       }
     ],
-    "shortName": "LCIBS"
+    "shortName": "LCIBS",
+    "country": "bw"
   },
   {
     "id": "bcet",
@@ -1170,7 +1190,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/bcet.jpeg",
     "resources": [],
-    "shortName": "BCET"
+    "shortName": "BCET",
+    "country": "bw"
   },
   {
     "id": "fctve",
@@ -1184,7 +1205,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/fctve.jpg",
     "resources": [],
-    "shortName": "FCTVE"
+    "shortName": "FCTVE",
+    "country": "bw"
   },
   {
     "id": "ihs",
@@ -1201,7 +1223,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/ihs.jpeg",
     "resources": [],
-    "shortName": "IHS"
+    "shortName": "IHS",
+    "country": "bw"
   },
   {
     "id": "guc",
@@ -1237,7 +1260,8 @@
         "sourceLabel": "Gaborone University College of Law and Professional Studies (GUC)"
       }
     ],
-    "shortName": "GUC"
+    "shortName": "GUC",
+    "country": "bw"
   },
   {
     "id": "pillar-of-success",
@@ -1251,7 +1275,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/pillar-of-success.jpeg",
     "resources": [],
-    "shortName": "Pillar of Success"
+    "shortName": "Pillar of Success",
+    "country": "bw"
   },
   {
     "id": "oodi",
@@ -1268,7 +1293,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/oodi.jpeg",
     "resources": [],
-    "shortName": "OCAAT"
+    "shortName": "OCAAT",
+    "country": "bw"
   },
   {
     "id": "buan",
@@ -1342,7 +1368,8 @@
         "sourceLabel": "Botswana University of Agriculture and Natural Resources"
       }
     ],
-    "shortName": "BUAN"
+    "shortName": "BUAN",
+    "country": "bw"
   },
   {
     "id": "logan-business-college",
@@ -1359,7 +1386,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/logan-business-college.png",
     "resources": [],
-    "shortName": "LBC"
+    "shortName": "LBC",
+    "country": "bw"
   },
   {
     "id": "mega-size-college",
@@ -1376,7 +1404,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/mega-size-college.jpeg",
     "resources": [],
-    "shortName": "Mega Size"
+    "shortName": "Mega Size",
+    "country": "bw"
   },
   {
     "id": "kanye-sda-nursing",
@@ -1408,7 +1437,8 @@
         "sourceLabel": "Kanye Seventh Day Adventist College of Nursing"
       }
     ],
-    "shortName": "Kanye SDA Nursing"
+    "shortName": "Kanye SDA Nursing",
+    "country": "bw"
   },
   {
     "id": "bosa-bosele",
@@ -1425,7 +1455,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/bosa-bosele.jpeg",
     "resources": [],
-    "shortName": "Bosa Bosele"
+    "shortName": "Bosa Bosele",
+    "country": "bw"
   },
   {
     "id": "tlokweng-coe",
@@ -1442,7 +1473,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/tlokweng-coe.jpeg",
     "resources": [],
-    "shortName": "Tlokweng CoE"
+    "shortName": "Tlokweng CoE",
+    "country": "bw"
   },
   {
     "id": "serowe-coe",
@@ -1459,7 +1491,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/serowe-coe.jpeg",
     "resources": [],
-    "shortName": "Serowe CoE"
+    "shortName": "Serowe CoE",
+    "country": "bw"
   },
   {
     "id": "molepolole-coe",
@@ -1476,7 +1509,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/molepolole-coe.jpeg",
     "resources": [],
-    "shortName": "Molepolole CoE"
+    "shortName": "Molepolole CoE",
+    "country": "bw"
   },
   {
     "id": "roads-training-centre",
@@ -1493,7 +1527,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/roads-training-centre.jpeg",
     "resources": [],
-    "shortName": "RTC"
+    "shortName": "RTC",
+    "country": "bw"
   },
   {
     "id": "dawn-training",
@@ -1510,7 +1545,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/dawn-training.jpeg",
     "resources": [],
-    "shortName": "Dawn"
+    "shortName": "Dawn",
+    "country": "bw"
   },
   {
     "id": "cep-training",
@@ -1527,7 +1563,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/cep-training.jpeg",
     "resources": [],
-    "shortName": "CEP"
+    "shortName": "CEP",
+    "country": "bw"
   },
   {
     "id": "learneasy",
@@ -1544,7 +1581,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/learneasy.jpeg",
     "resources": [],
-    "shortName": "LEARNeasy"
+    "shortName": "LEARNeasy",
+    "country": "bw"
   },
   {
     "id": "stargems",
@@ -1561,7 +1599,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/stargems.jpeg",
     "resources": [],
-    "shortName": "Stargems"
+    "shortName": "Stargems",
+    "country": "bw"
   },
   {
     "id": "homeland-college",
@@ -1578,7 +1617,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/homeland-college.jpeg",
     "resources": [],
-    "shortName": "Homeland"
+    "shortName": "Homeland",
+    "country": "bw"
   },
   {
     "id": "gcca",
@@ -1595,7 +1635,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/gcca.jpeg",
     "resources": [],
-    "shortName": "GCCA"
+    "shortName": "GCCA",
+    "country": "bw"
   },
   {
     "id": "gaborone-commercial-college",
@@ -1612,7 +1653,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/gaborone-commercial-college.png",
     "resources": [],
-    "shortName": "GCC"
+    "shortName": "GCC",
+    "country": "bw"
   },
   {
     "id": "tebelopele",
@@ -1629,7 +1671,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/tebelopele.jpeg",
     "resources": [],
-    "shortName": "Tebelopele"
+    "shortName": "Tebelopele",
+    "country": "bw"
   },
   {
     "id": "byte-size-college",
@@ -1646,7 +1689,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/byte-size-college.jpeg",
     "resources": [],
-    "shortName": "Byte Size"
+    "shortName": "Byte Size",
+    "country": "bw"
   },
   {
     "id": "insurance-training-institute",
@@ -1663,7 +1707,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/insurance-training-institute.jpeg",
     "resources": [],
-    "shortName": "ITI"
+    "shortName": "ITI",
+    "country": "bw"
   },
   {
     "id": "realic",
@@ -1680,7 +1725,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/realic.jpeg",
     "resources": [],
-    "shortName": "Realic"
+    "shortName": "Realic",
+    "country": "bw"
   },
   {
     "id": "crackit",
@@ -1697,7 +1743,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/crackit.jpeg",
     "resources": [],
-    "shortName": "CrackiT"
+    "shortName": "CrackiT",
+    "country": "bw"
   },
   {
     "id": "palapye-technical-college",
@@ -1722,7 +1769,8 @@
         "sourceLabel": "Government of Botswana"
       }
     ],
-    "shortName": "Palapye TC"
+    "shortName": "Palapye TC",
+    "country": "bw"
   },
   {
     "id": "assembly-bible-college",
@@ -1738,7 +1786,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Assembly Bible"
+    "shortName": "Assembly Bible",
+    "country": "bw"
   },
   {
     "id": "bibf",
@@ -1770,7 +1819,8 @@
         "sourceLabel": "Botswana Institute of Banking and Finance"
       }
     ],
-    "shortName": "BIBF"
+    "shortName": "BIBF",
+    "country": "bw"
   },
   {
     "id": "tonota-coe",
@@ -1787,7 +1837,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/tonota-coe.jpeg",
     "resources": [],
-    "shortName": "Tonota CoE"
+    "shortName": "Tonota CoE",
+    "country": "bw"
   },
   {
     "id": "bamalete-nursing",
@@ -1803,7 +1854,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Bamalete Nursing"
+    "shortName": "Bamalete Nursing",
+    "country": "bw"
   },
   {
     "id": "aafm",
@@ -1820,7 +1872,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/aafm.jpeg",
     "resources": [],
-    "shortName": "AAFM"
+    "shortName": "AAFM",
+    "country": "bw"
   },
   {
     "id": "jwaneng-technical-college",
@@ -1844,7 +1897,8 @@
         "sourceLabel": "Government of Botswana"
       }
     ],
-    "shortName": "JTC"
+    "shortName": "JTC",
+    "country": "bw"
   },
   {
     "id": "africa-insurance-training-institute",
@@ -1861,7 +1915,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/africa-insurance-training-institute.jpeg",
     "resources": [],
-    "shortName": "AITI"
+    "shortName": "AITI",
+    "country": "bw"
   },
   {
     "id": "awil-college",
@@ -1878,7 +1933,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/awil-college.jpeg",
     "resources": [],
-    "shortName": "Awil"
+    "shortName": "Awil",
+    "country": "bw"
   },
   {
     "id": "delta-training-academy",
@@ -1895,7 +1951,8 @@
     "sponsorshipTier": "standard",
     "logo": "university-logos/delta-training-academy.jpeg",
     "resources": [],
-    "shortName": "Delta"
+    "shortName": "Delta",
+    "country": "bw"
   },
   {
     "id": "naledi-training-institute",
@@ -1907,7 +1964,8 @@
     "applyUrl": "https://naleditraining.co.bw/government-self-sponsored/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/naledi.jpg"
+    "logo": "university-logos/naledi.jpg",
+    "country": "bw"
   },
   {
     "id": "elsimate-institute",
@@ -1923,7 +1981,8 @@
     "applyUrl": "https://elsimateinstitute.ac.bw/registration-form-self-sponsor/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/elsimate-institute.jpeg"
+    "logo": "university-logos/elsimate-institute.jpeg",
+    "country": "bw"
   },
   {
     "id": "nampol-college-of-education",
@@ -1939,7 +1998,8 @@
     "applyUrl": "https://nce.ac.bw/",
     "featured": false,
     "sponsorshipTier": "standard",
-    "logo": "university-logos/nampol-college-of-education.jpeg"
+    "logo": "university-logos/nampol-college-of-education.jpeg",
+    "country": "bw"
   },
   {
     "id": "barolong-brigade",
@@ -1963,7 +2023,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "bobonong-brigade",
@@ -1987,7 +2048,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "boteti-brigade",
@@ -2011,7 +2073,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "ghanzi-brigade",
@@ -2035,7 +2098,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "gweta-brigade",
@@ -2059,7 +2123,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "kang-brigade",
@@ -2083,7 +2148,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "kanye-brigade",
@@ -2107,7 +2173,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "kgatleng-brigade",
@@ -2131,7 +2198,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "krda",
@@ -2155,7 +2223,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "kweneng-bophirima-brigade",
@@ -2179,7 +2248,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "lobatse-brigade",
@@ -2203,7 +2273,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "madiba-brigade",
@@ -2227,7 +2298,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "mahalapye-brigade",
@@ -2251,7 +2323,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "marapong-brigade",
@@ -2275,7 +2348,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "marobela-brigade",
@@ -2299,7 +2373,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "matsheng-brigade",
@@ -2323,7 +2398,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "maun-technical-college",
@@ -2346,7 +2422,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "mosetse-brigade",
@@ -2370,7 +2447,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "moshupa-brigade",
@@ -2394,7 +2472,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "ngethu-brigade",
@@ -2418,7 +2497,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "nswazwi-brigade",
@@ -2442,7 +2522,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "okavango-brigade",
@@ -2466,7 +2547,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "selebi-phikwe-technical-college",
@@ -2489,7 +2571,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "serowe-brigade",
@@ -2513,7 +2596,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "shashe-brigade",
@@ -2537,7 +2621,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "shoshong-brigade",
@@ -2561,7 +2646,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "tlokweng-brigade",
@@ -2585,7 +2671,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "kgalagadi-south-brigade",
@@ -2609,7 +2696,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "tshwaragano-brigade",
@@ -2633,7 +2721,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "tswelelopele-brigade",
@@ -2657,7 +2746,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "tswapong-bokone-brigade",
@@ -2681,7 +2771,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "tutume-brigade",
@@ -2705,7 +2796,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "zwenshambe-brigade",
@@ -2729,7 +2821,8 @@
     "applicationOpen": null,
     "applicationClose": "2026-07-10",
     "academicYearStart": "2026-08",
-    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training"
+    "applyUrl": "https://www.gov.bw/learning-and-teaching/vocational-education-training",
+    "country": "bw"
   },
   {
     "id": "inchrist-bible-institute-university",
@@ -2744,7 +2837,8 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "resources": []
+    "resources": [],
+    "country": "bw"
   },
   {
     "id": "real-bible-school",
@@ -2759,7 +2853,8 @@
     "applyUrl": null,
     "featured": false,
     "sponsorshipTier": "standard",
-    "resources": []
+    "resources": [],
+    "country": "bw"
   },
   {
     "id": "rankuke-training-institute",
@@ -2775,7 +2870,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Rankuke"
+    "shortName": "Rankuke",
+    "country": "bw"
   },
   {
     "id": "nhabe-tourism-training-centre",
@@ -2791,7 +2887,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Nhabe"
+    "shortName": "Nhabe",
+    "country": "bw"
   },
   {
     "id": "career-dreams-centre",
@@ -2807,7 +2904,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Career Dreams"
+    "shortName": "Career Dreams",
+    "country": "bw"
   },
   {
     "id": "lexie-training-investments",
@@ -2823,7 +2921,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Lexie"
+    "shortName": "Lexie",
+    "country": "bw"
   },
   {
     "id": "belvans-institute",
@@ -2839,7 +2938,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Belvans"
+    "shortName": "Belvans",
+    "country": "bw"
   },
   {
     "id": "mighty-skills-training-institute",
@@ -2855,7 +2955,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Mighty Skills"
+    "shortName": "Mighty Skills",
+    "country": "bw"
   },
   {
     "id": "tsl-college",
@@ -2871,7 +2972,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "TSL"
+    "shortName": "TSL",
+    "country": "bw"
   },
   {
     "id": "ed-tech-africa",
@@ -2887,7 +2989,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Ed-Tech Africa"
+    "shortName": "Ed-Tech Africa",
+    "country": "bw"
   },
   {
     "id": "kalahari-training-institute",
@@ -2903,7 +3006,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Kalahari"
+    "shortName": "Kalahari",
+    "country": "bw"
   },
   {
     "id": "rutegang-training-college",
@@ -2919,7 +3023,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Rutegang"
+    "shortName": "Rutegang",
+    "country": "bw"
   },
   {
     "id": "kago-international-serminary-college",
@@ -2935,7 +3040,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Kago"
+    "shortName": "Kago",
+    "country": "bw"
   },
   {
     "id": "azusa-academy-of-excellence",
@@ -2951,7 +3057,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Azusa"
+    "shortName": "Azusa",
+    "country": "bw"
   },
   {
     "id": "botswana-wildlife-training-institute",
@@ -2967,7 +3074,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "BWTI"
+    "shortName": "BWTI",
+    "country": "bw"
   },
   {
     "id": "central-college-of-modern-arts-creative-technology",
@@ -2983,7 +3091,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Central College"
+    "shortName": "Central College",
+    "country": "bw"
   },
   {
     "id": "serala-entrepreneurship-college",
@@ -2999,7 +3108,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Serala"
+    "shortName": "Serala",
+    "country": "bw"
   },
   {
     "id": "diamond-academy-of-botswana",
@@ -3015,7 +3125,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Diamond Academy"
+    "shortName": "Diamond Academy",
+    "country": "bw"
   },
   {
     "id": "institute-of-energy-technology-development",
@@ -3031,7 +3142,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "IETD"
+    "shortName": "IETD",
+    "country": "bw"
   },
   {
     "id": "institute-of-health-and-fire-safety",
@@ -3047,7 +3159,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "IHFS"
+    "shortName": "IHFS",
+    "country": "bw"
   },
   {
     "id": "boswa-culinary-institute-of-botswana",
@@ -3063,7 +3176,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Boswa Culinary"
+    "shortName": "Boswa Culinary",
+    "country": "bw"
   },
   {
     "id": "textile-clothing-institute-of-botswana",
@@ -3079,7 +3193,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "TCIB"
+    "shortName": "TCIB",
+    "country": "bw"
   },
   {
     "id": "phronesis-international-college",
@@ -3110,7 +3225,8 @@
         "sourceLabel": "Phronesis International College"
       }
     ],
-    "shortName": "PIC"
+    "shortName": "PIC",
+    "country": "bw"
   },
   {
     "id": "ddt-college-of-medicine",
@@ -3134,7 +3250,8 @@
         "sourceLabel": "DDT College of Medicine"
       }
     ],
-    "shortName": "DDTCOM"
+    "shortName": "DDTCOM",
+    "country": "bw"
   },
   {
     "id": "kitso-international-college",
@@ -3158,7 +3275,8 @@
         "sourceLabel": "Kitso International College"
       }
     ],
-    "shortName": "KIC"
+    "shortName": "KIC",
+    "country": "bw"
   },
   {
     "id": "arthur-portland-college",
@@ -3182,7 +3300,8 @@
         "sourceLabel": "Arthur Portland College"
       }
     ],
-    "shortName": "Arthur Portland"
+    "shortName": "Arthur Portland",
+    "country": "bw"
   },
   {
     "id": "kings-college",
@@ -3206,7 +3325,8 @@
         "sourceLabel": "Kings College"
       }
     ],
-    "shortName": "Kings College"
+    "shortName": "Kings College",
+    "country": "bw"
   },
   {
     "id": "institute-for-labour-and-employment-studies",
@@ -3230,7 +3350,8 @@
         "sourceLabel": "Institute for Labour and Employment Studies"
       }
     ],
-    "shortName": "ILES"
+    "shortName": "ILES",
+    "country": "bw"
   },
   {
     "id": "southwest-training-institute",
@@ -3246,7 +3367,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Southwest"
+    "shortName": "Southwest",
+    "country": "bw"
   },
   {
     "id": "vocational-and-creativity-institute",
@@ -3262,7 +3384,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "VCI"
+    "shortName": "VCI",
+    "country": "bw"
   },
   {
     "id": "moeti-practicum-institute",
@@ -3278,7 +3401,8 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Moeti Practicum"
+    "shortName": "Moeti Practicum",
+    "country": "bw"
   },
   {
     "id": "missions-bible-college-botswana",
@@ -3294,6 +3418,1384 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": [],
-    "shortName": "Missions Bible"
+    "shortName": "Missions Bible",
+    "country": "bw"
+  },
+  {
+    "id": "african-institute-of-marine-studies",
+    "name": "African Institute of Marine Studies",
+    "shortName": "AIMS",
+    "location": "Arandis",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": "https://www.aims.com.na/",
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": "https://www.aims.com.na/",
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "african-leadership-institute",
+    "name": "African Leadership Institute",
+    "shortName": "ALI",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "alba-chipamba-training-centre",
+    "name": "Alba Chipamba Training Centre",
+    "shortName": "Alba Chipamba",
+    "location": "Rundu",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "anistemi-college",
+    "name": "Anistemi College and Training Centre",
+    "shortName": "Anistemi",
+    "location": "Usakos",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "atlantic-training-institution",
+    "name": "Atlantic Training Institution",
+    "shortName": "Atlantic",
+    "location": "Oshakati",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "botho-namibia",
+    "name": "Botho University (Namibia)",
+    "shortName": "Botho Namibia",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "brilliant-training-college",
+    "name": "Brilliant Training College",
+    "shortName": "Brilliant College",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibian-college-of-open-learning",
+    "name": "Namibian College of Open Learning",
+    "shortName": "NAMCOL",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "business-school-of-excellence",
+    "name": "Business School of Excellence",
+    "shortName": "BSE",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "clocknet-vocational-training-centre",
+    "name": "Clocknet Vocational Training Centre",
+    "shortName": "CVTC",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "college-of-the-arts",
+    "name": "College of the Arts",
+    "shortName": "COTA",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibian-academy-for-tourism-and-hospitality",
+    "name": "Namibian Academy for Tourism and Hospitality",
+    "shortName": "NATH",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "dapp-vocational-training-school",
+    "name": "DAPP Vocational Training School",
+    "shortName": "DAPP",
+    "location": "Outapi",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "eenhana-vocational-training-centre",
+    "name": "Eenhana Vocational Training Centre",
+    "shortName": "EVTC",
+    "location": "Eenhana",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "eureka-medical-institute",
+    "name": "Eureka Medical Institute Services",
+    "shortName": "Eureka Medical",
+    "location": "Katima Mulilo",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "exedin-training-academy",
+    "name": "Exedin Training Academy",
+    "shortName": "Exedin",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "frameworks-africa-consultancy",
+    "name": "Frameworks Africa Consultancy",
+    "shortName": "Frameworks Africa",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "gobabis-vocational-training-centre",
+    "name": "Gobabis Vocational Training Centre",
+    "shortName": "GVTC",
+    "location": "Gobabis",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "goldstone-software-engineering-institute",
+    "name": "Goldstone Software Engineering Institute",
+    "shortName": "Goldstone",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "headstart-montessori-teacher-training-college",
+    "name": "Headstart Montessori Teacher Training College",
+    "shortName": "Headstart Montessori",
+    "location": "Walvis Bay",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "heritage-management-institute",
+    "name": "Heritage Management Institute",
+    "shortName": "HMI",
+    "location": "Namibia",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "homestead-skills-and-technical-education-academy",
+    "name": "Homestead Skills and Technical Education Academy",
+    "shortName": "HSTEA",
+    "location": "Ongula Ya Netanga",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "i-care-health-training-institute",
+    "name": "I-Care Health Training Institute",
+    "shortName": "I-Care",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "insurance-institute-of-namibia",
+    "name": "Insurance Institute of Namibia",
+    "shortName": "IIN",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibian-maritime-and-fisheries-institute",
+    "name": "Namibian Maritime and Fisheries Institute",
+    "shortName": "NAMFI",
+    "location": "Walvis Bay",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "institute-for-open-learning",
+    "name": "Institute for Open Learning",
+    "shortName": "IOL",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "international-training-college-lingua",
+    "name": "International Training College – Lingua",
+    "shortName": "Lingua",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "international-university-of-management",
+    "name": "International University of Management",
+    "shortName": "IUM",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "kambaku-hospitality-college",
+    "name": "Kambaku Hospitality College",
+    "shortName": "Kambaku",
+    "location": "Namibia",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "katutura-youth-enterprise-centre",
+    "name": "Katutura Youth Enterprise Centre",
+    "shortName": "KAYEC",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "labour-resource-and-research-institute",
+    "name": "Labour Resource and Research Institute",
+    "shortName": "LaRRI",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "limkokwing-namibia",
+    "name": "Limkokwing University of Creative Technology (Namibia)",
+    "shortName": "Limkokwing Namibia",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "mapac-technical-training-institute",
+    "name": "Mapac Technical Training Institute",
+    "shortName": "Mapac",
+    "location": "Oshakati",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "marco-mpollo-vocational-training-centre",
+    "name": "Marco Mpollo Vocational Training Centre",
+    "shortName": "MMVTC",
+    "location": "Oshakati",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "maven-consultancy",
+    "name": "Maven Consultancy",
+    "shortName": "Maven",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "millennium-training-institute",
+    "name": "Millennium Training Institute",
+    "shortName": "Millennium",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibia-defence-force-training-establishment-vtc",
+    "name": "Namibia Defence Force Training Establishment Vocational Training Centre",
+    "shortName": "NDF TE VTC",
+    "location": "Namibia",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibia-command-and-staff-college",
+    "name": "Namibia Command and Staff College",
+    "shortName": "NCSC",
+    "location": "Okahandja",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibia-community-skills-development-foundation",
+    "name": "Namibia Community Skills Development Foundation",
+    "shortName": "COSDEF",
+    "location": "Swakopmund",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibian-correctional-service",
+    "name": "Namibian Correctional Service",
+    "shortName": "NCS",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibia-evangelical-theological-seminary",
+    "name": "Namibia Evangelical Theological Seminary",
+    "shortName": "NETS",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibian-police-force",
+    "name": "Namibian Police Force",
+    "shortName": "NAMPOL Namibia",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "nile-vocational-training-centre",
+    "name": "NILE Vocational Training Centre",
+    "shortName": "NILE VTC",
+    "location": "Oniipa",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibian-institute-of-mining-and-technology",
+    "name": "Namibian Institute of Mining and Technology",
+    "shortName": "NIMT",
+    "location": "Arandis",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namibia-institute-of-public-administration-and-management",
+    "name": "Namibia Institute of Public Administration and Management",
+    "shortName": "NIPAM",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namvoc-vocational-institute",
+    "name": "NamVoc Vocational Institute",
+    "shortName": "NamVoc",
+    "location": "Okakarara",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "nakayale-vocational-training-centre",
+    "name": "Nakayale Vocational Training Centre",
+    "shortName": "Nakayale VTC",
+    "location": "Outapi",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "namwater-human-resource-development-centre",
+    "name": "NamWater Human Resource Development Centre",
+    "shortName": "NamWater HRDC",
+    "location": "Namibia",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "national-institute-of-technology-namibia",
+    "name": "National Institute of Technology",
+    "shortName": "NIT Namibia",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "national-youth-service-namibia",
+    "name": "National Youth Service",
+    "shortName": "NYS Namibia",
+    "location": "Rietfontein",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "ngato-vocational-training-centre",
+    "name": "Ngato Vocational Training Centre",
+    "shortName": "Ngato VTC",
+    "location": "Rundu",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "niche-training-academy",
+    "name": "Niche Training Academy",
+    "shortName": "Niche",
+    "location": "Walvis Bay",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "nirvana-academy",
+    "name": "Nirvana Academy and Investment",
+    "shortName": "Nirvana",
+    "location": "Walvis Bay",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "ol-academy",
+    "name": "O&L Academy",
+    "shortName": "O&L Academy",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "okakarara-vocational-training-centre",
+    "name": "Okakarara Vocational Training Centre",
+    "shortName": "Okakarara VTC",
+    "location": "Okakarara",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "ondagwa-commercial-college",
+    "name": "Ondangwa Commercial College",
+    "shortName": "OCC",
+    "location": "Ondangwa",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "ongha-vocational-training-centre",
+    "name": "Ongha Vocational Training Centre",
+    "shortName": "Ongha VTC",
+    "location": "Ongha",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "philippi-trust-namibia",
+    "name": "Philippi Trust Namibia",
+    "shortName": "Philippi",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "pmt-health-care-institution",
+    "name": "PMT Health Care Institution",
+    "shortName": "PMT",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "rehoboth-institute-of-technology",
+    "name": "Rehoboth Institute of Technology",
+    "shortName": "REHOTEC",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "rik-technical-college",
+    "name": "R.I.K Technical College",
+    "shortName": "RIK",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "river-higher-institute-of-technology",
+    "name": "River Higher Institute of Technology",
+    "shortName": "RHIT",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "rundu-vocational-training-centre",
+    "name": "Rundu Vocational Training Centre",
+    "shortName": "RVTC",
+    "location": "Rundu",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "shadonai-beauty-school",
+    "name": "Shadonai Beauty School",
+    "shortName": "Shadonai",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "shalom-vocational-training-centre",
+    "name": "Shalom Vocational Training Centre",
+    "shortName": "Shalom VTC",
+    "location": "Grootfontein",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "shiramed-medical-institute",
+    "name": "Shiramed Medical Institute",
+    "shortName": "Shiramed",
+    "location": "Katima Mulilo",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "siya-institute-of-vocational-education",
+    "name": "Siya Institute of Vocational Education and Training",
+    "shortName": "Siya",
+    "location": "Namibia",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "southern-africa-school-of-project-management",
+    "name": "Southern Africa School of Project Management",
+    "shortName": "SASPM",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "st-antony-universal-college",
+    "name": "St Antony Universal College",
+    "shortName": "St Antony",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "st-benedict-vocational-training-centre",
+    "name": "St Benedict Vocational Training Centre",
+    "shortName": "St Benedict VTC",
+    "location": "Namibia",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "st-charles-lwanga-major-seminary",
+    "name": "St. Charles Lwanga Major Seminary",
+    "shortName": "St Charles Lwanga",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "sunshine-private-college",
+    "name": "Sunshine Private College",
+    "shortName": "Sunshine",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "symanek-specialised-college",
+    "name": "Symanek Specialised College",
+    "shortName": "Symanek",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "triumphant-college",
+    "name": "Triumphant College",
+    "shortName": "Triumphant",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "tulipohamba-training-and-assessment-institute",
+    "name": "Tulipohamba Training and Assessment Institute",
+    "shortName": "TTAI",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "united-lutheran-theological-seminary",
+    "name": "United Lutheran Theological Seminary – Paulinum",
+    "shortName": "ULTS Paulinum",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "valombola-vocational-training-centre",
+    "name": "Valombola Vocational Training Centre",
+    "shortName": "Valombola VTC",
+    "location": "Ongwediva",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "welwitchia-university",
+    "name": "Welwitchia University",
+    "shortName": "Welwitchia",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "windhoek-vocational-training-centre",
+    "name": "Windhoek Vocational Training Centre",
+    "shortName": "WVTC",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "wolwedans-desert-academy",
+    "name": "Wolwedans Foundation Trust Desert Academy",
+    "shortName": "Wolwedans",
+    "location": "Windhoek",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
+  },
+  {
+    "id": "zambezi-vocational-training-centre",
+    "name": "Zambezi Vocational Training Centre",
+    "shortName": "ZVTC",
+    "location": "Zambezi",
+    "country": "na",
+    "description": "Tertiary provider in Namibia (NQA-accredited listing). Verify programme details with the institution. Guidance only — not official admission advice.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": []
   }
 ]

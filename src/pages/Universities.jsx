@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
+import MarketCountrySelect from "../components/MarketCountrySelect.jsx";
 import {
   fetchUniversities,
   groupUniversitiesByCategory,
@@ -9,6 +10,8 @@ import {
   UNIVERSITY_CATEGORY_ORDER,
 } from "../lib/universitiesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
+import { useAuth } from "../lib/auth.jsx";
+import { marketCountryLabel, resolveMarketCountry, setMarketCountry } from "../lib/marketCountry.js";
 import { fetchVerifiedInstitutionIds, fetchActiveFeaturedPlacements } from "../lib/partner.js";
 import { trackInstitutionView } from "../lib/analytics.js";
 import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
@@ -120,11 +123,13 @@ function InstitutionCard({ university, verified, sponsored }) {
 
 export default function Universities() {
   useDocumentTitle("Tertiary Institutions | Thuto");
+  const { profile, saveProfile, user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [universities, setUniversities] = useState([]);
   const [error, setError] = useState(null);
   const [verifiedIds, setVerifiedIds] = useState(() => new Set());
   const [featuredInstitutionIds, setFeaturedInstitutionIds] = useState(() => new Set());
+  const [country, setCountry] = useState(() => resolveMarketCountry(profile));
 
   const institutionType = searchParams.get("type") ?? "all";
   const sort = searchParams.get("sort") ?? "name_asc";
@@ -139,9 +144,14 @@ export default function Universities() {
   );
 
   useEffect(() => {
+    if (profile?.country) setCountry(profile.country);
+  }, [profile?.country]);
+
+  useEffect(() => {
     let cancelled = false;
     const ac = new AbortController();
-    fetchUniversities({ signal: ac.signal })
+    setMarketCountry(country);
+    fetchUniversities({ signal: ac.signal, country })
       .then(({ list }) => {
         if (!cancelled) setUniversities(list);
       })
@@ -152,7 +162,19 @@ export default function Universities() {
       cancelled = true;
       ac.abort();
     };
-  }, []);
+  }, [country]);
+
+  async function handleCountryChange(nextCountry) {
+    setCountry(nextCountry);
+    setMarketCountry(nextCountry);
+    if (user && profile) {
+      try {
+        await saveProfile({ country: nextCountry });
+      } catch {
+        /* guest/local preference still applies */
+      }
+    }
+  }
 
   useEffect(() => {
     Promise.all([fetchVerifiedInstitutionIds(), fetchActiveFeaturedPlacements()]).then(([verified, placements]) => {
@@ -208,8 +230,9 @@ export default function Universities() {
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Tertiary Institutions</h1>
         <p className="mt-2 max-w-3xl text-xs leading-relaxed text-slate-500">
-          Thuto is not affiliated with, endorsed by, or partnered with any listed institution. Logos are shown for
-          identification only — always verify details on the official website.
+          Showing {marketCountryLabel(country)} institutions. Thuto is not affiliated with, endorsed by, or partnered
+          with any listed institution. Logos are shown for identification only — always verify details on the official
+          website.
         </p>
       </div>
 
@@ -220,6 +243,13 @@ export default function Universities() {
       )}
 
       <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+        <MarketCountrySelect
+          id="universities-country"
+          value={country}
+          onChange={handleCountryChange}
+          label="Country"
+          hint="Switch markets to browse Botswana or Namibia institutions."
+        />
         <div>
           <label htmlFor="institution-name-search" className="block text-xs font-medium text-slate-600">
             Search a university by name

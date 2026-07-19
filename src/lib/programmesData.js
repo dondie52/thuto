@@ -1,4 +1,5 @@
 import { fetchProgrammeOverrides, mergeContentOverrides } from "./contentManagement.js";
+import { filterByMarketCountry, resolveMarketCountry } from "./marketCountry.js";
 
 const PROGRAMMES_PATH = `${import.meta.env.BASE_URL}data/programmes.json`;
 
@@ -9,16 +10,26 @@ function withCacheBuster(path, cacheBuster) {
   return `${path}${sep}d=${encodeURIComponent(String(cacheBuster))}`;
 }
 
-/** @param {{ signal?: AbortSignal, cacheBuster?: string, includeDrafts?: boolean }} [options] */
+/**
+ * @param {{
+ *   signal?: AbortSignal,
+ *   cacheBuster?: string,
+ *   includeDrafts?: boolean,
+ *   country?: string | null,
+ *   includeAllCountries?: boolean,
+ * }} [options]
+ */
 export async function fetchProgrammes(options = {}) {
-  const { signal, cacheBuster, includeDrafts = false } = options;
+  const { signal, cacheBuster, includeDrafts = false, country, includeAllCountries = false } = options;
+  const market = includeAllCountries ? "all" : country === undefined ? resolveMarketCountry() : country;
   const url = withCacheBuster(PROGRAMMES_PATH, cacheBuster);
   const response = await fetch(url, { signal, cache: "no-store" });
   if (!response.ok) throw new Error("Could not load programmes");
   const data = await response.json();
   const bundled = Array.isArray(data) ? data : [];
   const overrides = await fetchProgrammeOverrides({ includeDrafts });
-  return mergeContentOverrides(bundled, overrides);
+  const merged = mergeContentOverrides(bundled, overrides);
+  return filterByMarketCountry(merged, market, { includeAllCountries });
 }
 
 function normalize(value) {

@@ -17,7 +17,9 @@ import {
   saveGradeEntries,
   saveTargetInstitutions,
 } from "../lib/onboarding.js";
+import MarketCountrySelect from "../components/MarketCountrySelect.jsx";
 import { filterSubjectsBySyllabus, SPONSORSHIP_INTENT_OPTIONS, SYLLABUS_OPTIONS } from "../lib/syllabus.js";
+import { resolveMarketCountry, setMarketCountry } from "../lib/marketCountry.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { normalizeUsername, validateUsername } from "../lib/username.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
@@ -48,6 +50,7 @@ export default function Onboarding() {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [country, setCountry] = useState(() => resolveMarketCountry());
   const [universities, setUniversities] = useState([]);
   const [targetInstitutionIds, setTargetInstitutionIds] = useState([]);
   const [fieldsOfInterest, setFieldsOfInterest] = useState([]);
@@ -102,14 +105,18 @@ export default function Onboarding() {
     setFieldsOfInterest(profile.fields_of_interest || []);
     setSyllabusType(profile.syllabus_type || "");
     setSponsorshipIntent(profile.sponsorship_intent || "");
+    if (profile.country) setCountry(profile.country);
     if (profile.username) setUsernameValid(true);
   }, [profile]);
 
   useEffect(() => {
     let active = true;
-    fetchUniversities()
+    setMarketCountry(country);
+    fetchUniversities({ country })
       .then(({ list }) => {
-        if (active) setUniversities(list);
+        if (!active) return;
+        setUniversities(list);
+        setTargetInstitutionIds((current) => current.filter((id) => list.some((uni) => uni.id === id)));
       })
       .catch(() => {
         if (active) setUniversities([]);
@@ -117,7 +124,7 @@ export default function Onboarding() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [country]);
 
   useEffect(() => {
     if (!user) return;
@@ -156,11 +163,13 @@ export default function Onboarding() {
   }
 
   async function persistIdentity() {
+    setMarketCountry(country);
     await saveProfile({
       fullName: fullName.trim(),
       username: normalizeUsername(username),
       bio: bio.trim(),
       avatarUrl,
+      country,
     });
   }
 
@@ -338,6 +347,14 @@ export default function Onboarding() {
       {step === "identity" ? (
         <section className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
           <h2 className="text-sm font-semibold text-brand-900">Account & identity</h2>
+          <MarketCountrySelect
+            id="onboarding-country"
+            value={country}
+            onChange={setCountry}
+            disabled={isSaving}
+            label="Country"
+            hint="Choose where you plan to study. This controls which institutions you see."
+          />
           <label className="block">
             <span className="text-xs font-semibold text-slate-600">Full name</span>
             <input

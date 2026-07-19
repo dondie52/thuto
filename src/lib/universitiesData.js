@@ -10,6 +10,7 @@
  */
 
 import { fetchUniversityOverrides, mergeContentOverrides } from "./contentManagement.js";
+import { filterByMarketCountry, resolveMarketCountry } from "./marketCountry.js";
 
 const BUNDLED_PATH = `${import.meta.env.BASE_URL}data/universities.json`;
 
@@ -145,6 +146,18 @@ const UNIVERSITY_CATEGORY_BY_ID = {
   "vocational-and-creativity-institute": "technical-colleges-brigades",
   "moeti-practicum-institute": "specialised-academics",
   "missions-bible-college-botswana": "biblical-theological-studies",
+  // Namibia (NQA-accredited catalogue)
+  "international-university-of-management": "universities",
+  "welwitchia-university": "universities",
+  "botho-namibia": "universities",
+  "limkokwing-namibia": "universities",
+  "institute-for-open-learning": "universities",
+  "namibian-college-of-open-learning": "universities",
+  "sunshine-private-college": "universities",
+  "college-of-the-arts": "specialised-academics",
+  "namibia-evangelical-theological-seminary": "biblical-theological-studies",
+  "united-lutheran-theological-seminary": "biblical-theological-studies",
+  "st-charles-lwanga-major-seminary": "biblical-theological-studies",
 };
 
 /**
@@ -156,7 +169,18 @@ export function categorizeUniversity(university) {
   if (mapped) return mapped;
 
   const name = String(university.name || "").toLowerCase();
-  if (name.includes("brigade") || name.includes("technical")) return "technical-colleges-brigades";
+  if (
+    name.includes("brigade") ||
+    name.includes("technical") ||
+    name.includes("vocational training") ||
+    name.includes(" vtc") ||
+    /\bvtc\b/.test(name)
+  ) {
+    return "technical-colleges-brigades";
+  }
+  if (name.includes("seminary") || name.includes("theological") || name.includes("bible")) {
+    return "biblical-theological-studies";
+  }
   if (name.includes("university")) return "universities";
   return "specialised-academics";
 }
@@ -209,11 +233,17 @@ function normalizeList(data) {
 }
 
 /**
- * @param {{ signal?: AbortSignal, includeDrafts?: boolean }} [options]
+ * @param {{
+ *   signal?: AbortSignal,
+ *   includeDrafts?: boolean,
+ *   country?: string | null,
+ *   includeAllCountries?: boolean,
+ * }} [options]
  * @returns {Promise<{ list: object[], source: 'remote' | 'bundled' | 'live' }>}
  */
 export async function fetchUniversities(options = {}) {
-  const { signal, includeDrafts = false } = options;
+  const { signal, includeDrafts = false, country, includeAllCountries = false } = options;
+  const market = includeAllCountries ? "all" : country === undefined ? resolveMarketCountry() : country;
 
   async function loadBundled() {
     const r = await fetch(BUNDLED_PATH, { signal, cache: "no-store" });
@@ -230,9 +260,17 @@ export async function fetchUniversities(options = {}) {
     return { list: mergeContentOverrides(list, overrides), source: "live" };
   }
 
+  function scope(list, source) {
+    return {
+      list: filterByMarketCountry(list, market, { includeAllCountries }),
+      source,
+    };
+  }
+
   if (!REMOTE_URL) {
     const list = await loadBundled();
-    return mergeLiveOverrides(list, "bundled");
+    const merged = await mergeLiveOverrides(list, "bundled");
+    return scope(merged.list, merged.source);
   }
 
   try {
@@ -244,20 +282,22 @@ export async function fetchUniversities(options = {}) {
     });
     if (!r.ok) {
       const list = await loadBundled();
-      return { list, source: "bundled" };
+      return scope(list, "bundled");
     }
     const data = await r.json();
     const remote = normalizeList(data);
     if (!remote?.length) {
       const list = await loadBundled();
-      return { list, source: "bundled" };
+      return scope(list, "bundled");
     }
     const base = await loadBundled();
     const list = mergeUniversityRecords(base, remote);
-    return mergeLiveOverrides(list, "remote");
+    const merged = await mergeLiveOverrides(list, "remote");
+    return scope(merged.list, merged.source);
   } catch {
     const list = await loadBundled();
-    return mergeLiveOverrides(list, "bundled");
+    const merged = await mergeLiveOverrides(list, "bundled");
+    return scope(merged.list, merged.source);
   }
 }
 
