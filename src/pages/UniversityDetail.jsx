@@ -330,6 +330,11 @@ export default function UniversityDetail() {
       </section>
 
       <UniversityResourcesSection university={university} resources={resources} />
+
+      <p className="text-xs leading-relaxed text-slate-500">
+        Thuto is not affiliated with, endorsed by, or partnered with {university.name}. Institution logos and links are
+        for identification and navigation only — confirm all requirements on the official website before you apply.
+      </p>
     </article>
   );
 }

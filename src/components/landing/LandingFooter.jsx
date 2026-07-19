@@ -28,9 +28,6 @@ export default function LandingFooter({ content }) {
             <Link to="/sponsorships" className="font-medium text-slate-700 hover:text-brand-800">
               Sponsorships
             </Link>
-            <Link to="/internships" className="font-medium text-slate-700 hover:text-brand-800">
-              Internships
-            </Link>
             <a href="mailto:hello@thuto.bw" className="font-medium text-slate-700 hover:text-brand-800">
               Contact
             </a>

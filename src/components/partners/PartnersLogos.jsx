@@ -45,6 +45,9 @@ export default function PartnersLogos({ content }) {
             {content?.heading}
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">{content?.body}</p>
+          {content?.affiliationNote ? (
+            <p className="mt-2 max-w-2xl text-xs leading-relaxed text-slate-500">{content.affiliationNote}</p>
+          ) : null}
         </div>
         {verifiedIds.length ? (
           <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-900">

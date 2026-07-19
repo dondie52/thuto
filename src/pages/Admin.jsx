@@ -54,8 +54,8 @@ const CONTROL_LINKS = [
   { to: "/universities", label: "Universities", description: "Check institution pages, resources, and application windows." },
   { to: "/sponsorships", label: "Sponsorships", description: "Review public sponsorship cards from live opportunity data." },
   { to: "/partners", label: "Partners page", description: "Review the public partner marketing page and inquiry form." },
-  { to: "/internships", label: "Internships", description: "Review internship cards from live opportunity data." },
   { to: "/postgraduate-studies", label: "Postgraduate Studies", description: "Review postgraduate programmes hub and scholarship posts." },
+  { to: "/feed", label: "Community feed", description: "Review the live feed where internship posts can appear as community content." },
   { to: "/settings", label: "Settings", description: "Open account settings for the current operator." },
 ];
 
@@ -1065,7 +1065,7 @@ export default function Admin() {
       <section className={`${activeTab === "overview" ? "grid" : "hidden"} gap-3 sm:grid-cols-2 lg:grid-cols-3`}>
         <Stat label="Needs review" value={counts.pendingFeed || 0} detail={`${counts.reports || 0} recent reports`} />
         <Stat label="Readable profiles" value={counts.profiles ?? 0} detail={`${counts.premiumProfiles ?? 0} premium profiles`} />
-        <Stat label="Opportunities" value={counts.opportunities ?? 0} detail="Sponsorship and internship rows" />
+        <Stat label="Opportunities" value={counts.opportunities ?? 0} detail="Sponsorship and postgraduate scholarship rows" />
         <Stat label="Programmes" value={localData?.programmesTotal ?? 0} detail={`${localData?.programmesMissingMinPoints ?? 0} missing points`} />
         <Stat label="Institutions" value={localData?.universitiesTotal ?? 0} detail={`${localData?.universitiesWithResources ?? 0} with resources`} />
         <Stat label="Application dates" value={localData?.universitiesWithOpenDates ?? 0} detail="Universities with window data" />
@@ -1700,7 +1700,6 @@ export default function Admin() {
                 className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
               >
                 <option value="private_sponsorship">Private sponsorship</option>
-                <option value="internship">Internship</option>
                 <option value="postgraduate_scholarship">Postgraduate scholarship</option>
               </select>
             </label>

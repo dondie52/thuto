@@ -10,13 +10,11 @@ function ToolIcon({ name }) {
     programmes: <path strokeLinecap="round" strokeLinejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />,
     universities: <path strokeLinecap="round" strokeLinejoin="round" d="M4 10l8-5 8 5M5.5 10h13M7 10v8M12 10v8M17 10v8M4.5 18h15M3.5 21h17" />,
     sponsorships: <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M16 7.5a3.5 3.5 0 00-3.5-2H10a3 3 0 000 6h4a3 3 0 010 6h-2.5a3.5 3.5 0 01-3.5-2" />,
-    internships: <path strokeLinecap="round" strokeLinejoin="round" d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7M5 8h14v10.5A1.5 1.5 0 0117.5 20h-11A1.5 1.5 0 015 18.5V8zM5 12h14" />,
     postgraduate: <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zM12 14l6.33-3.516M12 14l-6.33-3.516M12 14v7" />,
     saved: <path strokeLinecap="round" strokeLinejoin="round" d="M6 4.75A2.75 2.75 0 018.75 2h6.5A2.75 2.75 0 0118 4.75V21l-6-3.5L6 21V4.75z" />,
     compare: <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16M17 4v16M4 8h6M14 8h6M5 8l2 5 2-5M15 8l2 5 2-5" />,
     fit: <path strokeLinecap="round" strokeLinejoin="round" d="M10.75 18.5a7.75 7.75 0 117.75-7.75 7.75 7.75 0 01-7.75 7.75zM16.5 16.5L21 21M8.5 10.75l1.5 1.5 3.25-3.5" />,
     partners: <path strokeLinecap="round" strokeLinejoin="round" d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />,
-    study: <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75v10.5M8.25 4.5h7.5a1.5 1.5 0 011.5 1.5v12a1.5 1.5 0 01-1.5 1.5h-7.5a1.5 1.5 0 01-1.5-1.5V6a1.5 1.5 0 011.5-1.5zM9.75 9h4.5M9.75 12h4.5" />,
     admin: <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 3v5.4c0 4.5-2.9 8.5-7 9.6-4.1-1.1-7-5.1-7-9.6V6l7-3zM9.5 12.5l1.7 1.7 3.6-4" />,
     moderation: <path strokeLinecap="round" strokeLinejoin="round" d="M5 5.5A2.5 2.5 0 017.5 3h9A2.5 2.5 0 0119 5.5v13L15.5 16h-8A2.5 2.5 0 015 13.5v-8zM8.5 8h7M8.5 11.5h4M15 11l1 1 2-2" />,
     settings: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25A3.75 3.75 0 1112 15.75 3.75 3.75 0 0112 8.25zM19 12a7.2 7.2 0 00-.08-1l2-1.55-2-3.46-2.35.94a7.65 7.65 0 00-1.73-1L14.5 3h-5l-.34 2.93a7.65 7.65 0 00-1.73 1L5.08 5.99l-2 3.46 2 1.55a7.2 7.2 0 000 2l-2 1.55 2 3.46 2.35-.94a7.65 7.65 0 001.73 1L9.5 21h5l.34-2.93a7.65 7.65 0 001.73-1l2.35.94 2-3.46-2-1.55c.05-.33.08-.66.08-1z" />,
@@ -40,7 +38,6 @@ function ToolIcon({ name }) {
 const primaryToolItems = drawerPrimaryToolItems;
 
 const moreToolItems = [
-  { to: "/study", label: "BGCSE Study", description: "Revision links and subject-to-programme bridges", icon: "study" },
   { to: "/fit-finder", label: "Fit Finder", description: "Discover programmes suited to you", icon: "fit" },
   { to: "/partners", label: "Partners", description: "Institution partnerships and advertising on Thuto", icon: "partners" },
   { to: "/settings", label: "General Settings", description: "App preferences and data controls", icon: "settings" },
