@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
+import { trackOutboundLinkClick } from "../lib/analytics.js";
 import { externalGoPath, externalHostname, safeExternalUrl } from "../lib/urlSafety.js";
 
 const VARIANT_CLASS = {
@@ -33,6 +34,7 @@ const VARIANT_CLASS = {
  *   showDomain?: boolean,
  *   programmeId?: string,
  *   institutionId?: string,
+ *   linkKind?: 'website' | 'apply' | 'resource' | 'other',
  * }} props
  */
 export default function ExternalSiteLink({
@@ -46,12 +48,14 @@ export default function ExternalSiteLink({
   showDomain = false,
   programmeId = "",
   institutionId = "",
+  linkKind = "other",
 }) {
   const safeHref = safeExternalUrl(href);
   const [notice, setNotice] = useState("");
 
   const hostname = externalHostname(safeHref);
   const variantClass = VARIANT_CLASS[variant] || VARIANT_CLASS.secondary;
+  const resolvedKind = linkKind || "other";
 
   const openExternal = useCallback(() => {
     if (!safeHref) return;
@@ -62,6 +66,15 @@ export default function ExternalSiteLink({
     (event) => {
       event.preventDefault();
       if (!safeHref) return;
+
+      if (institutionId) {
+        trackOutboundLinkClick({
+          programmeId: programmeId || null,
+          institutionId,
+          destinationUrl: safeHref,
+          linkKind: resolvedKind,
+        });
+      }
 
       const institution = institutionName.trim();
       const message = documentNotice
@@ -76,7 +89,16 @@ export default function ExternalSiteLink({
         openExternal();
       }, 2000);
     },
-    [safeHref, institutionName, hostname, documentNotice, openExternal],
+    [
+      safeHref,
+      institutionName,
+      hostname,
+      documentNotice,
+      openExternal,
+      institutionId,
+      programmeId,
+      resolvedKind,
+    ],
   );
 
   if (!safeHref) return null;
@@ -85,6 +107,7 @@ export default function ExternalSiteLink({
     const goPath = externalGoPath(safeHref, {
       programmeId: programmeId || undefined,
       institutionId: institutionId || undefined,
+      linkKind: resolvedKind,
     });
     return (
       <span className="inline-flex flex-col gap-1">

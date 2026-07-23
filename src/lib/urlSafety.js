@@ -72,7 +72,7 @@ export function externalHostname(href) {
  * Build an in-app interstitial path for leaving Thuto to an external site.
  *
  * @param {string} href
- * @param {{ programmeId?: string, institutionId?: string }} [tracking]
+ * @param {{ programmeId?: string, institutionId?: string, linkKind?: string }} [tracking]
  * @returns {string}
  */
 export function externalGoPath(href, tracking = {}) {
@@ -81,6 +81,7 @@ export function externalGoPath(href, tracking = {}) {
   const params = new URLSearchParams({ to: safe });
   if (tracking.programmeId) params.set("programme", tracking.programmeId);
   if (tracking.institutionId) params.set("institution", tracking.institutionId);
+  if (tracking.linkKind) params.set("kind", tracking.linkKind);
   return `/go?${params.toString()}`;
 }
 

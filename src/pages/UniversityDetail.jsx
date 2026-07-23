@@ -76,12 +76,26 @@ function UniversityResourcesSection({ university, resources }) {
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {websiteHref ? (
-              <ExternalSiteLink href={websiteHref} variant="secondary" institutionName={university.name} useInterstitial>
+              <ExternalSiteLink
+                href={websiteHref}
+                variant="secondary"
+                institutionName={university.name}
+                institutionId={university.id}
+                linkKind="website"
+                useInterstitial
+              >
                 Official website
               </ExternalSiteLink>
             ) : null}
             {applyHref && applyHref !== websiteHref ? (
-              <ExternalSiteLink href={applyHref} variant="primary" institutionName={university.name} useInterstitial>
+              <ExternalSiteLink
+                href={applyHref}
+                variant="primary"
+                institutionName={university.name}
+                institutionId={university.id}
+                linkKind="apply"
+                useInterstitial
+              >
                 Apply online
               </ExternalSiteLink>
             ) : null}
@@ -123,6 +137,8 @@ function UniversityResourcesSection({ university, resources }) {
                     href={resource.href}
                     variant="primary"
                     institutionName={university.name}
+                    institutionId={university.id}
+                    linkKind="resource"
                     useInterstitial
                     documentNotice={isPdfResource(resource)}
                   >
@@ -251,11 +267,29 @@ export default function UniversityDetail() {
               </dd>
             </div>
           )}
+          {university.email ? (
+            <div>
+              <dt className="text-xs font-medium text-slate-500">Email</dt>
+              <dd>
+                <a href={`mailto:${university.email}`} className="text-brand-700 hover:underline">
+                  {university.email}
+                </a>
+              </dd>
+            </div>
+          ) : null}
           {websiteHref && (
             <div>
               <dt className="text-xs font-medium text-slate-500">Website</dt>
               <dd>
-                <ExternalSiteLink href={websiteHref} variant="inline" institutionName={university.name} showDomain>
+                <ExternalSiteLink
+                  href={websiteHref}
+                  variant="inline"
+                  institutionName={university.name}
+                  institutionId={university.id}
+                  linkKind="website"
+                  showDomain
+                  useInterstitial
+                >
                   {university.website}
                 </ExternalSiteLink>
               </dd>
@@ -289,6 +323,40 @@ export default function UniversityDetail() {
       <UniversityStudentIncentives university={university} />
 
       <UniversityFacultyFeesSection university={university} />
+
+      {Array.isArray(university.staff) && university.staff.length > 0 ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Admissions & staff contacts</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Published by the institution for student enquiries. Confirm details on the official site before you contact
+            anyone.
+          </p>
+          <ul className="mt-4 divide-y divide-brand-100 rounded-xl border border-brand-100">
+            {university.staff
+              .filter((person) => person?.name)
+              .map((person, index) => (
+                <li key={`${person.name}-${person.title || index}`} className="px-3 py-3 text-sm">
+                  <p className="font-semibold text-brand-900">{person.name}</p>
+                  <p className="text-xs text-slate-600">
+                    {[person.title, person.department].filter(Boolean).join(" · ") || "Staff contact"}
+                  </p>
+                  <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-brand-800">
+                    {person.email ? (
+                      <a href={`mailto:${person.email}`} className="underline hover:text-brand-950">
+                        {person.email}
+                      </a>
+                    ) : null}
+                    {person.phone ? (
+                      <a href={`tel:${String(person.phone).replace(/\s/g, "")}`} className="underline hover:text-brand-950">
+                        {person.phone}
+                      </a>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">

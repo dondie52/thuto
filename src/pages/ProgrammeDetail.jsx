@@ -260,6 +260,7 @@ export default function ProgrammeDetail() {
                   institutionName={programme.university || university?.name}
                   programmeId={programme.id}
                   institutionId={university?.id}
+                  linkKind="apply"
                   useInterstitial
                 >
                   Apply / admissions
@@ -270,6 +271,9 @@ export default function ProgrammeDetail() {
                   href={officialHref}
                   variant="programmeSecondary"
                   institutionName={programme.university || university?.name}
+                  programmeId={programme.id}
+                  institutionId={university?.id}
+                  linkKind="website"
                   useInterstitial
                 >
                   Official programme page

@@ -13,7 +13,6 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import { marketCountryLabel, resolveMarketCountry, setMarketCountry } from "../lib/marketCountry.js";
 import { fetchVerifiedInstitutionIds, fetchActiveFeaturedPlacements } from "../lib/partner.js";
-import { trackInstitutionView } from "../lib/analytics.js";
 import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl } from "../lib/urlSafety.js";

@@ -67,14 +67,15 @@ Students stay free-first. Universities pay for accuracy, trust, visibility, and 
 ### Phase 1 — Verified profiles + self-service CMS ✅
 
 - `/partner` portal: dashboard, profile editor, programme editor, claim flow
+- Extended CMS: website / apply portals, `resources[]` links, `staff[]` contacts, richer programme fields
 - `InstitutionVerificationBadge` on institution list + detail pages
-- Partner save helpers: `src/lib/partner.js`
+- Partner save helpers: `src/lib/partner.js` (merge patches on save)
 
 ### Phase 2 — Analytics ✅
 
-- Client instrumentation: `programme_view`, `institution_profile_view`, `apply_click`
-- Partner dashboard reads `institution_analytics_daily`
-- Rollup function: `rollup_institution_analytics()` (cron-ready)
+- Client instrumentation: `programme_view`, `institution_profile_view`, `apply_click`, `outbound_link_click` (+ `viewer_country`, `field`, `link_kind`)
+- Partner dashboard modules: overview, pageviews per programme, viewer origins, discipline interest, outbound links
+- Rollup function: `rollup_institution_analytics()` (cron-ready; see migration `20260723120000_partner_dashboard_analytics.sql`)
 
 ### Phase 3 — Featured placement ✅
 

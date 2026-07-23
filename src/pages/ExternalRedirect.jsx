@@ -1,7 +1,9 @@
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
-import { trackApplyClick } from "../lib/analytics.js";
+import { trackOutboundLinkClick } from "../lib/analytics.js";
 import { externalHostname, safeExternalUrl } from "../lib/urlSafety.js";
+
+const LINK_KINDS = new Set(["website", "apply", "resource", "other"]);
 
 export default function ExternalRedirect() {
   useDocumentTitle("Leaving Thuto | Official site");
@@ -28,7 +30,14 @@ export default function ExternalRedirect() {
   function handleContinue() {
     const programmeId = searchParams.get("programme") || undefined;
     const institutionId = searchParams.get("institution") || undefined;
-    trackApplyClick({ programmeId, institutionId, destinationUrl: href });
+    const rawKind = String(searchParams.get("kind") || "").trim().toLowerCase();
+    const linkKind = LINK_KINDS.has(rawKind) ? rawKind : institutionId ? "other" : "other";
+    trackOutboundLinkClick({
+      programmeId,
+      institutionId,
+      destinationUrl: href,
+      linkKind: institutionId ? linkKind : "other",
+    });
     window.open(href, "_blank", "noopener,noreferrer");
   }
 

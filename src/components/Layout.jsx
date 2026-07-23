@@ -33,12 +33,15 @@ function navLinkClass({ isActive }) {
 
 export default function Layout() {
   const location = useLocation();
-  const isHomeRoute = location.pathname.replace(/\/$/, "") === "/app";
-  const isAssistantRoute = location.pathname.replace(/\/$/, "") === "/assistant";
+  const pathname = location.pathname.replace(/\/$/, "") || "/";
+  const isHomeRoute = pathname === "/app";
+  const isPartnerRoute = pathname === "/partner";
+  const isAssistantRoute = pathname === "/assistant";
   const isFeedRoute = useFeedRoute();
   const isFeedCompact = useFeedCompactChrome();
   const isMessageThread = useFeedMessageThread();
   const scrollChromeEnabled = !isMessageThread && !isAssistantRoute;
+  const hideBottomNav = isPartnerRoute || isMessageThread;
   const chromeVisible = useScrollChrome({ enabled: scrollChromeEnabled });
   const headerRef = useRef(null);
   const [headerOffset, setHeaderOffset] = useState(0);
@@ -116,7 +119,11 @@ export default function Layout() {
         "flex flex-col overflow-x-hidden",
         isAssistantRoute ? "h-dvh overflow-hidden" : "min-h-dvh",
         isFeedRoute ? "bg-white" : "thuto-page-bg",
-        isMessageThread ? "pb-0" : "pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
+        isMessageThread
+          ? "pb-0"
+          : hideBottomNav
+            ? "pb-6"
+            : "pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-6",
       ].join(" ")}
     >
       <OnboardingRedirect />
@@ -182,9 +189,9 @@ export default function Layout() {
         style={isMessageThread ? undefined : { paddingTop: headerOffset }}
       >
         <Outlet />
-        {!isHomeRoute && !isMessageThread && !isAssistantRoute ? <SubscriptionAdSlot /> : null}
+        {!isHomeRoute && !isPartnerRoute && !isMessageThread && !isAssistantRoute ? <SubscriptionAdSlot /> : null}
       </main>
-      {!isMessageThread ? <BottomNav visible={chromeVisible} surface={isFeedRoute ? "white" : "default"} /> : null}
+      {!hideBottomNav ? <BottomNav visible={chromeVisible} surface={isFeedRoute ? "white" : "default"} /> : null}
     </div>
   );
 }

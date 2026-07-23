@@ -83,4 +83,4 @@ Use this checklist when connecting payments for Thuto Pro on GitHub Pages + Supa
    ```
 3. Partners manage profiles at `/partner` (claim flow for new institutions).
 4. Featured placements: insert rows into `featured_placements` with `starts_at` / `ends_at`.
-5. Run `select public.rollup_institution_analytics();` daily (cron) to populate partner dashboards.
+5. Run `select public.rollup_institution_analytics();` daily (cron) to populate partner dashboards (profile/programme views, outbound link kinds, viewer-country origins, discipline interest).
