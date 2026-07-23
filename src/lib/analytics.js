@@ -1,3 +1,4 @@
+import { resolveMarketCountry } from "./marketCountry.js";
 import { getSupabase, isSupabaseConfigured } from "./supabase.js";
 
 /**
@@ -12,10 +13,14 @@ export async function trackEvent(eventName, metadata = {}) {
   try {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData?.session?.user?.id ?? null;
+    const viewerCountry = resolveMarketCountry();
     await supabase.from("analytics_events").insert({
       user_id: userId,
       event_name: eventName,
-      metadata,
+      metadata: {
+        ...metadata,
+        viewer_country: metadata.viewer_country || viewerCountry,
+      },
     });
   } catch (err) {
     console.warn("Analytics track failed:", err);
@@ -28,6 +33,7 @@ export function trackProgrammeView(programme) {
     programme_id: programme.id,
     institution_id: programme.universityId || programme.universityShort || null,
     university: programme.university,
+    field: programme.field || null,
   });
 }
 
@@ -39,11 +45,44 @@ export function trackInstitutionView(university) {
   });
 }
 
-export function trackApplyClick({ programmeId, institutionId, destinationUrl }) {
-  trackEvent("apply_click", {
+/**
+ * @param {{
+ *   programmeId?: string | null,
+ *   institutionId?: string | null,
+ *   destinationUrl?: string | null,
+ *   linkKind?: 'website' | 'apply' | 'resource' | 'other' | string | null,
+ * }} input
+ */
+export function trackOutboundLinkClick({
+  programmeId,
+  institutionId,
+  destinationUrl,
+  linkKind = "other",
+}) {
+  const kind = linkKind || "other";
+  trackEvent("outbound_link_click", {
     programme_id: programmeId || null,
     institution_id: institutionId || null,
     destination_url: destinationUrl || null,
+    link_kind: kind,
+  });
+  if (kind === "apply") {
+    trackEvent("apply_click", {
+      programme_id: programmeId || null,
+      institution_id: institutionId || null,
+      destination_url: destinationUrl || null,
+      link_kind: kind,
+    });
+  }
+}
+
+/** @deprecated Prefer trackOutboundLinkClick — kept for call-site compatibility */
+export function trackApplyClick({ programmeId, institutionId, destinationUrl }) {
+  trackOutboundLinkClick({
+    programmeId,
+    institutionId,
+    destinationUrl,
+    linkKind: "apply",
   });
 }
 

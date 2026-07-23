@@ -6,6 +6,7 @@ import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
 import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
+import { marketCountryLabel } from "../lib/marketCountry.js";
 import {
   fetchInstitutionAnalytics,
   fetchInstitutionLeads,
@@ -14,17 +15,45 @@ import {
   saveInstitutionOverride,
   saveProgrammeOverrideForPartner,
   submitInstitutionClaim,
+  summarizeInstitutionAnalytics,
   updateLeadStatus,
 } from "../lib/partner.js";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard" },
   { id: "profile", label: "Institution" },
+  { id: "links", label: "Links & portals" },
+  { id: "staff", label: "Staff" },
   { id: "programmes", label: "Programmes" },
   { id: "analytics", label: "Analytics" },
   { id: "leads", label: "Leads" },
   { id: "claim", label: "Claim profile" },
 ];
+
+const EMPTY_RESOURCE = { title: "", category: "", url: "", format: "Web page", sourceLabel: "" };
+const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "" };
+
+function normalizeResourceRows(resources) {
+  if (!Array.isArray(resources)) return [];
+  return resources.map((r) => ({
+    title: r?.title || "",
+    category: r?.category || "",
+    url: r?.url || "",
+    format: r?.format || "Web page",
+    sourceLabel: r?.sourceLabel || "",
+  }));
+}
+
+function normalizeStaffRows(staff) {
+  if (!Array.isArray(staff)) return [];
+  return staff.map((s) => ({
+    name: s?.name || "",
+    title: s?.title || "",
+    email: s?.email || "",
+    phone: s?.phone || "",
+    department: s?.department || "",
+  }));
+}
 
 export default function Partner() {
   useDocumentTitle("University Partner Portal | Thuto");
@@ -47,10 +76,17 @@ export default function Partner() {
     applicationOpen: "",
     applicationClose: "",
     applyUrl: "",
+    website: "",
     phone: "",
+    email: "",
   });
+  const [resourceRows, setResourceRows] = useState([]);
+  const [staffRows, setStaffRows] = useState([]);
   const [selectedProgrammeId, setSelectedProgrammeId] = useState("");
   const [programmeForm, setProgrammeForm] = useState({
+    description: "",
+    applyUrl: "",
+    officialUrl: "",
     applicationDeadline: "",
     feesDomestic: "",
     minPoints: "",
@@ -91,8 +127,12 @@ export default function Partner() {
         applicationOpen: uni.applicationOpen || "",
         applicationClose: uni.applicationClose || "",
         applyUrl: uni.applyUrl || "",
+        website: uni.website || "",
         phone: uni.phone || "",
+        email: uni.email || "",
       });
+      setResourceRows(normalizeResourceRows(uni.resources));
+      setStaffRows(normalizeStaffRows(uni.staff));
     }
   }, []);
 
@@ -110,13 +150,10 @@ export default function Partner() {
     return programmes.filter((p) => programmeBelongsToUniversity(p, university));
   }, [programmes, university]);
 
-  const analyticsTotals = useMemo(() => {
-    const totals = {};
-    for (const row of analytics) {
-      totals[row.event_name] = (totals[row.event_name] || 0) + row.count;
-    }
-    return totals;
-  }, [analytics]);
+  const analyticsSummary = useMemo(
+    () => summarizeInstitutionAnalytics(analytics, institutionProgrammes),
+    [analytics, institutionProgrammes],
+  );
 
   if (!isLoading && !user) {
     return <Navigate to="/auth?mode=login&next=/partner" replace />;
@@ -133,9 +170,57 @@ export default function Partner() {
         applicationOpen: profileForm.applicationOpen || null,
         applicationClose: profileForm.applicationClose || null,
         applyUrl: profileForm.applyUrl || null,
+        website: profileForm.website || null,
         phone: profileForm.phone || null,
+        email: profileForm.email || null,
       });
       setMessage("Institution profile saved and published.");
+      await loadInstitution(activeInstitutionId);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed.");
+    }
+  }
+
+  async function handleSaveLinks() {
+    setError("");
+    setMessage("");
+    try {
+      const resources = resourceRows
+        .map((row) => ({
+          title: row.title.trim(),
+          category: row.category.trim(),
+          url: row.url.trim(),
+          format: row.format.trim() || "Web page",
+          sourceLabel: row.sourceLabel.trim() || university?.name || "",
+        }))
+        .filter((row) => row.title && row.url);
+      await saveInstitutionOverride(activeInstitutionId, {
+        website: profileForm.website || null,
+        applyUrl: profileForm.applyUrl || null,
+        resources,
+      });
+      setMessage("Links and portals saved and published.");
+      await loadInstitution(activeInstitutionId);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed.");
+    }
+  }
+
+  async function handleSaveStaff() {
+    setError("");
+    setMessage("");
+    try {
+      const staff = staffRows
+        .map((row) => ({
+          name: row.name.trim(),
+          title: row.title.trim(),
+          email: row.email.trim(),
+          phone: row.phone.trim(),
+          department: row.department.trim(),
+        }))
+        .filter((row) => row.name);
+      await saveInstitutionOverride(activeInstitutionId, { staff });
+      setMessage("Staff contacts saved and published.");
       await loadInstitution(activeInstitutionId);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
@@ -148,6 +233,9 @@ export default function Partner() {
     setMessage("");
     try {
       const patch = {
+        description: programmeForm.description || null,
+        applyUrl: programmeForm.applyUrl || null,
+        officialUrl: programmeForm.officialUrl || null,
         applicationDeadline: programmeForm.applicationDeadline || null,
       };
       if (programmeForm.feesDomestic) {
@@ -161,6 +249,8 @@ export default function Partner() {
       }
       await saveProgrammeOverrideForPartner(selectedProgrammeId, activeInstitutionId, patch);
       setMessage("Programme updated.");
+      await loadBase();
+      await loadInstitution(activeInstitutionId);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
     }
@@ -180,13 +270,27 @@ export default function Partner() {
     }
   }
 
+  function fillProgrammeForm(programmeId) {
+    setSelectedProgrammeId(programmeId);
+    const p = institutionProgrammes.find((row) => row.id === programmeId);
+    if (!p) return;
+    setProgrammeForm({
+      description: p.description || "",
+      applyUrl: p.applyUrl || "",
+      officialUrl: p.officialUrl || "",
+      applicationDeadline: p.applicationDeadline?.slice(0, 10) || "",
+      feesDomestic: p.fees?.domestic != null ? String(p.fees.domestic) : "",
+      minPoints: p.minPoints != null ? String(p.minPoints) : "",
+    });
+  }
+
   return (
-    <div className="space-y-6 pb-24">
+    <div className="space-y-6 pb-10">
       <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">University Partner Portal</p>
         <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Manage your institution on Thuto</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Update profiles, track student interest, and manage verified listings.
+          Update programmes, staff, and portal links — and see how students engage with your listing on Thuto.
         </p>
         {partner?.verified_at ? (
           <div className="mt-3">
@@ -274,12 +378,27 @@ export default function Partner() {
           {error ? <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p> : null}
 
           {tab === "dashboard" ? (
-            <section className="grid gap-4 sm:grid-cols-3">
-              <StatCard label="Programmes listed" value={institutionProgrammes.length} />
-              <StatCard label="Profile views (30d)" value={analyticsTotals.institution_profile_view || 0} />
-              <StatCard label="Apply clicks (30d)" value={analyticsTotals.apply_click || 0} />
-              <StatCard label="New leads" value={leads.filter((l) => l.status === "new").length} />
-              <StatCard label="Partner tier" value={partner?.tier || "verified"} />
+            <section className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-3">
+                <StatCard label="Programmes listed" value={institutionProgrammes.length} />
+                <StatCard
+                  label="Profile views (30d)"
+                  value={analyticsSummary.totals.institution_profile_view || 0}
+                />
+                <StatCard label="Programme views (30d)" value={analyticsSummary.totals.programme_view || 0} />
+                <StatCard label="Apply clicks (30d)" value={analyticsSummary.totals.apply_click || 0} />
+                <StatCard label="Outbound link clicks" value={analyticsSummary.outboundClicks || 0} />
+                <StatCard label="New leads" value={leads.filter((l) => l.status === "new").length} />
+                <StatCard label="Partner tier" value={partner?.tier || "verified"} />
+              </div>
+              {analyticsSummary.topCountries[0] ? (
+                <p className="text-sm text-slate-600">
+                  Top viewer market:{" "}
+                  <span className="font-semibold text-brand-900">
+                    {marketCountryLabel(analyticsSummary.topCountries[0].id)}
+                  </span>
+                </p>
+              ) : null}
             </section>
           ) : null}
 
@@ -296,31 +415,52 @@ export default function Partner() {
                 placeholder="Institution description"
               />
               <div className="grid gap-3 sm:grid-cols-2">
-                <input
-                  type="date"
-                  value={profileForm.applicationOpen}
-                  onChange={(e) => setProfileForm((f) => ({ ...f, applicationOpen: e.target.value }))}
-                  className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                />
-                <input
-                  type="date"
-                  value={profileForm.applicationClose}
-                  onChange={(e) => setProfileForm((f) => ({ ...f, applicationClose: e.target.value }))}
-                  className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                />
+                <label className="block text-xs font-medium text-slate-600">
+                  Application opens
+                  <input
+                    type="date"
+                    value={profileForm.applicationOpen}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, applicationOpen: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block text-xs font-medium text-slate-600">
+                  Application closes
+                  <input
+                    type="date"
+                    value={profileForm.applicationClose}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, applicationClose: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  />
+                </label>
               </div>
+              <input
+                value={profileForm.website}
+                onChange={(e) => setProfileForm((f) => ({ ...f, website: e.target.value }))}
+                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                placeholder="Official website URL"
+              />
               <input
                 value={profileForm.applyUrl}
                 onChange={(e) => setProfileForm((f) => ({ ...f, applyUrl: e.target.value }))}
                 className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                placeholder="Apply URL"
+                placeholder="Apply / admissions portal URL"
               />
-              <input
-                value={profileForm.phone}
-                onChange={(e) => setProfileForm((f) => ({ ...f, phone: e.target.value }))}
-                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                placeholder="Phone"
-              />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <input
+                  value={profileForm.phone}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, phone: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Phone"
+                />
+                <input
+                  type="email"
+                  value={profileForm.email}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, email: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Public contact email"
+                />
+              </div>
               <button
                 type="button"
                 onClick={handleSaveProfile}
@@ -331,21 +471,190 @@ export default function Partner() {
             </section>
           ) : null}
 
+          {tab === "links" ? (
+            <section className="space-y-4 rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+              <div>
+                <h2 className="font-display text-lg font-semibold text-brand-900">Website & portals</h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  Students see these on your institution page. Use absolute https links only.
+                </p>
+              </div>
+              <input
+                value={profileForm.website}
+                onChange={(e) => setProfileForm((f) => ({ ...f, website: e.target.value }))}
+                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                placeholder="Official website URL"
+              />
+              <input
+                value={profileForm.applyUrl}
+                onChange={(e) => setProfileForm((f) => ({ ...f, applyUrl: e.target.value }))}
+                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                placeholder="Apply / admissions portal URL"
+              />
+              <div className="space-y-3 border-t border-brand-100 pt-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-sm font-semibold text-brand-900">Resource links</h3>
+                  <button
+                    type="button"
+                    onClick={() => setResourceRows((rows) => [...rows, { ...EMPTY_RESOURCE }])}
+                    className="rounded-lg border border-brand-200 px-2 py-1 text-xs font-semibold text-brand-800"
+                  >
+                    Add link
+                  </button>
+                </div>
+                {resourceRows.map((row, index) => (
+                  <div key={`resource-${index}`} className="space-y-2 rounded-xl border border-brand-100 bg-brand-50/40 p-3">
+                    <input
+                      value={row.title}
+                      onChange={(e) =>
+                        setResourceRows((rows) =>
+                          rows.map((r, i) => (i === index ? { ...r, title: e.target.value } : r)),
+                        )
+                      }
+                      className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="Title"
+                    />
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <input
+                        value={row.category}
+                        onChange={(e) =>
+                          setResourceRows((rows) =>
+                            rows.map((r, i) => (i === index ? { ...r, category: e.target.value } : r)),
+                          )
+                        }
+                        className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                        placeholder="Category"
+                      />
+                      <input
+                        value={row.format}
+                        onChange={(e) =>
+                          setResourceRows((rows) =>
+                            rows.map((r, i) => (i === index ? { ...r, format: e.target.value } : r)),
+                          )
+                        }
+                        className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                        placeholder="Format (PDF, Web page…)"
+                      />
+                    </div>
+                    <input
+                      value={row.url}
+                      onChange={(e) =>
+                        setResourceRows((rows) =>
+                          rows.map((r, i) => (i === index ? { ...r, url: e.target.value } : r)),
+                        )
+                      }
+                      className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="https://…"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setResourceRows((rows) => rows.filter((_, i) => i !== index))}
+                      className="text-xs font-semibold text-red-700 underline"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                {!resourceRows.length ? <p className="text-sm text-slate-500">No resource links yet.</p> : null}
+              </div>
+              <button
+                type="button"
+                onClick={handleSaveLinks}
+                className="rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+              >
+                Publish links
+              </button>
+            </section>
+          ) : null}
+
+          {tab === "staff" ? (
+            <section className="space-y-4 rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h2 className="font-display text-lg font-semibold text-brand-900">Staff contacts</h2>
+                  <p className="mt-1 text-sm text-slate-600">Shown on your public institution page for student enquiries.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setStaffRows((rows) => [...rows, { ...EMPTY_STAFF }])}
+                  className="rounded-lg border border-brand-200 px-2 py-1 text-xs font-semibold text-brand-800"
+                >
+                  Add person
+                </button>
+              </div>
+              {staffRows.map((row, index) => (
+                <div key={`staff-${index}`} className="space-y-2 rounded-xl border border-brand-100 bg-brand-50/40 p-3">
+                  <input
+                    value={row.name}
+                    onChange={(e) =>
+                      setStaffRows((rows) => rows.map((r, i) => (i === index ? { ...r, name: e.target.value } : r)))
+                    }
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Full name"
+                  />
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <input
+                      value={row.title}
+                      onChange={(e) =>
+                        setStaffRows((rows) => rows.map((r, i) => (i === index ? { ...r, title: e.target.value } : r)))
+                      }
+                      className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="Title / role"
+                    />
+                    <input
+                      value={row.department}
+                      onChange={(e) =>
+                        setStaffRows((rows) =>
+                          rows.map((r, i) => (i === index ? { ...r, department: e.target.value } : r)),
+                        )
+                      }
+                      className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="Department"
+                    />
+                    <input
+                      type="email"
+                      value={row.email}
+                      onChange={(e) =>
+                        setStaffRows((rows) => rows.map((r, i) => (i === index ? { ...r, email: e.target.value } : r)))
+                      }
+                      className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="Email"
+                    />
+                    <input
+                      value={row.phone}
+                      onChange={(e) =>
+                        setStaffRows((rows) => rows.map((r, i) => (i === index ? { ...r, phone: e.target.value } : r)))
+                      }
+                      className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="Phone"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setStaffRows((rows) => rows.filter((_, i) => i !== index))}
+                    className="text-xs font-semibold text-red-700 underline"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              {!staffRows.length ? <p className="text-sm text-slate-500">No staff contacts yet.</p> : null}
+              <button
+                type="button"
+                onClick={handleSaveStaff}
+                className="rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+              >
+                Publish staff
+              </button>
+            </section>
+          ) : null}
+
           {tab === "programmes" ? (
             <section className="space-y-3 rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+              <h2 className="font-display text-lg font-semibold text-brand-900">Programme information</h2>
               <select
                 value={selectedProgrammeId}
-                onChange={(e) => {
-                  setSelectedProgrammeId(e.target.value);
-                  const p = institutionProgrammes.find((row) => row.id === e.target.value);
-                  if (p) {
-                    setProgrammeForm({
-                      applicationDeadline: p.applicationDeadline?.slice(0, 10) || "",
-                      feesDomestic: p.fees?.domestic != null ? String(p.fees.domestic) : "",
-                      minPoints: p.minPoints != null ? String(p.minPoints) : "",
-                    });
-                  }
-                }}
+                onChange={(e) => fillProgrammeForm(e.target.value)}
                 className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
               >
                 <option value="">Select programme</option>
@@ -357,6 +666,25 @@ export default function Partner() {
               </select>
               {selectedProgrammeId ? (
                 <>
+                  <textarea
+                    value={programmeForm.description}
+                    onChange={(e) => setProgrammeForm((f) => ({ ...f, description: e.target.value }))}
+                    rows={4}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Programme description"
+                  />
+                  <input
+                    value={programmeForm.applyUrl}
+                    onChange={(e) => setProgrammeForm((f) => ({ ...f, applyUrl: e.target.value }))}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Apply URL"
+                  />
+                  <input
+                    value={programmeForm.officialUrl}
+                    onChange={(e) => setProgrammeForm((f) => ({ ...f, officialUrl: e.target.value }))}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Official programme page URL"
+                  />
                   <input
                     type="date"
                     value={programmeForm.applicationDeadline}
@@ -388,19 +716,51 @@ export default function Partner() {
           ) : null}
 
           {tab === "analytics" ? (
-            <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-              <h2 className="font-display text-lg font-semibold text-brand-900">Last 30 days</h2>
-              <ul className="mt-3 space-y-2 text-sm">
-                {Object.entries(analyticsTotals).map(([name, count]) => (
-                  <li key={name} className="flex justify-between border-b border-brand-50 py-2">
-                    <span className="text-slate-700">{name.replace(/_/g, " ")}</span>
-                    <span className="font-semibold text-brand-900">{count}</span>
-                  </li>
-                ))}
-                {!Object.keys(analyticsTotals).length ? (
-                  <li className="text-slate-500">No analytics yet — views and apply clicks will appear here.</li>
-                ) : null}
-              </ul>
+            <section className="space-y-4">
+              <AnalyticsModule title="Institution overview" hint="Last 30 days — your institution only">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <StatCard label="Profile views" value={analyticsSummary.totals.institution_profile_view || 0} />
+                  <StatCard label="Programme views" value={analyticsSummary.totals.programme_view || 0} />
+                  <StatCard label="Apply clicks" value={analyticsSummary.totals.apply_click || 0} />
+                  <StatCard label="Outbound clicks" value={analyticsSummary.outboundClicks || 0} />
+                  <StatCard label="New leads" value={leads.filter((l) => l.status === "new").length} />
+                </div>
+              </AnalyticsModule>
+
+              <AnalyticsModule title="Pageviews per programme" hint="Which of your programmes students open most">
+                <RankedList
+                  rows={analyticsSummary.topProgrammes.slice(0, 10)}
+                  empty="No programme views yet."
+                  labelKey="label"
+                />
+              </AnalyticsModule>
+
+              <AnalyticsModule
+                title="Viewer origins"
+                hint="Thuto market countries where students were browsing when they viewed your listing"
+              >
+                <RankedList
+                  rows={analyticsSummary.topCountries.slice(0, 10).map((row) => ({
+                    ...row,
+                    label: marketCountryLabel(row.id),
+                  }))}
+                  empty="No origin data yet."
+                />
+              </AnalyticsModule>
+
+              <AnalyticsModule title="Discipline interest" hint="Programme field interest from your catalogue views">
+                <RankedList rows={analyticsSummary.disciplines.slice(0, 10)} empty="No discipline views yet." />
+              </AnalyticsModule>
+
+              <AnalyticsModule title="Outbound links & portals" hint="Clicks to your website, apply portal, and resources">
+                <RankedList
+                  rows={analyticsSummary.linkKinds.map((row) => ({
+                    ...row,
+                    label: row.id.replace(/_/g, " "),
+                  }))}
+                  empty="No outbound link clicks yet."
+                />
+              </AnalyticsModule>
             </section>
           ) : null}
 
@@ -450,5 +810,31 @@ function StatCard({ label, value }) {
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
       <p className="mt-1 font-display text-2xl font-bold text-brand-900">{value}</p>
     </div>
+  );
+}
+
+function AnalyticsModule({ title, hint, children }) {
+  return (
+    <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+      <h2 className="font-display text-lg font-semibold text-brand-900">{title}</h2>
+      {hint ? <p className="mt-1 text-sm text-slate-600">{hint}</p> : null}
+      <div className="mt-3">{children}</div>
+    </section>
+  );
+}
+
+function RankedList({ rows, empty, labelKey = "label" }) {
+  if (!rows?.length) {
+    return <p className="text-sm text-slate-500">{empty}</p>;
+  }
+  return (
+    <ul className="space-y-2 text-sm">
+      {rows.map((row) => (
+        <li key={row.id} className="flex justify-between gap-3 border-b border-brand-50 py-2">
+          <span className="min-w-0 truncate text-slate-700">{row[labelKey] || row.id}</span>
+          <span className="shrink-0 font-semibold text-brand-900">{row.count}</span>
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -55,6 +55,8 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
               href={applyHref}
               variant="compact"
               institutionName={u.name}
+              institutionId={u.id}
+              linkKind="apply"
               useInterstitial
             >
               Apply
@@ -112,6 +114,8 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
           href={applyHref}
           variant="text"
           institutionName={u.name}
+          institutionId={u.id}
+          linkKind="apply"
           useInterstitial
           className="mt-2 inline-block"
         >

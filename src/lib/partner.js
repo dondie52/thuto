@@ -122,6 +122,64 @@ export async function fetchInstitutionAnalytics(institutionId, days = 30) {
 }
 
 /**
+ * Summarise rolled-up institution analytics for the partner dashboard.
+ * @param {Array<{ event_name: string, entity_id?: string | null, count?: number }>} rows
+ * @param {Array<{ id: string, name?: string, field?: string }>} [programmes]
+ */
+export function summarizeInstitutionAnalytics(rows, programmes = []) {
+  const programmeNameById = new Map(programmes.map((p) => [p.id, p.name || p.id]));
+  const totals = {};
+  const programmeViews = {};
+  const viewerOrigins = {};
+  const linkKinds = {};
+  const disciplines = {};
+
+  for (const row of rows || []) {
+    const name = row.entity_id || "";
+    const count = Number(row.count) || 0;
+    if (!row.event_name) continue;
+
+    if (row.event_name === "viewer_origin") {
+      viewerOrigins[name || "unknown"] = (viewerOrigins[name || "unknown"] || 0) + count;
+      continue;
+    }
+    if (row.event_name === "outbound_link_kind") {
+      linkKinds[name || "other"] = (linkKinds[name || "other"] || 0) + count;
+      continue;
+    }
+    if (row.event_name === "discipline_view") {
+      disciplines[name || "General"] = (disciplines[name || "General"] || 0) + count;
+      continue;
+    }
+
+    totals[row.event_name] = (totals[row.event_name] || 0) + count;
+
+    if (row.event_name === "programme_view" && name) {
+      programmeViews[name] = (programmeViews[name] || 0) + count;
+    }
+  }
+
+  const sortEntries = (obj) =>
+    Object.entries(obj)
+      .map(([id, count]) => ({ id, count }))
+      .sort((a, b) => b.count - a.count);
+
+  const linkKindTotal = Object.values(linkKinds).reduce((sum, n) => sum + n, 0);
+
+  return {
+    totals,
+    topProgrammes: sortEntries(programmeViews).map((row) => ({
+      ...row,
+      label: programmeNameById.get(row.id) || row.id,
+    })),
+    topCountries: sortEntries(viewerOrigins),
+    linkKinds: sortEntries(linkKinds),
+    disciplines: sortEntries(disciplines),
+    outboundClicks: totals.outbound_link_click || linkKindTotal,
+  };
+}
+
+/**
  * @param {string} institutionId
  */
 export async function fetchInstitutionLeads(institutionId) {
@@ -199,11 +257,22 @@ export async function saveInstitutionOverride(institutionId, patch, published = 
   const userId = sessionData?.session?.user?.id;
   if (!userId) throw new Error("Sign in required.");
 
+  const { data: existing } = await supabase
+    .from("content_university_overrides")
+    .select("patch")
+    .eq("id", institutionId)
+    .maybeSingle();
+
+  const previous =
+    existing?.patch && typeof existing.patch === "object" && !Array.isArray(existing.patch)
+      ? existing.patch
+      : {};
+
   const { error } = await supabase.from("content_university_overrides").upsert(
     {
       id: institutionId,
       institution_id: institutionId,
-      patch: { ...patch, id: institutionId },
+      patch: { ...previous, ...patch, id: institutionId },
       published,
       updated_by: userId,
     },
@@ -225,11 +294,22 @@ export async function saveProgrammeOverrideForPartner(programmeId, institutionId
   const userId = sessionData?.session?.user?.id;
   if (!userId) throw new Error("Sign in required.");
 
+  const { data: existing } = await supabase
+    .from("content_programme_overrides")
+    .select("patch")
+    .eq("id", programmeId)
+    .maybeSingle();
+
+  const previous =
+    existing?.patch && typeof existing.patch === "object" && !Array.isArray(existing.patch)
+      ? existing.patch
+      : {};
+
   const { error } = await supabase.from("content_programme_overrides").upsert(
     {
       id: programmeId,
       institution_id: institutionId,
-      patch: { ...patch, id: programmeId },
+      patch: { ...previous, ...patch, id: programmeId },
       published,
       updated_by: userId,
     },
