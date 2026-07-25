@@ -22,6 +22,35 @@ export async function fetchInstitutionMemberships() {
 }
 
 /**
+ * Whether the signed-in user belongs to any institution partner membership.
+ * @returns {Promise<boolean>}
+ */
+export async function isInstitutionPartnerUser() {
+  const memberships = await fetchInstitutionMemberships();
+  return memberships.length > 0;
+}
+
+/**
+ * Post-login destination for institution staff vs students.
+ * Institution users land on `/partner` unless they explicitly asked for another
+ * non-student-home destination (e.g. `/settings`).
+ * @param {string | null | undefined} requestedNext
+ * @param {{ isInstitutionUser?: boolean }} [options]
+ */
+export function resolvePostAuthPath(requestedNext, options = {}) {
+  const next = typeof requestedNext === "string" ? requestedNext.trim() : "";
+  if (options.isInstitutionUser) {
+    if (!next || next === "/app" || next === "/onboarding" || next.startsWith("/onboarding?")) {
+      return "/partner";
+    }
+    if (next.startsWith("/partner")) return next;
+    // Explicit deep links still honored (settings, upgrade, etc.)
+    return next;
+  }
+  return next || "/app";
+}
+
+/**
  * @param {string} institutionId
  * @returns {Promise<InstitutionPartner | null>}
  */
