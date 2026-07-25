@@ -4,6 +4,7 @@ import GoogleSignInButton from "../components/GoogleSignInButton.jsx";
 import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { needsOnboarding } from "../lib/onboarding.js";
+import { isInstitutionPartnerUser, resolvePostAuthPath } from "../lib/partner.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
 
 function cleanMode(value) {
@@ -14,7 +15,7 @@ export default function Auth() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const mode = cleanMode(searchParams.get("mode"));
-  const nextPath = safeInternalPath(searchParams.get("next")) || "/app";
+  const requestedNext = safeInternalPath(searchParams.get("next")) || "";
   const { signIn, signInWithGoogle, signUp, supabaseConfigured, user, profile, isProfileLoading } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,12 +36,24 @@ export default function Auth() {
 
   useEffect(() => {
     if (!user || isProfileLoading) return;
-    if (needsOnboarding(profile)) {
-      navigate(`/onboarding?next=${encodeURIComponent(nextPath)}`, { replace: true });
-      return;
-    }
-    navigate(nextPath, { replace: true });
-  }, [navigate, user, profile, isProfileLoading, nextPath]);
+    let cancelled = false;
+
+    (async () => {
+      const institutionUser = await isInstitutionPartnerUser();
+      if (cancelled) return;
+      const destination = resolvePostAuthPath(requestedNext, { isInstitutionUser: institutionUser });
+      // Institution staff skip student onboarding and go straight to the partner portal.
+      if (!institutionUser && needsOnboarding(profile)) {
+        navigate(`/onboarding?next=${encodeURIComponent(destination)}`, { replace: true });
+        return;
+      }
+      navigate(destination, { replace: true });
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate, user, profile, isProfileLoading, requestedNext]);
 
   const title = mode === "login" ? "Log in to Thuto" : "Create your Thuto account";
   const submitLabel = useMemo(() => {
@@ -82,7 +95,7 @@ export default function Auth() {
     setMessage("");
     setError("");
     try {
-      await signInWithGoogle({ nextPath, mode });
+      await signInWithGoogle({ nextPath: requestedNext || "/app", mode });
     } catch (err) {
       setError(err.message || "Google sign-in failed.");
       setIsGoogleSubmitting(false);
