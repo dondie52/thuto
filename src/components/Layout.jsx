@@ -182,7 +182,7 @@ export default function Layout() {
           isMessageThread
             ? "max-w-none px-0 pb-0 pt-0"
             : [
-                "max-w-lg px-4 sm:max-w-3xl",
+                isPartnerRoute ? "max-w-lg px-4 sm:max-w-6xl" : "max-w-lg px-4 sm:max-w-3xl",
                 isFeedRoute ? "min-h-0 bg-white pb-6" : isAssistantRoute ? "min-h-0 flex-1 overflow-hidden pb-2" : "pb-6 sm:pb-8",
               ].join(" "),
         ].join(" ")}
