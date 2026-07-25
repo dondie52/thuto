@@ -5,8 +5,8 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
+import PartnerInsightsDashboard from "../components/partner/PartnerInsightsDashboard.jsx";
 import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
-import { marketCountryLabel } from "../lib/marketCountry.js";
 import {
   fetchInstitutionAnalytics,
   fetchInstitutionLeads,
@@ -25,7 +25,6 @@ const TABS = [
   { id: "links", label: "Links & portals" },
   { id: "staff", label: "Staff" },
   { id: "programmes", label: "Programmes" },
-  { id: "analytics", label: "Analytics" },
   { id: "leads", label: "Leads" },
   { id: "claim", label: "Claim profile" },
 ];
@@ -286,17 +285,20 @@ export default function Partner() {
 
   return (
     <div className="space-y-6 pb-10">
-      <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">University Partner Portal</p>
-        <h1 className="mt-2 font-display text-2xl font-bold text-brand-900">Manage your institution on Thuto</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Update programmes, staff, and portal links — and see how students engage with your listing on Thuto.
-        </p>
-        {partner?.verified_at ? (
-          <div className="mt-3">
-            <InstitutionVerificationBadge />
+      <header className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Institution partner portal</p>
+            <h1 className="mt-2 font-display text-2xl font-bold text-brand-900 sm:text-3xl">
+              {university?.name || "Your institution dashboard"}
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-600">
+              Analytics modules inspired by recruitment insight dashboards — plus tools to manage programmes, staff, and
+              official links. Students never see this view.
+            </p>
           </div>
-        ) : null}
+          {partner?.verified_at ? <InstitutionVerificationBadge /> : null}
+        </div>
       </header>
 
       {!hasAccess ? (
@@ -378,28 +380,14 @@ export default function Partner() {
           {error ? <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p> : null}
 
           {tab === "dashboard" ? (
-            <section className="space-y-4">
-              <div className="grid gap-4 sm:grid-cols-3">
-                <StatCard label="Programmes listed" value={institutionProgrammes.length} />
-                <StatCard
-                  label="Profile views (30d)"
-                  value={analyticsSummary.totals.institution_profile_view || 0}
-                />
-                <StatCard label="Programme views (30d)" value={analyticsSummary.totals.programme_view || 0} />
-                <StatCard label="Apply clicks (30d)" value={analyticsSummary.totals.apply_click || 0} />
-                <StatCard label="Outbound link clicks" value={analyticsSummary.outboundClicks || 0} />
-                <StatCard label="New leads" value={leads.filter((l) => l.status === "new").length} />
-                <StatCard label="Partner tier" value={partner?.tier || "verified"} />
-              </div>
-              {analyticsSummary.topCountries[0] ? (
-                <p className="text-sm text-slate-600">
-                  Top viewer market:{" "}
-                  <span className="font-semibold text-brand-900">
-                    {marketCountryLabel(analyticsSummary.topCountries[0].id)}
-                  </span>
-                </p>
-              ) : null}
-            </section>
+            <PartnerInsightsDashboard
+              universityName={university?.name || activeInstitutionId}
+              programmeCount={institutionProgrammes.length}
+              tier={partner?.tier || "verified"}
+              newLeads={leads.filter((l) => l.status === "new").length}
+              summary={analyticsSummary}
+              onOpenModule={setTab}
+            />
           ) : null}
 
           {tab === "profile" ? (
@@ -715,55 +703,6 @@ export default function Partner() {
             </section>
           ) : null}
 
-          {tab === "analytics" ? (
-            <section className="space-y-4">
-              <AnalyticsModule title="Institution overview" hint="Last 30 days — your institution only">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <StatCard label="Profile views" value={analyticsSummary.totals.institution_profile_view || 0} />
-                  <StatCard label="Programme views" value={analyticsSummary.totals.programme_view || 0} />
-                  <StatCard label="Apply clicks" value={analyticsSummary.totals.apply_click || 0} />
-                  <StatCard label="Outbound clicks" value={analyticsSummary.outboundClicks || 0} />
-                  <StatCard label="New leads" value={leads.filter((l) => l.status === "new").length} />
-                </div>
-              </AnalyticsModule>
-
-              <AnalyticsModule title="Pageviews per programme" hint="Which of your programmes students open most">
-                <RankedList
-                  rows={analyticsSummary.topProgrammes.slice(0, 10)}
-                  empty="No programme views yet."
-                  labelKey="label"
-                />
-              </AnalyticsModule>
-
-              <AnalyticsModule
-                title="Viewer origins"
-                hint="Thuto market countries where students were browsing when they viewed your listing"
-              >
-                <RankedList
-                  rows={analyticsSummary.topCountries.slice(0, 10).map((row) => ({
-                    ...row,
-                    label: marketCountryLabel(row.id),
-                  }))}
-                  empty="No origin data yet."
-                />
-              </AnalyticsModule>
-
-              <AnalyticsModule title="Discipline interest" hint="Programme field interest from your catalogue views">
-                <RankedList rows={analyticsSummary.disciplines.slice(0, 10)} empty="No discipline views yet." />
-              </AnalyticsModule>
-
-              <AnalyticsModule title="Outbound links & portals" hint="Clicks to your website, apply portal, and resources">
-                <RankedList
-                  rows={analyticsSummary.linkKinds.map((row) => ({
-                    ...row,
-                    label: row.id.replace(/_/g, " "),
-                  }))}
-                  empty="No outbound link clicks yet."
-                />
-              </AnalyticsModule>
-            </section>
-          ) : null}
-
           {tab === "leads" ? (
             <section className="space-y-3">
               {leads.map((lead) => (
@@ -804,37 +743,3 @@ export default function Partner() {
   );
 }
 
-function StatCard({ label, value }) {
-  return (
-    <div className="rounded-xl border border-brand-100 bg-brand-50/50 p-4">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 font-display text-2xl font-bold text-brand-900">{value}</p>
-    </div>
-  );
-}
-
-function AnalyticsModule({ title, hint, children }) {
-  return (
-    <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-      <h2 className="font-display text-lg font-semibold text-brand-900">{title}</h2>
-      {hint ? <p className="mt-1 text-sm text-slate-600">{hint}</p> : null}
-      <div className="mt-3">{children}</div>
-    </section>
-  );
-}
-
-function RankedList({ rows, empty, labelKey = "label" }) {
-  if (!rows?.length) {
-    return <p className="text-sm text-slate-500">{empty}</p>;
-  }
-  return (
-    <ul className="space-y-2 text-sm">
-      {rows.map((row) => (
-        <li key={row.id} className="flex justify-between gap-3 border-b border-brand-50 py-2">
-          <span className="min-w-0 truncate text-slate-700">{row[labelKey] || row.id}</span>
-          <span className="shrink-0 font-semibold text-brand-900">{row.count}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
