@@ -2,13 +2,13 @@
 
 /** @typedef {{ category: StudentIncentiveCategory, label: string, detail?: string, sourceUrl?: string, sourceLabel?: string }} StudentIncentive */
 
-/** @type {Record<StudentIncentiveCategory, { label: string, icon: string }>} */
+/** @type {Record<StudentIncentiveCategory, { label: string }>} */
 export const STUDENT_INCENTIVE_CATEGORY_META = {
-  accommodation: { label: "Accommodation", icon: "🏠" },
-  laptop: { label: "Devices", icon: "💻" },
-  discount: { label: "Discounts & payment", icon: "🏷️" },
-  bursary: { label: "Bursaries & aid", icon: "🎓" },
-  other: { label: "Other offers", icon: "✨" },
+  accommodation: { label: "Accommodation" },
+  laptop: { label: "Devices" },
+  discount: { label: "Discounts & payment" },
+  bursary: { label: "Bursaries & aid" },
+  other: { label: "Other offers" },
 };
 
 /**
