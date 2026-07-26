@@ -220,3 +220,9 @@ Day 5:  ESLint setup + 2–3 core tests
 Day 6:  Analytics setup + .gitignore cleanup
 Day 7:  Full mobile test + accessibility spot check → launch
 ```
+
+---
+
+## Strategic backlog (post-launch)
+
+- **AI-native CMS** — Partner ingest → Admin assist → Ask Thuto grounded in published catalogue. Strategy only: [`docs/AI_NATIVE_CMS_STRATEGY.md`](./docs/AI_NATIVE_CMS_STRATEGY.md). Not a launch blocker.
