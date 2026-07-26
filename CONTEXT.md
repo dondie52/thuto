@@ -203,6 +203,8 @@ Longer intent/spec notes live beside the code:
 
 **Operational roadmap** (launch checklist, remaining work): `thuto_roadmap.md`.
 
+**AI-native CMS strategy** (AI-native vs AI-powered; Partner → Admin → student grounding): [`docs/AI_NATIVE_CMS_STRATEGY.md`](./docs/AI_NATIVE_CMS_STRATEGY.md).
+
 ---
 
 ## Commands
