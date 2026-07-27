@@ -8,6 +8,17 @@ import InstitutionVerificationBadge from "../components/InstitutionVerificationB
 import PartnerInsightsDashboard from "../components/partner/PartnerInsightsDashboard.jsx";
 import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
 import {
+  UNIVERSITY_SOCIAL_PLATFORMS,
+  normalizeUniversityAccreditation,
+  normalizeUniversityCampusPhotos,
+  normalizeUniversityContacts,
+  normalizeUniversitySocialLinks,
+  normalizeUniversityStudentLife,
+  splitMultilineList,
+  summarizeUniversityProfileCompleteness,
+} from "../lib/institutionProfile.js";
+import { STUDENT_INCENTIVE_CATEGORY_META } from "../lib/studentIncentives.js";
+import {
   fetchInstitutionAnalytics,
   fetchInstitutionLeads,
   fetchInstitutionMemberships,
@@ -31,6 +42,7 @@ const TABS = [
 
 const EMPTY_RESOURCE = { title: "", category: "", url: "", format: "Web page", sourceLabel: "" };
 const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "" };
+const EMPTY_INCENTIVE = { category: "other", label: "", detail: "", sourceUrl: "", sourceLabel: "" };
 
 function normalizeResourceRows(resources) {
   if (!Array.isArray(resources)) return [];
@@ -76,11 +88,34 @@ export default function Partner() {
     applicationClose: "",
     applyUrl: "",
     website: "",
-    phone: "",
-    email: "",
+    logo: "",
+    universityType: "",
+    physicalAddress: "",
+    generalPhone: "",
+    admissionsPhone: "",
+    generalEmail: "",
+    admissionsEmail: "",
+    accreditationStatus: "",
+    accreditationBody: "",
+    accreditationNotes: "",
+    accreditationSourceUrl: "",
+    accommodationStatus: "",
+    accommodationDetails: "",
+    healthDetails: "",
+    safetyDetails: "",
+    sportsDetails: "",
+    careerSupportDetails: "",
+    campusPhotosText: "",
+    socialFacebook: "",
+    socialInstagram: "",
+    socialX: "",
+    socialLinkedin: "",
+    socialYoutube: "",
+    socialTiktok: "",
   });
   const [resourceRows, setResourceRows] = useState([]);
   const [staffRows, setStaffRows] = useState([]);
+  const [studentLifeRows, setStudentLifeRows] = useState([]);
   const [selectedProgrammeId, setSelectedProgrammeId] = useState("");
   const [programmeForm, setProgrammeForm] = useState({
     description: "",
@@ -89,6 +124,11 @@ export default function Partner() {
     applicationDeadline: "",
     feesDomestic: "",
     minPoints: "",
+    accreditationStatus: "",
+    accreditationBody: "",
+    accreditationNotes: "",
+    careers: "",
+    jobOpportunities: "",
   });
 
   const activeInstitutionId = selectedInstitutionId || memberships[0]?.institution_id || "";
@@ -121,17 +161,52 @@ export default function Partner() {
     const uni = (uniData.list || []).find((u) => u.id === institutionId);
     setUniversity(uni || null);
     if (uni) {
+      const contacts = normalizeUniversityContacts(uni);
+      const accreditation = normalizeUniversityAccreditation(uni);
+      const studentLife = normalizeUniversityStudentLife(uni);
+      const socialLinks = normalizeUniversitySocialLinks(uni);
       setProfileForm({
         description: uni.description || "",
         applicationOpen: uni.applicationOpen || "",
         applicationClose: uni.applicationClose || "",
         applyUrl: uni.applyUrl || "",
         website: uni.website || "",
-        phone: uni.phone || "",
-        email: uni.email || "",
+        logo: uni.logo || "",
+        universityType: uni.universityType || uni.type || "",
+        physicalAddress: contacts.address,
+        generalPhone: contacts.generalPhone,
+        admissionsPhone: contacts.admissionsPhone,
+        generalEmail: contacts.generalEmail,
+        admissionsEmail: contacts.admissionsEmail,
+        accreditationStatus: accreditation.status,
+        accreditationBody: accreditation.body,
+        accreditationNotes: accreditation.notes,
+        accreditationSourceUrl: accreditation.sourceUrl,
+        accommodationStatus: studentLife.accommodationStatus,
+        accommodationDetails: studentLife.accommodationDetails,
+        healthDetails: studentLife.healthDetails,
+        safetyDetails: studentLife.safetyDetails,
+        sportsDetails: studentLife.sportsDetails,
+        careerSupportDetails: studentLife.careerSupportDetails,
+        campusPhotosText: normalizeUniversityCampusPhotos(uni).join("\n"),
+        socialFacebook: socialLinks.facebook,
+        socialInstagram: socialLinks.instagram,
+        socialX: socialLinks.x,
+        socialLinkedin: socialLinks.linkedin,
+        socialYoutube: socialLinks.youtube,
+        socialTiktok: socialLinks.tiktok,
       });
       setResourceRows(normalizeResourceRows(uni.resources));
       setStaffRows(normalizeStaffRows(uni.staff));
+      setStudentLifeRows(
+        (Array.isArray(uni.studentIncentives) ? uni.studentIncentives : []).map((item) => ({
+          category: item?.category || "other",
+          label: item?.label || "",
+          detail: item?.detail || "",
+          sourceUrl: item?.sourceUrl || "",
+          sourceLabel: item?.sourceLabel || "",
+        })),
+      );
     }
   }, []);
 
@@ -153,6 +228,10 @@ export default function Partner() {
     () => summarizeInstitutionAnalytics(analytics, institutionProgrammes),
     [analytics, institutionProgrammes],
   );
+  const profileCompleteness = useMemo(
+    () => summarizeUniversityProfileCompleteness(university, institutionProgrammes.length),
+    [university, institutionProgrammes.length],
+  );
 
   if (!isLoading && !user) {
     return <Navigate to="/auth?mode=login&next=/partner" replace />;
@@ -170,8 +249,34 @@ export default function Partner() {
         applicationClose: profileForm.applicationClose || null,
         applyUrl: profileForm.applyUrl || null,
         website: profileForm.website || null,
-        phone: profileForm.phone || null,
-        email: profileForm.email || null,
+        logo: profileForm.logo || null,
+        universityType: profileForm.universityType || null,
+        physicalAddress: profileForm.physicalAddress || null,
+        generalPhone: profileForm.generalPhone || null,
+        admissionsPhone: profileForm.admissionsPhone || null,
+        generalEmail: profileForm.generalEmail || null,
+        admissionsEmail: profileForm.admissionsEmail || null,
+        phone: profileForm.generalPhone || null,
+        email: profileForm.generalEmail || null,
+        accreditationStatus: profileForm.accreditationStatus || null,
+        accreditationBody: profileForm.accreditationBody || null,
+        accreditationNotes: profileForm.accreditationNotes || null,
+        accreditationSourceUrl: profileForm.accreditationSourceUrl || null,
+        accommodationStatus: profileForm.accommodationStatus || null,
+        accommodationDetails: profileForm.accommodationDetails || null,
+        healthDetails: profileForm.healthDetails || null,
+        safetyDetails: profileForm.safetyDetails || null,
+        sportsDetails: profileForm.sportsDetails || null,
+        careerSupportDetails: profileForm.careerSupportDetails || null,
+        studentIncentives: studentLifeRows
+          .map((row) => ({
+            category: row.category || "other",
+            label: row.label.trim(),
+            detail: row.detail.trim(),
+            sourceUrl: row.sourceUrl.trim(),
+            sourceLabel: row.sourceLabel.trim(),
+          }))
+          .filter((row) => row.label),
       });
       setMessage("Institution profile saved and published.");
       await loadInstitution(activeInstitutionId);
@@ -196,6 +301,17 @@ export default function Partner() {
       await saveInstitutionOverride(activeInstitutionId, {
         website: profileForm.website || null,
         applyUrl: profileForm.applyUrl || null,
+        logo: profileForm.logo || null,
+        socialLinks: {
+          facebook: profileForm.socialFacebook || null,
+          instagram: profileForm.socialInstagram || null,
+          x: profileForm.socialX || null,
+          linkedin: profileForm.socialLinkedin || null,
+          youtube: profileForm.socialYoutube || null,
+          tiktok: profileForm.socialTiktok || null,
+        },
+        campusPhotos: splitMultilineList(profileForm.campusPhotosText),
+        campusPhoto: splitMultilineList(profileForm.campusPhotosText)[0] || null,
         resources,
       });
       setMessage("Links and portals saved and published.");
@@ -236,6 +352,12 @@ export default function Partner() {
         applyUrl: programmeForm.applyUrl || null,
         officialUrl: programmeForm.officialUrl || null,
         applicationDeadline: programmeForm.applicationDeadline || null,
+        accreditationStatus: programmeForm.accreditationStatus || null,
+        accreditationBody: programmeForm.accreditationBody || null,
+        accreditationNotes: programmeForm.accreditationNotes || null,
+        careers: splitMultilineList(programmeForm.careers),
+        careerOpportunities: splitMultilineList(programmeForm.careers),
+        jobOpportunities: splitMultilineList(programmeForm.jobOpportunities),
       };
       if (programmeForm.feesDomestic) {
         patch.fees = {
@@ -280,6 +402,11 @@ export default function Partner() {
       applicationDeadline: p.applicationDeadline?.slice(0, 10) || "",
       feesDomestic: p.fees?.domestic != null ? String(p.fees.domestic) : "",
       minPoints: p.minPoints != null ? String(p.minPoints) : "",
+      accreditationStatus: p.accreditationStatus || "",
+      accreditationBody: p.accreditationBody || "",
+      accreditationNotes: p.accreditationNotes || "",
+      careers: [...new Set([...(p.careers || []), ...(p.careerOpportunities || [])])].join("\n"),
+      jobOpportunities: (p.jobOpportunities || []).join("\n"),
     });
   }
 
@@ -386,15 +513,26 @@ export default function Partner() {
               tier={partner?.tier || "verified"}
               newLeads={leads.filter((l) => l.status === "new").length}
               summary={analyticsSummary}
+              profileCompleteness={profileCompleteness}
               onOpenModule={setTab}
             />
           ) : null}
 
           {tab === "profile" ? (
             <section className="space-y-3 rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-              <h2 className="font-display text-lg font-semibold text-brand-900">
-                {university?.name || activeInstitutionId}
-              </h2>
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h2 className="font-display text-lg font-semibold text-brand-900">
+                    {university?.name || activeInstitutionId}
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-600">
+                    Keep the profile factual and easy for students to scan on desktop and mobile.
+                  </p>
+                </div>
+                <div className="rounded-xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900">
+                  <span className="font-semibold">{profileCompleteness.completed}/{profileCompleteness.total}</span> public profile areas completed
+                </div>
+              </div>
               <textarea
                 value={profileForm.description}
                 onChange={(e) => setProfileForm((f) => ({ ...f, description: e.target.value }))}
@@ -402,6 +540,20 @@ export default function Partner() {
                 className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
                 placeholder="Institution description"
               />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <input
+                  value={profileForm.universityType}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, universityType: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Institution type (University, TVET, Nursing college...)"
+                />
+                <input
+                  value={profileForm.physicalAddress}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, physicalAddress: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Physical address"
+                />
+              </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="block text-xs font-medium text-slate-600">
                   Application opens
@@ -422,32 +574,198 @@ export default function Partner() {
                   />
                 </label>
               </div>
-              <input
-                value={profileForm.website}
-                onChange={(e) => setProfileForm((f) => ({ ...f, website: e.target.value }))}
-                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                placeholder="Official website URL"
-              />
-              <input
-                value={profileForm.applyUrl}
-                onChange={(e) => setProfileForm((f) => ({ ...f, applyUrl: e.target.value }))}
-                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                placeholder="Apply / admissions portal URL"
-              />
               <div className="grid gap-3 sm:grid-cols-2">
                 <input
-                  value={profileForm.phone}
-                  onChange={(e) => setProfileForm((f) => ({ ...f, phone: e.target.value }))}
+                  value={profileForm.generalPhone}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, generalPhone: e.target.value }))}
                   className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                  placeholder="Phone"
+                  placeholder="General phone number"
+                />
+                <input
+                  value={profileForm.admissionsPhone}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, admissionsPhone: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Admissions phone number"
                 />
                 <input
                   type="email"
-                  value={profileForm.email}
-                  onChange={(e) => setProfileForm((f) => ({ ...f, email: e.target.value }))}
+                  value={profileForm.generalEmail}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, generalEmail: e.target.value }))}
                   className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
-                  placeholder="Public contact email"
+                  placeholder="General email address"
                 />
+                <input
+                  type="email"
+                  value={profileForm.admissionsEmail}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, admissionsEmail: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Admissions email address"
+                />
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <input
+                  value={profileForm.accreditationStatus}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, accreditationStatus: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Accreditation status"
+                />
+                <input
+                  value={profileForm.accreditationBody}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, accreditationBody: e.target.value }))}
+                  className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder="Accrediting body / regulator"
+                />
+              </div>
+              <input
+                value={profileForm.accreditationSourceUrl}
+                onChange={(e) => setProfileForm((f) => ({ ...f, accreditationSourceUrl: e.target.value }))}
+                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                placeholder="Accreditation source URL"
+              />
+              <textarea
+                value={profileForm.accreditationNotes}
+                onChange={(e) => setProfileForm((f) => ({ ...f, accreditationNotes: e.target.value }))}
+                rows={3}
+                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                placeholder="Accreditation notes students should know"
+              />
+              <div className="grid gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-brand-900">Student life and support</h3>
+                  <p className="mt-1 text-sm text-slate-600">
+                    Focus on the practical things students ask before applying.
+                  </p>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <input
+                    value={profileForm.accommodationStatus}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, accommodationStatus: e.target.value }))}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Accommodation status (On-campus, partner hostels, none...)"
+                  />
+                  <textarea
+                    value={profileForm.accommodationDetails}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, accommodationDetails: e.target.value }))}
+                    rows={3}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Accommodation details"
+                  />
+                  <textarea
+                    value={profileForm.healthDetails}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, healthDetails: e.target.value }))}
+                    rows={3}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Health / clinic details"
+                  />
+                  <textarea
+                    value={profileForm.safetyDetails}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, safetyDetails: e.target.value }))}
+                    rows={3}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Safety / security details"
+                  />
+                  <textarea
+                    value={profileForm.sportsDetails}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, sportsDetails: e.target.value }))}
+                    rows={3}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Sports and entertainment details"
+                  />
+                  <textarea
+                    value={profileForm.careerSupportDetails}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, careerSupportDetails: e.target.value }))}
+                    rows={3}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Career support, internships, placements, employer links"
+                  />
+                </div>
+                <div className="space-y-3 border-t border-brand-100 pt-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <h4 className="text-sm font-semibold text-brand-900">Student incentives</h4>
+                      <p className="text-xs text-slate-600">Add transport, WiFi, laptops, bursaries, and other support offers.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setStudentLifeRows((rows) => [...rows, { ...EMPTY_INCENTIVE }])}
+                      className="rounded-lg border border-brand-200 px-2 py-1 text-xs font-semibold text-brand-800"
+                    >
+                      Add incentive
+                    </button>
+                  </div>
+                  {studentLifeRows.map((row, index) => (
+                    <div key={`incentive-${index}`} className="space-y-2 rounded-xl border border-brand-100 bg-white p-3">
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <select
+                          value={row.category}
+                          onChange={(e) =>
+                            setStudentLifeRows((rows) =>
+                              rows.map((item, i) => (i === index ? { ...item, category: e.target.value } : item)),
+                            )
+                          }
+                          className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                        >
+                          {Object.entries(STUDENT_INCENTIVE_CATEGORY_META).map(([key, meta]) => (
+                            <option key={key} value={key}>
+                              {meta.label}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          value={row.label}
+                          onChange={(e) =>
+                            setStudentLifeRows((rows) =>
+                              rows.map((item, i) => (i === index ? { ...item, label: e.target.value } : item)),
+                            )
+                          }
+                          className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                          placeholder="Offer title"
+                        />
+                      </div>
+                      <textarea
+                        value={row.detail}
+                        onChange={(e) =>
+                          setStudentLifeRows((rows) =>
+                            rows.map((item, i) => (i === index ? { ...item, detail: e.target.value } : item)),
+                          )
+                        }
+                        rows={2}
+                        className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                        placeholder="Short details"
+                      />
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <input
+                          value={row.sourceUrl}
+                          onChange={(e) =>
+                            setStudentLifeRows((rows) =>
+                              rows.map((item, i) => (i === index ? { ...item, sourceUrl: e.target.value } : item)),
+                            )
+                          }
+                          className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                          placeholder="Official source URL"
+                        />
+                        <input
+                          value={row.sourceLabel}
+                          onChange={(e) =>
+                            setStudentLifeRows((rows) =>
+                              rows.map((item, i) => (i === index ? { ...item, sourceLabel: e.target.value } : item)),
+                            )
+                          }
+                          className="rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                          placeholder="Source label"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setStudentLifeRows((rows) => rows.filter((_, i) => i !== index))}
+                        className="text-xs font-semibold text-red-700 underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  {!studentLifeRows.length ? <p className="text-sm text-slate-500">No incentives added yet.</p> : null}
+                </div>
               </div>
               <button
                 type="button"
@@ -479,6 +797,38 @@ export default function Partner() {
                 className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
                 placeholder="Apply / admissions portal URL"
               />
+              <input
+                value={profileForm.logo}
+                onChange={(e) => setProfileForm((f) => ({ ...f, logo: e.target.value }))}
+                className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                placeholder="Logo image URL"
+              />
+              <div className="grid gap-3 sm:grid-cols-2">
+                {UNIVERSITY_SOCIAL_PLATFORMS.map((platform) => (
+                  <input
+                    key={platform.key}
+                    value={profileForm[`social${platform.key.charAt(0).toUpperCase()}${platform.key.slice(1)}`]}
+                    onChange={(e) =>
+                      setProfileForm((f) => ({
+                        ...f,
+                        [`social${platform.key.charAt(0).toUpperCase()}${platform.key.slice(1)}`]: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder={`${platform.label} URL`}
+                  />
+                ))}
+              </div>
+              <label className="block text-xs font-medium text-slate-600">
+                Campus photo URLs
+                <textarea
+                  value={profileForm.campusPhotosText}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, campusPhotosText: e.target.value }))}
+                  rows={4}
+                  className="mt-1 w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                  placeholder={"One image URL per line"}
+                />
+              </label>
               <div className="space-y-3 border-t border-brand-100 pt-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="text-sm font-semibold text-brand-900">Resource links</h3>
@@ -690,6 +1040,41 @@ export default function Partner() {
                     onChange={(e) => setProgrammeForm((f) => ({ ...f, feesDomestic: e.target.value }))}
                     className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
                     placeholder={`Domestic fees (${defaultCurrencyForCountry(university?.country)})`}
+                  />
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <input
+                      value={programmeForm.accreditationStatus}
+                      onChange={(e) => setProgrammeForm((f) => ({ ...f, accreditationStatus: e.target.value }))}
+                      className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="Programme accreditation status"
+                    />
+                    <input
+                      value={programmeForm.accreditationBody}
+                      onChange={(e) => setProgrammeForm((f) => ({ ...f, accreditationBody: e.target.value }))}
+                      className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                      placeholder="Accrediting body / regulator"
+                    />
+                  </div>
+                  <textarea
+                    value={programmeForm.accreditationNotes}
+                    onChange={(e) => setProgrammeForm((f) => ({ ...f, accreditationNotes: e.target.value }))}
+                    rows={3}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Accreditation notes"
+                  />
+                  <textarea
+                    value={programmeForm.careers}
+                    onChange={(e) => setProgrammeForm((f) => ({ ...f, careers: e.target.value }))}
+                    rows={4}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Career opportunities (one per line)"
+                  />
+                  <textarea
+                    value={programmeForm.jobOpportunities}
+                    onChange={(e) => setProgrammeForm((f) => ({ ...f, jobOpportunities: e.target.value }))}
+                    rows={4}
+                    className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm"
+                    placeholder="Common jobs or roles after graduation (one per line)"
                   />
                   <button
                     type="button"

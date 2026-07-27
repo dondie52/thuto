@@ -22,6 +22,7 @@ import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmes
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
   getProgrammeAboutSummary,
+  getProgrammeAccreditation,
   getProgrammeCampusLocation,
   getProgrammeCareers,
   getProgrammeInterests,
@@ -145,6 +146,7 @@ export default function ProgrammeDetail() {
   const aboutSummary = getProgrammeAboutSummary(programme);
   const interests = getProgrammeInterests(programme);
   const careers = getProgrammeCareers(programme);
+  const accreditation = getProgrammeAccreditation(programme);
   const relatedSubjects = getProgrammeRelatedSubjects(programme);
   const fitCompatible = isFitFinderCompatible(programme);
 
@@ -350,7 +352,37 @@ export default function ProgrammeDetail() {
       <ProgrammeFeeSection programme={programme} university={university} isDtefSponsored={isDtefSponsored} />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Career prospects</h2>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-brand-900">Accreditation & career prospects</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Students often ask whether a programme is accredited and what jobs it may lead to.
+            </p>
+          </div>
+          {accreditation.status ? (
+            <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+              {accreditation.status}
+            </span>
+          ) : null}
+        </div>
+        {(accreditation.status || accreditation.body || accreditation.notes) ? (
+          <div className="mt-4 grid gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-4 text-sm text-slate-700 sm:grid-cols-2">
+            {accreditation.body ? (
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Accrediting body</p>
+                <p className="mt-1 font-medium text-brand-900">{accreditation.body}</p>
+              </div>
+            ) : null}
+            {accreditation.notes ? (
+              <div className="sm:col-span-2">
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Notes</p>
+                <p className="mt-1 leading-relaxed text-slate-700">{accreditation.notes}</p>
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-slate-500">Accreditation details are not listed in Thuto yet. Confirm with the institution.</p>
+        )}
         <div className="mt-3">
           <CareersList
             careers={careers}

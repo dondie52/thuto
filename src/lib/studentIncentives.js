@@ -1,11 +1,16 @@
-/** @typedef {"accommodation" | "laptop" | "discount" | "bursary" | "other"} StudentIncentiveCategory */
+/** @typedef {"accommodation" | "transport" | "wifi" | "laptop" | "health" | "safety" | "sports" | "discount" | "bursary" | "other"} StudentIncentiveCategory */
 
 /** @typedef {{ category: StudentIncentiveCategory, label: string, detail?: string, sourceUrl?: string, sourceLabel?: string }} StudentIncentive */
 
 /** @type {Record<StudentIncentiveCategory, { label: string, icon: string }>} */
 export const STUDENT_INCENTIVE_CATEGORY_META = {
   accommodation: { label: "Accommodation", icon: "🏠" },
+  transport: { label: "Transport", icon: "🚌" },
+  wifi: { label: "WiFi & data", icon: "📶" },
   laptop: { label: "Devices", icon: "💻" },
+  health: { label: "Health support", icon: "🩺" },
+  safety: { label: "Safety & security", icon: "🛡️" },
+  sports: { label: "Sports & entertainment", icon: "🏟️" },
   discount: { label: "Discounts & payment", icon: "🏷️" },
   bursary: { label: "Bursaries & aid", icon: "🎓" },
   other: { label: "Other offers", icon: "✨" },

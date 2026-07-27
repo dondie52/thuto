@@ -15,6 +15,7 @@ import { marketCountryLabel } from "../../lib/marketCountry.js";
  *     linkKinds: Array<{ id: string, count: number }>,
  *     outboundClicks: number,
  *   },
+ *   profileCompleteness?: { completed: number, total: number, ratio: number },
  *   onOpenModule?: (id: string) => void,
  * }} props
  */
@@ -24,6 +25,7 @@ export default function PartnerInsightsDashboard({
   tier = "verified",
   newLeads = 0,
   summary,
+  profileCompleteness,
   onOpenModule,
 }) {
   const profileViews = summary.totals.institution_profile_view || 0;
@@ -31,6 +33,9 @@ export default function PartnerInsightsDashboard({
   const applyClicks = summary.totals.apply_click || 0;
   const outbound = summary.outboundClicks || 0;
   const topCountry = summary.topCountries[0];
+  const clarity = profileCompleteness?.total
+    ? `${profileCompleteness.completed}/${profileCompleteness.total} profile sections complete`
+    : "Complete your public profile for stronger student trust";
 
   return (
     <div className="space-y-6">
@@ -38,31 +43,32 @@ export default function PartnerInsightsDashboard({
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-teal-100/90">Institution analytics</p>
         <h2 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">{universityName}</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-teal-50/90">
-          First-party insights from student behaviour on Thuto — profile views, programme interest, viewer markets, and
-          outbound clicks to your portals. Data is scoped to your institution only.
+          A simple readout of how students discover your institution, which programmes attract attention, and whether they
+          continue to your official links.
         </p>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <HeroMetric label="Profile views" value={profileViews} hint="30 days" />
-          <HeroMetric label="Programme views" value={programmeViews} hint="30 days" />
-          <HeroMetric label="Apply / link clicks" value={applyClicks + outbound} hint="Outbound interest" />
+          <HeroMetric label="Institution profile views" value={profileViews} hint="Last 30 days" />
+          <HeroMetric label="Programme page views" value={programmeViews} hint="Last 30 days" />
+          <HeroMetric label="Portal clicks" value={applyClicks + outbound} hint="Students opened your official links" />
           <HeroMetric
             label="Top viewer market"
             value={topCountry ? marketCountryLabel(topCountry.id) : "—"}
-            hint={topCountry ? `${topCountry.count} engagements` : "Awaiting traffic"}
+            hint={topCountry ? `${topCountry.count} engagements` : "Traffic will appear here"}
           />
         </div>
         <div className="mt-4 flex flex-wrap gap-2 text-xs text-teal-100/90">
           <span className="rounded-full bg-white/10 px-3 py-1">{programmeCount} programmes listed</span>
           <span className="rounded-full bg-white/10 px-3 py-1 capitalize">{tier} partner</span>
           <span className="rounded-full bg-white/10 px-3 py-1">{newLeads} new leads</span>
+          <span className="rounded-full bg-white/10 px-3 py-1">{clarity}</span>
         </div>
       </section>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <ModuleCard
-          kicker="01 · Institution overview"
-          title="How students engage with us"
-          question="Where do we sit in the student journey on Thuto?"
+          kicker="01 · At a glance"
+          title="Student interest summary"
+          question="Are students viewing the profile, opening programme pages, and clicking through?"
           actionLabel="Open leads"
           onAction={onOpenModule ? () => onOpenModule("leads") : undefined}
         >
@@ -75,9 +81,9 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="02 · Pageviews per programme"
-          title="Which programmes draw interest"
-          question="What are our most viewed programmes right now?"
+          kicker="02 · Top demand"
+          title="Most viewed programmes"
+          question="These are the programmes students are opening most often."
         >
           <BarList
             rows={summary.topProgrammes.slice(0, 6).map((row) => ({
@@ -90,9 +96,9 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="03 · Viewer origins"
+          kicker="03 · Audience location"
           title="Where interest comes from"
-          question="Which countries should we prioritise for recruitment outreach?"
+          question="Use this to spot where your current awareness is strongest."
         >
           <BarList
             rows={summary.topCountries.slice(0, 6).map((row) => ({
@@ -106,9 +112,9 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="04 · Discipline interest"
+          kicker="04 · Discovery context"
           title="Fields students explore"
-          question="In which disciplines is demand strongest for our catalogue?"
+          question="This shows which academic areas are driving attention to your catalogue."
         >
           <BarList
             rows={summary.disciplines.slice(0, 6).map((row) => ({
@@ -122,9 +128,9 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="05 · Outbound links & portals"
-          title="Clicks to our website and apply portals"
-          question="Are students continuing to our official site after discovering us?"
+          kicker="05 · Conversion signals"
+          title="Clicks to your website and admissions links"
+          question="Students are moving from discovery on Thuto to your official channels."
           className="lg:col-span-2"
         >
           <BarList
