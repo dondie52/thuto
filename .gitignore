@@ -14,7 +14,9 @@ out
 .env
 .env.local
 *.local
-.cursor
+.cursor/*
+!.cursor/environment.json
+!.cursor/Dockerfile
 
 # Editor
 .vscode/*
