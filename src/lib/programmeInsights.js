@@ -90,7 +90,18 @@ export function getProgrammeInterests(programme) {
 }
 
 export function getProgrammeCareers(programme) {
-  return unique(programme.careerOpportunities?.length ? programme.careerOpportunities : programme.careers);
+  return unique([
+    ...(programme.careerOpportunities?.length ? programme.careerOpportunities : programme.careers || []),
+    ...(programme.jobOpportunities || []),
+  ]);
+}
+
+export function getProgrammeAccreditation(programme) {
+  return {
+    status: String(programme?.accreditationStatus || "").trim(),
+    body: String(programme?.accreditationBody || "").trim(),
+    notes: String(programme?.accreditationNotes || "").trim(),
+  };
 }
 
 export function getProgrammeRelatedSubjects(programme) {

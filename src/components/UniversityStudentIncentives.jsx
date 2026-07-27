@@ -19,7 +19,7 @@ export default function UniversityStudentIncentives({ university }) {
             Student incentives
           </h2>
           <p className="mt-1 text-sm leading-relaxed text-slate-600">
-            Offers for new students such as accommodation, devices, discounts, and bursaries — from official sources.
+            Offers for new students such as accommodation, transport, WiFi, devices, bursaries, and other support — from official sources.
           </p>
         </div>
         <p className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">

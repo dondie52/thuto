@@ -18,6 +18,16 @@ import UniversityStudentIncentives from "../components/UniversityStudentIncentiv
 import UniversityFacultyFeesSection from "../components/UniversityFacultyFeesSection.jsx";
 import InternationalApplicantsSection from "../components/InternationalApplicantsSection.jsx";
 import { resolveMarketCountry } from "../lib/marketCountry.js";
+import {
+  UNIVERSITY_SOCIAL_PLATFORMS,
+  getUniversityTypeLabel,
+  normalizeUniversityAccreditation,
+  normalizeUniversityCampusPhotos,
+  normalizeUniversityContacts,
+  normalizeUniversitySocialLinks,
+  normalizeUniversityStudentLife,
+} from "../lib/institutionProfile.js";
+import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
@@ -44,6 +54,10 @@ function isPdfResource(resource) {
   const format = String(resource?.format || "").toLowerCase();
   const url = String(resource?.url || resource?.href || "").toLowerCase();
   return format.includes("pdf") || url.includes(".pdf");
+}
+
+function socialLabel(platformKey) {
+  return UNIVERSITY_SOCIAL_PLATFORMS.find((item) => item.key === platformKey)?.label || platformKey;
 }
 
 function UniversityResourcesSection({ university, resources }) {
@@ -235,6 +249,12 @@ export default function UniversityDetail() {
   const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
   const resources = normalizeResources(university.resources);
   const websiteHref = safeExternalUrl(university.website);
+  const contacts = normalizeUniversityContacts(university);
+  const accreditation = normalizeUniversityAccreditation(university);
+  const socialLinks = normalizeUniversitySocialLinks(university);
+  const campusPhotos = normalizeUniversityCampusPhotos(university);
+  const studentLife = normalizeUniversityStudentLife(university);
+  const socialEntries = Object.entries(socialLinks).filter(([, href]) => safeExternalUrl(href));
 
   return (
     <article className="space-y-6">
@@ -251,28 +271,60 @@ export default function UniversityDetail() {
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="font-display text-xl font-bold text-brand-900 sm:text-2xl">{university.name}</h1>
               {isVerified ? <InstitutionVerificationBadge /> : null}
+              <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">{getUniversityTypeLabel(university)}</span>
+              {accreditation.status ? (
+                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+                  {accreditation.status}
+                </span>
+              ) : null}
             </div>
             <p className="mt-1 text-sm font-medium text-brand-600">{university.location}</p>
           </div>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-slate-700">{university.description}</p>
-        <dl className="mt-4 space-y-2 border-t border-brand-100 pt-4 text-sm text-slate-600">
-          {university.phone && (
+        <dl className="mt-4 grid gap-3 border-t border-brand-100 pt-4 text-sm text-slate-600 sm:grid-cols-2">
+          {contacts.address ? (
             <div>
-              <dt className="text-xs font-medium text-slate-500">Phone</dt>
+              <dt className="text-xs font-medium text-slate-500">Physical address</dt>
+              <dd>{contacts.address}</dd>
+            </div>
+          ) : null}
+          {contacts.generalPhone && (
+            <div>
+              <dt className="text-xs font-medium text-slate-500">General phone</dt>
               <dd>
-                <a href={`tel:${String(university.phone).replace(/\s/g, "")}`} className="text-brand-700 hover:underline">
-                  {university.phone}
+                <a href={`tel:${String(contacts.generalPhone).replace(/\s/g, "")}`} className="text-brand-700 hover:underline">
+                  {contacts.generalPhone}
                 </a>
               </dd>
             </div>
           )}
-          {university.email ? (
+          {contacts.admissionsPhone ? (
             <div>
-              <dt className="text-xs font-medium text-slate-500">Email</dt>
+              <dt className="text-xs font-medium text-slate-500">Admissions phone</dt>
               <dd>
-                <a href={`mailto:${university.email}`} className="text-brand-700 hover:underline">
-                  {university.email}
+                <a href={`tel:${String(contacts.admissionsPhone).replace(/\s/g, "")}`} className="text-brand-700 hover:underline">
+                  {contacts.admissionsPhone}
+                </a>
+              </dd>
+            </div>
+          ) : null}
+          {contacts.generalEmail ? (
+            <div>
+              <dt className="text-xs font-medium text-slate-500">General email</dt>
+              <dd>
+                <a href={`mailto:${contacts.generalEmail}`} className="text-brand-700 hover:underline">
+                  {contacts.generalEmail}
+                </a>
+              </dd>
+            </div>
+          ) : null}
+          {contacts.admissionsEmail ? (
+            <div>
+              <dt className="text-xs font-medium text-slate-500">Admissions email</dt>
+              <dd>
+                <a href={`mailto:${contacts.admissionsEmail}`} className="text-brand-700 hover:underline">
+                  {contacts.admissionsEmail}
                 </a>
               </dd>
             </div>
@@ -296,6 +348,23 @@ export default function UniversityDetail() {
             </div>
           )}
         </dl>
+        {socialEntries.length ? (
+          <div className="mt-4 flex flex-wrap gap-2 border-t border-brand-100 pt-4">
+            {socialEntries.map(([key, href]) => (
+              <ExternalSiteLink
+                key={key}
+                href={safeExternalUrl(href)}
+                variant="secondary"
+                institutionName={university.name}
+                institutionId={university.id}
+                linkKind="other"
+                useInterstitial
+              >
+                {socialLabel(key)}
+              </ExternalSiteLink>
+            ))}
+          </div>
+        ) : null}
       </header>
 
       <InstitutionCampaignBanner
@@ -318,6 +387,89 @@ export default function UniversityDetail() {
 
       {isVerified ? (
         <LeadInquiryForm institutionId={university.id} institutionName={university.name} />
+      ) : null}
+
+      {(accreditation.status || accreditation.body || accreditation.notes) ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Accreditation</h2>
+          <div className="mt-3 grid gap-3 text-sm text-slate-700 sm:grid-cols-2">
+            {accreditation.status ? (
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Status</p>
+                <p className="mt-1 font-medium text-brand-900">{accreditation.status}</p>
+              </div>
+            ) : null}
+            {accreditation.body ? (
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Accrediting body</p>
+                <p className="mt-1 font-medium text-brand-900">{accreditation.body}</p>
+              </div>
+            ) : null}
+          </div>
+          {accreditation.notes ? <p className="mt-3 text-sm leading-relaxed text-slate-700">{accreditation.notes}</p> : null}
+          {accreditation.sourceUrl ? (
+            <div className="mt-3">
+              <ExternalSiteLink
+                href={safeExternalUrl(accreditation.sourceUrl)}
+                variant="secondary"
+                institutionName={university.name}
+                institutionId={university.id}
+                linkKind="resource"
+                useInterstitial
+              >
+                View official accreditation source
+              </ExternalSiteLink>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
+      {campusPhotos.length ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="font-display text-lg font-semibold text-brand-900">Campus photos</h2>
+              <p className="mt-1 text-sm text-slate-600">A quick visual feel for the institution environment.</p>
+            </div>
+            <p className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+              {campusPhotos.length} {campusPhotos.length === 1 ? "photo" : "photos"}
+            </p>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {campusPhotos.slice(0, 6).map((photo, index) => (
+              <div key={`${photo}-${index}`} className="overflow-hidden rounded-2xl border border-brand-100 bg-brand-50/40">
+                <img
+                  src={resolveProgrammeThemeUrl(photo)}
+                  alt={`${university.name} campus ${index + 1}`}
+                  className="h-52 w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {(studentLife.accommodationStatus ||
+        studentLife.accommodationDetails ||
+        studentLife.healthDetails ||
+        studentLife.safetyDetails ||
+        studentLife.sportsDetails ||
+        studentLife.careerSupportDetails) ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Student life, support, and career outcomes</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <StudentLifeCard title="Accommodation" body={studentLife.accommodationDetails} kicker={studentLife.accommodationStatus} />
+            <StudentLifeCard title="Health support" body={studentLife.healthDetails} />
+            <StudentLifeCard title="Safety and security" body={studentLife.safetyDetails} />
+            <StudentLifeCard title="Sports and entertainment" body={studentLife.sportsDetails} />
+            <StudentLifeCard
+              title="Career support and jobs"
+              body={studentLife.careerSupportDetails}
+              className="sm:col-span-2"
+            />
+          </div>
+        </section>
       ) : null}
 
       <UniversityStudentIncentives university={university} />
@@ -411,5 +563,16 @@ export default function UniversityDetail() {
         for identification and navigation only — confirm all requirements on the official website before you apply.
       </p>
     </article>
+  );
+}
+
+function StudentLifeCard({ title, body, kicker, className = "" }) {
+  if (!body && !kicker) return null;
+  return (
+    <div className={["rounded-xl border border-brand-100 bg-brand-50/40 p-4", className].filter(Boolean).join(" ")}>
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+      {kicker ? <p className="mt-1 font-semibold text-brand-900">{kicker}</p> : null}
+      {body ? <p className="mt-2 text-sm leading-relaxed text-slate-700">{body}</p> : null}
+    </div>
   );
 }
