@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
@@ -11,6 +12,14 @@ process.env.VITE_SITE_URL = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
 
 export default defineConfig({
   base,
+  build: {
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL("./index.html", import.meta.url)),
+        cms: fileURLToPath(new URL("./cms/index.html", import.meta.url)),
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({

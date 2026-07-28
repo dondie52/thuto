@@ -88,6 +88,7 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 - **vite-plugin-pwa**: manifest, icons, service worker, `StaleWhileRevalidate` for `/data/*` JSON (`vite.config.js`).
 - **Global Open Graph / Twitter** tags and default `<title>` in `index.html`; **per-route titles** via `useDocumentTitle` on pages (deep links still get the **global** OG card unless prerender/server meta is added later — see `thuto_roadmap.md`).
+- **Institution CMS**: partner staff now use a **separate frontend** served from **`/cms/`** (same repo, shared Supabase/backend, distinct shell and navigation from the student PWA). Legacy `/partner` links hand off to the CMS.
 
 ---
 
