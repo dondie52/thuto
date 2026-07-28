@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
+import { buildCmsUrl } from "../lib/cmsUrl.js";
 import { needsOnboarding } from "../lib/onboarding.js";
 import { isInstitutionPartnerUser } from "../lib/partner.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
@@ -18,7 +19,7 @@ const EXEMPT_PREFIXES = [
 
 /**
  * Redirects signed-in users without a username to onboarding.
- * Institution partner users skip student onboarding and are sent to `/partner`
+ * Institution partner users skip student onboarding and are sent to the CMS
  * when they land on the default student home.
  */
 export default function OnboardingRedirect() {
@@ -54,7 +55,7 @@ export default function OnboardingRedirect() {
 
     if (isInstitutionUser) {
       if (path === "/app" || path === "/onboarding") {
-        navigate("/partner", { replace: true });
+        window.location.replace(buildCmsUrl("/partner"));
       }
       return;
     }

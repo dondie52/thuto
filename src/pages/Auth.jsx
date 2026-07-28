@@ -5,6 +5,7 @@ import { useAuth } from "../lib/auth.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { needsOnboarding } from "../lib/onboarding.js";
 import { isInstitutionPartnerUser, resolvePostAuthPath } from "../lib/partner.js";
+import { buildCmsUrl, normalizeCmsPath } from "../lib/cmsUrl.js";
 import { safeInternalPath } from "../lib/urlSafety.js";
 
 function cleanMode(value) {
@@ -41,10 +42,16 @@ export default function Auth() {
     (async () => {
       const institutionUser = await isInstitutionPartnerUser();
       if (cancelled) return;
-      const destination = resolvePostAuthPath(requestedNext, { isInstitutionUser: institutionUser });
+      const destination = institutionUser
+        ? normalizeCmsPath(requestedNext)
+        : resolvePostAuthPath(requestedNext, { isInstitutionUser: institutionUser });
       // Institution staff skip student onboarding and go straight to the partner portal.
       if (!institutionUser && needsOnboarding(profile)) {
         navigate(`/onboarding?next=${encodeURIComponent(destination)}`, { replace: true });
+        return;
+      }
+      if (institutionUser) {
+        window.location.replace(buildCmsUrl(destination));
         return;
       }
       navigate(destination, { replace: true });

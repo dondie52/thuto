@@ -8,9 +8,11 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:cms": "vite --open /cms/",
     "video": "remotion studio src/Root.tsx",
     "render:video": "remotion render src/Root.tsx ThutoBUC out/thuto-buc.mp4",
     "build": "vite build",
+    "build:cms": "vite build",
     "postbuild": "node scripts/copy-spa-404.mjs && node scripts/generate-seo-assets.mjs",
     "generate-seo": "node scripts/generate-seo-assets.mjs",
     "generate-brand-icons": "node scripts/generate-brand-icons.mjs",
