@@ -12,10 +12,16 @@ export function normalizeCmsPath(path = "") {
   if (!pathname || pathname === "/" || pathname === "/app" || pathname === "/onboarding") {
     return `/cms/${suffix}`;
   }
-  if (pathname === "/partner") return `/cms/${suffix}`;
-  if (pathname.startsWith("/partner/")) return `/cms/#/${pathname.slice("/partner/".length)}${suffix}`;
-  if (pathname === "/cms" || pathname === "/cms/") return `/cms/${suffix}`;
-  if (pathname.startsWith("/cms/")) return pathname === "/cms/" ? `/cms/${suffix}` : `/cms/#/${pathname.slice("/cms/".length)}${suffix}`;
+  if (pathname === "/partner" || pathname === "/cms" || pathname === "/cms/") {
+    return `/cms/${suffix}`;
+  }
+  if (pathname.startsWith("/partner/")) {
+    return `/cms/#/${pathname.slice("/partner/".length)}${suffix}`;
+  }
+  if (pathname.startsWith("/cms/")) {
+    const rest = pathname.slice("/cms/".length);
+    return rest ? `/cms/#/${rest}${suffix}` : `/cms/${suffix}`;
+  }
   return `/cms/${suffix}`;
 }
 

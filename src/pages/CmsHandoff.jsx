@@ -2,7 +2,12 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { buildCmsUrl } from "../lib/cmsUrl.js";
 
-export default function PartnerRedirect() {
+/**
+ * Hard handoff into the standalone Institution Dashboard frontend.
+ * Used when the student SPA still receives /partner or /cms navigations
+ * (for example from a cached service worker before denylist updates).
+ */
+export default function CmsHandoff() {
   const location = useLocation();
 
   useEffect(() => {
@@ -16,8 +21,14 @@ export default function PartnerRedirect() {
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Institution Dashboard</p>
         <h1 className="mt-2 font-display text-2xl font-semibold text-brand-900">Opening the CMS</h1>
         <p className="mt-3 text-sm leading-relaxed text-slate-600">
-          Institution staff use the standalone dashboard, so Thuto is redirecting you to the separate CMS frontend now.
+          Institution staff use the standalone dashboard. Thuto is redirecting you out of the student app now.
         </p>
+        <a
+          href={buildCmsUrl(location.pathname)}
+          className="mt-5 inline-flex rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+        >
+          Continue to CMS
+        </a>
       </div>
     </div>
   );

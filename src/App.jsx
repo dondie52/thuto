@@ -39,7 +39,7 @@ const Support = lazy(() => import("./pages/Support.jsx"));
 const Upgrade = lazy(() => import("./pages/Upgrade.jsx"));
 const UpgradeSuccess = lazy(() => import("./pages/UpgradeSuccess.jsx"));
 const UpgradeCancel = lazy(() => import("./pages/UpgradeCancel.jsx"));
-const PartnerRedirect = lazy(() => import("./pages/PartnerRedirect.jsx"));
+const CmsHandoff = lazy(() => import("./pages/CmsHandoff.jsx"));
 const Partners = lazy(() => import("./pages/Partners.jsx"));
 const ExternalRedirect = lazy(() => import("./pages/ExternalRedirect.jsx"));
 const AdminThutoCenter = lazy(() => import("./pages/AdminThutoCenter.jsx"));
@@ -114,8 +114,10 @@ export default function App() {
             <Route path="/upgrade" element={<Upgrade />} />
             <Route path="/upgrade/success" element={<UpgradeSuccess />} />
             <Route path="/upgrade/cancel" element={<UpgradeCancel />} />
-            <Route path="/partner" element={<PartnerRedirect />} />
-            <Route path="/partner/*" element={<PartnerRedirect />} />
+            <Route path="/partner" element={<CmsHandoff />} />
+            <Route path="/partner/*" element={<CmsHandoff />} />
+            <Route path="/cms" element={<CmsHandoff />} />
+            <Route path="/cms/*" element={<CmsHandoff />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/go" element={<ExternalRedirect />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
