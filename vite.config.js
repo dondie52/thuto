@@ -92,7 +92,8 @@ export default defineConfig({
           },
         ],
         navigateFallback: "index.html",
-        navigateFallbackDenylist: [/\/data\//],
+        // Keep the student SPA fallback from swallowing the separate CMS frontend.
+        navigateFallbackDenylist: [/\/data\//, /\/cms(?:\/|$)/],
       },
     }),
   ],
