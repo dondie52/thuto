@@ -31,6 +31,7 @@ import {
 } from "../lib/institutionProfile.js";
 import { STUDENT_INCENTIVE_CATEGORY_META } from "../lib/studentIncentives.js";
 import { buildAppUrl } from "../lib/cmsUrl.js";
+import { marketCountryLabel } from "../lib/marketCountry.js";
 
 const NAV_ITEMS = [
   { to: "/", end: true, label: "Home", icon: "home" },
@@ -99,17 +100,83 @@ function iconGlyph(name) {
     analytics: "▥",
     feed: "✦",
     faq: "?",
+    eye: "◉",
+    apps: "▣",
+    leads: "+",
+    reviews: "★",
   };
   return glyphs[name] || "•";
 }
 
-function buildMockDashboard(university, summary, institutionProgrammes, leads, analyticsRows) {
+function daysAgoKey(daysBack) {
+  const day = new Date();
+  day.setHours(0, 0, 0, 0);
+  day.setDate(day.getDate() - daysBack);
+  return day.toISOString().slice(0, 10);
+}
+
+function sumEventInRange(rows, eventName, startKey, endKey) {
+  let total = 0;
+  for (const row of rows || []) {
+    if (row.event_name !== eventName) continue;
+    if (row.event_date < startKey || row.event_date > endKey) continue;
+    total += Number(row.count) || 0;
+  }
+  return total;
+}
+
+function trendLabel(current, previous) {
+  if (!current && !previous) return "No change";
+  if (!previous && current) return "New activity";
+  if (!current && previous) return "↓ 100% vs prior 7 days";
+  const delta = ((current - previous) / previous) * 100;
+  const rounded = Math.abs(delta).toFixed(1);
+  if (delta > 0) return `↑ ${rounded}% vs prior 7 days`;
+  if (delta < 0) return `↓ ${rounded}% vs prior 7 days`;
+  return "No change vs prior 7 days";
+}
+
+function countryDisplayName(id) {
+  const code = String(id || "").trim().toLowerCase();
+  if (!code || code === "unknown") return "Unknown";
+  const fromMarket = marketCountryLabel(code);
+  if (fromMarket && fromMarket !== code) return fromMarket;
+  return code.replaceAll("-", " ").replaceAll("_", " ");
+}
+
+function firstNameFromProfile(profile, user) {
+  const full = profile?.full_name?.trim() || user?.user_metadata?.full_name || "";
+  if (full) return full.split(/\s+/)[0];
+  const email = user?.email || "";
+  return email ? email.split("@")[0] : "there";
+}
+
+function buildLiveDashboard(university, summary, institutionProgrammes, leads, analyticsRows) {
   const programmeViews = summary.totals.programme_view || 0;
   const profileViews = summary.totals.institution_profile_view || 0;
   const applyClicks = summary.totals.apply_click || 0;
   const outboundClicks = summary.outboundClicks || 0;
   const totalLeads = leads.length;
   const newLeads = leads.filter((lead) => lead.status === "new").length;
+
+  const thisWeekStart = daysAgoKey(6);
+  const thisWeekEnd = daysAgoKey(0);
+  const priorWeekStart = daysAgoKey(13);
+  const priorWeekEnd = daysAgoKey(7);
+
+  const programmeViewsWeek = sumEventInRange(analyticsRows, "programme_view", thisWeekStart, thisWeekEnd);
+  const programmeViewsPrior = sumEventInRange(analyticsRows, "programme_view", priorWeekStart, priorWeekEnd);
+  const profileViewsWeek = sumEventInRange(analyticsRows, "institution_profile_view", thisWeekStart, thisWeekEnd);
+  const profileViewsPrior = sumEventInRange(analyticsRows, "institution_profile_view", priorWeekStart, priorWeekEnd);
+  const applyClicksWeek = sumEventInRange(analyticsRows, "apply_click", thisWeekStart, thisWeekEnd);
+  const applyClicksPrior = sumEventInRange(analyticsRows, "apply_click", priorWeekStart, priorWeekEnd);
+
+  const leadsThisWeek = leads.filter((lead) => lead.created_at && lead.created_at.slice(0, 10) >= thisWeekStart).length;
+  const leadsPriorWeek = leads.filter((lead) => {
+    const key = lead.created_at?.slice(0, 10);
+    return key && key >= priorWeekStart && key <= priorWeekEnd;
+  }).length;
+
   const chartByDate = new Map();
   for (const row of analyticsRows || []) {
     if (row.event_name !== "programme_view") continue;
@@ -117,20 +184,31 @@ function buildMockDashboard(university, summary, institutionProgrammes, leads, a
   }
   const weekSeries = Array.from({ length: 7 }, (_, index) => {
     const day = new Date();
+    day.setHours(0, 0, 0, 0);
     day.setDate(day.getDate() - (6 - index));
     const key = day.toISOString().slice(0, 10);
-    const fallback = 260 + index * 54;
     return {
       key,
-      label: day.toLocaleDateString(undefined, { month: "short", day: "numeric" }),
-      value: chartByDate.get(key) || fallback,
+      label: day.toLocaleDateString(undefined, { weekday: "short", day: "numeric" }),
+      value: chartByDate.get(key) || 0,
     };
   });
   const maxSeriesValue = Math.max(...weekSeries.map((row) => row.value), 1);
-  const topProgrammes =
-    summary.topProgrammes.slice(0, 5).map((row) => ({ label: row.label || row.id, count: row.count })) ||
-    [];
-  const topCountries = summary.topCountries.slice(0, 6);
+  const hasWeekViews = weekSeries.some((row) => row.value > 0);
+
+  const topProgrammes = summary.topProgrammes.slice(0, 5).map((row) => ({
+    label: row.label || row.id,
+    count: row.count,
+  }));
+  const countryTotal = summary.topCountries.reduce((sum, row) => sum + row.count, 0) || 0;
+  const topCountries = summary.topCountries.slice(0, 6).map((row) => ({
+    id: row.id,
+    label: countryDisplayName(row.id),
+    count: row.count,
+    share: countryTotal ? Math.round((row.count / countryTotal) * 1000) / 10 : 0,
+  }));
+
+  const now = Date.now();
   const deadlines = [
     university?.applicationClose
       ? {
@@ -144,103 +222,130 @@ function buildMockDashboard(university, summary, institutionProgrammes, leads, a
       .map((programme) => ({
         title: programme.name,
         date: programme.applicationDeadline,
-        detail: "Programme deadline",
+        detail: "Programme application deadline",
       })),
   ]
     .filter(Boolean)
+    .filter((item) => {
+      const ts = new Date(item.date).getTime();
+      return !Number.isNaN(ts) && ts >= now - 1000 * 60 * 60 * 24;
+    })
     .sort((a, b) => new Date(a.date) - new Date(b.date))
-    .slice(0, 4);
+    .slice(0, 5)
+    .map((item) => {
+      const daysLeft = Math.ceil((new Date(item.date).getTime() - now) / (1000 * 60 * 60 * 24));
+      return { ...item, daysLeft };
+    });
 
-  const recentActivity = [
-    ...leads.slice(0, 3).map((lead) => ({
-      title: "New lead received",
-      detail: lead.programme_id ? `Interest captured for ${lead.programme_id}` : "A student submitted an enquiry",
-      when: lead.created_at,
-    })),
-    {
-      title: "Programme content refreshed",
-      detail: "Keep flagship programmes current before the next intake window.",
-      when: new Date().toISOString(),
-    },
-    {
-      title: "Staff directory reviewed",
-      detail: "Students can contact verified admissions staff directly.",
-      when: new Date(Date.now() - 1000 * 60 * 52).toISOString(),
-    },
-  ].slice(0, 5);
-
-  const latestReviews = [
-    {
-      name: "Student review sample",
-      quote: "Demo review data will be replaced when the reviews module goes live.",
-      rating: 5,
-      when: "Demo",
-    },
-    {
-      name: "Parent feedback sample",
-      quote: "Use this area to spot themes in accommodation, academics, and support.",
-      rating: 4,
-      when: "Demo",
-    },
-  ];
+  const programmeNameById = new Map(institutionProgrammes.map((row) => [row.id, row.name || row.id]));
+  const recentActivity = leads.slice(0, 8).map((lead) => ({
+    title: lead.status === "new" ? "New student lead" : `Lead ${lead.status}`,
+    detail: lead.programme_id
+      ? `${lead.lead_type || "inquiry"} for ${programmeNameById.get(lead.programme_id) || lead.programme_id}`
+      : `${lead.lead_type || "inquiry"} submitted for your institution`,
+    when: lead.created_at,
+  }));
 
   const metrics = [
-    { label: "Programme views", value: programmeViews || 43021, trend: "+12.5%", live: Boolean(programmeViews) },
-    { label: "Profile views", value: profileViews || 1245, trend: "+8.2%", live: Boolean(profileViews) },
-    { label: "Leads generated", value: totalLeads || 562, trend: `${newLeads} new`, live: Boolean(totalLeads) },
-    { label: "Applications started", value: applyClicks || 317, trend: "+5.1%", live: Boolean(applyClicks) },
-    { label: "Feed engagement", value: outboundClicks || 188, trend: "Demo", live: Boolean(outboundClicks) },
-    { label: "New reviews", value: 8, trend: "Demo", live: false },
-    { label: "New questions", value: 17, trend: "Demo", live: false },
+    {
+      label: "Programme views",
+      value: programmeViews,
+      trend: trendLabel(programmeViewsWeek, programmeViewsPrior),
+      tone: programmeViewsWeek >= programmeViewsPrior ? "up" : "down",
+      icon: "eye",
+    },
+    {
+      label: "Applications",
+      value: applyClicks,
+      trend: trendLabel(applyClicksWeek, applyClicksPrior),
+      tone: applyClicksWeek >= applyClicksPrior ? "up" : "down",
+      icon: "apps",
+    },
+    {
+      label: "New leads",
+      value: newLeads,
+      trend: trendLabel(leadsThisWeek, leadsPriorWeek),
+      tone: leadsThisWeek >= leadsPriorWeek ? "up" : "down",
+      hint: `${totalLeads} total captured`,
+      icon: "leads",
+    },
+    {
+      label: "Unanswered questions",
+      value: 0,
+      trend: "FAQ module not live yet",
+      tone: "neutral",
+      icon: "faq",
+    },
+    {
+      label: "Pending reviews",
+      value: 0,
+      trend: "Reviews module not live yet",
+      tone: "neutral",
+      icon: "reviews",
+    },
   ];
 
-  const aiInsights = [
-    topProgrammes[0]
-      ? `${topProgrammes[0].label} is drawing the most attention in the dashboard right now.`
-      : "Top programme insight will appear once live view data is available.",
-    deadlines[0]
-      ? `${deadlines[0].title} is the nearest application deadline to highlight in student messaging.`
-      : "No imminent deadlines are configured yet, so students may miss urgency cues.",
-    totalLeads
-      ? `${newLeads} fresh leads still need follow-up from your admissions team.`
-      : "Lead capture is enabled, but the dashboard is still showing mostly demo funnel data.",
-  ];
+  const aiInsights = [];
+  if (topProgrammes[0]) {
+    aiInsights.push({
+      title: "Top programme interest",
+      body: `${topProgrammes[0].label} currently leads with ${formatCount(topProgrammes[0].count)} programme page views.`,
+    });
+  }
+  if (newLeads > 0) {
+    aiInsights.push({
+      title: "Lead follow-up",
+      body: `${formatCount(newLeads)} new leads are waiting in your inbox.`,
+    });
+  }
+  if (deadlines[0]) {
+    aiInsights.push({
+      title: "Nearest deadline",
+      body: `${deadlines[0].title} is due ${formatShortDate(deadlines[0].date)} (${deadlines[0].daysLeft} day${deadlines[0].daysLeft === 1 ? "" : "s"} left).`,
+    });
+  }
+  if (profileViews === 0 && programmeViews === 0) {
+    aiInsights.push({
+      title: "Waiting on student traffic",
+      body: "No profile or programme views have been recorded yet for this institution in Supabase analytics.",
+    });
+  }
+
+  const rangeLabel = `${new Date(thisWeekStart).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  })} – ${new Date(thisWeekEnd).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`;
 
   return {
     metrics,
     weekSeries,
     maxSeriesValue,
-    topProgrammes: topProgrammes.length
-      ? topProgrammes
-      : [
-          { label: "BSc Computer Science", count: 7842 },
-          { label: "BSc Nursing", count: 4823 },
-          { label: "LLB", count: 3210 },
-        ],
-    topCountries: topCountries.length
-      ? topCountries
-      : [
-          { id: "botswana", count: 286 },
-          { id: "south-africa", count: 124 },
-          { id: "kenya", count: 96 },
-          { id: "ghana", count: 72 },
-        ],
+    hasWeekViews,
+    topProgrammes,
+    topCountries,
+    countryTotal,
     deadlines,
     recentActivity,
-    latestReviews,
+    profileViews,
+    programmeViews,
+    applyClicks,
+    outboundClicks,
+    totalLeads,
+    newLeads,
     aiInsights,
+    rangeLabel,
     quickActions: [
-      { label: "Add Programme", to: "/programmes" },
-      { label: "Create Feed Post", to: "/feed" },
-      { label: "Invite Staff", to: "/staff" },
-      { label: "Edit Institution Profile", to: "/profile" },
-      { label: "View Analytics", to: "/analytics" },
+      { label: "Add New Programme", detail: "Publish another course", to: "/programmes", icon: "programmes" },
+      { label: "Create Feed Post", detail: "Reach students on Feed", to: "/feed", icon: "feed" },
+      { label: "Answer Question", detail: "Open FAQ workspace", to: "/faq", icon: "faq" },
+      { label: "Invite Staff", detail: "Grow your admin team", to: "/staff", icon: "staff" },
+      { label: "View Analytics", detail: "Deep-dive performance", to: "/analytics", icon: "analytics" },
     ],
   };
 }
 
 function usePartnerPortalData() {
-  const { user, isLoading, isSuperuser, logout } = useAuth();
+  const { user, profile, isLoading, isSuperuser, logout } = useAuth();
   const [memberships, setMemberships] = useState([]);
   const [selectedInstitutionId, setSelectedInstitutionId] = useState("");
   const [partner, setPartner] = useState(null);
@@ -310,7 +415,7 @@ function usePartnerPortalData() {
     if (!institutionId) return;
     const [partnerRow, analyticsRows, leadRows, universityData] = await Promise.all([
       fetchInstitutionPartner(institutionId),
-      fetchInstitutionAnalytics(institutionId, 30),
+      fetchInstitutionAnalytics(institutionId, 14),
       fetchInstitutionLeads(institutionId),
       fetchUniversities(),
     ]);
@@ -394,11 +499,15 @@ function usePartnerPortalData() {
   );
 
   const dashboard = useMemo(
-    () => buildMockDashboard(university, analyticsSummary, institutionProgrammes, leads, analytics),
+    () => buildLiveDashboard(university, analyticsSummary, institutionProgrammes, leads, analytics),
     [analytics, analyticsSummary, institutionProgrammes, leads, university],
   );
 
   const hasAccess = memberships.length > 0 || isSuperuser;
+  const displayFirstName = firstNameFromProfile(profile, user);
+  const roleLabel =
+    memberships.find((item) => item.institution_id === activeInstitutionId)?.role ||
+    (isSuperuser ? "super admin" : "editor");
 
   async function handleSaveProfile() {
     setError("");
@@ -559,6 +668,9 @@ function usePartnerPortalData() {
 
   return {
     user,
+    profile,
+    displayFirstName,
+    roleLabel,
     isLoading,
     logout,
     memberships,
@@ -676,9 +788,7 @@ function CmsShell() {
 
           <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
             <p className="text-sm font-semibold text-white">{portal.university?.name || "Institution account"}</p>
-            <p className="mt-1 text-xs uppercase tracking-[0.22em] text-white/60">
-              {portal.memberships.find((item) => item.institution_id === portal.activeInstitutionId)?.role || "editor"}
-            </p>
+            <p className="mt-1 text-xs uppercase tracking-[0.22em] text-white/60">{portal.roleLabel}</p>
             {portal.memberships.length > 1 ? (
               <select
                 value={portal.activeInstitutionId}
@@ -715,8 +825,11 @@ function CmsShell() {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 md:block">
+              <div className="hidden min-w-[280px] rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 lg:block">
                 Search programmes, leads, or pages
+                <span className="ml-3 rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] font-semibold text-slate-400">
+                  ⌘K
+                </span>
               </div>
               <button
                 type="button"
@@ -725,6 +838,10 @@ function CmsShell() {
               >
                 Settings
               </button>
+              <div className="hidden text-right sm:block">
+                <p className="text-sm font-semibold text-slate-900">{portal.profile?.full_name || portal.displayFirstName}</p>
+                <p className="text-xs capitalize text-slate-500">{portal.roleLabel}</p>
+              </div>
               <button
                 type="button"
                 onClick={async () => {
@@ -795,150 +912,175 @@ function HomePage() {
   const portal = usePortal();
   const navigate = useNavigate();
   useDocumentTitle("Home | Institution Dashboard");
+  const maxProgrammeCount = portal.dashboard.topProgrammes[0]?.count || 1;
 
   return (
     <div className="space-y-6">
-      <section className="rounded-[2rem] bg-gradient-to-br from-brand-950 via-brand-900 to-emerald-900 p-6 text-white shadow-card">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-100/90">Home dashboard</p>
-            <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight">
-              Welcome back, {portal.university?.shortName || portal.university?.name || "team"}
-            </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-emerald-50/90">
-              Today’s overview blends live views, leads, and deadline data with demo dashboard cards for features that are still
-              being rolled out.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-emerald-50">
-            Showing demo metrics where live data is unavailable
-          </div>
+      <section className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="font-display text-3xl font-semibold tracking-tight text-slate-900">
+            Welcome back, {portal.displayFirstName}!
+          </h2>
+          <p className="mt-2 text-sm text-slate-600">Here’s what’s happening with your institution today.</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm">
+          {portal.dashboard.rangeLabel}
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {portal.dashboard.metrics.map((metric) => (
           <article key={metric.label} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
-            <p className="text-sm font-medium text-slate-500">{metric.label}</p>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-sm font-medium text-slate-500">{metric.label}</p>
+              <span className="grid h-9 w-9 place-items-center rounded-2xl bg-brand-50 text-sm text-brand-800">
+                {iconGlyph(metric.icon)}
+              </span>
+            </div>
             <p className="mt-3 font-display text-3xl font-semibold text-slate-900">{formatCount(metric.value)}</p>
-            <p className={`mt-2 text-sm font-semibold ${metric.live ? "text-emerald-600" : "text-amber-600"}`}>{metric.trend}</p>
+            <p
+              className={[
+                "mt-2 text-sm font-semibold",
+                metric.tone === "up" ? "text-emerald-600" : "",
+                metric.tone === "down" ? "text-rose-600" : "",
+                metric.tone === "neutral" ? "text-slate-500" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              {metric.trend}
+            </p>
+            {metric.hint ? <p className="mt-1 text-xs text-slate-400">{metric.hint}</p> : null}
           </article>
         ))}
       </section>
 
-      <section className="grid gap-5 xl:grid-cols-[1.3fr_1fr_1fr]">
+      <section className="grid gap-5 xl:grid-cols-3">
         <Panel title="Recent activity" action="View leads" onAction={() => navigate("/leads")}>
-          <div className="space-y-3">
-            {portal.dashboard.recentActivity.map((item, index) => (
-              <div key={`${item.title}-${index}`} className="flex gap-3 rounded-2xl bg-slate-50 px-4 py-3">
-                <span className="mt-0.5 h-9 w-9 shrink-0 rounded-2xl bg-brand-50 text-center text-lg leading-9 text-brand-700">
-                  •
-                </span>
-                <div className="min-w-0">
-                  <p className="font-semibold text-slate-900">{item.title}</p>
-                  <p className="text-sm text-slate-600">{item.detail}</p>
-                  <p className="mt-1 text-xs text-slate-400">{new Date(item.when).toLocaleString()}</p>
+          {portal.dashboard.recentActivity.length ? (
+            <div className="space-y-3">
+              {portal.dashboard.recentActivity.map((item, index) => (
+                <div key={`${item.title}-${index}`} className="flex gap-3 rounded-2xl bg-slate-50 px-4 py-3">
+                  <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-700">
+                    •
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-slate-900">{item.title}</p>
+                    <p className="text-sm text-slate-600">{item.detail}</p>
+                    <p className="mt-1 text-xs text-slate-400">{new Date(item.when).toLocaleString()}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500">No lead activity yet. New student enquiries will appear here from Supabase.</p>
+          )}
         </Panel>
 
         <Panel title="Deadlines approaching">
-          <div className="space-y-3">
-            {portal.dashboard.deadlines.length ? (
-              portal.dashboard.deadlines.map((deadline) => (
+          {portal.dashboard.deadlines.length ? (
+            <div className="space-y-3">
+              {portal.dashboard.deadlines.map((deadline) => (
                 <div key={`${deadline.title}-${deadline.date}`} className="flex gap-3 rounded-2xl bg-slate-50 px-4 py-3">
                   <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-50 text-center">
                     <div>
-                      <p className="text-xs font-semibold uppercase text-brand-700">{new Date(deadline.date).toLocaleDateString(undefined, { month: "short" })}</p>
-                      <p className="text-lg font-semibold text-brand-900">{new Date(deadline.date).getDate()}</p>
+                      <p className="text-[10px] font-semibold uppercase text-brand-700">
+                        {new Date(deadline.date).toLocaleDateString(undefined, { month: "short" })}
+                      </p>
+                      <p className="text-lg font-semibold leading-none text-brand-900">{new Date(deadline.date).getDate()}</p>
                     </div>
                   </div>
                   <div>
                     <p className="font-semibold text-slate-900">{deadline.title}</p>
                     <p className="text-sm text-slate-600">{deadline.detail}</p>
-                    <p className="mt-1 text-xs text-amber-600">Due {formatShortDate(deadline.date)}</p>
+                    <p className="mt-1 text-xs font-semibold text-amber-600">
+                      {deadline.daysLeft < 0 ? "Passed" : `${deadline.daysLeft} day${deadline.daysLeft === 1 ? "" : "s"} left`}
+                    </p>
                   </div>
                 </div>
-              ))
-            ) : (
-              <p className="text-sm text-slate-500">No active deadlines yet. Add them in Profile or Programmes.</p>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500">No upcoming deadlines in your published profile or programmes.</p>
+          )}
         </Panel>
 
-        <Panel title="Latest reviews">
-          <div className="space-y-3">
-            {portal.dashboard.latestReviews.map((review) => (
-              <div key={`${review.name}-${review.when}`} className="rounded-2xl bg-slate-50 px-4 py-3">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-semibold text-slate-900">{review.name}</p>
-                  <p className="text-sm text-amber-500">{"★".repeat(review.rating)}</p>
-                </div>
-                <p className="mt-2 text-sm text-slate-600">{review.quote}</p>
-                <p className="mt-2 text-xs text-slate-400">{review.when}</p>
-              </div>
-            ))}
-          </div>
+        <Panel title="Latest reviews" action="Open FAQ" onAction={() => navigate("/faq")}>
+          <p className="text-sm text-slate-500">
+            Reviews are not stored yet. Once the FAQ & Reviews backend is live, student ratings will appear here from Supabase.
+          </p>
         </Panel>
       </section>
 
-      <section className="grid gap-5 xl:grid-cols-[1.3fr_1fr_1fr]">
-        <Panel title="Programme views this week" action="View analytics" onAction={() => navigate("/analytics")}>
-          <div className="flex h-60 items-end gap-3">
-            {portal.dashboard.weekSeries.map((point) => (
-              <div key={point.key} className="flex min-w-0 flex-1 flex-col items-center gap-2">
-                <div className="flex h-44 w-full items-end">
-                  <div
-                    className="w-full rounded-t-2xl bg-gradient-to-t from-brand-700 to-brand-400"
-                    style={{ height: `${(point.value / portal.dashboard.maxSeriesValue) * 100}%` }}
-                    title={`${point.label}: ${formatCount(point.value)}`}
-                  />
+      <section className="grid gap-5 xl:grid-cols-3">
+        <Panel title="Programme views (this week)" action="View analytics" onAction={() => navigate("/analytics")}>
+          {portal.dashboard.hasWeekViews ? (
+            <div className="flex h-60 items-end gap-3">
+              {portal.dashboard.weekSeries.map((point) => (
+                <div key={point.key} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+                  <div className="flex h-44 w-full items-end">
+                    <div
+                      className="w-full rounded-t-2xl bg-gradient-to-t from-brand-700 to-brand-400"
+                      style={{ height: `${Math.max(4, (point.value / portal.dashboard.maxSeriesValue) * 100)}%` }}
+                      title={`${point.label}: ${formatCount(point.value)}`}
+                    />
+                  </div>
+                  <p className="text-center text-xs text-slate-500">{point.label}</p>
                 </div>
-                <p className="text-center text-xs text-slate-500">{point.label}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500">No programme views recorded in the last 7 days.</p>
+          )}
         </Panel>
 
         <Panel title="Top programmes">
-          <div className="space-y-3">
-            {portal.dashboard.topProgrammes.map((programme) => (
-              <div key={programme.label}>
-                <div className="mb-1 flex items-center justify-between gap-3 text-sm">
-                  <span className="font-medium text-slate-800">{programme.label}</span>
-                  <span className="text-slate-500">{formatCount(programme.count)}</span>
+          {portal.dashboard.topProgrammes.length ? (
+            <div className="space-y-3">
+              {portal.dashboard.topProgrammes.map((programme) => (
+                <div key={programme.label}>
+                  <div className="mb-1 flex items-center justify-between gap-3 text-sm">
+                    <span className="font-medium text-slate-800">{programme.label}</span>
+                    <span className="text-slate-500">{formatCount(programme.count)}</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-slate-100">
+                    <div
+                      className="h-2 rounded-full bg-brand-700"
+                      style={{ width: `${Math.max(8, (programme.count / maxProgrammeCount) * 100)}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 rounded-full bg-slate-100">
-                  <div
-                    className="h-2 rounded-full bg-brand-700"
-                    style={{ width: `${Math.max(16, (programme.count / portal.dashboard.topProgrammes[0].count) * 100)}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500">No programme view rankings yet for this institution.</p>
+          )}
         </Panel>
 
         <Panel title="Students by country">
-          <div className="space-y-3">
-            <div className="rounded-3xl bg-gradient-to-br from-emerald-50 to-brand-50 p-6 text-center text-sm text-slate-500">
-              Africa map placeholder
-            </div>
-            {portal.dashboard.topCountries.map((country) => (
-              <div key={country.id} className="flex items-center justify-between gap-3 text-sm">
-                <span className="capitalize text-slate-700">{country.id.replaceAll("-", " ")}</span>
-                <span className="font-semibold text-slate-900">{formatCount(country.count)}</span>
+          {portal.dashboard.topCountries.length ? (
+            <div className="space-y-3">
+              <div className="rounded-3xl bg-gradient-to-br from-emerald-50 to-brand-50 px-4 py-5 text-sm text-slate-600">
+                Live viewer origins from Supabase analytics ({formatCount(portal.dashboard.countryTotal)} engagements).
               </div>
-            ))}
-          </div>
+              {portal.dashboard.topCountries.map((country) => (
+                <div key={country.id} className="flex items-center justify-between gap-3 text-sm">
+                  <span className="text-slate-700">{country.label}</span>
+                  <span className="font-semibold text-slate-900">
+                    {country.share}% · {formatCount(country.count)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500">No country breakdown yet. Origins appear after students view your pages.</p>
+          )}
         </Panel>
       </section>
 
-      <section className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
+      <section className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
         <Panel title="Quick actions">
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             {portal.dashboard.quickActions.map((action) => (
               <button
                 key={action.label}
@@ -946,21 +1088,29 @@ function HomePage() {
                 onClick={() => navigate(action.to)}
                 className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-4 text-left transition hover:border-brand-200 hover:bg-brand-50/40"
               >
-                <p className="text-sm font-semibold text-slate-900">{action.label}</p>
+                <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white text-brand-800 shadow-sm">
+                  {iconGlyph(action.icon)}
+                </span>
+                <p className="mt-3 text-sm font-semibold text-slate-900">{action.label}</p>
+                <p className="mt-1 text-xs text-slate-500">{action.detail}</p>
               </button>
             ))}
           </div>
         </Panel>
 
         <Panel title="AI insights">
-          <div className="space-y-3">
-            {portal.dashboard.aiInsights.map((insight, index) => (
-              <div key={index} className="rounded-2xl border border-brand-100 bg-brand-50/50 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Demo insight</p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">{insight}</p>
-              </div>
-            ))}
-          </div>
+          {portal.dashboard.aiInsights.length ? (
+            <div className="space-y-3">
+              {portal.dashboard.aiInsights.map((insight) => (
+                <div key={insight.title} className="rounded-2xl border border-brand-100 bg-brand-50/50 px-4 py-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">{insight.title}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">{insight.body}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500">Insights will appear once live analytics or leads are available.</p>
+          )}
         </Panel>
       </section>
     </div>
