@@ -4,6 +4,8 @@ import { HashRouter } from "react-router-dom";
 import "../index.css";
 import CmsApp from "./App.jsx";
 
+document.documentElement.classList.add("cms-surface");
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <HashRouter>
