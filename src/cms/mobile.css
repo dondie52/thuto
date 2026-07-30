@@ -1,0 +1,251 @@
+/* Responsive layout overrides for the standalone institution dashboard. */
+
+html.cms-surface,
+html.cms-surface body {
+  min-width: 0;
+  overflow-x: hidden;
+  background: #f5f7f5;
+}
+
+html.cms-surface #root {
+  min-width: 0;
+}
+
+@media (max-width: 1023px) {
+  html.cms-surface #root > .min-h-dvh {
+    display: block;
+    min-width: 0;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(4, 47, 46, 0.18);
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside > div:first-child {
+    padding: 0.75rem 1rem 0.55rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside > div:first-child > div {
+    gap: 0.65rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside > div:first-child img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.9rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside > div:first-child p:first-child {
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside > div:first-child p:last-child {
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside nav {
+    display: flex;
+    gap: 0.45rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 0.55rem 0.75rem 0.7rem;
+    scroll-padding-inline: 0.75rem;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside nav > a {
+    display: flex;
+    flex: 0 0 auto;
+    min-width: 4.7rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 0.55rem 0.65rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    line-height: 1.15;
+    text-align: center;
+    scroll-snap-align: start;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside nav > a > span:first-child {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-inline: auto;
+    border-radius: 0.7rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside nav > a > span:last-child {
+    white-space: nowrap;
+  }
+
+  html.cms-surface #root > .min-h-dvh > aside > div:last-child {
+    display: none;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header {
+    position: relative;
+    top: auto;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div {
+    display: block;
+    padding: 0.85rem 1rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:first-child {
+    min-width: 0;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header h1 {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 1.3rem;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:first-child > p:last-child {
+    display: none;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:last-child {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-top: 0.75rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:last-child > div {
+    display: none !important;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header button {
+    width: 100%;
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > main {
+    min-width: 0;
+    padding: 1rem 1rem max(4rem, env(safe-area-inset-bottom));
+  }
+
+  html.cms-surface main h2 {
+    font-size: clamp(1.45rem, 7vw, 1.85rem);
+    line-height: 1.2;
+  }
+
+  html.cms-surface main .p-6,
+  html.cms-surface main .p-5 {
+    padding: 1rem;
+  }
+
+  html.cms-surface main .rounded-3xl {
+    border-radius: 1.25rem;
+  }
+
+  html.cms-surface main input,
+  html.cms-surface main select,
+  html.cms-surface main textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 16px !important;
+  }
+
+  html.cms-surface main textarea {
+    resize: vertical;
+  }
+
+  html.cms-surface main button {
+    min-height: 2.75rem;
+  }
+
+  html.cms-surface main .grid,
+  html.cms-surface main .flex,
+  html.cms-surface main section,
+  html.cms-surface main article,
+  html.cms-surface main form,
+  html.cms-surface main fieldset {
+    min-width: 0;
+  }
+
+  html.cms-surface main img,
+  html.cms-surface main svg,
+  html.cms-surface main canvas {
+    max-width: 100%;
+  }
+
+  html.cms-surface main pre,
+  html.cms-surface main code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  html.cms-surface main a,
+  html.cms-surface main p,
+  html.cms-surface main span,
+  html.cms-surface main td,
+  html.cms-surface main th {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 479px) {
+  html.cms-surface #root > .min-h-dvh > aside nav > a {
+    min-width: 4.25rem;
+    padding-inline: 0.5rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > header h1 {
+    font-size: 1.15rem;
+  }
+
+  html.cms-surface #root > .min-h-dvh > .min-w-0 > main {
+    padding-inline: 0.75rem;
+  }
+
+  html.cms-surface main .p-6,
+  html.cms-surface main .p-5,
+  html.cms-surface main .p-4 {
+    padding: 0.9rem;
+  }
+
+  html.cms-surface #root > .grid.min-h-dvh {
+    padding: 0.75rem;
+  }
+
+  html.cms-surface #root > .grid.min-h-dvh > div {
+    width: 100%;
+    padding: 1.25rem;
+    border-radius: 1.5rem;
+  }
+
+  html.cms-surface #root > .grid.min-h-dvh h1 {
+    font-size: 1.9rem;
+    line-height: 1.15;
+  }
+
+  html.cms-surface #root > .grid.min-h-dvh a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+  }
+}
