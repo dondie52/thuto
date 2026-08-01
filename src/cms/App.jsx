@@ -28,7 +28,7 @@ import {
   summarizeInstitutionAnalytics,
   updateLeadStatus,
 } from "../lib/partner.js";
-import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
+import { fetchProgrammes, programmeBelongsToUniversity, universityProgrammeAliases } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
   ACCOMMODATION_OFF,
@@ -56,7 +56,7 @@ const NAV_ITEMS = [
   { to: "/", end: true, label: "Home", icon: "home" },
   { to: "/profile", label: "Profile", icon: "profile" },
   { to: "/programmes", label: "Programmes", icon: "programmes" },
-  { to: "/leads", label: "Leads", icon: "leads" },
+  { to: "/applications", label: "Applications", icon: "apps" },
   { to: "/analytics", label: "Data and Analytics", icon: "analytics" },
   { to: "/feed", label: "Feed", icon: "feed" },
   { to: "/faq", label: "FAQ", icon: "faq" },
@@ -104,6 +104,20 @@ function normalizeStaffRows(staff) {
     department: row?.department || "",
     photo: row?.photo || "",
   }));
+}
+
+function slugify(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+// Programme ids are the override primary key, so keep them unique per institution.
+function buildProgrammeId(institutionId, name) {
+  const suffix = Math.random().toString(36).slice(2, 7);
+  return [slugify(institutionId) || "institution", slugify(name) || "programme", suffix].join("-");
 }
 
 // Storage RLS only lets institution staff write under this prefix.
@@ -486,10 +500,12 @@ function usePartnerPortalData() {
   const activeInstitutionId = selectedInstitutionId || memberships[0]?.institution_id || "";
 
   const loadBase = useCallback(async () => {
+    // Partner staff manage their own institution regardless of which market the
+    // browsing session defaults to, so never scope this data by viewer country.
     const [members, universityData, programmeData] = await Promise.all([
       fetchInstitutionMemberships(),
-      fetchUniversities(),
-      fetchProgrammes(),
+      fetchUniversities({ includeAllCountries: true }),
+      fetchProgrammes({ includeAllCountries: true }),
     ]);
     setMemberships(members);
     setAllUniversities(universityData.list || []);
@@ -505,7 +521,7 @@ function usePartnerPortalData() {
       fetchInstitutionPartner(institutionId),
       fetchInstitutionAnalytics(institutionId, 14),
       fetchInstitutionLeads(institutionId),
-      fetchUniversities(),
+      fetchUniversities({ includeAllCountries: true }),
     ]);
     setPartner(partnerRow);
     setAnalytics(analyticsRows);
@@ -735,6 +751,63 @@ function usePartnerPortalData() {
     }
   }
 
+  async function handleCreateProgramme({ name, field }) {
+    setError("");
+    setMessage("");
+    const cleanName = String(name || "").trim();
+    if (!cleanName) {
+      setError("Give the programme a name.");
+      return "";
+    }
+    if (!university) {
+      setError("Load an institution before adding programmes.");
+      return "";
+    }
+    try {
+      const programmeId = buildProgrammeId(activeInstitutionId, cleanName);
+      // The catalogue links programmes to institutions by name, so stamp an alias
+      // this institution is already known by.
+      const alias = universityProgrammeAliases(university)[0] || university.name;
+      await saveProgrammeOverrideForPartner(programmeId, activeInstitutionId, {
+        name: cleanName,
+        field: String(field || "").trim() || null,
+        university: university.name,
+        universityShort: alias,
+        country: university.country || null,
+        applicationWindowStatus: APPLICATION_WINDOW_OPEN,
+      });
+      setMessage(`${cleanName} added. Fill in the details below and save.`);
+      await loadBase();
+      await loadInstitution(activeInstitutionId);
+      return programmeId;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not add the programme.");
+      return "";
+    }
+  }
+
+  async function handleDeleteProgramme(programmeId) {
+    setError("");
+    setMessage("");
+    if (!programmeId) return false;
+    try {
+      // Archived rather than deleted: bundled catalogue programmes cannot be removed
+      // from the shipped data file, and this keeps the record recoverable.
+      await saveProgrammeOverrideForPartner(programmeId, activeInstitutionId, { archived: true });
+      setMessage("Programme removed from your public catalogue.");
+      if (selectedProgrammeId === programmeId) {
+        setSelectedProgrammeId("");
+        setProgrammeForm(EMPTY_PROGRAMME_FORM);
+      }
+      await loadBase();
+      await loadInstitution(activeInstitutionId);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not remove the programme.");
+      return false;
+    }
+  }
+
   async function handleClaim() {
     setError("");
     setMessage("");
@@ -821,6 +894,8 @@ function usePartnerPortalData() {
     handleSaveProfile,
     handleSaveStaff,
     handleSaveProgramme,
+    handleCreateProgramme,
+    handleDeleteProgramme,
     handleClaim,
     loadInstitution,
     updateLeadStatus,
@@ -1071,7 +1146,7 @@ function HomePage() {
       </section>
 
       <section className="grid gap-5 xl:grid-cols-3">
-        <Panel title="Recent activity" action="View leads" onAction={() => navigate("/leads")}>
+        <Panel title="Recent activity" action="View leads" onAction={() => navigate("/analytics?tab=leads")}>
           {portal.dashboard.recentActivity.length ? (
             <div className="space-y-3">
               {portal.dashboard.recentActivity.map((item, index) => (
@@ -2107,6 +2182,18 @@ function ProgrammesPage() {
   useDocumentTitle("Programmes | Institution Dashboard");
   const [editing, setEditing] = useState(false);
   const [snapshot, setSnapshot] = useState(null);
+  const [search, setSearch] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [newProgramme, setNewProgramme] = useState({ name: "", field: "" });
+  const [pendingDelete, setPendingDelete] = useState("");
+
+  const matches = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return portal.institutionProgrammes;
+    return portal.institutionProgrammes.filter((programme) =>
+      [programme.name, programme.field, programme.id].filter(Boolean).join(" ").toLowerCase().includes(term),
+    );
+  }, [portal.institutionProgrammes, search]);
 
   const feeField = {
     key: "feesDomestic",
@@ -2117,6 +2204,7 @@ function ProgrammesPage() {
   useEffect(() => {
     setEditing(false);
     setSnapshot(null);
+    setPendingDelete("");
   }, [portal.selectedProgrammeId]);
 
   function updateField(key, value) {
@@ -2141,6 +2229,18 @@ function ProgrammesPage() {
     setEditing(false);
   }
 
+  async function submitNewProgramme(event) {
+    event.preventDefault();
+    const programmeId = await portal.handleCreateProgramme(newProgramme);
+    if (!programmeId) return;
+    setNewProgramme({ name: "", field: "" });
+    setAdding(false);
+    setSearch("");
+    portal.fillProgrammeForm(programmeId);
+  }
+
+  const selectedProgramme = portal.institutionProgrammes.find((row) => row.id === portal.selectedProgrammeId);
+
   return (
     <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -2151,89 +2251,259 @@ function ProgrammesPage() {
             {editing ? "Editing — changes publish when you save." : "Pick a programme to review what students currently see."}
           </p>
         </div>
-        {portal.selectedProgrammeId ? (
-          <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
-        ) : null}
+        <div className="flex flex-wrap items-center gap-2">
+          {portal.selectedProgrammeId ? (
+            <EditControls
+              editing={editing}
+              locked={false}
+              onEdit={startEditing}
+              onSave={saveEditing}
+              onCancel={cancelEditing}
+            />
+          ) : null}
+          {!editing ? (
+            <button
+              type="button"
+              onClick={() => setAdding((open) => !open)}
+              className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+            >
+              {adding ? "Cancel" : "Add programme"}
+            </button>
+          ) : null}
+        </div>
       </div>
 
-      <select
-        value={portal.selectedProgrammeId}
-        onChange={(event) => portal.fillProgrammeForm(event.target.value)}
-        aria-label="Select programme"
-        className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm lg:max-w-md"
-      >
-        <option value="">Select programme</option>
-        {portal.institutionProgrammes.map((programme) => (
-          <option key={programme.id} value={programme.id}>
-            {programme.name}
-          </option>
-        ))}
-      </select>
+      {adding ? (
+        <form onSubmit={submitNewProgramme} className="grid gap-3 rounded-3xl border border-brand-200 bg-brand-50/40 p-4 md:grid-cols-[1.4fr_1fr_auto]">
+          <label className="min-w-0">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Programme name</span>
+            <input
+              value={newProgramme.name}
+              onChange={(event) => setNewProgramme((state) => ({ ...state, name: event.target.value }))}
+              className={FIELD_INPUT_CLASS}
+              placeholder="BSc Computer Science"
+              autoFocus
+            />
+          </label>
+          <label className="min-w-0">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Field (optional)</span>
+            <input
+              value={newProgramme.field}
+              onChange={(event) => setNewProgramme((state) => ({ ...state, field: event.target.value }))}
+              className={FIELD_INPUT_CLASS}
+              placeholder="Science and Technology"
+            />
+          </label>
+          <button
+            type="submit"
+            className="self-end rounded-2xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-800"
+          >
+            Create
+          </button>
+        </form>
+      ) : null}
 
-      {portal.selectedProgrammeId ? (
-        <>
-          <FieldGrid
-            fields={[...PROGRAMME_FIELDS, feeField]}
-            form={portal.programmeForm}
-            editing={editing}
-            onChange={updateField}
-          />
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
-            </div>
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
-            </div>
-          </div>
-        </>
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+        <div className="space-y-3">
+          <label className="block">
+            <span className="sr-only">Search programmes</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+              placeholder="Search programmes"
+            />
+          </label>
+          <p className="text-xs text-slate-500">
+            {matches.length === portal.institutionProgrammes.length
+              ? `${portal.institutionProgrammes.length} programmes`
+              : `${matches.length} of ${portal.institutionProgrammes.length} programmes`}
+          </p>
+
+          {matches.length ? (
+            <ul className="max-h-[28rem] space-y-2 overflow-y-auto pr-1">
+              {matches.map((programme) => {
+                const isActive = programme.id === portal.selectedProgrammeId;
+                return (
+                  <li key={programme.id}>
+                    <button
+                      type="button"
+                      onClick={() => portal.fillProgrammeForm(programme.id)}
+                      aria-current={isActive}
+                      className={[
+                        "w-full rounded-2xl border px-4 py-3 text-left transition",
+                        isActive
+                          ? "border-brand-300 bg-brand-50 text-brand-900"
+                          : "border-slate-200 bg-white text-slate-800 hover:border-brand-200 hover:bg-brand-50/40",
+                      ].join(" ")}
+                    >
+                      <span className="block truncate text-sm font-semibold">{programme.name}</span>
+                      <span className="mt-0.5 block truncate text-xs text-slate-500">{programme.field || "No field set"}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <EmptyRowsNote>
+              {portal.institutionProgrammes.length ? "No programmes match that search." : "No programmes listed yet."}
+            </EmptyRowsNote>
+          )}
+        </div>
+
+        <div className="min-w-0 space-y-5">
+          {portal.selectedProgrammeId ? (
+            <>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h3 className="min-w-0 font-display text-xl font-semibold text-slate-900">
+                  {selectedProgramme?.name || "Programme"}
+                </h3>
+                {!editing ? (
+                  pendingDelete === portal.selectedProgrammeId ? (
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm text-slate-600">Remove from your public catalogue?</span>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await portal.handleDeleteProgramme(portal.selectedProgrammeId);
+                          setPendingDelete("");
+                        }}
+                        className="rounded-2xl bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPendingDelete("")}
+                        className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
+                      >
+                        Keep
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setPendingDelete(portal.selectedProgrammeId)}
+                      className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+                    >
+                      Delete programme
+                    </button>
+                  )
+                ) : null}
+              </div>
+
+              <FieldGrid
+                fields={[...PROGRAMME_FIELDS, feeField]}
+                form={portal.programmeForm}
+                editing={editing}
+                onChange={updateField}
+              />
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                  Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
+                </div>
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                  Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
+                </div>
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ANALYTICS_TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "leads", label: "Leads" },
+];
+
+function AnalyticsPage() {
+  const portal = usePortal();
+  const [searchParams, setSearchParams] = useSearchParams();
+  useDocumentTitle("Data and Analytics | Institution Dashboard");
+
+  const requestedTab = searchParams.get("tab");
+  const activeTab = ANALYTICS_TABS.some((tab) => tab.id === requestedTab) ? requestedTab : ANALYTICS_TABS[0].id;
+  const newLeads = portal.leads.filter((lead) => lead.status === "new").length;
+
+  function selectTab(tabId) {
+    setSearchParams(tabId === ANALYTICS_TABS[0].id ? {} : { tab: tabId });
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="border-b border-slate-200">
+        <div role="tablist" aria-label="Analytics sections" className="flex gap-6 overflow-x-auto">
+          {ANALYTICS_TABS.map((tab) => {
+            const isActive = tab.id === activeTab;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => selectTab(tab.id)}
+                className={[
+                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
+                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                ].join(" ")}
+              >
+                {tab.label}
+                {tab.id === "leads" && newLeads ? (
+                  <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-800">
+                    {newLeads}
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {activeTab === "leads" ? (
+        <LeadsSection portal={portal} />
       ) : (
-        <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
+        <>
+          <PartnerInsightsDashboard
+            universityName={portal.university?.name || portal.activeInstitutionId}
+            programmeCount={portal.institutionProgrammes.length}
+            tier={portal.partner?.tier || "verified"}
+            newLeads={newLeads}
+            summary={portal.analyticsSummary}
+            profileCompleteness={portal.profileCompleteness}
+            onOpenModule={(moduleId) => {
+              if (moduleId === "leads") {
+                selectTab("leads");
+              }
+            }}
+          />
+
+          <Panel title="Export reports">
+            <p className="text-sm leading-relaxed text-slate-600">
+              CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme views,
+              link clicks, viewer countries, and institution profile performance.
+            </p>
+          </Panel>
+        </>
       )}
     </div>
   );
 }
 
-function AnalyticsPage() {
-  const portal = usePortal();
-  const navigate = useNavigate();
-  useDocumentTitle("Data and Analytics | Institution Dashboard");
-
-  return (
-    <div className="space-y-5">
-      <PartnerInsightsDashboard
-        universityName={portal.university?.name || portal.activeInstitutionId}
-        programmeCount={portal.institutionProgrammes.length}
-        tier={portal.partner?.tier || "verified"}
-        newLeads={portal.leads.filter((lead) => lead.status === "new").length}
-        summary={portal.analyticsSummary}
-        profileCompleteness={portal.profileCompleteness}
-        onOpenModule={(moduleId) => {
-          if (moduleId === "leads") {
-            navigate("/leads");
-          }
-        }}
-      />
-
-      <Panel title="Export reports">
-        <p className="text-sm leading-relaxed text-slate-600">
-          CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme views, link
-          clicks, viewer countries, and institution profile performance.
-        </p>
-      </Panel>
-    </div>
-  );
-}
-
-function LeadsPage() {
-  const portal = usePortal();
-  useDocumentTitle("Leads | Institution Dashboard");
-
+function LeadsSection({ portal }) {
   return (
     <div className="space-y-4">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Leads</p>
         <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Admissions lead inbox</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Enquiries students submitted from your institution and programme pages.
+        </p>
       </div>
       <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
         {portal.leads.map((lead) => (
@@ -2276,6 +2546,72 @@ function LeadsPage() {
         ))}
       </div>
       {!portal.leads.length ? <p className="text-sm text-slate-500">No leads yet.</p> : null}
+    </div>
+  );
+}
+
+const APPLICATION_STAGES = [
+  { id: "pending", label: "Pending", hint: "Applications received and waiting on a first decision." },
+  { id: "accepted", label: "Accepted", hint: "Applicants you have offered a place." },
+  { id: "rejected", label: "Rejected", hint: "Applicants you have turned down." },
+  { id: "awaiting-interview", label: "Awaiting Interview", hint: "Applicants shortlisted for an interview." },
+];
+
+function ApplicationsPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  useDocumentTitle("Applications | Institution Dashboard");
+
+  const requestedStage = searchParams.get("stage");
+  const activeStage = APPLICATION_STAGES.some((stage) => stage.id === requestedStage)
+    ? requestedStage
+    : APPLICATION_STAGES[0].id;
+  const activeStageMeta = APPLICATION_STAGES.find((stage) => stage.id === activeStage);
+
+  // Manual applications are not stored yet, so every stage reads zero for now.
+  const countByStage = Object.fromEntries(APPLICATION_STAGES.map((stage) => [stage.id, 0]));
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Applications</p>
+        <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Track applicants by stage</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          For institutions without an online application system — receive applications through Thuto and move each one
+          through your admissions stages.
+        </p>
+      </div>
+
+      <div role="tablist" aria-label="Application stages" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {APPLICATION_STAGES.map((stage) => {
+          const isActive = stage.id === activeStage;
+          return (
+            <button
+              key={stage.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setSearchParams(stage.id === APPLICATION_STAGES[0].id ? {} : { stage: stage.id })}
+              className={[
+                "rounded-3xl border px-4 py-4 text-left transition",
+                isActive
+                  ? "border-brand-300 bg-brand-50 text-brand-900 shadow-card"
+                  : "border-slate-200 bg-white text-slate-800 hover:border-brand-200 hover:bg-brand-50/40",
+              ].join(" ")}
+            >
+              <span className="block text-sm font-semibold">{stage.label}</span>
+              <span className="mt-2 block font-display text-3xl font-semibold">{formatCount(countByStage[stage.id])}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <Panel title={activeStageMeta?.label}>
+        <p className="text-sm leading-relaxed text-slate-600">{activeStageMeta?.hint}</p>
+        <p className="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+          No applications in this stage yet. Once Thuto starts accepting applications on your behalf, they will arrive here
+          and you can move them between stages.
+        </p>
+      </Panel>
     </div>
   );
 }
@@ -2409,7 +2745,8 @@ export default function CmsApp() {
               />
             }
           />
-          <Route path="leads" element={<LeadsPage />} />
+          <Route path="applications" element={<ApplicationsPage />} />
+          <Route path="leads" element={<Navigate to="/analytics?tab=leads" replace />} />
           <Route path="claim" element={<ClaimPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

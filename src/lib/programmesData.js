@@ -28,7 +28,11 @@ export async function fetchProgrammes(options = {}) {
   const data = await response.json();
   const bundled = Array.isArray(data) ? data : [];
   const overrides = await fetchProgrammeOverrides({ includeDrafts });
-  const merged = mergeContentOverrides(bundled, overrides);
+  // Institutions archive rather than delete, since bundled programmes cannot be removed
+  // from the shipped file. The draft-inclusive admin view still sees them so they can be restored.
+  const merged = includeDrafts
+    ? mergeContentOverrides(bundled, overrides)
+    : mergeContentOverrides(bundled, overrides).filter((programme) => !programme?.archived);
   return filterByMarketCountry(merged, market, { includeAllCountries });
 }
 
@@ -111,8 +115,19 @@ const UNIVERSITY_ALIASES = {
   "nampol-college-of-education": ["Nampol College of Education", "Nampol College Of Education", "NCE"],
 };
 
+/**
+ * Names a programme can carry so `programmeBelongsToUniversity` matches this institution.
+ * @param {{ id?: string, name?: string }} university
+ * @returns {string[]}
+ */
+export function universityProgrammeAliases(university) {
+  const aliases = UNIVERSITY_ALIASES[university?.id];
+  if (aliases?.length) return aliases;
+  return [university?.name].filter(Boolean);
+}
+
 export function programmeBelongsToUniversity(programme, university) {
-  const aliases = UNIVERSITY_ALIASES[university.id] ?? [university.name];
+  const aliases = universityProgrammeAliases(university);
   const aliasSet = new Set(aliases.map(normalize));
   const short = normalize(programme.universityShort);
   const full = normalize(programme.university);
