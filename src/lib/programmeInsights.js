@@ -99,8 +99,6 @@ export function getProgrammeCareers(programme) {
 export function getProgrammeAccreditation(programme) {
   return {
     status: String(programme?.accreditationStatus || "").trim(),
-    body: String(programme?.accreditationBody || "").trim(),
-    notes: String(programme?.accreditationNotes || "").trim(),
   };
 }
 

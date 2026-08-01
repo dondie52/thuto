@@ -14,6 +14,7 @@ import {
 import { thutoLogoSrc } from "../components/BrandMark.jsx";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
 import PartnerInsightsDashboard from "../components/partner/PartnerInsightsDashboard.jsx";
+import { PhotoGalleryField, PhotoUploadField } from "../components/partner/PhotoUploadField.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
 import {
@@ -30,7 +31,15 @@ import {
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
+  ACCOMMODATION_OFF,
+  ACCOMMODATION_ON,
+  ACCREDITATION_OFF,
+  ACCREDITATION_ON,
+  APPLICATION_WINDOW_CLOSED,
+  APPLICATION_WINDOW_OPEN,
   UNIVERSITY_SOCIAL_PLATFORMS,
+  isAffirmativeStatus,
+  isApplicationWindowOpen,
   normalizeUniversityAccreditation,
   normalizeUniversityCampusPhotos,
   normalizeUniversityContacts,
@@ -59,18 +68,17 @@ const RAIL_FOOTER_ITEMS = [
 ];
 
 const EMPTY_RESOURCE = { title: "", category: "", url: "", format: "Web page", sourceLabel: "" };
-const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "" };
+const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "", photo: "" };
 const EMPTY_INCENTIVE = { category: "other", label: "", detail: "", sourceUrl: "", sourceLabel: "" };
 const EMPTY_PROGRAMME_FORM = {
   description: "",
   applyUrl: "",
   officialUrl: "",
+  applicationWindowStatus: APPLICATION_WINDOW_OPEN,
   applicationDeadline: "",
   feesDomestic: "",
   minPoints: "",
   accreditationStatus: "",
-  accreditationBody: "",
-  accreditationNotes: "",
   careers: "",
   jobOpportunities: "",
 };
@@ -94,7 +102,14 @@ function normalizeStaffRows(staff) {
     email: row?.email || "",
     phone: row?.phone || "",
     department: row?.department || "",
+    photo: row?.photo || "",
   }));
+}
+
+// Storage RLS only lets institution staff write under this prefix.
+function institutionAssetFolder(institutionId) {
+  const id = String(institutionId || "unknown").replace(/[^a-z0-9_-]+/gi, "-");
+  return `institutions/${id}`;
 }
 
 function formatCount(value) {
@@ -436,6 +451,7 @@ function usePartnerPortalData() {
   const [allUniversities, setAllUniversities] = useState([]);
   const [profileForm, setProfileForm] = useState({
     description: "",
+    applicationWindowStatus: APPLICATION_WINDOW_OPEN,
     applicationOpen: "",
     applicationClose: "",
     applyUrl: "",
@@ -448,11 +464,7 @@ function usePartnerPortalData() {
     generalEmail: "",
     admissionsEmail: "",
     accreditationStatus: "",
-    accreditationBody: "",
-    accreditationNotes: "",
-    accreditationSourceUrl: "",
     accommodationStatus: "",
-    accommodationDetails: "",
     healthDetails: "",
     safetyDetails: "",
     sportsDetails: "",
@@ -507,6 +519,9 @@ function usePartnerPortalData() {
       const socialLinks = normalizeUniversitySocialLinks(uni);
       setProfileForm({
         description: uni.description || "",
+        applicationWindowStatus: isApplicationWindowOpen(uni.applicationWindowStatus)
+          ? APPLICATION_WINDOW_OPEN
+          : APPLICATION_WINDOW_CLOSED,
         applicationOpen: uni.applicationOpen || "",
         applicationClose: uni.applicationClose || "",
         applyUrl: uni.applyUrl || "",
@@ -518,12 +533,16 @@ function usePartnerPortalData() {
         admissionsPhone: contacts.admissionsPhone,
         generalEmail: contacts.generalEmail,
         admissionsEmail: contacts.admissionsEmail,
-        accreditationStatus: accreditation.status,
-        accreditationBody: accreditation.body,
-        accreditationNotes: accreditation.notes,
-        accreditationSourceUrl: accreditation.sourceUrl,
-        accommodationStatus: studentLife.accommodationStatus,
-        accommodationDetails: studentLife.accommodationDetails,
+        accreditationStatus: accreditation.status
+          ? isAffirmativeStatus(accreditation.status)
+            ? ACCREDITATION_ON
+            : ACCREDITATION_OFF
+          : "",
+        accommodationStatus: studentLife.accommodationStatus
+          ? isAffirmativeStatus(studentLife.accommodationStatus)
+            ? ACCOMMODATION_ON
+            : ACCOMMODATION_OFF
+          : "",
         healthDetails: studentLife.healthDetails,
         safetyDetails: studentLife.safetyDetails,
         sportsDetails: studentLife.sportsDetails,
@@ -590,6 +609,7 @@ function usePartnerPortalData() {
     try {
       await saveInstitutionOverride(activeInstitutionId, {
         description: profileForm.description,
+        applicationWindowStatus: profileForm.applicationWindowStatus || APPLICATION_WINDOW_OPEN,
         applicationOpen: profileForm.applicationOpen || null,
         applicationClose: profileForm.applicationClose || null,
         applyUrl: profileForm.applyUrl || null,
@@ -604,11 +624,12 @@ function usePartnerPortalData() {
         phone: profileForm.generalPhone || null,
         email: profileForm.generalEmail || null,
         accreditationStatus: profileForm.accreditationStatus || null,
-        accreditationBody: profileForm.accreditationBody || null,
-        accreditationNotes: profileForm.accreditationNotes || null,
-        accreditationSourceUrl: profileForm.accreditationSourceUrl || null,
         accommodationStatus: profileForm.accommodationStatus || null,
-        accommodationDetails: profileForm.accommodationDetails || null,
+        // Retired free-text fields — nulled so values saved before the toggles disappear.
+        accreditationBody: null,
+        accreditationNotes: null,
+        accreditationSourceUrl: null,
+        accommodationDetails: null,
         healthDetails: profileForm.healthDetails || null,
         safetyDetails: profileForm.safetyDetails || null,
         sportsDetails: profileForm.sportsDetails || null,
@@ -662,6 +683,7 @@ function usePartnerPortalData() {
           email: row.email.trim(),
           phone: row.phone.trim(),
           department: row.department.trim(),
+          photo: row.photo.trim(),
         }))
         .filter((row) => row.name);
       await saveInstitutionOverride(activeInstitutionId, { staff });
@@ -683,10 +705,12 @@ function usePartnerPortalData() {
         description: programmeForm.description || null,
         applyUrl: programmeForm.applyUrl || null,
         officialUrl: programmeForm.officialUrl || null,
+        applicationWindowStatus: programmeForm.applicationWindowStatus || APPLICATION_WINDOW_OPEN,
         applicationDeadline: programmeForm.applicationDeadline || null,
         accreditationStatus: programmeForm.accreditationStatus || null,
-        accreditationBody: programmeForm.accreditationBody || null,
-        accreditationNotes: programmeForm.accreditationNotes || null,
+        // Retired free-text fields — nulled so values saved before the toggle disappear.
+        accreditationBody: null,
+        accreditationNotes: null,
         careers: splitMultilineList(programmeForm.careers),
         careerOpportunities: splitMultilineList(programmeForm.careers),
         jobOpportunities: splitMultilineList(programmeForm.jobOpportunities),
@@ -736,12 +760,17 @@ function usePartnerPortalData() {
       description: programme.description || "",
       applyUrl: programme.applyUrl || "",
       officialUrl: programme.officialUrl || "",
+      applicationWindowStatus: isApplicationWindowOpen(programme.applicationWindowStatus)
+        ? APPLICATION_WINDOW_OPEN
+        : APPLICATION_WINDOW_CLOSED,
       applicationDeadline: programme.applicationDeadline?.slice(0, 10) || "",
       feesDomestic: programme.fees?.domestic != null ? String(programme.fees.domestic) : "",
       minPoints: programme.minPoints != null ? String(programme.minPoints) : "",
-      accreditationStatus: programme.accreditationStatus || "",
-      accreditationBody: programme.accreditationBody || "",
-      accreditationNotes: programme.accreditationNotes || "",
+      accreditationStatus: programme.accreditationStatus
+        ? isAffirmativeStatus(programme.accreditationStatus)
+          ? ACCREDITATION_ON
+          : ACCREDITATION_OFF
+        : "",
       careers: [...new Set([...(programme.careers || []), ...(programme.careerOpportunities || [])])].join("\n"),
       jobOpportunities: (programme.jobOpportunities || []).join("\n"),
     });
@@ -1218,15 +1247,35 @@ const SOCIAL_FIELDS = UNIVERSITY_SOCIAL_PLATFORMS.map((platform) => ({
   type: "url",
 }));
 
+const ACCREDITATION_TOGGLE = {
+  type: "toggle",
+  onValue: ACCREDITATION_ON,
+  offValue: ACCREDITATION_OFF,
+  onLabel: "Accredited",
+  offLabel: "Not accredited",
+};
+
+const APPLICATION_WINDOW_TOGGLE = {
+  key: "applicationWindowStatus",
+  label: "Application window",
+  type: "toggle",
+  onValue: APPLICATION_WINDOW_OPEN,
+  offValue: APPLICATION_WINDOW_CLOSED,
+  onLabel: "Open",
+  offLabel: "Closed",
+  span: "full",
+};
+
 const TAB_FIELDS = {
   basics: [
     { key: "description", label: "Institution description", type: "textarea", rows: 5, span: "full" },
     { key: "universityType", label: "Institution type" },
-    { key: "logo", label: "Logo URL", type: "url" },
+    { key: "logo", label: "Institution logo", type: "photo", folder: "logo", shape: "logo" },
   ],
   admissions: [
-    { key: "applicationOpen", label: "Applications open", type: "date" },
-    { key: "applicationClose", label: "Applications close", type: "date" },
+    APPLICATION_WINDOW_TOGGLE,
+    { key: "applicationOpen", label: "Applications open", type: "date", lockedWhenClosed: true },
+    { key: "applicationClose", label: "Applications close", type: "date", lockedWhenClosed: true },
     { key: "applyUrl", label: "Application website", type: "url" },
     { key: "admissionsEmail", label: "Admissions email", type: "email" },
     { key: "admissionsPhone", label: "Admissions phone" },
@@ -1239,16 +1288,20 @@ const TAB_FIELDS = {
     ...SOCIAL_FIELDS,
   ],
   "student-life": [
-    { key: "accommodationStatus", label: "Accommodation status" },
-    { key: "accreditationStatus", label: "Accreditation status" },
-    { key: "accreditationBody", label: "Accreditation body" },
-    { key: "accreditationSourceUrl", label: "Accreditation source URL", type: "url" },
-    { key: "accommodationDetails", label: "Accommodation details", type: "textarea", rows: 3 },
+    {
+      key: "accommodationStatus",
+      label: "Student accommodation",
+      type: "toggle",
+      onValue: ACCOMMODATION_ON,
+      offValue: ACCOMMODATION_OFF,
+      onLabel: "Available",
+      offLabel: "Unavailable",
+    },
+    { ...ACCREDITATION_TOGGLE, key: "accreditationStatus", label: "Institution accreditation" },
     { key: "careerSupportDetails", label: "Career support details", type: "textarea", rows: 3 },
     { key: "healthDetails", label: "Health and wellbeing", type: "textarea", rows: 3 },
     { key: "safetyDetails", label: "Safety and security", type: "textarea", rows: 3 },
     { key: "sportsDetails", label: "Sport and recreation", type: "textarea", rows: 3 },
-    { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3 },
   ],
 };
 
@@ -1260,8 +1313,68 @@ function formatLongDate(value) {
   return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
 }
 
+function StatusPill({ on, label }) {
+  return (
+    <span
+      className={[
+        "mt-1.5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold",
+        on ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-600",
+      ].join(" ")}
+    >
+      <span className={["h-2 w-2 rounded-full", on ? "bg-emerald-500" : "bg-slate-400"].join(" ")} />
+      {label}
+    </span>
+  );
+}
+
+function ToggleSwitch({ on, onLabel, offLabel, onToggle }) {
+  return (
+    <div className="mt-1.5 flex items-center gap-3">
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        aria-label={on ? onLabel : offLabel}
+        onClick={() => onToggle(!on)}
+        className={[
+          "relative h-7 w-12 shrink-0 rounded-full transition",
+          on ? "bg-emerald-500" : "bg-slate-300",
+        ].join(" ")}
+      >
+        <span
+          className={[
+            "absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all",
+            on ? "left-6" : "left-1",
+          ].join(" ")}
+        />
+      </button>
+      <span className="text-sm font-semibold text-slate-800">{on ? onLabel : offLabel}</span>
+    </div>
+  );
+}
+
+function PhotoPreview({ value, shape }) {
+  if (!value) return <span className="mt-1.5 block text-sm text-slate-400">—</span>;
+  return (
+    <span
+      className={[
+        "mt-1.5 grid overflow-hidden border border-slate-200 bg-white",
+        shape === "avatar" ? "h-16 w-16 rounded-full" : "h-24 w-24 rounded-2xl",
+      ].join(" ")}
+    >
+      <img src={value} alt="" className="h-full w-full object-contain" />
+    </span>
+  );
+}
+
 function ReadOnlyValue({ field, value }) {
   const text = String(value ?? "").trim();
+  if (field.type === "photo") return <PhotoPreview value={text} shape={field.shape} />;
+  if (field.type === "toggle") {
+    if (!text) return <span className="mt-1.5 block text-sm text-slate-400">Not set</span>;
+    const on = text === field.onValue;
+    return <StatusPill on={on} label={on ? field.onLabel : field.offLabel} />;
+  }
   if (!text) return <span className="mt-1.5 block text-sm text-slate-400">—</span>;
   if (field.type === "url") {
     return (
@@ -1289,7 +1402,7 @@ function ReadOnlyValue({ field, value }) {
   );
 }
 
-function ProfileField({ field, value, editing, onChange }) {
+function ProfileField({ field, value, editing, onChange, uploadFolder, note }) {
   const spanClass = field.span === "full" ? "md:col-span-2 2xl:col-span-3" : "";
   const inputType = field.type === "date" ? "date" : field.type === "email" ? "email" : "text";
 
@@ -1300,7 +1413,24 @@ function ProfileField({ field, value, editing, onChange }) {
       <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{field.label}</dt>
       <dd>
         {editing ? (
-          field.type === "textarea" ? (
+          field.type === "toggle" ? (
+            <ToggleSwitch
+              on={value === field.onValue}
+              onLabel={field.onLabel}
+              offLabel={field.offLabel}
+              onToggle={(next) => onChange(next ? field.onValue : field.offValue)}
+            />
+          ) : field.type === "photo" ? (
+            <div className="mt-2">
+              <PhotoUploadField
+                value={value}
+                onChange={onChange}
+                folder={[uploadFolder, field.folder].filter(Boolean).join("/") || "general"}
+                label={String(field.label || "photo").toLowerCase()}
+                shape={field.shape}
+              />
+            </div>
+          ) : field.type === "textarea" ? (
             <textarea
               value={value}
               onChange={(event) => onChange(event.target.value)}
@@ -1320,23 +1450,34 @@ function ProfileField({ field, value, editing, onChange }) {
         ) : (
           <ReadOnlyValue field={field} value={value} />
         )}
+        {note ? <p className="mt-1.5 text-xs text-slate-500">{note}</p> : null}
       </dd>
     </div>
   );
 }
 
-function FieldGrid({ fields, form, editing, onChange }) {
+const CLOSED_DATES_NOTE = "Locked while applications are closed. Switch the window to Open to edit.";
+
+function FieldGrid({ fields, form, editing, onChange, uploadFolder }) {
+  // Deadlines stay read-only while the application window is closed.
+  const windowClosed = !isApplicationWindowOpen(form.applicationWindowStatus);
+
   return (
     <dl className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
-      {fields.map((field) => (
-        <ProfileField
-          key={field.key}
-          field={field}
-          value={form[field.key] || ""}
-          editing={editing}
-          onChange={(next) => onChange(field.key, next)}
-        />
-      ))}
+      {fields.map((field) => {
+        const locked = Boolean(field.lockedWhenClosed) && windowClosed;
+        return (
+          <ProfileField
+            key={field.key}
+            field={field}
+            value={form[field.key] || ""}
+            editing={editing && !locked}
+            onChange={(next) => onChange(field.key, next)}
+            uploadFolder={uploadFolder}
+            note={editing && locked ? CLOSED_DATES_NOTE : ""}
+          />
+        );
+      })}
     </dl>
   );
 }
@@ -1382,19 +1523,17 @@ function EmptyRowsNote({ children }) {
   );
 }
 
-function CampusTab({ portal, editing, onChange }) {
+function CampusTab({ portal, editing, onChange, uploadFolder }) {
   const photos = splitMultilineList(portal.profileForm.campusPhotosText);
 
   return (
     <div className="space-y-5">
       <FormSection title="Campus photos" description="Shown in the photo strip on your public institution page.">
         {editing ? (
-          <textarea
-            value={portal.profileForm.campusPhotosText}
-            onChange={(event) => onChange("campusPhotosText", event.target.value)}
-            rows={5}
-            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
-            placeholder="One campus photo URL per line"
+          <PhotoGalleryField
+            value={photos}
+            onChange={(urls) => onChange("campusPhotosText", urls.join("\n"))}
+            folder={`${uploadFolder}/campus`}
           />
         ) : photos.length ? (
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
@@ -1638,7 +1777,7 @@ function StudentLifeTab({ portal, editing, onChange }) {
   );
 }
 
-function StaffTab({ portal, editing }) {
+function StaffTab({ portal, editing, uploadFolder }) {
   return (
     <div className="space-y-5">
       <FormSection
@@ -1665,6 +1804,18 @@ function StaffTab({ portal, editing }) {
                 key={`staff-${index}`}
                 className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-2 2xl:grid-cols-3"
               >
+                <div className="md:col-span-2 2xl:col-span-3">
+                  <PhotoUploadField
+                    value={row.photo}
+                    onChange={(url) =>
+                      portal.setStaffRows((rows) => rows.map((item, i) => (i === index ? { ...item, photo: url } : item)))
+                    }
+                    folder={`${uploadFolder}/staff`}
+                    label="photo"
+                    shape="avatar"
+                    hint="Optional headshot. JPG, PNG or WebP."
+                  />
+                </div>
                 <input
                   value={row.name}
                   onChange={(event) =>
@@ -1730,6 +1881,14 @@ function StaffTab({ portal, editing }) {
           <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-4">
             {portal.staffRows.map((row, index) => (
               <div key={`staff-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                {row.photo ? (
+                  <img
+                    src={row.photo}
+                    alt=""
+                    loading="lazy"
+                    className="mb-2 h-14 w-14 rounded-full border border-slate-200 object-cover"
+                  />
+                ) : null}
                 <p className="font-semibold text-slate-900">{row.name || "Unnamed"}</p>
                 <p className="mt-1 text-sm text-slate-600">{[row.title, row.department].filter(Boolean).join(" · ") || "—"}</p>
                 {row.email ? (
@@ -1778,6 +1937,7 @@ function ProfilePage() {
   const previewHref = portal.activeInstitutionId
     ? buildAppUrl(`/universities/${portal.activeInstitutionId}`)
     : buildAppUrl("/universities");
+  const uploadFolder = institutionAssetFolder(portal.activeInstitutionId);
 
   // Switching institutions reloads every form, so any in-flight edit no longer applies.
   useEffect(() => {
@@ -1911,13 +2071,19 @@ function ProfilePage() {
         </div>
 
         {activeTab === "campus" ? (
-          <CampusTab portal={portal} editing={editing} onChange={updateField} />
+          <CampusTab portal={portal} editing={editing} onChange={updateField} uploadFolder={uploadFolder} />
         ) : activeTab === "student-life" ? (
           <StudentLifeTab portal={portal} editing={editing} onChange={updateField} />
         ) : activeTab === "staff" ? (
-          <StaffTab portal={portal} editing={editing} />
+          <StaffTab portal={portal} editing={editing} uploadFolder={uploadFolder} />
         ) : (
-          <FieldGrid fields={TAB_FIELDS[activeTab]} form={portal.profileForm} editing={editing} onChange={updateField} />
+          <FieldGrid
+            fields={TAB_FIELDS[activeTab]}
+            form={portal.profileForm}
+            editing={editing}
+            onChange={updateField}
+            uploadFolder={uploadFolder}
+          />
         )}
       </div>
     </section>
@@ -1928,11 +2094,10 @@ const PROGRAMME_FIELDS = [
   { key: "description", label: "Programme description", type: "textarea", rows: 5, span: "full" },
   { key: "applyUrl", label: "External application link", type: "url" },
   { key: "officialUrl", label: "Official programme page", type: "url" },
-  { key: "applicationDeadline", label: "Application deadline", type: "date" },
+  APPLICATION_WINDOW_TOGGLE,
+  { key: "applicationDeadline", label: "Application deadline", type: "date", lockedWhenClosed: true },
   { key: "minPoints", label: "Minimum points" },
-  { key: "accreditationStatus", label: "Accreditation status" },
-  { key: "accreditationBody", label: "Accreditation body" },
-  { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3, span: "full" },
+  { ...ACCREDITATION_TOGGLE, key: "accreditationStatus", label: "Programme accreditation" },
   { key: "careers", label: "Career outcomes (one per line)", type: "textarea", rows: 4 },
   { key: "jobOpportunities", label: "Common jobs after graduation (one per line)", type: "textarea", rows: 4 },
 ];
