@@ -14,6 +14,7 @@ import {
 import { thutoLogoSrc } from "../components/BrandMark.jsx";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
 import PartnerInsightsDashboard from "../components/partner/PartnerInsightsDashboard.jsx";
+import { PhotoGalleryField, PhotoUploadField } from "../components/partner/PhotoUploadField.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
 import {
@@ -27,13 +28,25 @@ import {
   summarizeInstitutionAnalytics,
   updateLeadStatus,
 } from "../lib/partner.js";
-import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
+import { GRADE_POINTS, SUBJECT_FIELDS } from "../lib/admissions.js";
+import { inferQualificationLevel } from "../lib/programmeQualification.js";
+import { formatModuleEntry, formatModuleSemesterLabel, parseModuleEntry } from "../lib/programmeModules.js";
+import { fetchProgrammes, programmeBelongsToUniversity, universityProgrammeAliases } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
+  ACCOMMODATION_OFF,
+  ACCOMMODATION_ON,
+  ACCREDITATION_OFF,
+  ACCREDITATION_ON,
+  APPLICATION_WINDOW_CLOSED,
+  APPLICATION_WINDOW_OPEN,
   UNIVERSITY_SOCIAL_PLATFORMS,
+  isAffirmativeStatus,
+  isApplicationWindowOpen,
   normalizeUniversityAccreditation,
   normalizeUniversityCampusPhotos,
   normalizeUniversityContacts,
+  normalizeUniversityFaculties,
   normalizeUniversitySocialLinks,
   normalizeUniversityStudentLife,
   splitMultilineList,
@@ -47,7 +60,7 @@ const NAV_ITEMS = [
   { to: "/", end: true, label: "Home", icon: "home" },
   { to: "/profile", label: "Profile", icon: "profile" },
   { to: "/programmes", label: "Programmes", icon: "programmes" },
-  { to: "/leads", label: "Leads", icon: "leads" },
+  { to: "/applications", label: "Applications", icon: "apps" },
   { to: "/analytics", label: "Data and Analytics", icon: "analytics" },
   { to: "/feed", label: "Feed", icon: "feed" },
   { to: "/faq", label: "FAQ", icon: "faq" },
@@ -59,21 +72,91 @@ const RAIL_FOOTER_ITEMS = [
 ];
 
 const EMPTY_RESOURCE = { title: "", category: "", url: "", format: "Web page", sourceLabel: "" };
-const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "" };
+const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "", photo: "" };
 const EMPTY_INCENTIVE = { category: "other", label: "", detail: "", sourceUrl: "", sourceLabel: "" };
 const EMPTY_PROGRAMME_FORM = {
+  name: "",
   description: "",
+  duration: "",
+  qualification: "",
+  faculty: "",
+  studyMode: "",
   applyUrl: "",
   officialUrl: "",
+  applicationWindowStatus: APPLICATION_WINDOW_OPEN,
   applicationDeadline: "",
   feesDomestic: "",
   minPoints: "",
   accreditationStatus: "",
-  accreditationBody: "",
-  accreditationNotes: "",
-  careers: "",
+  entryRequirements: "",
   jobOpportunities: "",
 };
+
+const PROGRAMME_LEVEL_OPTIONS = ["Undergraduate", "Postgraduate", "Diploma", "Certificate"];
+
+// Stored without hyphens so fitFinder.js still matches "full time" / "part time" / "online".
+const STUDY_MODE_OPTIONS = ["Full time", "Part time", "Distance", "Hybrid", "Online"];
+
+// "U" is a fail, so it is never a minimum entry requirement.
+const GRADE_OPTIONS = Object.keys(GRADE_POINTS).filter((grade) => grade !== "U");
+
+// Bundled data uses free-text levels ("Degree", "Higher Diploma"). Map them onto the
+// four options instead of blanking the dropdown and wiping the value on the next save.
+function matchProgrammeLevel(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  const exact = PROGRAMME_LEVEL_OPTIONS.find((option) => option.toLowerCase() === text.toLowerCase());
+  if (exact) return exact;
+  const level = inferQualificationLevel({ qualification: text });
+  if (level === "degree") return "Undergraduate";
+  if (level === "postgraduate" || level === "phd") return "Postgraduate";
+  if (level === "diploma") return "Diploma";
+  if (level === "certificate") return "Certificate";
+  return "";
+}
+
+// Likewise for study modes such as "Full Time / Evening" or "Block Release".
+function matchStudyMode(value) {
+  const text = String(value || "").trim().toLowerCase();
+  if (!text) return "";
+  const exact = STUDY_MODE_OPTIONS.find((option) => option.toLowerCase() === text);
+  if (exact) return exact;
+  if (text.includes("full")) return "Full time";
+  if (text.includes("part") || text.includes("evening") || text.includes("block")) return "Part time";
+  if (text.includes("hybrid") || text.includes("blended")) return "Hybrid";
+  if (text.includes("online")) return "Online";
+  if (text.includes("distance")) return "Distance";
+  return "";
+}
+
+const EMPTY_CAREER = { title: "", salary: "" };
+const EMPTY_MODULE = { code: "", name: "" };
+
+function toSelectOptions(values) {
+  return values.map((value) => ({ value, label: value }));
+}
+
+function normalizeSubjectRequirements(programme) {
+  const source = programme?.subjectRequirements;
+  const values = source && typeof source === "object" ? source : {};
+  return Object.fromEntries(SUBJECT_FIELDS.map(({ key }) => [key, String(values[key] || "").trim()]));
+}
+
+function normalizeModuleBlocks(programme) {
+  const raw = Array.isArray(programme?.modules) ? programme.modules : [];
+  return raw.map((block) => ({
+    semester: block?.semester == null ? "" : String(block.semester),
+    modules: (Array.isArray(block?.modules) ? block.modules : []).filter(Boolean).map(parseModuleEntry),
+  }));
+}
+
+function normalizeCareerRows(programme) {
+  const titles = [...new Set([...(programme?.careers || []), ...(programme?.careerOpportunities || [])])]
+    .map((title) => String(title || "").trim())
+    .filter(Boolean);
+  const salaries = programme?.careerSalaries && typeof programme.careerSalaries === "object" ? programme.careerSalaries : {};
+  return titles.map((title) => ({ title, salary: String(salaries[title] || "").trim() }));
+}
 
 function normalizeResourceRows(resources) {
   if (!Array.isArray(resources)) return [];
@@ -94,7 +177,28 @@ function normalizeStaffRows(staff) {
     email: row?.email || "",
     phone: row?.phone || "",
     department: row?.department || "",
+    photo: row?.photo || "",
   }));
+}
+
+function slugify(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+// Programme ids are the override primary key, so keep them unique per institution.
+function buildProgrammeId(institutionId, name) {
+  const suffix = Math.random().toString(36).slice(2, 7);
+  return [slugify(institutionId) || "institution", slugify(name) || "programme", suffix].join("-");
+}
+
+// Storage RLS only lets institution staff write under this prefix.
+function institutionAssetFolder(institutionId) {
+  const id = String(institutionId || "unknown").replace(/[^a-z0-9_-]+/gi, "-");
+  return `institutions/${id}`;
 }
 
 function formatCount(value) {
@@ -436,6 +540,7 @@ function usePartnerPortalData() {
   const [allUniversities, setAllUniversities] = useState([]);
   const [profileForm, setProfileForm] = useState({
     description: "",
+    applicationWindowStatus: APPLICATION_WINDOW_OPEN,
     applicationOpen: "",
     applicationClose: "",
     applyUrl: "",
@@ -448,11 +553,7 @@ function usePartnerPortalData() {
     generalEmail: "",
     admissionsEmail: "",
     accreditationStatus: "",
-    accreditationBody: "",
-    accreditationNotes: "",
-    accreditationSourceUrl: "",
     accommodationStatus: "",
-    accommodationDetails: "",
     healthDetails: "",
     safetyDetails: "",
     sportsDetails: "",
@@ -468,16 +569,22 @@ function usePartnerPortalData() {
   const [resourceRows, setResourceRows] = useState([]);
   const [staffRows, setStaffRows] = useState([]);
   const [studentLifeRows, setStudentLifeRows] = useState([]);
+  const [faculties, setFaculties] = useState([]);
   const [selectedProgrammeId, setSelectedProgrammeId] = useState("");
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
+  const [subjectRequirements, setSubjectRequirements] = useState(() => normalizeSubjectRequirements(null));
+  const [moduleBlocks, setModuleBlocks] = useState([]);
+  const [careerRows, setCareerRows] = useState([]);
 
   const activeInstitutionId = selectedInstitutionId || memberships[0]?.institution_id || "";
 
   const loadBase = useCallback(async () => {
+    // Partner staff manage their own institution regardless of which market the
+    // browsing session defaults to, so never scope this data by viewer country.
     const [members, universityData, programmeData] = await Promise.all([
       fetchInstitutionMemberships(),
-      fetchUniversities(),
-      fetchProgrammes(),
+      fetchUniversities({ includeAllCountries: true }),
+      fetchProgrammes({ includeAllCountries: true }),
     ]);
     setMemberships(members);
     setAllUniversities(universityData.list || []);
@@ -493,7 +600,7 @@ function usePartnerPortalData() {
       fetchInstitutionPartner(institutionId),
       fetchInstitutionAnalytics(institutionId, 14),
       fetchInstitutionLeads(institutionId),
-      fetchUniversities(),
+      fetchUniversities({ includeAllCountries: true }),
     ]);
     setPartner(partnerRow);
     setAnalytics(analyticsRows);
@@ -507,6 +614,9 @@ function usePartnerPortalData() {
       const socialLinks = normalizeUniversitySocialLinks(uni);
       setProfileForm({
         description: uni.description || "",
+        applicationWindowStatus: isApplicationWindowOpen(uni.applicationWindowStatus)
+          ? APPLICATION_WINDOW_OPEN
+          : APPLICATION_WINDOW_CLOSED,
         applicationOpen: uni.applicationOpen || "",
         applicationClose: uni.applicationClose || "",
         applyUrl: uni.applyUrl || "",
@@ -518,12 +628,16 @@ function usePartnerPortalData() {
         admissionsPhone: contacts.admissionsPhone,
         generalEmail: contacts.generalEmail,
         admissionsEmail: contacts.admissionsEmail,
-        accreditationStatus: accreditation.status,
-        accreditationBody: accreditation.body,
-        accreditationNotes: accreditation.notes,
-        accreditationSourceUrl: accreditation.sourceUrl,
-        accommodationStatus: studentLife.accommodationStatus,
-        accommodationDetails: studentLife.accommodationDetails,
+        accreditationStatus: accreditation.status
+          ? isAffirmativeStatus(accreditation.status)
+            ? ACCREDITATION_ON
+            : ACCREDITATION_OFF
+          : "",
+        accommodationStatus: studentLife.accommodationStatus
+          ? isAffirmativeStatus(studentLife.accommodationStatus)
+            ? ACCOMMODATION_ON
+            : ACCOMMODATION_OFF
+          : "",
         healthDetails: studentLife.healthDetails,
         safetyDetails: studentLife.safetyDetails,
         sportsDetails: studentLife.sportsDetails,
@@ -536,6 +650,7 @@ function usePartnerPortalData() {
         socialYoutube: socialLinks.youtube,
         socialTiktok: socialLinks.tiktok,
       });
+      setFaculties(normalizeUniversityFaculties(uni));
       setResourceRows(normalizeResourceRows(uni.resources));
       setStaffRows(normalizeStaffRows(uni.staff));
       setStudentLifeRows(
@@ -590,6 +705,7 @@ function usePartnerPortalData() {
     try {
       await saveInstitutionOverride(activeInstitutionId, {
         description: profileForm.description,
+        applicationWindowStatus: profileForm.applicationWindowStatus || APPLICATION_WINDOW_OPEN,
         applicationOpen: profileForm.applicationOpen || null,
         applicationClose: profileForm.applicationClose || null,
         applyUrl: profileForm.applyUrl || null,
@@ -604,11 +720,12 @@ function usePartnerPortalData() {
         phone: profileForm.generalPhone || null,
         email: profileForm.generalEmail || null,
         accreditationStatus: profileForm.accreditationStatus || null,
-        accreditationBody: profileForm.accreditationBody || null,
-        accreditationNotes: profileForm.accreditationNotes || null,
-        accreditationSourceUrl: profileForm.accreditationSourceUrl || null,
         accommodationStatus: profileForm.accommodationStatus || null,
-        accommodationDetails: profileForm.accommodationDetails || null,
+        // Retired free-text fields — nulled so values saved before the toggles disappear.
+        accreditationBody: null,
+        accreditationNotes: null,
+        accreditationSourceUrl: null,
+        accommodationDetails: null,
         healthDetails: profileForm.healthDetails || null,
         safetyDetails: profileForm.safetyDetails || null,
         sportsDetails: profileForm.sportsDetails || null,
@@ -662,6 +779,7 @@ function usePartnerPortalData() {
           email: row.email.trim(),
           phone: row.phone.trim(),
           department: row.department.trim(),
+          photo: row.photo.trim(),
         }))
         .filter((row) => row.name);
       await saveInstitutionOverride(activeInstitutionId, { staff });
@@ -679,16 +797,45 @@ function usePartnerPortalData() {
     setError("");
     setMessage("");
     try {
+      const careers = careerRows.map((row) => row.title.trim()).filter(Boolean);
+      const careerSalaries = {};
+      for (const row of careerRows) {
+        const title = row.title.trim();
+        const salary = row.salary.trim();
+        if (title && salary) careerSalaries[title] = salary;
+      }
+      const grades = Object.fromEntries(
+        Object.entries(subjectRequirements)
+          .map(([key, grade]) => [key, String(grade || "").trim()])
+          .filter(([, grade]) => grade),
+      );
+
       const patch = {
+        name: programmeForm.name.trim() || null,
         description: programmeForm.description || null,
+        duration: programmeForm.duration.trim() || null,
+        qualification: programmeForm.qualification || null,
+        faculty: programmeForm.faculty || null,
+        studyMode: programmeForm.studyMode || null,
         applyUrl: programmeForm.applyUrl || null,
         officialUrl: programmeForm.officialUrl || null,
+        applicationWindowStatus: programmeForm.applicationWindowStatus || APPLICATION_WINDOW_OPEN,
         applicationDeadline: programmeForm.applicationDeadline || null,
         accreditationStatus: programmeForm.accreditationStatus || null,
-        accreditationBody: programmeForm.accreditationBody || null,
-        accreditationNotes: programmeForm.accreditationNotes || null,
-        careers: splitMultilineList(programmeForm.careers),
-        careerOpportunities: splitMultilineList(programmeForm.careers),
+        // Retired free-text fields — nulled so values saved before the toggle disappear.
+        accreditationBody: null,
+        accreditationNotes: null,
+        subjectRequirements: grades,
+        requirements: splitMultilineList(programmeForm.entryRequirements),
+        modules: moduleBlocks
+          .map((block) => ({
+            semester: block.semester.trim(),
+            modules: block.modules.map(formatModuleEntry).filter(Boolean),
+          }))
+          .filter((block) => block.modules.length),
+        careers,
+        careerOpportunities: careers,
+        careerSalaries,
         jobOpportunities: splitMultilineList(programmeForm.jobOpportunities),
       };
       if (programmeForm.feesDomestic) {
@@ -707,6 +854,79 @@ function usePartnerPortalData() {
       return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
+      return false;
+    }
+  }
+
+  async function handleCreateProgramme({ name, field }) {
+    setError("");
+    setMessage("");
+    const cleanName = String(name || "").trim();
+    if (!cleanName) {
+      setError("Give the programme a name.");
+      return "";
+    }
+    if (!university) {
+      setError("Load an institution before adding programmes.");
+      return "";
+    }
+    try {
+      const programmeId = buildProgrammeId(activeInstitutionId, cleanName);
+      // The catalogue links programmes to institutions by name, so stamp an alias
+      // this institution is already known by.
+      const alias = universityProgrammeAliases(university)[0] || university.name;
+      await saveProgrammeOverrideForPartner(programmeId, activeInstitutionId, {
+        name: cleanName,
+        field: String(field || "").trim() || null,
+        university: university.name,
+        universityShort: alias,
+        country: university.country || null,
+        applicationWindowStatus: APPLICATION_WINDOW_OPEN,
+      });
+      setMessage(`${cleanName} added. Fill in the details below and save.`);
+      await loadBase();
+      await loadInstitution(activeInstitutionId);
+      return programmeId;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not add the programme.");
+      return "";
+    }
+  }
+
+  async function handleDeleteProgramme(programmeId) {
+    setError("");
+    setMessage("");
+    if (!programmeId) return false;
+    try {
+      // Archived rather than deleted: bundled catalogue programmes cannot be removed
+      // from the shipped data file, and this keeps the record recoverable.
+      await saveProgrammeOverrideForPartner(programmeId, activeInstitutionId, { archived: true });
+      setMessage("Programme removed from your public catalogue.");
+      if (selectedProgrammeId === programmeId) {
+        setSelectedProgrammeId("");
+        setProgrammeForm(EMPTY_PROGRAMME_FORM);
+      }
+      await loadBase();
+      await loadInstitution(activeInstitutionId);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not remove the programme.");
+      return false;
+    }
+  }
+
+  async function handleSaveFaculties(nextFaculties) {
+    setError("");
+    setMessage("");
+    try {
+      const cleaned = [...new Set(nextFaculties.map((name) => String(name || "").trim()).filter(Boolean))];
+      await saveInstitutionOverride(activeInstitutionId, { faculties: cleaned });
+      setFaculties(cleaned);
+      setMessage("Faculty list saved.");
+      await loadInstitution(activeInstitutionId);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not save the faculty list.");
       return false;
     }
   }
@@ -730,19 +950,35 @@ function usePartnerPortalData() {
     const programme = institutionProgrammes.find((row) => row.id === programmeId);
     if (!programme) {
       setProgrammeForm(EMPTY_PROGRAMME_FORM);
+      setSubjectRequirements(normalizeSubjectRequirements(null));
+      setModuleBlocks([]);
+      setCareerRows([]);
       return;
     }
+    setSubjectRequirements(normalizeSubjectRequirements(programme));
+    setModuleBlocks(normalizeModuleBlocks(programme));
+    setCareerRows(normalizeCareerRows(programme));
     setProgrammeForm({
+      name: programme.name || "",
       description: programme.description || "",
+      duration: programme.duration || "",
+      qualification: matchProgrammeLevel(programme.qualification),
+      faculty: programme.faculty || "",
+      studyMode: matchStudyMode(programme.studyMode),
       applyUrl: programme.applyUrl || "",
       officialUrl: programme.officialUrl || "",
+      applicationWindowStatus: isApplicationWindowOpen(programme.applicationWindowStatus)
+        ? APPLICATION_WINDOW_OPEN
+        : APPLICATION_WINDOW_CLOSED,
       applicationDeadline: programme.applicationDeadline?.slice(0, 10) || "",
       feesDomestic: programme.fees?.domestic != null ? String(programme.fees.domestic) : "",
       minPoints: programme.minPoints != null ? String(programme.minPoints) : "",
-      accreditationStatus: programme.accreditationStatus || "",
-      accreditationBody: programme.accreditationBody || "",
-      accreditationNotes: programme.accreditationNotes || "",
-      careers: [...new Set([...(programme.careers || []), ...(programme.careerOpportunities || [])])].join("\n"),
+      accreditationStatus: programme.accreditationStatus
+        ? isAffirmativeStatus(programme.accreditationStatus)
+          ? ACCREDITATION_ON
+          : ACCREDITATION_OFF
+        : "",
+      entryRequirements: (Array.isArray(programme.requirements) ? programme.requirements : []).join("\n"),
       jobOpportunities: (programme.jobOpportunities || []).join("\n"),
     });
   }
@@ -780,9 +1016,16 @@ function usePartnerPortalData() {
     setStaffRows,
     studentLifeRows,
     setStudentLifeRows,
+    faculties,
     selectedProgrammeId,
     programmeForm,
     setProgrammeForm,
+    subjectRequirements,
+    setSubjectRequirements,
+    moduleBlocks,
+    setModuleBlocks,
+    careerRows,
+    setCareerRows,
     fillProgrammeForm,
     hasAccess,
     institutionProgrammes,
@@ -792,6 +1035,9 @@ function usePartnerPortalData() {
     handleSaveProfile,
     handleSaveStaff,
     handleSaveProgramme,
+    handleCreateProgramme,
+    handleDeleteProgramme,
+    handleSaveFaculties,
     handleClaim,
     loadInstitution,
     updateLeadStatus,
@@ -1042,7 +1288,7 @@ function HomePage() {
       </section>
 
       <section className="grid gap-5 xl:grid-cols-3">
-        <Panel title="Recent activity" action="View leads" onAction={() => navigate("/leads")}>
+        <Panel title="Recent activity" action="View leads" onAction={() => navigate("/analytics?tab=leads")}>
           {portal.dashboard.recentActivity.length ? (
             <div className="space-y-3">
               {portal.dashboard.recentActivity.map((item, index) => (
@@ -1218,15 +1464,35 @@ const SOCIAL_FIELDS = UNIVERSITY_SOCIAL_PLATFORMS.map((platform) => ({
   type: "url",
 }));
 
+const ACCREDITATION_TOGGLE = {
+  type: "toggle",
+  onValue: ACCREDITATION_ON,
+  offValue: ACCREDITATION_OFF,
+  onLabel: "Accredited",
+  offLabel: "Not accredited",
+};
+
+const APPLICATION_WINDOW_TOGGLE = {
+  key: "applicationWindowStatus",
+  label: "Application window",
+  type: "toggle",
+  onValue: APPLICATION_WINDOW_OPEN,
+  offValue: APPLICATION_WINDOW_CLOSED,
+  onLabel: "Open",
+  offLabel: "Closed",
+  span: "full",
+};
+
 const TAB_FIELDS = {
   basics: [
     { key: "description", label: "Institution description", type: "textarea", rows: 5, span: "full" },
     { key: "universityType", label: "Institution type" },
-    { key: "logo", label: "Logo URL", type: "url" },
+    { key: "logo", label: "Institution logo", type: "photo", folder: "logo", shape: "logo" },
   ],
   admissions: [
-    { key: "applicationOpen", label: "Applications open", type: "date" },
-    { key: "applicationClose", label: "Applications close", type: "date" },
+    APPLICATION_WINDOW_TOGGLE,
+    { key: "applicationOpen", label: "Applications open", type: "date", lockedWhenClosed: true },
+    { key: "applicationClose", label: "Applications close", type: "date", lockedWhenClosed: true },
     { key: "applyUrl", label: "Application website", type: "url" },
     { key: "admissionsEmail", label: "Admissions email", type: "email" },
     { key: "admissionsPhone", label: "Admissions phone" },
@@ -1239,16 +1505,20 @@ const TAB_FIELDS = {
     ...SOCIAL_FIELDS,
   ],
   "student-life": [
-    { key: "accommodationStatus", label: "Accommodation status" },
-    { key: "accreditationStatus", label: "Accreditation status" },
-    { key: "accreditationBody", label: "Accreditation body" },
-    { key: "accreditationSourceUrl", label: "Accreditation source URL", type: "url" },
-    { key: "accommodationDetails", label: "Accommodation details", type: "textarea", rows: 3 },
+    {
+      key: "accommodationStatus",
+      label: "Student accommodation",
+      type: "toggle",
+      onValue: ACCOMMODATION_ON,
+      offValue: ACCOMMODATION_OFF,
+      onLabel: "Available",
+      offLabel: "Unavailable",
+    },
+    { ...ACCREDITATION_TOGGLE, key: "accreditationStatus", label: "Institution accreditation" },
     { key: "careerSupportDetails", label: "Career support details", type: "textarea", rows: 3 },
     { key: "healthDetails", label: "Health and wellbeing", type: "textarea", rows: 3 },
     { key: "safetyDetails", label: "Safety and security", type: "textarea", rows: 3 },
     { key: "sportsDetails", label: "Sport and recreation", type: "textarea", rows: 3 },
-    { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3 },
   ],
 };
 
@@ -1260,8 +1530,73 @@ function formatLongDate(value) {
   return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
 }
 
-function ReadOnlyValue({ field, value }) {
+function StatusPill({ on, label }) {
+  return (
+    <span
+      className={[
+        "mt-1.5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold",
+        on ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-600",
+      ].join(" ")}
+    >
+      <span className={["h-2 w-2 rounded-full", on ? "bg-emerald-500" : "bg-slate-400"].join(" ")} />
+      {label}
+    </span>
+  );
+}
+
+function ToggleSwitch({ on, onLabel, offLabel, onToggle }) {
+  return (
+    <div className="mt-1.5 flex items-center gap-3">
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        aria-label={on ? onLabel : offLabel}
+        onClick={() => onToggle(!on)}
+        className={[
+          "relative h-7 w-12 shrink-0 rounded-full transition",
+          on ? "bg-emerald-500" : "bg-slate-300",
+        ].join(" ")}
+      >
+        <span
+          className={[
+            "absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all",
+            on ? "left-6" : "left-1",
+          ].join(" ")}
+        />
+      </button>
+      <span className="text-sm font-semibold text-slate-800">{on ? onLabel : offLabel}</span>
+    </div>
+  );
+}
+
+function PhotoPreview({ value, shape }) {
+  if (!value) return <span className="mt-1.5 block text-sm text-slate-400">—</span>;
+  return (
+    <span
+      className={[
+        "mt-1.5 grid overflow-hidden border border-slate-200 bg-white",
+        shape === "avatar" ? "h-16 w-16 rounded-full" : "h-24 w-24 rounded-2xl",
+      ].join(" ")}
+    >
+      <img src={value} alt="" className="h-full w-full object-contain" />
+    </span>
+  );
+}
+
+function ReadOnlyValue({ field, value, options }) {
   const text = String(value ?? "").trim();
+  if (field.type === "photo") return <PhotoPreview value={text} shape={field.shape} />;
+  if (field.type === "select") {
+    if (!text) return <span className="mt-1.5 block text-sm text-slate-400">Not set</span>;
+    const match = (options || field.options || []).find((option) => option.value === text);
+    return <span className="mt-1.5 block text-sm text-slate-800">{match?.label || text}</span>;
+  }
+  if (field.type === "toggle") {
+    if (!text) return <span className="mt-1.5 block text-sm text-slate-400">Not set</span>;
+    const on = text === field.onValue;
+    return <StatusPill on={on} label={on ? field.onLabel : field.offLabel} />;
+  }
   if (!text) return <span className="mt-1.5 block text-sm text-slate-400">—</span>;
   if (field.type === "url") {
     return (
@@ -1289,9 +1624,10 @@ function ReadOnlyValue({ field, value }) {
   );
 }
 
-function ProfileField({ field, value, editing, onChange }) {
+function ProfileField({ field, value, editing, onChange, uploadFolder, note, options }) {
   const spanClass = field.span === "full" ? "md:col-span-2 2xl:col-span-3" : "";
   const inputType = field.type === "date" ? "date" : field.type === "email" ? "email" : "text";
+  const selectOptions = options || field.options || [];
 
   return (
     <div
@@ -1300,7 +1636,33 @@ function ProfileField({ field, value, editing, onChange }) {
       <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{field.label}</dt>
       <dd>
         {editing ? (
-          field.type === "textarea" ? (
+          field.type === "toggle" ? (
+            <ToggleSwitch
+              on={value === field.onValue}
+              onLabel={field.onLabel}
+              offLabel={field.offLabel}
+              onToggle={(next) => onChange(next ? field.onValue : field.offValue)}
+            />
+          ) : field.type === "select" ? (
+            <select value={value} onChange={(event) => onChange(event.target.value)} className={FIELD_INPUT_CLASS}>
+              <option value="">{field.placeholder || "Not set"}</option>
+              {selectOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          ) : field.type === "photo" ? (
+            <div className="mt-2">
+              <PhotoUploadField
+                value={value}
+                onChange={onChange}
+                folder={[uploadFolder, field.folder].filter(Boolean).join("/") || "general"}
+                label={String(field.label || "photo").toLowerCase()}
+                shape={field.shape}
+              />
+            </div>
+          ) : field.type === "textarea" ? (
             <textarea
               value={value}
               onChange={(event) => onChange(event.target.value)}
@@ -1318,25 +1680,37 @@ function ProfileField({ field, value, editing, onChange }) {
             />
           )
         ) : (
-          <ReadOnlyValue field={field} value={value} />
+          <ReadOnlyValue field={field} value={value} options={selectOptions} />
         )}
+        {note ? <p className="mt-1.5 text-xs text-slate-500">{note}</p> : null}
       </dd>
     </div>
   );
 }
 
-function FieldGrid({ fields, form, editing, onChange }) {
+const CLOSED_DATES_NOTE = "Locked while applications are closed. Switch the window to Open to edit.";
+
+function FieldGrid({ fields, form, editing, onChange, uploadFolder, optionsByKey }) {
+  // Deadlines stay read-only while the application window is closed.
+  const windowClosed = !isApplicationWindowOpen(form.applicationWindowStatus);
+
   return (
     <dl className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
-      {fields.map((field) => (
-        <ProfileField
-          key={field.key}
-          field={field}
-          value={form[field.key] || ""}
-          editing={editing}
-          onChange={(next) => onChange(field.key, next)}
-        />
-      ))}
+      {fields.map((field) => {
+        const locked = Boolean(field.lockedWhenClosed) && windowClosed;
+        return (
+          <ProfileField
+            key={field.key}
+            field={field}
+            value={form[field.key] || ""}
+            editing={editing && !locked}
+            onChange={(next) => onChange(field.key, next)}
+            uploadFolder={uploadFolder}
+            options={optionsByKey?.[field.key]}
+            note={editing && locked ? CLOSED_DATES_NOTE : ""}
+          />
+        );
+      })}
     </dl>
   );
 }
@@ -1382,19 +1756,17 @@ function EmptyRowsNote({ children }) {
   );
 }
 
-function CampusTab({ portal, editing, onChange }) {
+function CampusTab({ portal, editing, onChange, uploadFolder }) {
   const photos = splitMultilineList(portal.profileForm.campusPhotosText);
 
   return (
     <div className="space-y-5">
       <FormSection title="Campus photos" description="Shown in the photo strip on your public institution page.">
         {editing ? (
-          <textarea
-            value={portal.profileForm.campusPhotosText}
-            onChange={(event) => onChange("campusPhotosText", event.target.value)}
-            rows={5}
-            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
-            placeholder="One campus photo URL per line"
+          <PhotoGalleryField
+            value={photos}
+            onChange={(urls) => onChange("campusPhotosText", urls.join("\n"))}
+            folder={`${uploadFolder}/campus`}
           />
         ) : photos.length ? (
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
@@ -1638,7 +2010,7 @@ function StudentLifeTab({ portal, editing, onChange }) {
   );
 }
 
-function StaffTab({ portal, editing }) {
+function StaffTab({ portal, editing, uploadFolder }) {
   return (
     <div className="space-y-5">
       <FormSection
@@ -1665,6 +2037,18 @@ function StaffTab({ portal, editing }) {
                 key={`staff-${index}`}
                 className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-2 2xl:grid-cols-3"
               >
+                <div className="md:col-span-2 2xl:col-span-3">
+                  <PhotoUploadField
+                    value={row.photo}
+                    onChange={(url) =>
+                      portal.setStaffRows((rows) => rows.map((item, i) => (i === index ? { ...item, photo: url } : item)))
+                    }
+                    folder={`${uploadFolder}/staff`}
+                    label="photo"
+                    shape="avatar"
+                    hint="Optional headshot. JPG, PNG or WebP."
+                  />
+                </div>
                 <input
                   value={row.name}
                   onChange={(event) =>
@@ -1730,6 +2114,14 @@ function StaffTab({ portal, editing }) {
           <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-4">
             {portal.staffRows.map((row, index) => (
               <div key={`staff-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                {row.photo ? (
+                  <img
+                    src={row.photo}
+                    alt=""
+                    loading="lazy"
+                    className="mb-2 h-14 w-14 rounded-full border border-slate-200 object-cover"
+                  />
+                ) : null}
                 <p className="font-semibold text-slate-900">{row.name || "Unnamed"}</p>
                 <p className="mt-1 text-sm text-slate-600">{[row.title, row.department].filter(Boolean).join(" · ") || "—"}</p>
                 {row.email ? (
@@ -1778,6 +2170,7 @@ function ProfilePage() {
   const previewHref = portal.activeInstitutionId
     ? buildAppUrl(`/universities/${portal.activeInstitutionId}`)
     : buildAppUrl("/universities");
+  const uploadFolder = institutionAssetFolder(portal.activeInstitutionId);
 
   // Switching institutions reloads every form, so any in-flight edit no longer applies.
   useEffect(() => {
@@ -1911,13 +2304,19 @@ function ProfilePage() {
         </div>
 
         {activeTab === "campus" ? (
-          <CampusTab portal={portal} editing={editing} onChange={updateField} />
+          <CampusTab portal={portal} editing={editing} onChange={updateField} uploadFolder={uploadFolder} />
         ) : activeTab === "student-life" ? (
           <StudentLifeTab portal={portal} editing={editing} onChange={updateField} />
         ) : activeTab === "staff" ? (
-          <StaffTab portal={portal} editing={editing} />
+          <StaffTab portal={portal} editing={editing} uploadFolder={uploadFolder} />
         ) : (
-          <FieldGrid fields={TAB_FIELDS[activeTab]} form={portal.profileForm} editing={editing} onChange={updateField} />
+          <FieldGrid
+            fields={TAB_FIELDS[activeTab]}
+            form={portal.profileForm}
+            editing={editing}
+            onChange={updateField}
+            uploadFolder={uploadFolder}
+          />
         )}
       </div>
     </section>
@@ -1925,33 +2324,356 @@ function ProfilePage() {
 }
 
 const PROGRAMME_FIELDS = [
+  { key: "name", label: "Programme name" },
+  { key: "duration", label: "Duration", placeholder: "4 years" },
+  { key: "qualification", label: "Level", type: "select", options: toSelectOptions(PROGRAMME_LEVEL_OPTIONS) },
+  { key: "faculty", label: "Faculty", type: "select", placeholder: "No faculty set" },
+  { key: "studyMode", label: "Study mode", type: "select", options: toSelectOptions(STUDY_MODE_OPTIONS) },
   { key: "description", label: "Programme description", type: "textarea", rows: 5, span: "full" },
   { key: "applyUrl", label: "External application link", type: "url" },
   { key: "officialUrl", label: "Official programme page", type: "url" },
-  { key: "applicationDeadline", label: "Application deadline", type: "date" },
+  APPLICATION_WINDOW_TOGGLE,
+  { key: "applicationDeadline", label: "Application deadline", type: "date", lockedWhenClosed: true },
   { key: "minPoints", label: "Minimum points" },
-  { key: "accreditationStatus", label: "Accreditation status" },
-  { key: "accreditationBody", label: "Accreditation body" },
-  { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3, span: "full" },
-  { key: "careers", label: "Career outcomes (one per line)", type: "textarea", rows: 4 },
+  { ...ACCREDITATION_TOGGLE, key: "accreditationStatus", label: "Programme accreditation" },
   { key: "jobOpportunities", label: "Common jobs after graduation (one per line)", type: "textarea", rows: 4 },
 ];
+
+function SubjectRequirementsEditor({ portal, editing }) {
+  const listed = SUBJECT_FIELDS.filter(({ key }) => portal.subjectRequirements[key]);
+
+  if (!editing) {
+    return listed.length ? (
+      <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+        {listed.map(({ key, label }) => (
+          <div key={key} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</p>
+            <p className="mt-1 font-semibold text-slate-900">At least {portal.subjectRequirements[key]}</p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <EmptyRowsNote>No subject grade requirements set.</EmptyRowsNote>
+    );
+  }
+
+  return (
+    <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+      {SUBJECT_FIELDS.map(({ key, label }) => (
+        <label key={key} className="min-w-0 rounded-2xl border border-slate-200 bg-white px-4 py-3">
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</span>
+          <select
+            value={portal.subjectRequirements[key] || ""}
+            onChange={(event) =>
+              portal.setSubjectRequirements((state) => ({ ...state, [key]: event.target.value }))
+            }
+            className={FIELD_INPUT_CLASS}
+          >
+            <option value="">No requirement</option>
+            {GRADE_OPTIONS.map((grade) => (
+              <option key={grade} value={grade}>
+                At least {grade}
+              </option>
+            ))}
+          </select>
+        </label>
+      ))}
+    </div>
+  );
+}
+
+function ModuleBlocksEditor({ portal, editing }) {
+  function updateBlock(index, patch) {
+    portal.setModuleBlocks((blocks) => blocks.map((block, i) => (i === index ? { ...block, ...patch } : block)));
+  }
+
+  function updateModule(blockIndex, moduleIndex, patch) {
+    portal.setModuleBlocks((blocks) =>
+      blocks.map((block, i) =>
+        i === blockIndex
+          ? { ...block, modules: block.modules.map((item, j) => (j === moduleIndex ? { ...item, ...patch } : item)) }
+          : block,
+      ),
+    );
+  }
+
+  if (!editing) {
+    return portal.moduleBlocks.length ? (
+      <div className="grid gap-3 md:grid-cols-2">
+        {portal.moduleBlocks.map((block, index) => (
+          <div key={`module-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+              {formatModuleSemesterLabel(block.semester)}
+            </p>
+            <ul className="mt-2 space-y-1 text-sm text-slate-700">
+              {block.modules.map((item, moduleIndex) => (
+                <li key={`module-view-${index}-${moduleIndex}`}>
+                  {item.code ? <span className="font-semibold text-slate-900">{item.code}</span> : null}
+                  {item.code && item.name ? " · " : ""}
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <EmptyRowsNote>No modules listed yet.</EmptyRowsNote>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {portal.moduleBlocks.map((block, index) => (
+        <div key={`module-${index}`} className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <label className="min-w-0">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Semester</span>
+              <input
+                value={block.semester}
+                onChange={(event) => updateBlock(index, { semester: event.target.value })}
+                className={FIELD_INPUT_CLASS}
+                placeholder="1"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={() => portal.setModuleBlocks((blocks) => blocks.filter((_, i) => i !== index))}
+              className="self-end text-sm font-semibold text-red-700"
+            >
+              Remove semester
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            {block.modules.map((item, moduleIndex) => (
+              <div key={`module-${index}-${moduleIndex}`} className="grid gap-2 md:grid-cols-[10rem_minmax(0,1fr)_auto]">
+                <input
+                  value={item.code}
+                  onChange={(event) => updateModule(index, moduleIndex, { code: event.target.value })}
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Code"
+                  aria-label="Module code"
+                />
+                <input
+                  value={item.name}
+                  onChange={(event) => updateModule(index, moduleIndex, { name: event.target.value })}
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Module name"
+                  aria-label="Module name"
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateBlock(index, { modules: block.modules.filter((_, j) => j !== moduleIndex) })
+                  }
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-red-700"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => updateBlock(index, { modules: [...block.modules, { ...EMPTY_MODULE }] })}
+            className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+          >
+            Add module
+          </button>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() =>
+          portal.setModuleBlocks((blocks) => [
+            ...blocks,
+            { semester: String(blocks.length + 1), modules: [{ ...EMPTY_MODULE }] },
+          ])
+        }
+        className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+      >
+        Add semester
+      </button>
+    </div>
+  );
+}
+
+function CareerRowsEditor({ portal, editing }) {
+  if (!editing) {
+    return portal.careerRows.length ? (
+      <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+        {portal.careerRows.map((row, index) => (
+          <div key={`career-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <p className="font-semibold text-slate-900">{row.title}</p>
+            <p className="mt-1 text-sm text-slate-600">{row.salary || "Thuto estimate shown to students"}</p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <EmptyRowsNote>No career prospects listed yet.</EmptyRowsNote>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {portal.careerRows.map((row, index) => (
+        <div key={`career-${index}`} className="grid gap-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
+          <input
+            value={row.title}
+            onChange={(event) =>
+              portal.setCareerRows((rows) => rows.map((item, i) => (i === index ? { ...item, title: event.target.value } : item)))
+            }
+            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+            placeholder="Career"
+            aria-label="Career"
+          />
+          <input
+            value={row.salary}
+            onChange={(event) =>
+              portal.setCareerRows((rows) => rows.map((item, i) => (i === index ? { ...item, salary: event.target.value } : item)))
+            }
+            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+            placeholder="P8,000–P15,000/month"
+            aria-label="Salary estimate"
+          />
+          <button
+            type="button"
+            onClick={() => portal.setCareerRows((rows) => rows.filter((_, i) => i !== index))}
+            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-red-700"
+          >
+            Remove
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() => portal.setCareerRows((rows) => [...rows, { ...EMPTY_CAREER }])}
+        className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+      >
+        Add career
+      </button>
+      <p className="text-xs text-slate-500">
+        Leave a salary blank to keep showing Thuto&apos;s indicative range for that career.
+      </p>
+    </div>
+  );
+}
+
+function FacultyManager({ portal }) {
+  const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  async function addFaculty(event) {
+    event.preventDefault();
+    const name = draft.trim();
+    if (!name) return;
+    const saved = await portal.handleSaveFaculties([...portal.faculties, name]);
+    if (saved) setDraft("");
+  }
+
+  return (
+    <section className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="font-semibold text-slate-900">Faculties</h3>
+          <p className="mt-1 text-sm text-slate-600">
+            The list students see, and the options in each programme&apos;s Faculty dropdown.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setOpen((state) => !state)}
+          className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+        >
+          {open ? "Done" : "Manage faculties"}
+        </button>
+      </div>
+
+      {open ? (
+        <div className="mt-4 space-y-3">
+          {portal.faculties.length ? (
+            <ul className="flex flex-wrap gap-2">
+              {portal.faculties.map((name) => (
+                <li
+                  key={name}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-800"
+                >
+                  {name}
+                  <button
+                    type="button"
+                    onClick={() => portal.handleSaveFaculties(portal.faculties.filter((item) => item !== name))}
+                    aria-label={`Remove ${name}`}
+                    className="text-red-700 hover:text-red-900"
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-slate-500">
+              No faculties saved yet. Faculties already used by your programmes still appear in the dropdown.
+            </p>
+          )}
+
+          <form onSubmit={addFaculty} className="flex flex-wrap gap-2">
+            <input
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+              placeholder="Faculty of Engineering & Technology"
+            />
+            <button type="submit" className="rounded-2xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-800">
+              Add faculty
+            </button>
+          </form>
+        </div>
+      ) : null}
+    </section>
+  );
+}
 
 function ProgrammesPage() {
   const portal = usePortal();
   useDocumentTitle("Programmes | Institution Dashboard");
   const [editing, setEditing] = useState(false);
   const [snapshot, setSnapshot] = useState(null);
+  const [search, setSearch] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [newProgramme, setNewProgramme] = useState({ name: "", field: "" });
+  const [pendingDelete, setPendingDelete] = useState("");
+
+  const matches = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return portal.institutionProgrammes;
+    return portal.institutionProgrammes.filter((programme) =>
+      [programme.name, programme.field, programme.id].filter(Boolean).join(" ").toLowerCase().includes(term),
+    );
+  }, [portal.institutionProgrammes, search]);
 
   const feeField = {
     key: "feesDomestic",
     label: `Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`,
   };
 
+  // Saved faculties plus any already in use across this institution's catalogue.
+  const facultyOptions = useMemo(() => {
+    const names = new Set(portal.faculties);
+    for (const programme of portal.institutionProgrammes) {
+      const name = String(programme.faculty || "").trim();
+      if (name) names.add(name);
+    }
+    return toSelectOptions([...names].sort((a, b) => a.localeCompare(b)));
+  }, [portal.faculties, portal.institutionProgrammes]);
+
   // Changing the selected programme swaps the whole form out from under an edit.
   useEffect(() => {
     setEditing(false);
     setSnapshot(null);
+    setPendingDelete("");
   }, [portal.selectedProgrammeId]);
 
   function updateField(key, value) {
@@ -1959,12 +2681,22 @@ function ProgrammesPage() {
   }
 
   function startEditing() {
-    setSnapshot(portal.programmeForm);
+    setSnapshot({
+      programmeForm: portal.programmeForm,
+      subjectRequirements: portal.subjectRequirements,
+      moduleBlocks: portal.moduleBlocks,
+      careerRows: portal.careerRows,
+    });
     setEditing(true);
   }
 
   function cancelEditing() {
-    if (snapshot) portal.setProgrammeForm(snapshot);
+    if (snapshot) {
+      portal.setProgrammeForm(snapshot.programmeForm);
+      portal.setSubjectRequirements(snapshot.subjectRequirements);
+      portal.setModuleBlocks(snapshot.moduleBlocks);
+      portal.setCareerRows(snapshot.careerRows);
+    }
     setSnapshot(null);
     setEditing(false);
   }
@@ -1976,6 +2708,18 @@ function ProgrammesPage() {
     setEditing(false);
   }
 
+  async function submitNewProgramme(event) {
+    event.preventDefault();
+    const programmeId = await portal.handleCreateProgramme(newProgramme);
+    if (!programmeId) return;
+    setNewProgramme({ name: "", field: "" });
+    setAdding(false);
+    setSearch("");
+    portal.fillProgrammeForm(programmeId);
+  }
+
+  const selectedProgramme = portal.institutionProgrammes.find((row) => row.id === portal.selectedProgrammeId);
+
   return (
     <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -1986,89 +2730,301 @@ function ProgrammesPage() {
             {editing ? "Editing — changes publish when you save." : "Pick a programme to review what students currently see."}
           </p>
         </div>
-        {portal.selectedProgrammeId ? (
-          <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
-        ) : null}
+        <div className="flex flex-wrap items-center gap-2">
+          {portal.selectedProgrammeId ? (
+            <EditControls
+              editing={editing}
+              locked={false}
+              onEdit={startEditing}
+              onSave={saveEditing}
+              onCancel={cancelEditing}
+            />
+          ) : null}
+          {!editing ? (
+            <button
+              type="button"
+              onClick={() => setAdding((open) => !open)}
+              className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+            >
+              {adding ? "Cancel" : "Add programme"}
+            </button>
+          ) : null}
+        </div>
       </div>
 
-      <select
-        value={portal.selectedProgrammeId}
-        onChange={(event) => portal.fillProgrammeForm(event.target.value)}
-        aria-label="Select programme"
-        className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm lg:max-w-md"
-      >
-        <option value="">Select programme</option>
-        {portal.institutionProgrammes.map((programme) => (
-          <option key={programme.id} value={programme.id}>
-            {programme.name}
-          </option>
-        ))}
-      </select>
+      {adding ? (
+        <form onSubmit={submitNewProgramme} className="grid gap-3 rounded-3xl border border-brand-200 bg-brand-50/40 p-4 md:grid-cols-[1.4fr_1fr_auto]">
+          <label className="min-w-0">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Programme name</span>
+            <input
+              value={newProgramme.name}
+              onChange={(event) => setNewProgramme((state) => ({ ...state, name: event.target.value }))}
+              className={FIELD_INPUT_CLASS}
+              placeholder="BSc Computer Science"
+              autoFocus
+            />
+          </label>
+          <label className="min-w-0">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Field (optional)</span>
+            <input
+              value={newProgramme.field}
+              onChange={(event) => setNewProgramme((state) => ({ ...state, field: event.target.value }))}
+              className={FIELD_INPUT_CLASS}
+              placeholder="Science and Technology"
+            />
+          </label>
+          <button
+            type="submit"
+            className="self-end rounded-2xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-800"
+          >
+            Create
+          </button>
+        </form>
+      ) : null}
 
-      {portal.selectedProgrammeId ? (
-        <>
-          <FieldGrid
-            fields={[...PROGRAMME_FIELDS, feeField]}
-            form={portal.programmeForm}
-            editing={editing}
-            onChange={updateField}
-          />
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
-            </div>
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
-            </div>
-          </div>
-        </>
+      <FacultyManager portal={portal} />
+
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+        <div className="space-y-3">
+          <label className="block">
+            <span className="sr-only">Search programmes</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+              placeholder="Search programmes"
+            />
+          </label>
+          <p className="text-xs text-slate-500">
+            {matches.length === portal.institutionProgrammes.length
+              ? `${portal.institutionProgrammes.length} programmes`
+              : `${matches.length} of ${portal.institutionProgrammes.length} programmes`}
+          </p>
+
+          {matches.length ? (
+            <ul className="max-h-[28rem] space-y-2 overflow-y-auto pr-1">
+              {matches.map((programme) => {
+                const isActive = programme.id === portal.selectedProgrammeId;
+                return (
+                  <li key={programme.id}>
+                    <button
+                      type="button"
+                      onClick={() => portal.fillProgrammeForm(programme.id)}
+                      aria-current={isActive}
+                      className={[
+                        "w-full rounded-2xl border px-4 py-3 text-left transition",
+                        isActive
+                          ? "border-brand-300 bg-brand-50 text-brand-900"
+                          : "border-slate-200 bg-white text-slate-800 hover:border-brand-200 hover:bg-brand-50/40",
+                      ].join(" ")}
+                    >
+                      <span className="block truncate text-sm font-semibold">{programme.name}</span>
+                      <span className="mt-0.5 block truncate text-xs text-slate-500">{programme.field || "No field set"}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <EmptyRowsNote>
+              {portal.institutionProgrammes.length ? "No programmes match that search." : "No programmes listed yet."}
+            </EmptyRowsNote>
+          )}
+        </div>
+
+        <div className="min-w-0 space-y-5">
+          {portal.selectedProgrammeId ? (
+            <>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h3 className="min-w-0 font-display text-xl font-semibold text-slate-900">
+                  {selectedProgramme?.name || "Programme"}
+                </h3>
+                {!editing ? (
+                  pendingDelete === portal.selectedProgrammeId ? (
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm text-slate-600">Remove from your public catalogue?</span>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await portal.handleDeleteProgramme(portal.selectedProgrammeId);
+                          setPendingDelete("");
+                        }}
+                        className="rounded-2xl bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPendingDelete("")}
+                        className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
+                      >
+                        Keep
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setPendingDelete(portal.selectedProgrammeId)}
+                      className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+                    >
+                      Delete programme
+                    </button>
+                  )
+                ) : null}
+              </div>
+
+              <FieldGrid
+                fields={[...PROGRAMME_FIELDS, feeField]}
+                form={portal.programmeForm}
+                editing={editing}
+                onChange={updateField}
+                optionsByKey={{ faculty: facultyOptions }}
+              />
+
+              <FormSection
+                title="Entry requirements"
+                description="Minimum subject grades feed the BGCSE predictor. Add anything else students must meet below."
+              >
+                <SubjectRequirementsEditor portal={portal} editing={editing} />
+                {editing ? (
+                  <label className="block">
+                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                      Other requirements (one per line)
+                    </span>
+                    <textarea
+                      value={portal.programmeForm.entryRequirements}
+                      onChange={(event) => updateField("entryRequirements", event.target.value)}
+                      rows={3}
+                      className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+                      placeholder="Physically fit&#10;Portfolio required"
+                    />
+                  </label>
+                ) : splitMultilineList(portal.programmeForm.entryRequirements).length ? (
+                  <ul className="list-inside list-disc text-sm text-slate-700">
+                    {splitMultilineList(portal.programmeForm.entryRequirements).map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </FormSection>
+
+              <FormSection title="Modules per semester" description="Add each module's code and name.">
+                <ModuleBlocksEditor portal={portal} editing={editing} />
+              </FormSection>
+
+              <FormSection
+                title="Career prospects"
+                description="Careers this programme leads to, with your own salary estimate for each."
+              >
+                <CareerRowsEditor portal={portal} editing={editing} />
+              </FormSection>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                  Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
+                </div>
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                  Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
+                </div>
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ANALYTICS_TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "leads", label: "Leads" },
+];
+
+function AnalyticsPage() {
+  const portal = usePortal();
+  const [searchParams, setSearchParams] = useSearchParams();
+  useDocumentTitle("Data and Analytics | Institution Dashboard");
+
+  const requestedTab = searchParams.get("tab");
+  const activeTab = ANALYTICS_TABS.some((tab) => tab.id === requestedTab) ? requestedTab : ANALYTICS_TABS[0].id;
+  const newLeads = portal.leads.filter((lead) => lead.status === "new").length;
+
+  function selectTab(tabId) {
+    setSearchParams(tabId === ANALYTICS_TABS[0].id ? {} : { tab: tabId });
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="border-b border-slate-200">
+        <div role="tablist" aria-label="Analytics sections" className="flex gap-6 overflow-x-auto">
+          {ANALYTICS_TABS.map((tab) => {
+            const isActive = tab.id === activeTab;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => selectTab(tab.id)}
+                className={[
+                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
+                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                ].join(" ")}
+              >
+                {tab.label}
+                {tab.id === "leads" && newLeads ? (
+                  <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-800">
+                    {newLeads}
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {activeTab === "leads" ? (
+        <LeadsSection portal={portal} />
       ) : (
-        <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
+        <>
+          <PartnerInsightsDashboard
+            universityName={portal.university?.name || portal.activeInstitutionId}
+            programmeCount={portal.institutionProgrammes.length}
+            tier={portal.partner?.tier || "verified"}
+            newLeads={newLeads}
+            summary={portal.analyticsSummary}
+            profileCompleteness={portal.profileCompleteness}
+            onOpenModule={(moduleId) => {
+              if (moduleId === "leads") {
+                selectTab("leads");
+              }
+            }}
+          />
+
+          <Panel title="Export reports">
+            <p className="text-sm leading-relaxed text-slate-600">
+              CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme views,
+              link clicks, viewer countries, and institution profile performance.
+            </p>
+          </Panel>
+        </>
       )}
     </div>
   );
 }
 
-function AnalyticsPage() {
-  const portal = usePortal();
-  const navigate = useNavigate();
-  useDocumentTitle("Data and Analytics | Institution Dashboard");
-
-  return (
-    <div className="space-y-5">
-      <PartnerInsightsDashboard
-        universityName={portal.university?.name || portal.activeInstitutionId}
-        programmeCount={portal.institutionProgrammes.length}
-        tier={portal.partner?.tier || "verified"}
-        newLeads={portal.leads.filter((lead) => lead.status === "new").length}
-        summary={portal.analyticsSummary}
-        profileCompleteness={portal.profileCompleteness}
-        onOpenModule={(moduleId) => {
-          if (moduleId === "leads") {
-            navigate("/leads");
-          }
-        }}
-      />
-
-      <Panel title="Export reports">
-        <p className="text-sm leading-relaxed text-slate-600">
-          CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme views, link
-          clicks, viewer countries, and institution profile performance.
-        </p>
-      </Panel>
-    </div>
-  );
-}
-
-function LeadsPage() {
-  const portal = usePortal();
-  useDocumentTitle("Leads | Institution Dashboard");
-
+function LeadsSection({ portal }) {
   return (
     <div className="space-y-4">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Leads</p>
         <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Admissions lead inbox</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Enquiries students submitted from your institution and programme pages.
+        </p>
       </div>
       <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
         {portal.leads.map((lead) => (
@@ -2111,6 +3067,72 @@ function LeadsPage() {
         ))}
       </div>
       {!portal.leads.length ? <p className="text-sm text-slate-500">No leads yet.</p> : null}
+    </div>
+  );
+}
+
+const APPLICATION_STAGES = [
+  { id: "pending", label: "Pending", hint: "Applications received and waiting on a first decision." },
+  { id: "accepted", label: "Accepted", hint: "Applicants you have offered a place." },
+  { id: "rejected", label: "Rejected", hint: "Applicants you have turned down." },
+  { id: "awaiting-interview", label: "Awaiting Interview", hint: "Applicants shortlisted for an interview." },
+];
+
+function ApplicationsPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  useDocumentTitle("Applications | Institution Dashboard");
+
+  const requestedStage = searchParams.get("stage");
+  const activeStage = APPLICATION_STAGES.some((stage) => stage.id === requestedStage)
+    ? requestedStage
+    : APPLICATION_STAGES[0].id;
+  const activeStageMeta = APPLICATION_STAGES.find((stage) => stage.id === activeStage);
+
+  // Manual applications are not stored yet, so every stage reads zero for now.
+  const countByStage = Object.fromEntries(APPLICATION_STAGES.map((stage) => [stage.id, 0]));
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Applications</p>
+        <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Track applicants by stage</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          For institutions without an online application system — receive applications through Thuto and move each one
+          through your admissions stages.
+        </p>
+      </div>
+
+      <div role="tablist" aria-label="Application stages" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {APPLICATION_STAGES.map((stage) => {
+          const isActive = stage.id === activeStage;
+          return (
+            <button
+              key={stage.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setSearchParams(stage.id === APPLICATION_STAGES[0].id ? {} : { stage: stage.id })}
+              className={[
+                "rounded-3xl border px-4 py-4 text-left transition",
+                isActive
+                  ? "border-brand-300 bg-brand-50 text-brand-900 shadow-card"
+                  : "border-slate-200 bg-white text-slate-800 hover:border-brand-200 hover:bg-brand-50/40",
+              ].join(" ")}
+            >
+              <span className="block text-sm font-semibold">{stage.label}</span>
+              <span className="mt-2 block font-display text-3xl font-semibold">{formatCount(countByStage[stage.id])}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <Panel title={activeStageMeta?.label}>
+        <p className="text-sm leading-relaxed text-slate-600">{activeStageMeta?.hint}</p>
+        <p className="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+          No applications in this stage yet. Once Thuto starts accepting applications on your behalf, they will arrive here
+          and you can move them between stages.
+        </p>
+      </Panel>
     </div>
   );
 }
@@ -2244,7 +3266,8 @@ export default function CmsApp() {
               />
             }
           />
-          <Route path="leads" element={<LeadsPage />} />
+          <Route path="applications" element={<ApplicationsPage />} />
+          <Route path="leads" element={<Navigate to="/analytics?tab=leads" replace />} />
           <Route path="claim" element={<ClaimPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

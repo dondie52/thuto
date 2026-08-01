@@ -48,19 +48,48 @@ export function normalizeUniversityCampusPhotos(university) {
   return uniqueStrings([...list, fallback]);
 }
 
+export const ACCREDITATION_ON = "Accredited";
+export const ACCREDITATION_OFF = "Not accredited";
+export const ACCOMMODATION_ON = "Available";
+export const ACCOMMODATION_OFF = "Unavailable";
+export const APPLICATION_WINDOW_OPEN = "open";
+export const APPLICATION_WINDOW_CLOSED = "closed";
+
+const NEGATIVE_STATUS = /^(no|not|un|non|false|closed|unavailable|pending)\b/i;
+
+/**
+ * Read a legacy free-text status ("Fully accredited by BQA", "Not accredited") as a
+ * yes/no answer so the CMS toggles hydrate from values saved before they existed.
+ * @param {unknown} value
+ */
+export function isAffirmativeStatus(value) {
+  const text = normalizeText(value);
+  if (!text) return false;
+  return !NEGATIVE_STATUS.test(text);
+}
+
+/**
+ * Applications are treated as open unless an institution explicitly closed them, so
+ * the bundled catalogue keeps its current behaviour.
+ * @param {unknown} value
+ */
+export function isApplicationWindowOpen(value) {
+  return normalizeText(value).toLowerCase() !== APPLICATION_WINDOW_CLOSED;
+}
+
+export function normalizeUniversityFaculties(university) {
+  return uniqueStrings(Array.isArray(university?.faculties) ? university.faculties : []);
+}
+
 export function normalizeUniversityAccreditation(university) {
   return {
     status: normalizeText(university?.accreditationStatus),
-    body: normalizeText(university?.accreditationBody),
-    notes: normalizeText(university?.accreditationNotes),
-    sourceUrl: normalizeText(university?.accreditationSourceUrl),
   };
 }
 
 export function normalizeUniversityStudentLife(university) {
   return {
     accommodationStatus: normalizeText(university?.accommodationStatus),
-    accommodationDetails: normalizeText(university?.accommodationDetails),
     healthDetails: normalizeText(university?.healthDetails),
     safetyDetails: normalizeText(university?.safetyDetails),
     sportsDetails: normalizeText(university?.sportsDetails),

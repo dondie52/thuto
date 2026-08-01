@@ -7,7 +7,16 @@ import {
   formatDisplayDate,
   isDeadlineWithinDays,
 } from "../lib/applicationDates.js";
+import { isApplicationWindowOpen } from "../lib/institutionProfile.js";
 import { safeExternalUrl } from "../lib/urlSafety.js";
+
+function ApplicationsClosedPill() {
+  return (
+    <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-700">
+      Applications closed
+    </span>
+  );
+}
 
 /**
  * @param {{ university: object, compact?: boolean, profileLink?: boolean }} props
@@ -15,9 +24,11 @@ import { safeExternalUrl } from "../lib/urlSafety.js";
 export default function UniversityApplicationBlock({ university: u, compact = false, profileLink = false }) {
   const hasWindow = u.applicationOpen || u.applicationClose;
   const applyHref = safeExternalUrl(u.applyUrl) || safeExternalUrl(u.website);
+  // A closed window is the institution's own word on it, so it outranks the date maths.
+  const windowClosed = !isApplicationWindowOpen(u.applicationWindowStatus);
   const daysLeft = u.applicationClose ? daysFromTodayTo(u.applicationClose) : null;
-  const urgent = u.applicationClose && isDeadlineWithinDays(u.applicationClose, 30);
-  const countdown = u.applicationClose ? formatCountdown(u.applicationClose) : null;
+  const urgent = !windowClosed && u.applicationClose && isDeadlineWithinDays(u.applicationClose, 30);
+  const countdown = !windowClosed && u.applicationClose ? formatCountdown(u.applicationClose) : null;
 
   if (!hasWindow && !applyHref) return null;
 
@@ -42,11 +53,14 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
       >
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-900">Applications</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-900">Applications</p>
+              {windowClosed ? <ApplicationsClosedPill /> : null}
+            </div>
             <p className="mt-1 leading-relaxed text-slate-700">{summary}</p>
             {urgent && countdown && daysLeft != null && daysLeft >= 0 ? (
               <p className="mt-1 font-semibold text-amber-900">{countdown}</p>
-            ) : u.applicationClose && daysLeft != null && daysLeft < 0 ? (
+            ) : countdown && u.applicationClose && daysLeft != null && daysLeft < 0 ? (
               <p className="mt-1 font-medium text-slate-600">{countdown}</p>
             ) : null}
           </div>
@@ -83,7 +97,10 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
           : "border-brand-100 bg-brand-50/50",
       ].join(" ")}
     >
-      <p className="font-semibold text-brand-900">Applications</p>
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="font-semibold text-brand-900">Applications</p>
+        {windowClosed ? <ApplicationsClosedPill /> : null}
+      </div>
       {hasWindow ? (
         <p className="mt-1 text-slate-700">
           {u.applicationOpen && (
@@ -106,7 +123,7 @@ export default function UniversityApplicationBlock({ university: u, compact = fa
       )}
       {urgent && countdown && daysLeft != null && daysLeft >= 0 ? (
         <p className="mt-2 font-semibold text-amber-900">{countdown}</p>
-      ) : u.applicationClose && daysLeft != null && daysLeft < 0 ? (
+      ) : countdown && u.applicationClose && daysLeft != null && daysLeft < 0 ? (
         <p className="mt-2 font-medium text-slate-600">{countdown}</p>
       ) : null}
       {applyHref ? (

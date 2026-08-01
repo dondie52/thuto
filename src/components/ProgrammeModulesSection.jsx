@@ -3,6 +3,7 @@ import {
   formatModuleSemesterLabel,
   getProgrammeModuleBlocks,
   isResearchDegreeProgramme,
+  parseModuleEntry,
   programmeHasModules,
 } from "../lib/programmeModules.js";
 
@@ -58,12 +59,19 @@ export default function ProgrammeModulesSection({ programme }) {
           <div key={`${block.semester}-${index}`} className="rounded-xl border border-brand-100 bg-brand-50/40 p-4">
             <h3 className="text-sm font-semibold text-brand-900">{formatModuleSemesterLabel(block.semester)}</h3>
             <ul className="mt-2 space-y-1.5 text-sm text-slate-700">
-              {block.modules.map((moduleName) => (
-                <li key={moduleName} className="flex gap-2">
-                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden />
-                  <span>{moduleName}</span>
-                </li>
-              ))}
+              {block.modules.map((moduleName) => {
+                const { code, name } = parseModuleEntry(moduleName);
+                return (
+                  <li key={moduleName} className="flex gap-2">
+                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden />
+                    <span>
+                      {code ? <span className="font-medium text-brand-900">{code}</span> : null}
+                      {code ? " · " : ""}
+                      {name}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}

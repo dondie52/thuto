@@ -26,3 +26,18 @@ export function getCareerSalaryEstimate(career) {
   }
   return DEFAULT_BAND;
 }
+
+/**
+ * An institution's own figure for this career beats the generic band heuristic.
+ * @param {Record<string, unknown> | null | undefined} programme
+ * @param {string} career
+ * @returns {string}
+ */
+export function resolveCareerSalary(programme, career) {
+  const map = programme?.careerSalaries;
+  if (map && typeof map === "object") {
+    const entered = String(map[career] || "").trim();
+    if (entered) return entered;
+  }
+  return getCareerSalaryEstimate(career);
+}
