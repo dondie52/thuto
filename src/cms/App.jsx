@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthProvider, useAuth } from "../lib/auth.jsx";
-import { Navigate, NavLink, Outlet, Route, Routes, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Navigate,
+  NavLink,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
 import { thutoLogoSrc } from "../components/BrandMark.jsx";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
 import PartnerInsightsDashboard from "../components/partner/PartnerInsightsDashboard.jsx";
@@ -36,11 +46,16 @@ import { marketCountryLabel } from "../lib/marketCountry.js";
 const NAV_ITEMS = [
   { to: "/", end: true, label: "Home", icon: "home" },
   { to: "/profile", label: "Profile", icon: "profile" },
-  { to: "/staff", label: "Staff", icon: "staff" },
   { to: "/programmes", label: "Programmes", icon: "programmes" },
+  { to: "/leads", label: "Leads", icon: "leads" },
   { to: "/analytics", label: "Data and Analytics", icon: "analytics" },
   { to: "/feed", label: "Feed", icon: "feed" },
   { to: "/faq", label: "FAQ", icon: "faq" },
+];
+
+const RAIL_FOOTER_ITEMS = [
+  { href: buildAppUrl("/support"), label: "Support", icon: "support" },
+  { to: "/settings", label: "Settings", icon: "settings" },
 ];
 
 const EMPTY_RESOURCE = { title: "", category: "", url: "", format: "Web page", sourceLabel: "" };
@@ -91,21 +106,80 @@ function formatShortDate(value) {
   return new Date(value).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-function iconGlyph(name) {
-  const glyphs = {
-    home: "⌂",
-    profile: "◫",
-    staff: "◌",
-    programmes: "≣",
-    analytics: "▥",
-    feed: "✦",
-    faq: "?",
-    eye: "◉",
-    apps: "▣",
-    leads: "+",
-    reviews: "★",
-  };
-  return glyphs[name] || "•";
+const ICON_PATHS = {
+  home: ["M3.5 11 12 4l8.5 7", "M5.75 9.4V20h12.5V9.4", "M9.75 20v-5.25h4.5V20"],
+  profile: [
+    "M3.5 20.5h17",
+    "M6 20.5V5.5A1.5 1.5 0 0 1 7.5 4h9A1.5 1.5 0 0 1 18 5.5v15",
+    "M9.5 8h1.5M13 8h1.5M9.5 11.5h1.5M13 11.5h1.5",
+    "M10.5 20.5v-4h3v4",
+  ],
+  programmes: [
+    "M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5Z",
+    "M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5Z",
+  ],
+  analytics: ["M4 20h16", "M7.5 20v-5.5", "M12 20V7", "M16.5 20v-9"],
+  feed: [
+    "M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5Z",
+    "M7.5 9h9M7.5 12.25h9M7.5 15.5h5.5",
+  ],
+  faq: ["M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z", "M9.6 9.6a2.4 2.4 0 1 1 3.3 2.23c-.55.22-.9.75-.9 1.34v.58", "M12 16.6h.01"],
+  settings: [
+    "M4 7.5h9",
+    "M17 7.5h3",
+    "M4 16.5h3",
+    "M11 16.5h9",
+    "M17 7.5a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z",
+    "M11 16.5a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z",
+  ],
+  support: [
+    "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z",
+    "M12 15.4a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Z",
+    "M14.4 9.6 17.7 6.3M6.3 17.7l3.3-3.3M14.4 14.4l3.3 3.3M6.3 6.3l3.3 3.3",
+  ],
+  staff: [
+    "M9.25 11.5a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5Z",
+    "M3.5 20v-.75a5.75 5.75 0 0 1 11.5 0V20",
+    "M16.25 5.6a3.25 3.25 0 0 1 0 5.9",
+    "M17.5 14.6A5.75 5.75 0 0 1 20.5 20",
+  ],
+  eye: [
+    "M2.5 12S6 5.9 12 5.9 21.5 12 21.5 12 18 18.1 12 18.1 2.5 12 2.5 12Z",
+    "M12 14.75a2.75 2.75 0 1 0 0-5.5 2.75 2.75 0 0 0 0 5.5Z",
+  ],
+  apps: ["M6.5 3.5h7L18.5 8.5V20a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z", "M13.5 3.5v5h5", "m9 14.5 2 2 3.5-3.75"],
+  leads: [
+    "M9.75 11.5a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z",
+    "M3 20.25v-.75a5.5 5.5 0 0 1 5.5-5.5h2.5a5.5 5.5 0 0 1 5.5 5.5v.75",
+    "M18.75 6v5M21.25 8.5h-5",
+  ],
+  reviews: ["m12 4.25 2.4 4.86 5.35.78-3.87 3.77.91 5.34L12 16.48l-4.79 2.52.91-5.34-3.87-3.77 5.35-.78Z"],
+  edit: ["M4.5 19.5h4l10-10a2.12 2.12 0 0 0-3-3l-10 10Z", "M14.5 6.5l3 3"],
+  lock: [
+    "M6.5 10.5h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z",
+    "M8.75 10.5V8a3.25 3.25 0 0 1 6.5 0v2.5",
+  ],
+};
+
+function Icon({ name, className = "h-5 w-5" }) {
+  const paths = ICON_PATHS[name] || ICON_PATHS.faq;
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.7}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      {paths.map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
+  );
 }
 
 function daysAgoKey(daysBack) {
@@ -137,7 +211,9 @@ function trendLabel(current, previous) {
 }
 
 function countryDisplayName(id) {
-  const code = String(id || "").trim().toLowerCase();
+  const code = String(id || "")
+    .trim()
+    .toLowerCase();
   if (!code || code === "unknown") return "Unknown";
   const fromMarket = marketCountryLabel(code);
   if (fromMarket && fromMarket !== code) return fromMarket;
@@ -338,7 +414,7 @@ function buildLiveDashboard(university, summary, institutionProgrammes, leads, a
       { label: "Add New Programme", detail: "Publish another course", to: "/programmes", icon: "programmes" },
       { label: "Create Feed Post", detail: "Reach students on Feed", to: "/feed", icon: "feed" },
       { label: "Answer Question", detail: "Open FAQ workspace", to: "/faq", icon: "faq" },
-      { label: "Invite Staff", detail: "Grow your admin team", to: "/staff", icon: "staff" },
+      { label: "Invite Staff", detail: "Grow your admin team", to: "/profile?tab=staff", icon: "staff" },
       { label: "View Analytics", detail: "Deep-dive performance", to: "/analytics", icon: "analytics" },
     ],
   };
@@ -506,8 +582,7 @@ function usePartnerPortalData() {
   const hasAccess = memberships.length > 0 || isSuperuser;
   const displayFirstName = firstNameFromProfile(profile, user);
   const roleLabel =
-    memberships.find((item) => item.institution_id === activeInstitutionId)?.role ||
-    (isSuperuser ? "super admin" : "editor");
+    memberships.find((item) => item.institution_id === activeInstitutionId)?.role || (isSuperuser ? "super admin" : "editor");
 
   async function handleSaveProfile() {
     setError("");
@@ -569,8 +644,10 @@ function usePartnerPortalData() {
       });
       setMessage("Institution profile saved and published.");
       await loadInstitution(activeInstitutionId);
+      return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
+      return false;
     }
   }
 
@@ -590,13 +667,15 @@ function usePartnerPortalData() {
       await saveInstitutionOverride(activeInstitutionId, { staff });
       setMessage("Staff contacts saved and published.");
       await loadInstitution(activeInstitutionId);
+      return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
+      return false;
     }
   }
 
   async function handleSaveProgramme() {
-    if (!selectedProgrammeId) return;
+    if (!selectedProgrammeId) return false;
     setError("");
     setMessage("");
     try {
@@ -625,8 +704,10 @@ function usePartnerPortalData() {
       setMessage("Programme updated.");
       await loadBase();
       await loadInstitution(activeInstitutionId);
+      return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
+      return false;
     }
   }
 
@@ -741,83 +822,56 @@ function CmsShell() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#f5f7f5] text-slate-900 lg:grid lg:grid-cols-[290px_minmax(0,1fr)]">
-      <aside className="flex min-h-full flex-col border-r border-white/10 bg-brand-950 text-white">
-        <div className="border-b border-white/10 px-6 py-6">
-          <div className="flex items-center gap-3">
-            <img src={thutoLogoSrc} alt="" className="h-11 w-11 rounded-2xl bg-white/10 p-1.5" />
-            <div>
-              <p className="font-display text-xl font-semibold tracking-tight text-white">Thuto</p>
-              <p className="text-sm text-white/70">Institution Dashboard</p>
-            </div>
-          </div>
+    <div className="min-h-dvh bg-[#f5f7f5] text-slate-900 lg:grid lg:grid-cols-[76px_minmax(0,1fr)]">
+      <aside
+        data-cms="rail"
+        className="z-30 flex flex-col items-center border-r border-white/10 bg-brand-950 text-white lg:sticky lg:top-0 lg:h-dvh"
+      >
+        <div data-cms="rail-brand" className="px-3 py-4">
+          <NavLink to="/" end className="focus-ring-on-dark block rounded-2xl" aria-label="Institution dashboard home">
+            <img src={thutoLogoSrc} alt="Thuto" className="h-11 w-11 rounded-2xl bg-white/10 p-1.5" />
+          </NavLink>
         </div>
 
-        <nav className="flex-1 space-y-1 px-4 py-5">
+        <nav data-cms="rail-nav" className="flex flex-col items-center gap-1.5 px-3">
           {NAV_ITEMS.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) =>
-                [
-                  "focus-ring-on-dark flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition",
-                  isActive ? "bg-emerald-500/20 text-white shadow-lg" : "text-white/80 hover:bg-white/10 hover:text-white",
-                ].join(" ")
-              }
-            >
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-white/10 text-sm">{iconGlyph(item.icon)}</span>
-              <span>{item.label}</span>
-            </NavLink>
+            <RailLink key={item.to} item={item} />
           ))}
         </nav>
 
-        <div className="space-y-4 px-4 pb-4">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-            <p className="text-sm font-semibold text-white">Need help?</p>
-            <p className="mt-1 text-sm leading-relaxed text-white/70">
-              Use the dashboard to keep your institution profile, deadlines, and leads aligned with what students see.
-            </p>
-            <a
-              href={buildAppUrl("/support")}
-              className="mt-4 inline-flex rounded-xl bg-white/10 px-3 py-2 text-sm font-semibold text-white hover:bg-white/20"
-            >
-              Get support
-            </a>
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-            <p className="text-sm font-semibold text-white">{portal.university?.name || "Institution account"}</p>
-            <p className="mt-1 text-xs uppercase tracking-[0.22em] text-white/60">{portal.roleLabel}</p>
-            {portal.memberships.length > 1 ? (
-              <select
-                value={portal.activeInstitutionId}
-                onChange={(event) => portal.setSelectedInstitutionId(event.target.value)}
-                className="mt-3 w-full rounded-xl border border-white/10 bg-brand-900 px-3 py-2 text-sm text-white"
-              >
-                {portal.memberships.map((membership) => (
-                  <option key={membership.institution_id} value={membership.institution_id}>
-                    {membership.institution_id}
-                  </option>
-                ))}
-              </select>
-            ) : null}
-          </div>
+        <div data-cms="rail-footer" className="mt-auto flex flex-col items-center gap-1.5 px-3 pb-4 pt-4">
+          {RAIL_FOOTER_ITEMS.map((item) => (
+            <RailLink key={item.to || item.href} item={item} />
+          ))}
         </div>
       </aside>
 
       <div className="min-w-0">
-        <header className="sticky top-0 z-10 border-b border-slate-200/80 bg-white/90 backdrop-blur">
-          <div className="flex flex-wrap items-center justify-between gap-4 px-5 py-4 lg:px-8">
-            <div>
-              <div className="flex items-center gap-3">
-                <div>
+        <header data-cms="topbar" className="sticky top-0 z-10 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+          <div className="flex flex-wrap items-center justify-between gap-4 px-5 py-4 lg:px-8 2xl:px-10">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Institution dashboard</p>
                   <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight text-slate-900">
                     {portal.university?.name || "Your institution"}
                   </h1>
                 </div>
                 {portal.partner?.verified_at ? <InstitutionVerificationBadge /> : null}
+                {portal.memberships.length > 1 ? (
+                  <select
+                    value={portal.activeInstitutionId}
+                    onChange={(event) => portal.setSelectedInstitutionId(event.target.value)}
+                    aria-label="Switch institution"
+                    className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700"
+                  >
+                    {portal.memberships.map((membership) => (
+                      <option key={membership.institution_id} value={membership.institution_id}>
+                        {membership.institution_id}
+                      </option>
+                    ))}
+                  </select>
+                ) : null}
               </div>
               <p className="mt-1 text-sm text-slate-600">
                 Separate from the student app, focused only on your institution’s content and performance.
@@ -825,19 +879,12 @@ function CmsShell() {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="hidden min-w-[280px] rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 lg:block">
+              <div className="hidden min-w-[280px] rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 xl:block">
                 Search programmes, leads, or pages
                 <span className="ml-3 rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] font-semibold text-slate-400">
                   ⌘K
                 </span>
               </div>
-              <button
-                type="button"
-                onClick={() => navigate("/settings")}
-                className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-brand-200 hover:text-brand-900"
-              >
-                Settings
-              </button>
               <div className="hidden text-right sm:block">
                 <p className="text-sm font-semibold text-slate-900">{portal.profile?.full_name || portal.displayFirstName}</p>
                 <p className="text-xs capitalize text-slate-500">{portal.roleLabel}</p>
@@ -856,7 +903,7 @@ function CmsShell() {
           </div>
         </header>
 
-        <main className="px-5 py-6 lg:px-8">
+        <main className="px-5 py-6 lg:px-8 2xl:px-10">
           {portal.message ? (
             <p className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
               {portal.message}
@@ -869,6 +916,45 @@ function CmsShell() {
         </main>
       </div>
     </div>
+  );
+}
+
+const RAIL_LINK_BASE =
+  "focus-ring-on-dark group relative grid h-11 w-11 place-items-center rounded-2xl transition hover:bg-white/10 hover:text-white";
+
+function RailTooltip({ label }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute left-full top-1/2 z-40 ml-3 hidden -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 lg:block"
+    >
+      {label}
+    </span>
+  );
+}
+
+function RailLink({ item }) {
+  if (item.href) {
+    return (
+      <a href={item.href} aria-label={item.label} className={`${RAIL_LINK_BASE} text-white/70`}>
+        <Icon name={item.icon} />
+        <span className="sr-only">{item.label}</span>
+        <RailTooltip label={item.label} />
+      </a>
+    );
+  }
+
+  return (
+    <NavLink
+      to={item.to}
+      end={item.end}
+      aria-label={item.label}
+      className={({ isActive }) => [RAIL_LINK_BASE, isActive ? "bg-emerald-500/25 text-white" : "text-white/70"].join(" ")}
+    >
+      <Icon name={item.icon} />
+      <span className="sr-only">{item.label}</span>
+      <RailTooltip label={item.label} />
+    </NavLink>
   );
 }
 
@@ -933,8 +1019,8 @@ function HomePage() {
           <article key={metric.label} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
             <div className="flex items-start justify-between gap-3">
               <p className="text-sm font-medium text-slate-500">{metric.label}</p>
-              <span className="grid h-9 w-9 place-items-center rounded-2xl bg-brand-50 text-sm text-brand-800">
-                {iconGlyph(metric.icon)}
+              <span className="grid h-9 w-9 place-items-center rounded-2xl bg-brand-50 text-brand-800">
+                <Icon name={metric.icon} />
               </span>
             </div>
             <p className="mt-3 font-display text-3xl font-semibold text-slate-900">{formatCount(metric.value)}</p>
@@ -1089,7 +1175,7 @@ function HomePage() {
                 className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-4 text-left transition hover:border-brand-200 hover:bg-brand-50/40"
               >
                 <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white text-brand-800 shadow-sm">
-                  {iconGlyph(action.icon)}
+                  <Icon name={action.icon} />
                 </span>
                 <p className="mt-3 text-sm font-semibold text-slate-900">{action.label}</p>
                 <p className="mt-1 text-xs text-slate-500">{action.detail}</p>
@@ -1117,147 +1203,248 @@ function HomePage() {
   );
 }
 
-function ProfilePage() {
-  const portal = usePortal();
-  useDocumentTitle("Profile | Institution Dashboard");
-  const previewHref = portal.activeInstitutionId ? buildAppUrl(`/universities/${portal.activeInstitutionId}`) : buildAppUrl("/universities");
+const PROFILE_TABS = [
+  { id: "basics", label: "Basic information", hint: "How your institution introduces itself to students." },
+  { id: "admissions", label: "Admissions", hint: "Application windows and where students apply." },
+  { id: "contact", label: "Contact and social", hint: "Ways students and parents can reach you." },
+  { id: "campus", label: "Campus and resources", hint: "Photos and downloadable material students can browse." },
+  { id: "student-life", label: "Student life and support", hint: "Accommodation, accreditation, wellbeing and support." },
+  { id: "staff", label: "Staff", hint: "The public directory students see, plus portal access." },
+];
+
+const SOCIAL_FIELDS = UNIVERSITY_SOCIAL_PLATFORMS.map((platform) => ({
+  key: `social${platform.key.charAt(0).toUpperCase()}${platform.key.slice(1)}`,
+  label: `${platform.label} URL`,
+  type: "url",
+}));
+
+const TAB_FIELDS = {
+  basics: [
+    { key: "description", label: "Institution description", type: "textarea", rows: 5, span: "full" },
+    { key: "universityType", label: "Institution type" },
+    { key: "logo", label: "Logo URL", type: "url" },
+  ],
+  admissions: [
+    { key: "applicationOpen", label: "Applications open", type: "date" },
+    { key: "applicationClose", label: "Applications close", type: "date" },
+    { key: "applyUrl", label: "Application website", type: "url" },
+    { key: "admissionsEmail", label: "Admissions email", type: "email" },
+    { key: "admissionsPhone", label: "Admissions phone" },
+  ],
+  contact: [
+    { key: "generalEmail", label: "General email", type: "email" },
+    { key: "generalPhone", label: "General phone" },
+    { key: "website", label: "Website URL", type: "url" },
+    { key: "physicalAddress", label: "Physical address", span: "full" },
+    ...SOCIAL_FIELDS,
+  ],
+  "student-life": [
+    { key: "accommodationStatus", label: "Accommodation status" },
+    { key: "accreditationStatus", label: "Accreditation status" },
+    { key: "accreditationBody", label: "Accreditation body" },
+    { key: "accreditationSourceUrl", label: "Accreditation source URL", type: "url" },
+    { key: "accommodationDetails", label: "Accommodation details", type: "textarea", rows: 3 },
+    { key: "careerSupportDetails", label: "Career support details", type: "textarea", rows: 3 },
+    { key: "healthDetails", label: "Health and wellbeing", type: "textarea", rows: 3 },
+    { key: "safetyDetails", label: "Safety and security", type: "textarea", rows: 3 },
+    { key: "sportsDetails", label: "Sport and recreation", type: "textarea", rows: 3 },
+    { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3 },
+  ],
+};
+
+const FIELD_INPUT_CLASS = "mt-1.5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm";
+
+function formatLongDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+}
+
+function ReadOnlyValue({ field, value }) {
+  const text = String(value ?? "").trim();
+  if (!text) return <span className="mt-1.5 block text-sm text-slate-400">—</span>;
+  if (field.type === "url") {
+    return (
+      <a
+        href={text}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-1.5 block break-words text-sm font-medium text-brand-700 hover:text-brand-900"
+      >
+        {text}
+      </a>
+    );
+  }
+  if (field.type === "email") {
+    return (
+      <a href={`mailto:${text}`} className="mt-1.5 block break-words text-sm font-medium text-brand-700 hover:text-brand-900">
+        {text}
+      </a>
+    );
+  }
+  return (
+    <span className="mt-1.5 block whitespace-pre-line break-words text-sm text-slate-800">
+      {field.type === "date" ? formatLongDate(text) : text}
+    </span>
+  );
+}
+
+function ProfileField({ field, value, editing, onChange }) {
+  const spanClass = field.span === "full" ? "md:col-span-2 2xl:col-span-3" : "";
+  const inputType = field.type === "date" ? "date" : field.type === "email" ? "email" : "text";
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-      <section className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Institution profile</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">{portal.university?.name || "Your institution"}</h2>
-          </div>
-          <div className="rounded-2xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900">
-            {portal.profileCompleteness.completed}/{portal.profileCompleteness.total} public profile areas complete
-          </div>
-        </div>
+    <div
+      className={["min-w-0 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3", spanClass].filter(Boolean).join(" ")}
+    >
+      <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{field.label}</dt>
+      <dd>
+        {editing ? (
+          field.type === "textarea" ? (
+            <textarea
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+              rows={field.rows || 3}
+              className={FIELD_INPUT_CLASS}
+              placeholder={field.label}
+            />
+          ) : (
+            <input
+              type={inputType}
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+              className={FIELD_INPUT_CLASS}
+              placeholder={field.label}
+            />
+          )
+        ) : (
+          <ReadOnlyValue field={field} value={value} />
+        )}
+      </dd>
+    </div>
+  );
+}
 
-        <FormSection title="Basic information">
-          <textarea
-            value={portal.profileForm.description}
-            onChange={(event) => portal.setProfileForm((state) => ({ ...state, description: event.target.value }))}
-            rows={5}
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder="Institution description"
-          />
-          <div className="grid gap-3 md:grid-cols-2">
-            <input
-              value={portal.profileForm.universityType}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, universityType: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Institution type"
-            />
-            <input
-              value={portal.profileForm.logo}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, logo: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Logo URL"
-            />
-          </div>
-        </FormSection>
+function FieldGrid({ fields, form, editing, onChange }) {
+  return (
+    <dl className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+      {fields.map((field) => (
+        <ProfileField
+          key={field.key}
+          field={field}
+          value={form[field.key] || ""}
+          editing={editing}
+          onChange={(next) => onChange(field.key, next)}
+        />
+      ))}
+    </dl>
+  );
+}
 
-        <FormSection title="Admissions">
-          <div className="grid gap-3 md:grid-cols-2">
-            <label className="text-sm text-slate-600">
-              Application opens
-              <input
-                type="date"
-                value={portal.profileForm.applicationOpen}
-                onChange={(event) => portal.setProfileForm((state) => ({ ...state, applicationOpen: event.target.value }))}
-                className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              />
-            </label>
-            <label className="text-sm text-slate-600">
-              Application closes
-              <input
-                type="date"
-                value={portal.profileForm.applicationClose}
-                onChange={(event) => portal.setProfileForm((state) => ({ ...state, applicationClose: event.target.value }))}
-                className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              />
-            </label>
-            <input
-              type="email"
-              value={portal.profileForm.admissionsEmail}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, admissionsEmail: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Admissions email"
-            />
-            <input
-              value={portal.profileForm.admissionsPhone}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, admissionsPhone: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Admissions phone"
-            />
-            <input
-              value={portal.profileForm.applyUrl}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, applyUrl: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm md:col-span-2"
-              placeholder="Application website"
-            />
-          </div>
-        </FormSection>
+function EditControls({ editing, locked, onEdit, onSave, onCancel }) {
+  if (!editing) {
+    return (
+      <button
+        type="button"
+        onClick={onEdit}
+        disabled={locked}
+        className="inline-flex items-center gap-2 rounded-2xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-900 transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400"
+      >
+        <Icon name="edit" className="h-4 w-4" />
+        Edit
+      </button>
+    );
+  }
 
-        <FormSection title="Contact and socials">
-          <div className="grid gap-3 md:grid-cols-2">
-            <input
-              type="email"
-              value={portal.profileForm.generalEmail}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, generalEmail: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="General email"
-            />
-            <input
-              value={portal.profileForm.generalPhone}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, generalPhone: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="General phone"
-            />
-            <input
-              value={portal.profileForm.website}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, website: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm md:col-span-2"
-              placeholder="Website URL"
-            />
-            <input
-              value={portal.profileForm.physicalAddress}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, physicalAddress: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm md:col-span-2"
-              placeholder="Physical address"
-            />
-            {UNIVERSITY_SOCIAL_PLATFORMS.map((platform) => {
-              const key = `social${platform.key.charAt(0).toUpperCase()}${platform.key.slice(1)}`;
-              return (
-                <input
-                  key={platform.key}
-                  value={portal.profileForm[key]}
-                  onChange={(event) => portal.setProfileForm((state) => ({ ...state, [key]: event.target.value }))}
-                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-                  placeholder={`${platform.label} URL`}
-                />
-              );
-            })}
-          </div>
-        </FormSection>
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        onClick={onCancel}
+        className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-slate-300"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        onClick={onSave}
+        className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+      >
+        Save changes
+      </button>
+    </div>
+  );
+}
 
-        <FormSection title="Campus photos and resources">
+function EmptyRowsNote({ children }) {
+  return (
+    <p className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">{children}</p>
+  );
+}
+
+function CampusTab({ portal, editing, onChange }) {
+  const photos = splitMultilineList(portal.profileForm.campusPhotosText);
+
+  return (
+    <div className="space-y-5">
+      <FormSection title="Campus photos" description="Shown in the photo strip on your public institution page.">
+        {editing ? (
           <textarea
             value={portal.profileForm.campusPhotosText}
-            onChange={(event) => portal.setProfileForm((state) => ({ ...state, campusPhotosText: event.target.value }))}
-            rows={4}
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+            onChange={(event) => onChange("campusPhotosText", event.target.value)}
+            rows={5}
+            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
             placeholder="One campus photo URL per line"
           />
+        ) : photos.length ? (
+          <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
+            {photos.map((url) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+              >
+                <img src={url} alt="" loading="lazy" className="h-32 w-full object-cover" />
+              </a>
+            ))}
+          </div>
+        ) : (
+          <EmptyRowsNote>No campus photos yet.</EmptyRowsNote>
+        )}
+      </FormSection>
+
+      <FormSection
+        title="Resources"
+        description="Prospectuses, fee schedules, and other links students can open."
+        action={
+          editing ? (
+            <button
+              type="button"
+              onClick={() => portal.setResourceRows((rows) => [...rows, { ...EMPTY_RESOURCE }])}
+              className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+            >
+              Add resource
+            </button>
+          ) : null
+        }
+      >
+        {!portal.resourceRows.length ? <EmptyRowsNote>No resources published yet.</EmptyRowsNote> : null}
+
+        {editing ? (
           <div className="space-y-3">
             {portal.resourceRows.map((row, index) => (
-              <div key={`resource-${index}`} className="grid gap-3 rounded-2xl bg-slate-50 p-4 md:grid-cols-2">
+              <div
+                key={`resource-${index}`}
+                className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-2 2xl:grid-cols-4"
+              >
                 <input
                   value={row.title}
                   onChange={(event) =>
-                    portal.setResourceRows((rows) => rows.map((item, i) => (i === index ? { ...item, title: event.target.value } : item)))
+                    portal.setResourceRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, title: event.target.value } : item)),
+                    )
                   }
                   className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
                   placeholder="Title"
@@ -1265,7 +1452,9 @@ function ProfilePage() {
                 <input
                   value={row.category}
                   onChange={(event) =>
-                    portal.setResourceRows((rows) => rows.map((item, i) => (i === index ? { ...item, category: event.target.value } : item)))
+                    portal.setResourceRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, category: event.target.value } : item)),
+                    )
                   }
                   className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
                   placeholder="Category"
@@ -1273,7 +1462,9 @@ function ProfilePage() {
                 <input
                   value={row.format}
                   onChange={(event) =>
-                    portal.setResourceRows((rows) => rows.map((item, i) => (i === index ? { ...item, format: event.target.value } : item)))
+                    portal.setResourceRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, format: event.target.value } : item)),
+                    )
                   }
                   className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
                   placeholder="Format"
@@ -1281,7 +1472,9 @@ function ProfilePage() {
                 <input
                   value={row.url}
                   onChange={(event) =>
-                    portal.setResourceRows((rows) => rows.map((item, i) => (i === index ? { ...item, url: event.target.value } : item)))
+                    portal.setResourceRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, url: event.target.value } : item)),
+                    )
                   }
                   className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
                   placeholder="https://..."
@@ -1289,69 +1482,67 @@ function ProfilePage() {
                 <button
                   type="button"
                   onClick={() => portal.setResourceRows((rows) => rows.filter((_, i) => i !== index))}
-                  className="text-left text-sm font-semibold text-red-700"
+                  className="text-left text-sm font-semibold text-red-700 md:col-span-2 2xl:col-span-4"
                 >
                   Remove resource
                 </button>
               </div>
             ))}
+          </div>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+            {portal.resourceRows.map((row, index) => (
+              <div key={`resource-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                <p className="font-semibold text-slate-900">{row.title || "Untitled resource"}</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.14em] text-slate-500">
+                  {[row.category, row.format].filter(Boolean).join(" · ") || "—"}
+                </p>
+                {row.url ? (
+                  <a
+                    href={row.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 block break-words text-sm font-medium text-brand-700 hover:text-brand-900"
+                  >
+                    {row.url}
+                  </a>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        )}
+      </FormSection>
+    </div>
+  );
+}
+
+function StudentLifeTab({ portal, editing, onChange }) {
+  return (
+    <div className="space-y-5">
+      <FieldGrid fields={TAB_FIELDS["student-life"]} form={portal.profileForm} editing={editing} onChange={onChange} />
+
+      <FormSection
+        title="Student incentives"
+        description="Optional support offers like bursaries, transport, WiFi, or devices."
+        action={
+          editing ? (
             <button
               type="button"
-              onClick={() => portal.setResourceRows((rows) => [...rows, { ...EMPTY_RESOURCE }])}
-              className="rounded-2xl border border-brand-200 px-4 py-2 text-sm font-semibold text-brand-900"
+              onClick={() => portal.setStudentLifeRows((rows) => [...rows, { ...EMPTY_INCENTIVE }])}
+              className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
             >
-              Add resource
+              Add incentive
             </button>
-          </div>
-        </FormSection>
+          ) : null
+        }
+      >
+        {!portal.studentLifeRows.length ? <EmptyRowsNote>No incentives listed yet.</EmptyRowsNote> : null}
 
-        <FormSection title="Student life and support">
-          <div className="grid gap-3 md:grid-cols-2">
-            <input
-              value={portal.profileForm.accommodationStatus}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, accommodationStatus: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Accommodation status"
-            />
-            <input
-              value={portal.profileForm.accreditationStatus}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, accreditationStatus: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Accreditation status"
-            />
-            <textarea
-              value={portal.profileForm.accommodationDetails}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, accommodationDetails: event.target.value }))}
-              rows={3}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Accommodation details"
-            />
-            <textarea
-              value={portal.profileForm.careerSupportDetails}
-              onChange={(event) => portal.setProfileForm((state) => ({ ...state, careerSupportDetails: event.target.value }))}
-              rows={3}
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Career support details"
-            />
-          </div>
-
-          <div className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <p className="font-semibold text-slate-900">Student incentives</p>
-                <p className="text-sm text-slate-600">Optional support offers like bursaries, transport, WiFi, or devices.</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => portal.setStudentLifeRows((rows) => [...rows, { ...EMPTY_INCENTIVE }])}
-                className="rounded-2xl border border-brand-200 px-4 py-2 text-sm font-semibold text-brand-900"
-              >
-                Add incentive
-              </button>
-            </div>
+        {editing ? (
+          <div className="space-y-3">
             {portal.studentLifeRows.map((row, index) => (
-              <div key={`incentive-${index}`} className="space-y-3 rounded-2xl bg-white p-4">
-                <div className="grid gap-3 md:grid-cols-2">
+              <div key={`incentive-${index}`} className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
+                <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-4">
                   <select
                     value={row.category}
                     onChange={(event) =>
@@ -1377,6 +1568,26 @@ function ProfilePage() {
                     className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
                     placeholder="Offer title"
                   />
+                  <input
+                    value={row.sourceUrl}
+                    onChange={(event) =>
+                      portal.setStudentLifeRows((rows) =>
+                        rows.map((item, i) => (i === index ? { ...item, sourceUrl: event.target.value } : item)),
+                      )
+                    }
+                    className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                    placeholder="Source URL"
+                  />
+                  <input
+                    value={row.sourceLabel}
+                    onChange={(event) =>
+                      portal.setStudentLifeRows((rows) =>
+                        rows.map((item, i) => (i === index ? { ...item, sourceLabel: event.target.value } : item)),
+                      )
+                    }
+                    className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                    placeholder="Source label"
+                  />
                 </div>
                 <textarea
                   value={row.detail}
@@ -1399,157 +1610,392 @@ function ProfilePage() {
               </div>
             ))}
           </div>
-        </FormSection>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+            {portal.studentLifeRows.map((row, index) => (
+              <div key={`incentive-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                <p className="text-xs uppercase tracking-[0.14em] text-brand-700">
+                  {STUDENT_INCENTIVE_CATEGORY_META[row.category]?.label || "Other"}
+                </p>
+                <p className="mt-1 font-semibold text-slate-900">{row.label || "Untitled offer"}</p>
+                {row.detail ? <p className="mt-1 text-sm text-slate-600">{row.detail}</p> : null}
+                {row.sourceUrl ? (
+                  <a
+                    href={row.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 block break-words text-sm font-medium text-brand-700 hover:text-brand-900"
+                  >
+                    {row.sourceLabel || row.sourceUrl}
+                  </a>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        )}
+      </FormSection>
+    </div>
+  );
+}
 
-        <button
-          type="button"
-          onClick={portal.handleSaveProfile}
-          className="rounded-2xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800"
-        >
-          Publish profile changes
-        </button>
-      </section>
+function StaffTab({ portal, editing }) {
+  return (
+    <div className="space-y-5">
+      <FormSection
+        title="Public staff directory"
+        description="Contacts students can reach out to from your institution page."
+        action={
+          editing ? (
+            <button
+              type="button"
+              onClick={() => portal.setStaffRows((rows) => [...rows, { ...EMPTY_STAFF }])}
+              className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+            >
+              Add person
+            </button>
+          ) : null
+        }
+      >
+        {!portal.staffRows.length ? <EmptyRowsNote>No public staff contacts yet.</EmptyRowsNote> : null}
 
-      <section className="space-y-5">
-        <Panel title="Student preview">
-          <p className="text-sm leading-relaxed text-slate-600">
-            Open the public student-facing institution page in a new tab to verify that the details students see match what you
-            just updated in the dashboard.
-          </p>
+        {editing ? (
+          <div className="space-y-3">
+            {portal.staffRows.map((row, index) => (
+              <div
+                key={`staff-${index}`}
+                className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-2 2xl:grid-cols-3"
+              >
+                <input
+                  value={row.name}
+                  onChange={(event) =>
+                    portal.setStaffRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, name: event.target.value } : item)),
+                    )
+                  }
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Full name"
+                />
+                <input
+                  value={row.title}
+                  onChange={(event) =>
+                    portal.setStaffRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, title: event.target.value } : item)),
+                    )
+                  }
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Position"
+                />
+                <input
+                  value={row.department}
+                  onChange={(event) =>
+                    portal.setStaffRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, department: event.target.value } : item)),
+                    )
+                  }
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Department"
+                />
+                <input
+                  type="email"
+                  value={row.email}
+                  onChange={(event) =>
+                    portal.setStaffRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, email: event.target.value } : item)),
+                    )
+                  }
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Email"
+                />
+                <input
+                  value={row.phone}
+                  onChange={(event) =>
+                    portal.setStaffRows((rows) =>
+                      rows.map((item, i) => (i === index ? { ...item, phone: event.target.value } : item)),
+                    )
+                  }
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Phone"
+                />
+                <button
+                  type="button"
+                  onClick={() => portal.setStaffRows((rows) => rows.filter((_, i) => i !== index))}
+                  className="text-left text-sm font-semibold text-red-700"
+                >
+                  Remove person
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-4">
+            {portal.staffRows.map((row, index) => (
+              <div key={`staff-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                <p className="font-semibold text-slate-900">{row.name || "Unnamed"}</p>
+                <p className="mt-1 text-sm text-slate-600">{[row.title, row.department].filter(Boolean).join(" · ") || "—"}</p>
+                {row.email ? (
+                  <a
+                    href={`mailto:${row.email}`}
+                    className="mt-2 block break-words text-sm font-medium text-brand-700 hover:text-brand-900"
+                  >
+                    {row.email}
+                  </a>
+                ) : null}
+                {row.phone ? <p className="mt-1 text-sm text-slate-600">{row.phone}</p> : null}
+              </div>
+            ))}
+          </div>
+        )}
+      </FormSection>
+
+      <FormSection title="Portal access" description="Institution memberships already attached to the signed-in user.">
+        <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-4">
+          {portal.memberships.map((membership) => (
+            <div key={membership.institution_id} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+              <p className="font-semibold text-slate-900">{membership.institution_id}</p>
+              <p className="mt-1 text-sm capitalize text-slate-600">{membership.role}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-sm text-slate-500">Full invite and permission workflows are planned next.</p>
+      </FormSection>
+    </div>
+  );
+}
+
+function ProfilePage() {
+  const portal = usePortal();
+  useDocumentTitle("Profile | Institution Dashboard");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [editingTab, setEditingTab] = useState(null);
+  const [snapshot, setSnapshot] = useState(null);
+
+  const requestedTab = searchParams.get("tab");
+  const activeTab = PROFILE_TABS.some((tab) => tab.id === requestedTab) ? requestedTab : PROFILE_TABS[0].id;
+  const activeTabMeta = PROFILE_TABS.find((tab) => tab.id === activeTab);
+  const editingTabMeta = PROFILE_TABS.find((tab) => tab.id === editingTab);
+  const editing = editingTab === activeTab;
+
+  const previewHref = portal.activeInstitutionId
+    ? buildAppUrl(`/universities/${portal.activeInstitutionId}`)
+    : buildAppUrl("/universities");
+
+  // Switching institutions reloads every form, so any in-flight edit no longer applies.
+  useEffect(() => {
+    setEditingTab(null);
+    setSnapshot(null);
+  }, [portal.activeInstitutionId]);
+
+  function selectTab(tabId) {
+    setSearchParams(tabId === PROFILE_TABS[0].id ? {} : { tab: tabId });
+  }
+
+  function updateField(key, value) {
+    portal.setProfileForm((state) => ({ ...state, [key]: value }));
+  }
+
+  function startEditing() {
+    setSnapshot({
+      profileForm: portal.profileForm,
+      resourceRows: portal.resourceRows,
+      staffRows: portal.staffRows,
+      studentLifeRows: portal.studentLifeRows,
+    });
+    setEditingTab(activeTab);
+  }
+
+  function cancelEditing() {
+    if (snapshot) {
+      portal.setProfileForm(snapshot.profileForm);
+      portal.setResourceRows(snapshot.resourceRows);
+      portal.setStaffRows(snapshot.staffRows);
+      portal.setStudentLifeRows(snapshot.studentLifeRows);
+    }
+    setSnapshot(null);
+    setEditingTab(null);
+  }
+
+  async function saveEditing() {
+    const saved = editingTab === "staff" ? await portal.handleSaveStaff() : await portal.handleSaveProfile();
+    if (!saved) return;
+    setSnapshot(null);
+    setEditingTab(null);
+  }
+
+  return (
+    <section className="rounded-[2rem] border border-slate-200 bg-white shadow-card">
+      <div className="flex flex-wrap items-start justify-between gap-4 px-5 pt-6 lg:px-6">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Institution profile</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">
+            {portal.university?.name || "Your institution"}
+          </h2>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-2xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900">
+            {portal.profileCompleteness.completed}/{portal.profileCompleteness.total} public profile areas complete
+          </span>
           <a
             href={previewHref}
             target="_blank"
             rel="noreferrer"
-            className="mt-4 inline-flex rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-brand-200 hover:text-brand-900"
           >
             Preview in student app
           </a>
-        </Panel>
-      </section>
-    </div>
-  );
-}
+        </div>
+      </div>
 
-function StaffPage() {
-  const portal = usePortal();
-  useDocumentTitle("Staff | Institution Dashboard");
-
-  return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-      <section className="space-y-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Staff</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Public staff directory</h2>
-          </div>
+      {editingTab && editingTab !== activeTab ? (
+        <div className="px-5 pt-4 lg:px-6">
           <button
             type="button"
-            onClick={() => portal.setStaffRows((rows) => [...rows, { ...EMPTY_STAFF }])}
-            className="rounded-2xl border border-brand-200 px-4 py-2 text-sm font-semibold text-brand-900"
+            onClick={() => selectTab(editingTab)}
+            className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-left text-sm font-semibold text-amber-900"
           >
-            Add person
+            Unsaved changes in {editingTabMeta?.label} — return to finish
           </button>
         </div>
+      ) : null}
 
-        {portal.staffRows.map((row, index) => (
-          <div key={`staff-${index}`} className="grid gap-3 rounded-3xl bg-slate-50 p-4 md:grid-cols-2">
-            <input
-              value={row.name}
-              onChange={(event) =>
-                portal.setStaffRows((rows) => rows.map((item, i) => (i === index ? { ...item, name: event.target.value } : item)))
-              }
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Full name"
-            />
-            <input
-              value={row.title}
-              onChange={(event) =>
-                portal.setStaffRows((rows) => rows.map((item, i) => (i === index ? { ...item, title: event.target.value } : item)))
-              }
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Position"
-            />
-            <input
-              value={row.department}
-              onChange={(event) =>
-                portal.setStaffRows((rows) =>
-                  rows.map((item, i) => (i === index ? { ...item, department: event.target.value } : item)),
-                )
-              }
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Department"
-            />
-            <input
-              type="email"
-              value={row.email}
-              onChange={(event) =>
-                portal.setStaffRows((rows) => rows.map((item, i) => (i === index ? { ...item, email: event.target.value } : item)))
-              }
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-              placeholder="Email"
-            />
-            <input
-              value={row.phone}
-              onChange={(event) =>
-                portal.setStaffRows((rows) => rows.map((item, i) => (i === index ? { ...item, phone: event.target.value } : item)))
-              }
-              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm md:col-span-2"
-              placeholder="Phone"
-            />
-            <button
-              type="button"
-              onClick={() => portal.setStaffRows((rows) => rows.filter((_, i) => i !== index))}
-              className="text-left text-sm font-semibold text-red-700"
-            >
-              Remove person
-            </button>
-          </div>
-        ))}
-
-        {!portal.staffRows.length ? <p className="text-sm text-slate-500">No public staff contacts yet.</p> : null}
-
-        <button
-          type="button"
-          onClick={portal.handleSaveStaff}
-          className="rounded-2xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800"
-        >
-          Publish staff
-        </button>
-      </section>
-
-      <Panel title="Portal access">
-        <p className="text-sm leading-relaxed text-slate-600">
-          Full invite and permission workflows are planned next. For now, this panel shows the institution memberships already
-          attached to the signed-in user.
-        </p>
-        <div className="mt-4 space-y-3">
-          {portal.memberships.map((membership) => (
-            <div key={membership.institution_id} className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="font-semibold text-slate-900">{membership.institution_id}</p>
-              <p className="mt-1 text-sm text-slate-600">{membership.role}</p>
-            </div>
-          ))}
+      <div className="mt-5 border-b border-slate-200 px-5 lg:px-6">
+        <div role="tablist" aria-label="Profile sections" className="flex gap-6 overflow-x-auto">
+          {PROFILE_TABS.map((tab) => {
+            const isActive = tab.id === activeTab;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                id={`profile-tab-${tab.id}`}
+                aria-selected={isActive}
+                aria-controls={`profile-panel-${tab.id}`}
+                onClick={() => selectTab(tab.id)}
+                className={[
+                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
+                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                ].join(" ")}
+              >
+                {tab.label}
+                {editingTab === tab.id ? (
+                  <span
+                    aria-label="unsaved changes"
+                    className="ml-2 inline-block h-1.5 w-1.5 rounded-full bg-amber-500 align-middle"
+                  />
+                ) : null}
+              </button>
+            );
+          })}
         </div>
-      </Panel>
-    </div>
+      </div>
+
+      <div
+        role="tabpanel"
+        id={`profile-panel-${activeTab}`}
+        aria-labelledby={`profile-tab-${activeTab}`}
+        className="space-y-5 px-5 py-6 lg:px-6"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="font-display text-xl font-semibold text-slate-900">{activeTabMeta?.label}</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              {editing ? "Editing — changes publish when you save." : activeTabMeta?.hint}
+            </p>
+          </div>
+          <EditControls
+            editing={editing}
+            locked={Boolean(editingTab) && !editing}
+            onEdit={startEditing}
+            onSave={saveEditing}
+            onCancel={cancelEditing}
+          />
+        </div>
+
+        {activeTab === "campus" ? (
+          <CampusTab portal={portal} editing={editing} onChange={updateField} />
+        ) : activeTab === "student-life" ? (
+          <StudentLifeTab portal={portal} editing={editing} onChange={updateField} />
+        ) : activeTab === "staff" ? (
+          <StaffTab portal={portal} editing={editing} />
+        ) : (
+          <FieldGrid fields={TAB_FIELDS[activeTab]} form={portal.profileForm} editing={editing} onChange={updateField} />
+        )}
+      </div>
+    </section>
   );
 }
+
+const PROGRAMME_FIELDS = [
+  { key: "description", label: "Programme description", type: "textarea", rows: 5, span: "full" },
+  { key: "applyUrl", label: "External application link", type: "url" },
+  { key: "officialUrl", label: "Official programme page", type: "url" },
+  { key: "applicationDeadline", label: "Application deadline", type: "date" },
+  { key: "minPoints", label: "Minimum points" },
+  { key: "accreditationStatus", label: "Accreditation status" },
+  { key: "accreditationBody", label: "Accreditation body" },
+  { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3, span: "full" },
+  { key: "careers", label: "Career outcomes (one per line)", type: "textarea", rows: 4 },
+  { key: "jobOpportunities", label: "Common jobs after graduation (one per line)", type: "textarea", rows: 4 },
+];
 
 function ProgrammesPage() {
   const portal = usePortal();
   useDocumentTitle("Programmes | Institution Dashboard");
+  const [editing, setEditing] = useState(false);
+  const [snapshot, setSnapshot] = useState(null);
+
+  const feeField = {
+    key: "feesDomestic",
+    label: `Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`,
+  };
+
+  // Changing the selected programme swaps the whole form out from under an edit.
+  useEffect(() => {
+    setEditing(false);
+    setSnapshot(null);
+  }, [portal.selectedProgrammeId]);
+
+  function updateField(key, value) {
+    portal.setProgrammeForm((state) => ({ ...state, [key]: value }));
+  }
+
+  function startEditing() {
+    setSnapshot(portal.programmeForm);
+    setEditing(true);
+  }
+
+  function cancelEditing() {
+    if (snapshot) portal.setProgrammeForm(snapshot);
+    setSnapshot(null);
+    setEditing(false);
+  }
+
+  async function saveEditing() {
+    const saved = await portal.handleSaveProgramme();
+    if (!saved) return;
+    setSnapshot(null);
+    setEditing(false);
+  }
 
   return (
-    <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programmes</p>
-        <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Manage institution programmes</h2>
+    <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programmes</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Manage institution programmes</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            {editing ? "Editing — changes publish when you save." : "Pick a programme to review what students currently see."}
+          </p>
+        </div>
+        {portal.selectedProgrammeId ? (
+          <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
+        ) : null}
       </div>
 
       <select
         value={portal.selectedProgrammeId}
         onChange={(event) => portal.fillProgrammeForm(event.target.value)}
-        className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        aria-label="Select programme"
+        className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm lg:max-w-md"
       >
         <option value="">Select programme</option>
         {portal.institutionProgrammes.map((programme) => (
@@ -1560,90 +2006,25 @@ function ProgrammesPage() {
       </select>
 
       {portal.selectedProgrammeId ? (
-        <div className="grid gap-4 xl:grid-cols-2">
-          <textarea
-            value={portal.programmeForm.description}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, description: event.target.value }))}
-            rows={5}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm xl:col-span-2"
-            placeholder="Programme description"
+        <>
+          <FieldGrid
+            fields={[...PROGRAMME_FIELDS, feeField]}
+            form={portal.programmeForm}
+            editing={editing}
+            onChange={updateField}
           />
-          <input
-            value={portal.programmeForm.applyUrl}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, applyUrl: event.target.value }))}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder="External application link"
-          />
-          <input
-            value={portal.programmeForm.officialUrl}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, officialUrl: event.target.value }))}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder="Official programme page"
-          />
-          <input
-            type="date"
-            value={portal.programmeForm.applicationDeadline}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, applicationDeadline: event.target.value }))}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-          />
-          <input
-            value={portal.programmeForm.minPoints}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, minPoints: event.target.value }))}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder="Minimum points"
-          />
-          <input
-            value={portal.programmeForm.feesDomestic}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, feesDomestic: event.target.value }))}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder={`Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`}
-          />
-          <input
-            value={portal.programmeForm.accreditationStatus}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, accreditationStatus: event.target.value }))}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder="Accreditation status"
-          />
-          <textarea
-            value={portal.programmeForm.accreditationNotes}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, accreditationNotes: event.target.value }))}
-            rows={3}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm xl:col-span-2"
-            placeholder="Accreditation notes"
-          />
-          <textarea
-            value={portal.programmeForm.careers}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, careers: event.target.value }))}
-            rows={4}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder="Career outcomes (one per line)"
-          />
-          <textarea
-            value={portal.programmeForm.jobOpportunities}
-            onChange={(event) => portal.setProgrammeForm((state) => ({ ...state, jobOpportunities: event.target.value }))}
-            rows={4}
-            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-            placeholder="Common jobs after graduation (one per line)"
-          />
-          <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-            Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+              Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
+            </div>
+            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+              Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
+            </div>
           </div>
-          <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-            Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
-          </div>
-        </div>
+        </>
       ) : (
         <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
       )}
-
-      <button
-        type="button"
-        onClick={portal.handleSaveProgramme}
-        disabled={!portal.selectedProgrammeId}
-        className="rounded-2xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        Update programme
-      </button>
     </div>
   );
 }
@@ -1689,42 +2070,46 @@ function LeadsPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Leads</p>
         <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Admissions lead inbox</h2>
       </div>
-      {portal.leads.map((lead) => (
-        <article key={lead.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="font-semibold text-slate-900">{lead.lead_type}</p>
-              <p className="text-sm text-slate-500">{new Date(lead.created_at).toLocaleString()}</p>
+      <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+        {portal.leads.map((lead) => (
+          <article key={lead.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="font-semibold text-slate-900">{lead.lead_type}</p>
+                <p className="text-sm text-slate-500">{new Date(lead.created_at).toLocaleString()}</p>
+              </div>
+              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+                {lead.status}
+              </span>
             </div>
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
-              {lead.status}
-            </span>
-          </div>
-          <pre className="mt-4 overflow-auto rounded-2xl bg-slate-50 p-4 text-xs text-slate-700">{JSON.stringify(lead.payload, null, 2)}</pre>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={async () => {
-                await portal.updateLeadStatus(lead.id, "contacted");
-                await portal.loadInstitution(portal.activeInstitutionId);
-              }}
-              className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
-            >
-              Mark contacted
-            </button>
-            <button
-              type="button"
-              onClick={async () => {
-                await portal.updateLeadStatus(lead.id, "archived");
-                await portal.loadInstitution(portal.activeInstitutionId);
-              }}
-              className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
-            >
-              Archive
-            </button>
-          </div>
-        </article>
-      ))}
+            <pre className="mt-4 overflow-auto rounded-2xl bg-slate-50 p-4 text-xs text-slate-700">
+              {JSON.stringify(lead.payload, null, 2)}
+            </pre>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={async () => {
+                  await portal.updateLeadStatus(lead.id, "contacted");
+                  await portal.loadInstitution(portal.activeInstitutionId);
+                }}
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
+              >
+                Mark contacted
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  await portal.updateLeadStatus(lead.id, "archived");
+                  await portal.loadInstitution(portal.activeInstitutionId);
+                }}
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
+              >
+                Archive
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
       {!portal.leads.length ? <p className="text-sm text-slate-500">No leads yet.</p> : null}
     </div>
   );
@@ -1735,7 +2120,7 @@ function ClaimPage() {
   useDocumentTitle("Claim profile | Institution Dashboard");
 
   return (
-    <div className="max-w-2xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
+    <div className="mx-auto max-w-2xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Claim access</p>
       <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Claim your institution</h2>
       <p className="mt-2 text-sm leading-relaxed text-slate-600">
@@ -1773,13 +2158,18 @@ function ClaimPage() {
   );
 }
 
-function StubPage({ title, description }) {
+function StubPage({ title, description, icon = "faq" }) {
   useDocumentTitle(`${title} | Institution Dashboard`);
   return (
-    <div className="max-w-3xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{title}</p>
-      <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">{title}</h2>
-      <p className="mt-3 text-sm leading-relaxed text-slate-600">{description}</p>
+    <div className="grid min-h-[60vh] place-items-center rounded-[2rem] border border-dashed border-slate-300 bg-white p-6 shadow-card">
+      <div className="max-w-2xl text-center">
+        <span className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-brand-50 text-brand-800">
+          <Icon name={icon} className="h-7 w-7" />
+        </span>
+        <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Coming soon</p>
+        <h2 className="mt-2 font-display text-3xl font-semibold text-slate-900">{title}</h2>
+        <p className="mt-3 text-sm leading-relaxed text-slate-600">{description}</p>
+      </div>
     </div>
   );
 }
@@ -1800,11 +2190,15 @@ function Panel({ title, action, onAction, children }) {
   );
 }
 
-function FormSection({ title, children }) {
+function FormSection({ title, description, action, children }) {
   return (
     <section className="space-y-4 rounded-3xl border border-slate-200 bg-slate-50 p-4">
-      <div>
-        <h3 className="font-semibold text-slate-900">{title}</h3>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="font-semibold text-slate-900">{title}</h3>
+          {description ? <p className="mt-1 text-sm text-slate-600">{description}</p> : null}
+        </div>
+        {action}
       </div>
       {children}
     </section>
@@ -1818,7 +2212,7 @@ export default function CmsApp() {
         <Route path="/" element={<CmsShell />}>
           <Route index element={<HomePage />} />
           <Route path="profile" element={<ProfilePage />} />
-          <Route path="staff" element={<StaffPage />} />
+          <Route path="staff" element={<Navigate to="/profile?tab=staff" replace />} />
           <Route path="programmes" element={<ProgrammesPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route
@@ -1826,6 +2220,7 @@ export default function CmsApp() {
             element={
               <StubPage
                 title="Feed"
+                icon="feed"
                 description="Institution feed publishing, scheduling, moderation, and engagement insights are stubbed in this release so the standalone CMS ships with the correct navigation and dashboard actions first."
               />
             }
@@ -1844,7 +2239,8 @@ export default function CmsApp() {
             element={
               <StubPage
                 title="Settings"
-                description="Settings are not part of the 7 primary sidebar sections, but this stub keeps room for branding, notifications, and integration controls in the CMS frontend."
+                icon="settings"
+                description="Branding, notification, and integration controls live here. Settings sits at the bottom of the sidebar, separate from the primary content sections."
               />
             }
           />

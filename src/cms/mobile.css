@@ -17,113 +17,80 @@ html.cms-surface #root {
     min-width: 0;
   }
 
-  /* Compact sticky brand and navigation area. */
-  html.cms-surface #root > .min-h-dvh > aside {
+  /* The desktop icon rail lays out as a compact sticky top strip on small screens. */
+  html.cms-surface [data-cms="rail"] {
     position: sticky;
     top: 0;
     z-index: 40;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
     min-height: auto;
+    padding: 0.45rem 0.6rem;
     border-right: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 8px 24px rgba(4, 47, 46, 0.16);
   }
 
-  html.cms-surface #root > .min-h-dvh > aside > div:first-child {
-    padding: 0.65rem 0.9rem 0.5rem;
+  html.cms-surface [data-cms="rail-brand"] {
+    padding: 0 0.35rem 0 0;
   }
 
-  html.cms-surface #root > .min-h-dvh > aside > div:first-child > div {
-    gap: 0.6rem;
+  html.cms-surface [data-cms="rail-brand"] img {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 0.75rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > aside > div:first-child img {
-    width: 2.35rem;
-    height: 2.35rem;
-    border-radius: 0.85rem;
+  html.cms-surface [data-cms="rail-nav"] {
+    flex-direction: row;
+    gap: 0.22rem;
+    padding: 0;
   }
 
-  html.cms-surface #root > .min-h-dvh > aside > div:first-child p:first-child {
-    font-size: 1rem;
-    line-height: 1.1;
+  html.cms-surface [data-cms="rail-footer"] {
+    flex-direction: row;
+    gap: 0.22rem;
+    margin-top: 0;
+    margin-left: auto;
+    padding: 0 0 0 0.45rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
   }
 
-  html.cms-surface #root > .min-h-dvh > aside > div:first-child p:last-child {
-    margin-top: 0.1rem;
-    font-size: 0.7rem;
-    line-height: 1.15;
+  html.cms-surface [data-cms="rail"] a {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.8rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > aside nav {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.38rem;
-    overflow: visible;
-    padding: 0.42rem 0.55rem 0.65rem;
-  }
-
-  html.cms-surface #root > .min-h-dvh > aside nav > a {
-    display: grid;
-    min-width: 0;
-    min-height: 3rem;
-    grid-template-columns: 1.45rem minmax(0, 1fr);
-    align-items: center;
-    gap: 0.34rem;
-    padding: 0.42rem 0.48rem;
-    border-radius: 0.85rem;
-    font-size: 0.68rem;
-    line-height: 1.08;
-    text-align: left;
-    box-shadow: none;
-  }
-
-  html.cms-surface #root > .min-h-dvh > aside nav > a > span:first-child {
-    width: 1.45rem;
-    height: 1.45rem;
-    border-radius: 0.55rem;
-    font-size: 0.68rem;
-  }
-
-  html.cms-surface #root > .min-h-dvh > aside nav > a > span:last-child {
-    display: -webkit-box;
-    min-width: 0;
-    overflow: hidden;
-    white-space: normal;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-
-  html.cms-surface #root > .min-h-dvh > aside nav > a[aria-current="page"] {
-    background: rgba(16, 185, 129, 0.24);
-    box-shadow: inset 0 0 0 1px rgba(110, 231, 183, 0.14);
-  }
-
-  html.cms-surface #root > .min-h-dvh > aside > div:last-child {
-    display: none;
+  html.cms-surface [data-cms="rail"] a[aria-current="page"] {
+    background: rgba(16, 185, 129, 0.28);
+    box-shadow: inset 0 0 0 1px rgba(110, 231, 183, 0.16);
   }
 
   /* Institution context header. */
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header {
+  html.cms-surface [data-cms="topbar"] {
     position: relative;
     top: auto;
     border-color: #dce5e2;
     background: rgba(255, 255, 255, 0.96);
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div {
+  html.cms-surface [data-cms="topbar"] > div {
     display: block;
     padding: 0.75rem 0.85rem 0.8rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:first-child {
+  html.cms-surface [data-cms="topbar"] > div > div:first-child {
     min-width: 0;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header p.text-xs {
+  html.cms-surface [data-cms="topbar"] p.text-xs {
     font-size: 0.63rem;
     letter-spacing: 0.16em;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header h1 {
+  html.cms-surface [data-cms="topbar"] h1 {
     max-width: 100%;
     margin-top: 0.22rem;
     overflow: visible;
@@ -133,26 +100,31 @@ html.cms-surface #root {
     white-space: normal;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:first-child > p:last-child {
+  html.cms-surface [data-cms="topbar"] > div > div:first-child > p:last-child {
     display: none;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:last-child {
-    display: grid;
+  html.cms-surface [data-cms="topbar"] select {
     width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
+    margin-top: 0.5rem;
+    min-height: 2.6rem;
+    font-size: 16px;
+  }
+
+  html.cms-surface [data-cms="topbar"] > div > div:last-child {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
     margin-top: 0.62rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header > div > div:last-child > div {
+  html.cms-surface [data-cms="topbar"] > div > div:last-child > div {
     display: none !important;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header button {
-    width: 100%;
+  html.cms-surface [data-cms="topbar"] button {
     min-height: 2.6rem;
-    padding-inline: 0.7rem;
+    padding-inline: 1.1rem;
     border-radius: 0.85rem;
     font-size: 0.82rem;
   }
@@ -187,7 +159,9 @@ html.cms-surface #root {
   }
 
   html.cms-surface main .shadow-card {
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 26px -16px rgba(15, 118, 110, 0.38);
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 10px 26px -16px rgba(15, 118, 110, 0.38);
   }
 
   /* Home summary row. */
@@ -231,30 +205,54 @@ html.cms-surface #root {
     border-radius: 1.1rem;
   }
 
-  html.cms-surface main > div.space-y-6 > section:nth-child(2) > article:last-child:nth-child(odd) {
+  html.cms-surface
+    main
+    > div.space-y-6
+    > section:nth-child(2)
+    > article:last-child:nth-child(odd) {
     grid-column: 1 / -1;
     min-height: 7rem;
   }
 
-  html.cms-surface main > div.space-y-6 > section:nth-child(2) > article .h-9.w-9 {
+  html.cms-surface
+    main
+    > div.space-y-6
+    > section:nth-child(2)
+    > article
+    .h-9.w-9 {
     width: 2rem;
     height: 2rem;
     border-radius: 0.75rem;
   }
 
-  html.cms-surface main > div.space-y-6 > section:nth-child(2) > article > p:nth-of-type(1) {
+  html.cms-surface
+    main
+    > div.space-y-6
+    > section:nth-child(2)
+    > article
+    > p:nth-of-type(1) {
     margin-top: 0.75rem;
     font-size: 1.85rem;
     line-height: 1;
   }
 
-  html.cms-surface main > div.space-y-6 > section:nth-child(2) > article > p:nth-of-type(2) {
+  html.cms-surface
+    main
+    > div.space-y-6
+    > section:nth-child(2)
+    > article
+    > p:nth-of-type(2) {
     margin-top: 0.55rem;
     font-size: 0.72rem;
     line-height: 1.2;
   }
 
-  html.cms-surface main > div.space-y-6 > section:nth-child(2) > article .text-sm.font-medium {
+  html.cms-surface
+    main
+    > div.space-y-6
+    > section:nth-child(2)
+    > article
+    .text-sm.font-medium {
     font-size: 0.76rem;
     line-height: 1.25;
   }
@@ -328,38 +326,44 @@ html.cms-surface #root {
     overflow-wrap: anywhere;
   }
 
-  html.cms-surface main .overflow-x-auto {
+  /* The profile section tab strip scrolls inside its own padded card. */
+  html.cms-surface main .overflow-x-auto:not([role="tablist"]) {
     margin-inline: -0.75rem;
     padding-inline: 0.75rem;
     scroll-padding-inline: 0.75rem;
   }
+
+  html.cms-surface main [role="tablist"] {
+    gap: 1.25rem;
+    scrollbar-width: none;
+  }
+
+  html.cms-surface main [role="tablist"]::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (max-width: 479px) {
-  html.cms-surface #root > .min-h-dvh > aside nav {
-    gap: 0.3rem;
-    padding-inline: 0.42rem;
+  html.cms-surface [data-cms="rail"] {
+    gap: 0.15rem;
+    padding-inline: 0.45rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > aside nav > a {
-    grid-template-columns: 1.3rem minmax(0, 1fr);
-    gap: 0.28rem;
-    min-height: 2.8rem;
-    padding-inline: 0.38rem;
-    font-size: 0.63rem;
+  html.cms-surface [data-cms="rail"] a {
+    width: 2.3rem;
+    height: 2.3rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > aside nav > a > span:first-child {
-    width: 1.3rem;
-    height: 1.3rem;
-    font-size: 0.62rem;
+  html.cms-surface [data-cms="rail"] svg {
+    width: 1.15rem;
+    height: 1.15rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header h1 {
+  html.cms-surface [data-cms="topbar"] h1 {
     font-size: 1.1rem;
   }
 
-  html.cms-surface #root > .min-h-dvh > .min-w-0 > header button {
+  html.cms-surface [data-cms="topbar"] button {
     font-size: 0.78rem;
   }
 
@@ -400,19 +404,19 @@ html.cms-surface #root {
 }
 
 @media (max-width: 359px) {
-  html.cms-surface #root > .min-h-dvh > aside > div:first-child p:last-child {
+  html.cms-surface [data-cms="rail-brand"] {
     display: none;
-  }
-
-  html.cms-surface #root > .min-h-dvh > aside nav {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   html.cms-surface main > div.space-y-6 > section:nth-child(2) {
     grid-template-columns: 1fr;
   }
 
-  html.cms-surface main > div.space-y-6 > section:nth-child(2) > article:last-child:nth-child(odd) {
+  html.cms-surface
+    main
+    > div.space-y-6
+    > section:nth-child(2)
+    > article:last-child:nth-child(odd) {
     grid-column: auto;
   }
 }
