@@ -121,6 +121,9 @@ export default function ProgrammeDetail() {
   }
 
   const reqs = programme.subjectRequirements || {};
+  const otherRequirements = Array.isArray(programme.requirements)
+    ? programme.requirements.map((item) => String(item || "").trim()).filter(Boolean)
+    : [];
   const predictorSnap = readPredictorSession();
   const eligibility =
     predictorSnap.grades != null && predictorSnap.total != null
@@ -240,6 +243,24 @@ export default function ProgrammeDetail() {
               <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Campus location</dt>
               <dd className="font-medium text-brand-900">{campusLocation}</dd>
             </div>
+            {programme.qualification ? (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Level</dt>
+                <dd className="font-medium text-brand-900">{programme.qualification}</dd>
+              </div>
+            ) : null}
+            {programme.faculty ? (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Faculty</dt>
+                <dd className="font-medium text-brand-900">{programme.faculty}</dd>
+              </div>
+            ) : null}
+            {programme.studyMode ? (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Study mode</dt>
+                <dd className="font-medium text-brand-900">{programme.studyMode}</dd>
+              </div>
+            ) : null}
           </dl>
         </div>
       </header>
@@ -314,8 +335,11 @@ export default function ProgrammeDetail() {
               {grade}
             </li>
           ))}
+          {otherRequirements.map((requirement) => (
+            <li key={requirement}>{requirement}</li>
+          ))}
         </ul>
-        {!Object.keys(reqs).length && (
+        {!Object.keys(reqs).length && !otherRequirements.length && (
           <p className="text-sm text-slate-500">
             {admissionListed
               ? "No subject-specific requirements listed in Thuto for this programme."
@@ -387,6 +411,7 @@ export default function ProgrammeDetail() {
             careers={careers}
             maxCareers={entitlements.careersPerProgramme}
             showSalary={entitlements.showSalaryEstimates}
+            programme={programme}
             empty="Career prospects are being prepared for this programme."
           />
         </div>

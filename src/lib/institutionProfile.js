@@ -77,6 +77,10 @@ export function isApplicationWindowOpen(value) {
   return normalizeText(value).toLowerCase() !== APPLICATION_WINDOW_CLOSED;
 }
 
+export function normalizeUniversityFaculties(university) {
+  return uniqueStrings(Array.isArray(university?.faculties) ? university.faculties : []);
+}
+
 export function normalizeUniversityAccreditation(university) {
   return {
     status: normalizeText(university?.accreditationStatus),

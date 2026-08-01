@@ -22,7 +22,12 @@ export function inferQualificationLevel(programme) {
   }
   if (combined.includes("certificate")) return "certificate";
   if (combined.includes("diploma")) return "diploma";
-  if (combined.includes("degree") || combined.includes("bachelor") || /\bba\b|\bbsc\b|\bbeng\b|\bbcom\b/.test(combined)) {
+  if (
+    combined.includes("undergraduate") ||
+    combined.includes("degree") ||
+    combined.includes("bachelor") ||
+    /\bba\b|\bbsc\b|\bbeng\b|\bbcom\b/.test(combined)
+  ) {
     return "degree";
   }
   if (combined.includes("professional") || combined.includes("short course")) return "professional";

@@ -1,15 +1,16 @@
-import { getCareerSalaryEstimate } from "../lib/careerSalaries.js";
+import { resolveCareerSalary } from "../lib/careerSalaries.js";
 
 /**
  * @param {{
  *   careers: string[],
  *   maxCareers: number,
  *   showSalary?: boolean,
+ *   programme?: Record<string, unknown>,
  *   empty?: string,
  *   className?: string,
  * }} props
  */
-export default function CareersList({ careers, maxCareers, showSalary = false, empty, className = "" }) {
+export default function CareersList({ careers, maxCareers, showSalary = false, programme, empty, className = "" }) {
   const visible = careers.slice(0, maxCareers);
   const hiddenCount = Math.max(0, careers.length - visible.length);
 
@@ -20,18 +21,19 @@ export default function CareersList({ careers, maxCareers, showSalary = false, e
   return (
     <div className={className}>
       <ul className="flex flex-wrap gap-2">
-        {visible.map((career) => (
-          <li
-            key={career}
-            className="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-900"
-            title={showSalary ? `Indicative salary: ${getCareerSalaryEstimate(career)}` : undefined}
-          >
-            {career}
-            {showSalary ? (
-              <span className="ml-1 font-normal text-brand-700/90">· {getCareerSalaryEstimate(career)}</span>
-            ) : null}
-          </li>
-        ))}
+        {visible.map((career) => {
+          const salary = showSalary ? resolveCareerSalary(programme, career) : "";
+          return (
+            <li
+              key={career}
+              className="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-900"
+              title={showSalary ? `Indicative salary: ${salary}` : undefined}
+            >
+              {career}
+              {showSalary ? <span className="ml-1 font-normal text-brand-700/90">· {salary}</span> : null}
+            </li>
+          );
+        })}
       </ul>
       {hiddenCount > 0 ? (
         <p className="mt-2 text-xs text-slate-500">

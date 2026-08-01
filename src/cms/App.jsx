@@ -28,6 +28,9 @@ import {
   summarizeInstitutionAnalytics,
   updateLeadStatus,
 } from "../lib/partner.js";
+import { GRADE_POINTS, SUBJECT_FIELDS } from "../lib/admissions.js";
+import { inferQualificationLevel } from "../lib/programmeQualification.js";
+import { formatModuleEntry, formatModuleSemesterLabel, parseModuleEntry } from "../lib/programmeModules.js";
 import { fetchProgrammes, programmeBelongsToUniversity, universityProgrammeAliases } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
@@ -43,6 +46,7 @@ import {
   normalizeUniversityAccreditation,
   normalizeUniversityCampusPhotos,
   normalizeUniversityContacts,
+  normalizeUniversityFaculties,
   normalizeUniversitySocialLinks,
   normalizeUniversityStudentLife,
   splitMultilineList,
@@ -71,7 +75,12 @@ const EMPTY_RESOURCE = { title: "", category: "", url: "", format: "Web page", s
 const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "", photo: "" };
 const EMPTY_INCENTIVE = { category: "other", label: "", detail: "", sourceUrl: "", sourceLabel: "" };
 const EMPTY_PROGRAMME_FORM = {
+  name: "",
   description: "",
+  duration: "",
+  qualification: "",
+  faculty: "",
+  studyMode: "",
   applyUrl: "",
   officialUrl: "",
   applicationWindowStatus: APPLICATION_WINDOW_OPEN,
@@ -79,9 +88,75 @@ const EMPTY_PROGRAMME_FORM = {
   feesDomestic: "",
   minPoints: "",
   accreditationStatus: "",
-  careers: "",
+  entryRequirements: "",
   jobOpportunities: "",
 };
+
+const PROGRAMME_LEVEL_OPTIONS = ["Undergraduate", "Postgraduate", "Diploma", "Certificate"];
+
+// Stored without hyphens so fitFinder.js still matches "full time" / "part time" / "online".
+const STUDY_MODE_OPTIONS = ["Full time", "Part time", "Distance", "Hybrid", "Online"];
+
+// "U" is a fail, so it is never a minimum entry requirement.
+const GRADE_OPTIONS = Object.keys(GRADE_POINTS).filter((grade) => grade !== "U");
+
+// Bundled data uses free-text levels ("Degree", "Higher Diploma"). Map them onto the
+// four options instead of blanking the dropdown and wiping the value on the next save.
+function matchProgrammeLevel(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  const exact = PROGRAMME_LEVEL_OPTIONS.find((option) => option.toLowerCase() === text.toLowerCase());
+  if (exact) return exact;
+  const level = inferQualificationLevel({ qualification: text });
+  if (level === "degree") return "Undergraduate";
+  if (level === "postgraduate" || level === "phd") return "Postgraduate";
+  if (level === "diploma") return "Diploma";
+  if (level === "certificate") return "Certificate";
+  return "";
+}
+
+// Likewise for study modes such as "Full Time / Evening" or "Block Release".
+function matchStudyMode(value) {
+  const text = String(value || "").trim().toLowerCase();
+  if (!text) return "";
+  const exact = STUDY_MODE_OPTIONS.find((option) => option.toLowerCase() === text);
+  if (exact) return exact;
+  if (text.includes("full")) return "Full time";
+  if (text.includes("part") || text.includes("evening") || text.includes("block")) return "Part time";
+  if (text.includes("hybrid") || text.includes("blended")) return "Hybrid";
+  if (text.includes("online")) return "Online";
+  if (text.includes("distance")) return "Distance";
+  return "";
+}
+
+const EMPTY_CAREER = { title: "", salary: "" };
+const EMPTY_MODULE = { code: "", name: "" };
+
+function toSelectOptions(values) {
+  return values.map((value) => ({ value, label: value }));
+}
+
+function normalizeSubjectRequirements(programme) {
+  const source = programme?.subjectRequirements;
+  const values = source && typeof source === "object" ? source : {};
+  return Object.fromEntries(SUBJECT_FIELDS.map(({ key }) => [key, String(values[key] || "").trim()]));
+}
+
+function normalizeModuleBlocks(programme) {
+  const raw = Array.isArray(programme?.modules) ? programme.modules : [];
+  return raw.map((block) => ({
+    semester: block?.semester == null ? "" : String(block.semester),
+    modules: (Array.isArray(block?.modules) ? block.modules : []).filter(Boolean).map(parseModuleEntry),
+  }));
+}
+
+function normalizeCareerRows(programme) {
+  const titles = [...new Set([...(programme?.careers || []), ...(programme?.careerOpportunities || [])])]
+    .map((title) => String(title || "").trim())
+    .filter(Boolean);
+  const salaries = programme?.careerSalaries && typeof programme.careerSalaries === "object" ? programme.careerSalaries : {};
+  return titles.map((title) => ({ title, salary: String(salaries[title] || "").trim() }));
+}
 
 function normalizeResourceRows(resources) {
   if (!Array.isArray(resources)) return [];
@@ -494,8 +569,12 @@ function usePartnerPortalData() {
   const [resourceRows, setResourceRows] = useState([]);
   const [staffRows, setStaffRows] = useState([]);
   const [studentLifeRows, setStudentLifeRows] = useState([]);
+  const [faculties, setFaculties] = useState([]);
   const [selectedProgrammeId, setSelectedProgrammeId] = useState("");
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
+  const [subjectRequirements, setSubjectRequirements] = useState(() => normalizeSubjectRequirements(null));
+  const [moduleBlocks, setModuleBlocks] = useState([]);
+  const [careerRows, setCareerRows] = useState([]);
 
   const activeInstitutionId = selectedInstitutionId || memberships[0]?.institution_id || "";
 
@@ -571,6 +650,7 @@ function usePartnerPortalData() {
         socialYoutube: socialLinks.youtube,
         socialTiktok: socialLinks.tiktok,
       });
+      setFaculties(normalizeUniversityFaculties(uni));
       setResourceRows(normalizeResourceRows(uni.resources));
       setStaffRows(normalizeStaffRows(uni.staff));
       setStudentLifeRows(
@@ -717,8 +797,26 @@ function usePartnerPortalData() {
     setError("");
     setMessage("");
     try {
+      const careers = careerRows.map((row) => row.title.trim()).filter(Boolean);
+      const careerSalaries = {};
+      for (const row of careerRows) {
+        const title = row.title.trim();
+        const salary = row.salary.trim();
+        if (title && salary) careerSalaries[title] = salary;
+      }
+      const grades = Object.fromEntries(
+        Object.entries(subjectRequirements)
+          .map(([key, grade]) => [key, String(grade || "").trim()])
+          .filter(([, grade]) => grade),
+      );
+
       const patch = {
+        name: programmeForm.name.trim() || null,
         description: programmeForm.description || null,
+        duration: programmeForm.duration.trim() || null,
+        qualification: programmeForm.qualification || null,
+        faculty: programmeForm.faculty || null,
+        studyMode: programmeForm.studyMode || null,
         applyUrl: programmeForm.applyUrl || null,
         officialUrl: programmeForm.officialUrl || null,
         applicationWindowStatus: programmeForm.applicationWindowStatus || APPLICATION_WINDOW_OPEN,
@@ -727,8 +825,17 @@ function usePartnerPortalData() {
         // Retired free-text fields — nulled so values saved before the toggle disappear.
         accreditationBody: null,
         accreditationNotes: null,
-        careers: splitMultilineList(programmeForm.careers),
-        careerOpportunities: splitMultilineList(programmeForm.careers),
+        subjectRequirements: grades,
+        requirements: splitMultilineList(programmeForm.entryRequirements),
+        modules: moduleBlocks
+          .map((block) => ({
+            semester: block.semester.trim(),
+            modules: block.modules.map(formatModuleEntry).filter(Boolean),
+          }))
+          .filter((block) => block.modules.length),
+        careers,
+        careerOpportunities: careers,
+        careerSalaries,
         jobOpportunities: splitMultilineList(programmeForm.jobOpportunities),
       };
       if (programmeForm.feesDomestic) {
@@ -808,6 +915,22 @@ function usePartnerPortalData() {
     }
   }
 
+  async function handleSaveFaculties(nextFaculties) {
+    setError("");
+    setMessage("");
+    try {
+      const cleaned = [...new Set(nextFaculties.map((name) => String(name || "").trim()).filter(Boolean))];
+      await saveInstitutionOverride(activeInstitutionId, { faculties: cleaned });
+      setFaculties(cleaned);
+      setMessage("Faculty list saved.");
+      await loadInstitution(activeInstitutionId);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not save the faculty list.");
+      return false;
+    }
+  }
+
   async function handleClaim() {
     setError("");
     setMessage("");
@@ -827,10 +950,21 @@ function usePartnerPortalData() {
     const programme = institutionProgrammes.find((row) => row.id === programmeId);
     if (!programme) {
       setProgrammeForm(EMPTY_PROGRAMME_FORM);
+      setSubjectRequirements(normalizeSubjectRequirements(null));
+      setModuleBlocks([]);
+      setCareerRows([]);
       return;
     }
+    setSubjectRequirements(normalizeSubjectRequirements(programme));
+    setModuleBlocks(normalizeModuleBlocks(programme));
+    setCareerRows(normalizeCareerRows(programme));
     setProgrammeForm({
+      name: programme.name || "",
       description: programme.description || "",
+      duration: programme.duration || "",
+      qualification: matchProgrammeLevel(programme.qualification),
+      faculty: programme.faculty || "",
+      studyMode: matchStudyMode(programme.studyMode),
       applyUrl: programme.applyUrl || "",
       officialUrl: programme.officialUrl || "",
       applicationWindowStatus: isApplicationWindowOpen(programme.applicationWindowStatus)
@@ -844,7 +978,7 @@ function usePartnerPortalData() {
           ? ACCREDITATION_ON
           : ACCREDITATION_OFF
         : "",
-      careers: [...new Set([...(programme.careers || []), ...(programme.careerOpportunities || [])])].join("\n"),
+      entryRequirements: (Array.isArray(programme.requirements) ? programme.requirements : []).join("\n"),
       jobOpportunities: (programme.jobOpportunities || []).join("\n"),
     });
   }
@@ -882,9 +1016,16 @@ function usePartnerPortalData() {
     setStaffRows,
     studentLifeRows,
     setStudentLifeRows,
+    faculties,
     selectedProgrammeId,
     programmeForm,
     setProgrammeForm,
+    subjectRequirements,
+    setSubjectRequirements,
+    moduleBlocks,
+    setModuleBlocks,
+    careerRows,
+    setCareerRows,
     fillProgrammeForm,
     hasAccess,
     institutionProgrammes,
@@ -896,6 +1037,7 @@ function usePartnerPortalData() {
     handleSaveProgramme,
     handleCreateProgramme,
     handleDeleteProgramme,
+    handleSaveFaculties,
     handleClaim,
     loadInstitution,
     updateLeadStatus,
@@ -1442,9 +1584,14 @@ function PhotoPreview({ value, shape }) {
   );
 }
 
-function ReadOnlyValue({ field, value }) {
+function ReadOnlyValue({ field, value, options }) {
   const text = String(value ?? "").trim();
   if (field.type === "photo") return <PhotoPreview value={text} shape={field.shape} />;
+  if (field.type === "select") {
+    if (!text) return <span className="mt-1.5 block text-sm text-slate-400">Not set</span>;
+    const match = (options || field.options || []).find((option) => option.value === text);
+    return <span className="mt-1.5 block text-sm text-slate-800">{match?.label || text}</span>;
+  }
   if (field.type === "toggle") {
     if (!text) return <span className="mt-1.5 block text-sm text-slate-400">Not set</span>;
     const on = text === field.onValue;
@@ -1477,9 +1624,10 @@ function ReadOnlyValue({ field, value }) {
   );
 }
 
-function ProfileField({ field, value, editing, onChange, uploadFolder, note }) {
+function ProfileField({ field, value, editing, onChange, uploadFolder, note, options }) {
   const spanClass = field.span === "full" ? "md:col-span-2 2xl:col-span-3" : "";
   const inputType = field.type === "date" ? "date" : field.type === "email" ? "email" : "text";
+  const selectOptions = options || field.options || [];
 
   return (
     <div
@@ -1495,6 +1643,15 @@ function ProfileField({ field, value, editing, onChange, uploadFolder, note }) {
               offLabel={field.offLabel}
               onToggle={(next) => onChange(next ? field.onValue : field.offValue)}
             />
+          ) : field.type === "select" ? (
+            <select value={value} onChange={(event) => onChange(event.target.value)} className={FIELD_INPUT_CLASS}>
+              <option value="">{field.placeholder || "Not set"}</option>
+              {selectOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           ) : field.type === "photo" ? (
             <div className="mt-2">
               <PhotoUploadField
@@ -1523,7 +1680,7 @@ function ProfileField({ field, value, editing, onChange, uploadFolder, note }) {
             />
           )
         ) : (
-          <ReadOnlyValue field={field} value={value} />
+          <ReadOnlyValue field={field} value={value} options={selectOptions} />
         )}
         {note ? <p className="mt-1.5 text-xs text-slate-500">{note}</p> : null}
       </dd>
@@ -1533,7 +1690,7 @@ function ProfileField({ field, value, editing, onChange, uploadFolder, note }) {
 
 const CLOSED_DATES_NOTE = "Locked while applications are closed. Switch the window to Open to edit.";
 
-function FieldGrid({ fields, form, editing, onChange, uploadFolder }) {
+function FieldGrid({ fields, form, editing, onChange, uploadFolder, optionsByKey }) {
   // Deadlines stay read-only while the application window is closed.
   const windowClosed = !isApplicationWindowOpen(form.applicationWindowStatus);
 
@@ -1549,6 +1706,7 @@ function FieldGrid({ fields, form, editing, onChange, uploadFolder }) {
             editing={editing && !locked}
             onChange={(next) => onChange(field.key, next)}
             uploadFolder={uploadFolder}
+            options={optionsByKey?.[field.key]}
             note={editing && locked ? CLOSED_DATES_NOTE : ""}
           />
         );
@@ -2166,6 +2324,11 @@ function ProfilePage() {
 }
 
 const PROGRAMME_FIELDS = [
+  { key: "name", label: "Programme name" },
+  { key: "duration", label: "Duration", placeholder: "4 years" },
+  { key: "qualification", label: "Level", type: "select", options: toSelectOptions(PROGRAMME_LEVEL_OPTIONS) },
+  { key: "faculty", label: "Faculty", type: "select", placeholder: "No faculty set" },
+  { key: "studyMode", label: "Study mode", type: "select", options: toSelectOptions(STUDY_MODE_OPTIONS) },
   { key: "description", label: "Programme description", type: "textarea", rows: 5, span: "full" },
   { key: "applyUrl", label: "External application link", type: "url" },
   { key: "officialUrl", label: "Official programme page", type: "url" },
@@ -2173,9 +2336,305 @@ const PROGRAMME_FIELDS = [
   { key: "applicationDeadline", label: "Application deadline", type: "date", lockedWhenClosed: true },
   { key: "minPoints", label: "Minimum points" },
   { ...ACCREDITATION_TOGGLE, key: "accreditationStatus", label: "Programme accreditation" },
-  { key: "careers", label: "Career outcomes (one per line)", type: "textarea", rows: 4 },
   { key: "jobOpportunities", label: "Common jobs after graduation (one per line)", type: "textarea", rows: 4 },
 ];
+
+function SubjectRequirementsEditor({ portal, editing }) {
+  const listed = SUBJECT_FIELDS.filter(({ key }) => portal.subjectRequirements[key]);
+
+  if (!editing) {
+    return listed.length ? (
+      <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+        {listed.map(({ key, label }) => (
+          <div key={key} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</p>
+            <p className="mt-1 font-semibold text-slate-900">At least {portal.subjectRequirements[key]}</p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <EmptyRowsNote>No subject grade requirements set.</EmptyRowsNote>
+    );
+  }
+
+  return (
+    <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+      {SUBJECT_FIELDS.map(({ key, label }) => (
+        <label key={key} className="min-w-0 rounded-2xl border border-slate-200 bg-white px-4 py-3">
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</span>
+          <select
+            value={portal.subjectRequirements[key] || ""}
+            onChange={(event) =>
+              portal.setSubjectRequirements((state) => ({ ...state, [key]: event.target.value }))
+            }
+            className={FIELD_INPUT_CLASS}
+          >
+            <option value="">No requirement</option>
+            {GRADE_OPTIONS.map((grade) => (
+              <option key={grade} value={grade}>
+                At least {grade}
+              </option>
+            ))}
+          </select>
+        </label>
+      ))}
+    </div>
+  );
+}
+
+function ModuleBlocksEditor({ portal, editing }) {
+  function updateBlock(index, patch) {
+    portal.setModuleBlocks((blocks) => blocks.map((block, i) => (i === index ? { ...block, ...patch } : block)));
+  }
+
+  function updateModule(blockIndex, moduleIndex, patch) {
+    portal.setModuleBlocks((blocks) =>
+      blocks.map((block, i) =>
+        i === blockIndex
+          ? { ...block, modules: block.modules.map((item, j) => (j === moduleIndex ? { ...item, ...patch } : item)) }
+          : block,
+      ),
+    );
+  }
+
+  if (!editing) {
+    return portal.moduleBlocks.length ? (
+      <div className="grid gap-3 md:grid-cols-2">
+        {portal.moduleBlocks.map((block, index) => (
+          <div key={`module-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+              {formatModuleSemesterLabel(block.semester)}
+            </p>
+            <ul className="mt-2 space-y-1 text-sm text-slate-700">
+              {block.modules.map((item, moduleIndex) => (
+                <li key={`module-view-${index}-${moduleIndex}`}>
+                  {item.code ? <span className="font-semibold text-slate-900">{item.code}</span> : null}
+                  {item.code && item.name ? " · " : ""}
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <EmptyRowsNote>No modules listed yet.</EmptyRowsNote>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {portal.moduleBlocks.map((block, index) => (
+        <div key={`module-${index}`} className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <label className="min-w-0">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Semester</span>
+              <input
+                value={block.semester}
+                onChange={(event) => updateBlock(index, { semester: event.target.value })}
+                className={FIELD_INPUT_CLASS}
+                placeholder="1"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={() => portal.setModuleBlocks((blocks) => blocks.filter((_, i) => i !== index))}
+              className="self-end text-sm font-semibold text-red-700"
+            >
+              Remove semester
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            {block.modules.map((item, moduleIndex) => (
+              <div key={`module-${index}-${moduleIndex}`} className="grid gap-2 md:grid-cols-[10rem_minmax(0,1fr)_auto]">
+                <input
+                  value={item.code}
+                  onChange={(event) => updateModule(index, moduleIndex, { code: event.target.value })}
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Code"
+                  aria-label="Module code"
+                />
+                <input
+                  value={item.name}
+                  onChange={(event) => updateModule(index, moduleIndex, { name: event.target.value })}
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  placeholder="Module name"
+                  aria-label="Module name"
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateBlock(index, { modules: block.modules.filter((_, j) => j !== moduleIndex) })
+                  }
+                  className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-red-700"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => updateBlock(index, { modules: [...block.modules, { ...EMPTY_MODULE }] })}
+            className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+          >
+            Add module
+          </button>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() =>
+          portal.setModuleBlocks((blocks) => [
+            ...blocks,
+            { semester: String(blocks.length + 1), modules: [{ ...EMPTY_MODULE }] },
+          ])
+        }
+        className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+      >
+        Add semester
+      </button>
+    </div>
+  );
+}
+
+function CareerRowsEditor({ portal, editing }) {
+  if (!editing) {
+    return portal.careerRows.length ? (
+      <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+        {portal.careerRows.map((row, index) => (
+          <div key={`career-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <p className="font-semibold text-slate-900">{row.title}</p>
+            <p className="mt-1 text-sm text-slate-600">{row.salary || "Thuto estimate shown to students"}</p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <EmptyRowsNote>No career prospects listed yet.</EmptyRowsNote>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {portal.careerRows.map((row, index) => (
+        <div key={`career-${index}`} className="grid gap-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
+          <input
+            value={row.title}
+            onChange={(event) =>
+              portal.setCareerRows((rows) => rows.map((item, i) => (i === index ? { ...item, title: event.target.value } : item)))
+            }
+            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+            placeholder="Career"
+            aria-label="Career"
+          />
+          <input
+            value={row.salary}
+            onChange={(event) =>
+              portal.setCareerRows((rows) => rows.map((item, i) => (i === index ? { ...item, salary: event.target.value } : item)))
+            }
+            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+            placeholder="P8,000–P15,000/month"
+            aria-label="Salary estimate"
+          />
+          <button
+            type="button"
+            onClick={() => portal.setCareerRows((rows) => rows.filter((_, i) => i !== index))}
+            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-red-700"
+          >
+            Remove
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() => portal.setCareerRows((rows) => [...rows, { ...EMPTY_CAREER }])}
+        className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+      >
+        Add career
+      </button>
+      <p className="text-xs text-slate-500">
+        Leave a salary blank to keep showing Thuto&apos;s indicative range for that career.
+      </p>
+    </div>
+  );
+}
+
+function FacultyManager({ portal }) {
+  const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  async function addFaculty(event) {
+    event.preventDefault();
+    const name = draft.trim();
+    if (!name) return;
+    const saved = await portal.handleSaveFaculties([...portal.faculties, name]);
+    if (saved) setDraft("");
+  }
+
+  return (
+    <section className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="font-semibold text-slate-900">Faculties</h3>
+          <p className="mt-1 text-sm text-slate-600">
+            The list students see, and the options in each programme&apos;s Faculty dropdown.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setOpen((state) => !state)}
+          className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+        >
+          {open ? "Done" : "Manage faculties"}
+        </button>
+      </div>
+
+      {open ? (
+        <div className="mt-4 space-y-3">
+          {portal.faculties.length ? (
+            <ul className="flex flex-wrap gap-2">
+              {portal.faculties.map((name) => (
+                <li
+                  key={name}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-800"
+                >
+                  {name}
+                  <button
+                    type="button"
+                    onClick={() => portal.handleSaveFaculties(portal.faculties.filter((item) => item !== name))}
+                    aria-label={`Remove ${name}`}
+                    className="text-red-700 hover:text-red-900"
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-slate-500">
+              No faculties saved yet. Faculties already used by your programmes still appear in the dropdown.
+            </p>
+          )}
+
+          <form onSubmit={addFaculty} className="flex flex-wrap gap-2">
+            <input
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+              placeholder="Faculty of Engineering & Technology"
+            />
+            <button type="submit" className="rounded-2xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-800">
+              Add faculty
+            </button>
+          </form>
+        </div>
+      ) : null}
+    </section>
+  );
+}
 
 function ProgrammesPage() {
   const portal = usePortal();
@@ -2200,6 +2659,16 @@ function ProgrammesPage() {
     label: `Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`,
   };
 
+  // Saved faculties plus any already in use across this institution's catalogue.
+  const facultyOptions = useMemo(() => {
+    const names = new Set(portal.faculties);
+    for (const programme of portal.institutionProgrammes) {
+      const name = String(programme.faculty || "").trim();
+      if (name) names.add(name);
+    }
+    return toSelectOptions([...names].sort((a, b) => a.localeCompare(b)));
+  }, [portal.faculties, portal.institutionProgrammes]);
+
   // Changing the selected programme swaps the whole form out from under an edit.
   useEffect(() => {
     setEditing(false);
@@ -2212,12 +2681,22 @@ function ProgrammesPage() {
   }
 
   function startEditing() {
-    setSnapshot(portal.programmeForm);
+    setSnapshot({
+      programmeForm: portal.programmeForm,
+      subjectRequirements: portal.subjectRequirements,
+      moduleBlocks: portal.moduleBlocks,
+      careerRows: portal.careerRows,
+    });
     setEditing(true);
   }
 
   function cancelEditing() {
-    if (snapshot) portal.setProgrammeForm(snapshot);
+    if (snapshot) {
+      portal.setProgrammeForm(snapshot.programmeForm);
+      portal.setSubjectRequirements(snapshot.subjectRequirements);
+      portal.setModuleBlocks(snapshot.moduleBlocks);
+      portal.setCareerRows(snapshot.careerRows);
+    }
     setSnapshot(null);
     setEditing(false);
   }
@@ -2302,6 +2781,8 @@ function ProgrammesPage() {
           </button>
         </form>
       ) : null}
+
+      <FacultyManager portal={portal} />
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
         <div className="space-y-3">
@@ -2398,7 +2879,47 @@ function ProgrammesPage() {
                 form={portal.programmeForm}
                 editing={editing}
                 onChange={updateField}
+                optionsByKey={{ faculty: facultyOptions }}
               />
+
+              <FormSection
+                title="Entry requirements"
+                description="Minimum subject grades feed the BGCSE predictor. Add anything else students must meet below."
+              >
+                <SubjectRequirementsEditor portal={portal} editing={editing} />
+                {editing ? (
+                  <label className="block">
+                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                      Other requirements (one per line)
+                    </span>
+                    <textarea
+                      value={portal.programmeForm.entryRequirements}
+                      onChange={(event) => updateField("entryRequirements", event.target.value)}
+                      rows={3}
+                      className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+                      placeholder="Physically fit&#10;Portfolio required"
+                    />
+                  </label>
+                ) : splitMultilineList(portal.programmeForm.entryRequirements).length ? (
+                  <ul className="list-inside list-disc text-sm text-slate-700">
+                    {splitMultilineList(portal.programmeForm.entryRequirements).map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </FormSection>
+
+              <FormSection title="Modules per semester" description="Add each module's code and name.">
+                <ModuleBlocksEditor portal={portal} editing={editing} />
+              </FormSection>
+
+              <FormSection
+                title="Career prospects"
+                description="Careers this programme leads to, with your own salary estimate for each."
+              >
+                <CareerRowsEditor portal={portal} editing={editing} />
+              </FormSection>
+
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
                   Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
