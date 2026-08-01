@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthProvider, useAuth } from "../lib/auth.jsx";
 import {
+  Link,
   Navigate,
   NavLink,
   Outlet,
@@ -9,6 +10,7 @@ import {
   useLocation,
   useNavigate,
   useOutletContext,
+  useParams,
   useSearchParams,
 } from "react-router-dom";
 import { thutoLogoSrc } from "../components/BrandMark.jsx";
@@ -1149,7 +1151,7 @@ function CmsShell() {
           </div>
         </header>
 
-        <main className="px-5 py-6 lg:px-8 2xl:px-10">
+        <main className="px-4 py-5 lg:px-6 2xl:px-8">
           {portal.message ? (
             <p className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
               {portal.message}
@@ -1625,14 +1627,12 @@ function ReadOnlyValue({ field, value, options }) {
 }
 
 function ProfileField({ field, value, editing, onChange, uploadFolder, note, options }) {
-  const spanClass = field.span === "full" ? "md:col-span-2 2xl:col-span-3" : "";
+  const spanClass = field.span === "full" ? "sm:col-span-2 xl:col-span-3 2xl:col-span-4" : "";
   const inputType = field.type === "date" ? "date" : field.type === "email" ? "email" : "text";
   const selectOptions = options || field.options || [];
 
   return (
-    <div
-      className={["min-w-0 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3", spanClass].filter(Boolean).join(" ")}
-    >
+    <div className={["min-w-0 border-b border-slate-100 pb-3", spanClass].filter(Boolean).join(" ")}>
       <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{field.label}</dt>
       <dd>
         {editing ? (
@@ -1695,7 +1695,7 @@ function FieldGrid({ fields, form, editing, onChange, uploadFolder, optionsByKey
   const windowClosed = !isApplicationWindowOpen(form.applicationWindowStatus);
 
   return (
-    <dl className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+    <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {fields.map((field) => {
         const locked = Boolean(field.lockedWhenClosed) && windowClosed;
         return (
@@ -2214,16 +2214,21 @@ function ProfilePage() {
     setEditingTab(null);
   }
 
+  const tabs = PROFILE_TABS.map((tab) => ({
+    id: tab.id,
+    label: tab.label,
+    badge:
+      editingTab === tab.id ? (
+        <span aria-label="unsaved changes" className="ml-2 inline-block h-1.5 w-1.5 rounded-full bg-amber-500 align-middle" />
+      ) : null,
+  }));
+
   return (
-    <section className="rounded-[2rem] border border-slate-200 bg-white shadow-card">
-      <div className="flex flex-wrap items-start justify-between gap-4 px-5 pt-6 lg:px-6">
-        <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Institution profile</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">
-            {portal.university?.name || "Your institution"}
-          </h2>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
+    <PageCard
+      kicker="Institution profile"
+      title={portal.university?.name || "Your institution"}
+      actions={
+        <>
           <span className="rounded-2xl border border-brand-100 bg-brand-50 px-3 py-2 text-sm text-brand-900">
             {portal.profileCompleteness.completed}/{portal.profileCompleteness.total} public profile areas complete
           </span>
@@ -2235,11 +2240,11 @@ function ProfilePage() {
           >
             Preview in student app
           </a>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       {editingTab && editingTab !== activeTab ? (
-        <div className="px-5 pt-4 lg:px-6">
+        <div className="px-4 pt-4 lg:px-6">
           <button
             type="button"
             onClick={() => selectTab(editingTab)}
@@ -2250,42 +2255,19 @@ function ProfilePage() {
         </div>
       ) : null}
 
-      <div className="mt-5 border-b border-slate-200 px-5 lg:px-6">
-        <div role="tablist" aria-label="Profile sections" className="flex gap-6 overflow-x-auto">
-          {PROFILE_TABS.map((tab) => {
-            const isActive = tab.id === activeTab;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                id={`profile-tab-${tab.id}`}
-                aria-selected={isActive}
-                aria-controls={`profile-panel-${tab.id}`}
-                onClick={() => selectTab(tab.id)}
-                className={[
-                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
-                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
-                ].join(" ")}
-              >
-                {tab.label}
-                {editingTab === tab.id ? (
-                  <span
-                    aria-label="unsaved changes"
-                    className="ml-2 inline-block h-1.5 w-1.5 rounded-full bg-amber-500 align-middle"
-                  />
-                ) : null}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <TabBar
+        tabs={tabs}
+        activeId={activeTab}
+        onSelect={selectTab}
+        ariaLabel="Profile sections"
+        idPrefix="profile-tab"
+      />
 
       <div
         role="tabpanel"
-        id={`profile-panel-${activeTab}`}
+        id={`profile-tab-panel-${activeTab}`}
         aria-labelledby={`profile-tab-${activeTab}`}
-        className="space-y-5 px-5 py-6 lg:px-6"
+        className="space-y-5 px-4 py-6 lg:px-6"
       >
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
@@ -2319,7 +2301,7 @@ function ProfilePage() {
           />
         )}
       </div>
-    </section>
+    </PageCard>
   );
 }
 
@@ -2575,7 +2557,7 @@ function FacultyManager({ portal }) {
   }
 
   return (
-    <section className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+    <section className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="font-semibold text-slate-900">Faculties</h3>
@@ -2636,31 +2618,9 @@ function FacultyManager({ portal }) {
   );
 }
 
-function ProgrammesPage() {
-  const portal = usePortal();
-  useDocumentTitle("Programmes | Institution Dashboard");
-  const [editing, setEditing] = useState(false);
-  const [snapshot, setSnapshot] = useState(null);
-  const [search, setSearch] = useState("");
-  const [adding, setAdding] = useState(false);
-  const [newProgramme, setNewProgramme] = useState({ name: "", field: "" });
-  const [pendingDelete, setPendingDelete] = useState("");
-
-  const matches = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    if (!term) return portal.institutionProgrammes;
-    return portal.institutionProgrammes.filter((programme) =>
-      [programme.name, programme.field, programme.id].filter(Boolean).join(" ").toLowerCase().includes(term),
-    );
-  }, [portal.institutionProgrammes, search]);
-
-  const feeField = {
-    key: "feesDomestic",
-    label: `Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`,
-  };
-
+function useFacultyOptions(portal) {
   // Saved faculties plus any already in use across this institution's catalogue.
-  const facultyOptions = useMemo(() => {
+  return useMemo(() => {
     const names = new Set(portal.faculties);
     for (const programme of portal.institutionProgrammes) {
       const name = String(programme.faculty || "").trim();
@@ -2668,13 +2628,198 @@ function ProgrammesPage() {
     }
     return toSelectOptions([...names].sort((a, b) => a.localeCompare(b)));
   }, [portal.faculties, portal.institutionProgrammes]);
+}
 
-  // Changing the selected programme swaps the whole form out from under an edit.
+function programmeHref(programmeId) {
+  return `/programmes/${encodeURIComponent(programmeId)}`;
+}
+
+const PROGRAMME_ROW_GRID = "grid gap-x-4 gap-y-1 md:grid-cols-[minmax(0,2.2fr)_minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1.4fr)]";
+
+function ProgrammesPage() {
+  const portal = usePortal();
+  const navigate = useNavigate();
+  useDocumentTitle("Programmes | Institution Dashboard");
+  const [search, setSearch] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [newProgramme, setNewProgramme] = useState({ name: "", field: "" });
+
+  const matches = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return portal.institutionProgrammes;
+    return portal.institutionProgrammes.filter((programme) =>
+      [programme.name, programme.field, programme.faculty, programme.id]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(term),
+    );
+  }, [portal.institutionProgrammes, search]);
+
+  async function submitNewProgramme(event) {
+    event.preventDefault();
+    const programmeId = await portal.handleCreateProgramme(newProgramme);
+    if (!programmeId) return;
+    setNewProgramme({ name: "", field: "" });
+    setAdding(false);
+    setSearch("");
+    navigate(programmeHref(programmeId));
+  }
+
+  return (
+    <PageCard
+      kicker="Programmes"
+      title="Manage institution programmes"
+      description="Open a programme to review and edit what students currently see."
+      actions={
+        <button
+          type="button"
+          onClick={() => setAdding((open) => !open)}
+          className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+        >
+          {adding ? "Cancel" : "Add programme"}
+        </button>
+      }
+    >
+      <div className="space-y-5 px-4 py-5 lg:px-6">
+        {adding ? (
+          <form
+            onSubmit={submitNewProgramme}
+            className="grid gap-3 rounded-2xl border border-brand-200 bg-brand-50/40 p-4 md:grid-cols-[1.4fr_1fr_auto]"
+          >
+            <label className="min-w-0">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Programme name</span>
+              <input
+                value={newProgramme.name}
+                onChange={(event) => setNewProgramme((state) => ({ ...state, name: event.target.value }))}
+                className={FIELD_INPUT_CLASS}
+                placeholder="BSc Computer Science"
+                autoFocus
+              />
+            </label>
+            <label className="min-w-0">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Field (optional)</span>
+              <input
+                value={newProgramme.field}
+                onChange={(event) => setNewProgramme((state) => ({ ...state, field: event.target.value }))}
+                className={FIELD_INPUT_CLASS}
+                placeholder="Science and Technology"
+              />
+            </label>
+            <button
+              type="submit"
+              className="self-end rounded-2xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-800"
+            >
+              Create
+            </button>
+          </form>
+        ) : null}
+
+        <FacultyManager portal={portal} />
+
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="min-w-0 flex-1">
+            <span className="sr-only">Search programmes</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+              placeholder="Search programmes by name, field, or faculty"
+            />
+          </label>
+          <p className="text-sm text-slate-500">
+            {matches.length === portal.institutionProgrammes.length
+              ? `${portal.institutionProgrammes.length} programmes`
+              : `${matches.length} of ${portal.institutionProgrammes.length} programmes`}
+          </p>
+        </div>
+
+        {matches.length ? (
+          <div>
+            <div
+              className={[PROGRAMME_ROW_GRID, "hidden border-b border-slate-200 px-3 pb-2 md:grid"].join(" ")}
+              aria-hidden
+            >
+              {["Programme", "Field", "Level", "Faculty"].map((heading) => (
+                <span key={heading} className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                  {heading}
+                </span>
+              ))}
+            </div>
+            <ul className="divide-y divide-slate-100">
+              {matches.map((programme) => {
+                const meta = [programme.field, programme.qualification, programme.faculty].filter(Boolean).join(" · ");
+                return (
+                  <li key={programme.id}>
+                    <Link
+                      to={programmeHref(programme.id)}
+                      className={[
+                        PROGRAMME_ROW_GRID,
+                        "items-center rounded-xl px-3 py-3 transition hover:bg-brand-50/50",
+                      ].join(" ")}
+                    >
+                      <span className="min-w-0 truncate font-semibold text-slate-900">{programme.name}</span>
+                      {/* One meta line on phones, discrete columns from md up. */}
+                      <span className="min-w-0 truncate text-sm text-slate-500 md:hidden">{meta || "No details set"}</span>
+                      <span className="hidden min-w-0 truncate text-sm text-slate-600 md:block">
+                        {programme.field || "—"}
+                      </span>
+                      <span className="hidden min-w-0 truncate text-sm text-slate-600 md:block">
+                        {programme.qualification || "—"}
+                      </span>
+                      <span className="hidden min-w-0 truncate text-sm text-slate-600 md:block">
+                        {programme.faculty || "—"}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : (
+          <EmptyRowsNote>
+            {portal.institutionProgrammes.length ? "No programmes match that search." : "No programmes listed yet."}
+          </EmptyRowsNote>
+        )}
+      </div>
+    </PageCard>
+  );
+}
+
+function ProgrammeDetailPage() {
+  const portal = usePortal();
+  const navigate = useNavigate();
+  const { programmeId } = useParams();
+  const [editing, setEditing] = useState(false);
+  const [snapshot, setSnapshot] = useState(null);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+
+  const programme = portal.institutionProgrammes.find((row) => row.id === programmeId);
+  const facultyOptions = useFacultyOptions(portal);
+  const loaded = portal.programmes.length > 0;
+  const { selectedProgrammeId } = portal;
+  useDocumentTitle(`${programme?.name || "Programme"} | Institution Dashboard`);
+
+  const feeField = {
+    key: "feesDomestic",
+    label: `Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`,
+  };
+
+  // The route reuses this component across programmes, so drop any in-flight edit state.
   useEffect(() => {
     setEditing(false);
     setSnapshot(null);
-    setPendingDelete("");
-  }, [portal.selectedProgrammeId]);
+    setConfirmingDelete(false);
+  }, [programmeId]);
+
+  // Populate the form from the route, including on a cold load or a shared link. The
+  // selectedProgrammeId guard keeps a post-save catalogue refresh from wiping the form.
+  // portal is intentionally out of the deps — it is a fresh object every render.
+  useEffect(() => {
+    if (programme && selectedProgrammeId !== programmeId) portal.fillProgrammeForm(programmeId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [programme, programmeId, selectedProgrammeId]);
 
   function updateField(key, value) {
     portal.setProgrammeForm((state) => ({ ...state, [key]: value }));
@@ -2708,233 +2853,124 @@ function ProgrammesPage() {
     setEditing(false);
   }
 
-  async function submitNewProgramme(event) {
-    event.preventDefault();
-    const programmeId = await portal.handleCreateProgramme(newProgramme);
-    if (!programmeId) return;
-    setNewProgramme({ name: "", field: "" });
-    setAdding(false);
-    setSearch("");
-    portal.fillProgrammeForm(programmeId);
+  const backLink = (
+    <Link to="/programmes" className="text-sm font-semibold text-brand-700 hover:text-brand-900">
+      ← All programmes
+    </Link>
+  );
+
+  if (!programme) {
+    return (
+      <PageCard kicker="Programme" title={loaded ? "Programme not found" : "Loading programme…"}>
+        <div className="space-y-4 px-4 py-6 lg:px-6">
+          <p className="text-sm text-slate-600">
+            {loaded
+              ? "This programme is not in your catalogue. It may have been removed."
+              : "Fetching your catalogue…"}
+          </p>
+          {backLink}
+        </div>
+      </PageCard>
+    );
   }
 
-  const selectedProgramme = portal.institutionProgrammes.find((row) => row.id === portal.selectedProgrammeId);
-
   return (
-    <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programmes</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Manage institution programmes</h2>
-          <p className="mt-1 text-sm text-slate-600">
-            {editing ? "Editing — changes publish when you save." : "Pick a programme to review what students currently see."}
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {portal.selectedProgrammeId ? (
-            <EditControls
-              editing={editing}
-              locked={false}
-              onEdit={startEditing}
-              onSave={saveEditing}
-              onCancel={cancelEditing}
-            />
-          ) : null}
+    <PageCard
+      kicker="Programme"
+      title={programme.name || "Programme"}
+      description={
+        editing
+          ? "Editing — changes publish when you save."
+          : [programme.field, programme.faculty].filter(Boolean).join(" · ")
+      }
+      actions={
+        <>
+          {backLink}
+          <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
           {!editing ? (
-            <button
-              type="button"
-              onClick={() => setAdding((open) => !open)}
-              className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
-            >
-              {adding ? "Cancel" : "Add programme"}
-            </button>
+            confirmingDelete ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm text-slate-600">Remove from your public catalogue?</span>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const removed = await portal.handleDeleteProgramme(programme.id);
+                    setConfirmingDelete(false);
+                    if (removed) navigate("/programmes");
+                  }}
+                  className="rounded-2xl bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmingDelete(false)}
+                  className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
+                >
+                  Keep
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setConfirmingDelete(true)}
+                className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+              >
+                Delete programme
+              </button>
+            )
           ) : null}
-        </div>
-      </div>
+        </>
+      }
+    >
+      <div className="space-y-6 px-4 py-6 lg:px-6">
+        <FieldGrid
+          fields={[...PROGRAMME_FIELDS, feeField]}
+          form={portal.programmeForm}
+          editing={editing}
+          onChange={updateField}
+          optionsByKey={{ faculty: facultyOptions }}
+        />
 
-      {adding ? (
-        <form onSubmit={submitNewProgramme} className="grid gap-3 rounded-3xl border border-brand-200 bg-brand-50/40 p-4 md:grid-cols-[1.4fr_1fr_auto]">
-          <label className="min-w-0">
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Programme name</span>
-            <input
-              value={newProgramme.name}
-              onChange={(event) => setNewProgramme((state) => ({ ...state, name: event.target.value }))}
-              className={FIELD_INPUT_CLASS}
-              placeholder="BSc Computer Science"
-              autoFocus
-            />
-          </label>
-          <label className="min-w-0">
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Field (optional)</span>
-            <input
-              value={newProgramme.field}
-              onChange={(event) => setNewProgramme((state) => ({ ...state, field: event.target.value }))}
-              className={FIELD_INPUT_CLASS}
-              placeholder="Science and Technology"
-            />
-          </label>
-          <button
-            type="submit"
-            className="self-end rounded-2xl bg-brand-700 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-800"
-          >
-            Create
-          </button>
-        </form>
-      ) : null}
-
-      <FacultyManager portal={portal} />
-
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-        <div className="space-y-3">
-          <label className="block">
-            <span className="sr-only">Search programmes</span>
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
-              placeholder="Search programmes"
-            />
-          </label>
-          <p className="text-xs text-slate-500">
-            {matches.length === portal.institutionProgrammes.length
-              ? `${portal.institutionProgrammes.length} programmes`
-              : `${matches.length} of ${portal.institutionProgrammes.length} programmes`}
-          </p>
-
-          {matches.length ? (
-            <ul className="max-h-[28rem] space-y-2 overflow-y-auto pr-1">
-              {matches.map((programme) => {
-                const isActive = programme.id === portal.selectedProgrammeId;
-                return (
-                  <li key={programme.id}>
-                    <button
-                      type="button"
-                      onClick={() => portal.fillProgrammeForm(programme.id)}
-                      aria-current={isActive}
-                      className={[
-                        "w-full rounded-2xl border px-4 py-3 text-left transition",
-                        isActive
-                          ? "border-brand-300 bg-brand-50 text-brand-900"
-                          : "border-slate-200 bg-white text-slate-800 hover:border-brand-200 hover:bg-brand-50/40",
-                      ].join(" ")}
-                    >
-                      <span className="block truncate text-sm font-semibold">{programme.name}</span>
-                      <span className="mt-0.5 block truncate text-xs text-slate-500">{programme.field || "No field set"}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <EmptyRowsNote>
-              {portal.institutionProgrammes.length ? "No programmes match that search." : "No programmes listed yet."}
-            </EmptyRowsNote>
-          )}
-        </div>
-
-        <div className="min-w-0 space-y-5">
-          {portal.selectedProgrammeId ? (
-            <>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="min-w-0 font-display text-xl font-semibold text-slate-900">
-                  {selectedProgramme?.name || "Programme"}
-                </h3>
-                {!editing ? (
-                  pendingDelete === portal.selectedProgrammeId ? (
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm text-slate-600">Remove from your public catalogue?</span>
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          await portal.handleDeleteProgramme(portal.selectedProgrammeId);
-                          setPendingDelete("");
-                        }}
-                        className="rounded-2xl bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
-                      >
-                        Delete
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setPendingDelete("")}
-                        className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
-                      >
-                        Keep
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setPendingDelete(portal.selectedProgrammeId)}
-                      className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-                    >
-                      Delete programme
-                    </button>
-                  )
-                ) : null}
-              </div>
-
-              <FieldGrid
-                fields={[...PROGRAMME_FIELDS, feeField]}
-                form={portal.programmeForm}
-                editing={editing}
-                onChange={updateField}
-                optionsByKey={{ faculty: facultyOptions }}
+        <FormSection
+          title="Entry requirements"
+          description="Minimum subject grades feed the BGCSE predictor. Add anything else students must meet below."
+        >
+          <SubjectRequirementsEditor portal={portal} editing={editing} />
+          {editing ? (
+            <label className="block">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                Other requirements (one per line)
+              </span>
+              <textarea
+                value={portal.programmeForm.entryRequirements}
+                onChange={(event) => updateField("entryRequirements", event.target.value)}
+                rows={3}
+                className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
+                placeholder="Physically fit&#10;Portfolio required"
               />
+            </label>
+          ) : splitMultilineList(portal.programmeForm.entryRequirements).length ? (
+            <ul className="list-inside list-disc text-sm text-slate-700">
+              {splitMultilineList(portal.programmeForm.entryRequirements).map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          ) : null}
+        </FormSection>
 
-              <FormSection
-                title="Entry requirements"
-                description="Minimum subject grades feed the BGCSE predictor. Add anything else students must meet below."
-              >
-                <SubjectRequirementsEditor portal={portal} editing={editing} />
-                {editing ? (
-                  <label className="block">
-                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                      Other requirements (one per line)
-                    </span>
-                    <textarea
-                      value={portal.programmeForm.entryRequirements}
-                      onChange={(event) => updateField("entryRequirements", event.target.value)}
-                      rows={3}
-                      className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
-                      placeholder="Physically fit&#10;Portfolio required"
-                    />
-                  </label>
-                ) : splitMultilineList(portal.programmeForm.entryRequirements).length ? (
-                  <ul className="list-inside list-disc text-sm text-slate-700">
-                    {splitMultilineList(portal.programmeForm.entryRequirements).map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </FormSection>
+        <FormSection title="Modules per semester" description="Add each module's code and name.">
+          <ModuleBlocksEditor portal={portal} editing={editing} />
+        </FormSection>
 
-              <FormSection title="Modules per semester" description="Add each module's code and name.">
-                <ModuleBlocksEditor portal={portal} editing={editing} />
-              </FormSection>
-
-              <FormSection
-                title="Career prospects"
-                description="Careers this programme leads to, with your own salary estimate for each."
-              >
-                <CareerRowsEditor portal={portal} editing={editing} />
-              </FormSection>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-                  Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
-                </div>
-                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-                  Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
-                </div>
-              </div>
-            </>
-          ) : (
-            <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
-          )}
-        </div>
+        <FormSection
+          title="Career prospects"
+          description="Careers this programme leads to, with your own salary estimate for each."
+        >
+          <CareerRowsEditor portal={portal} editing={editing} />
+        </FormSection>
       </div>
-    </div>
+    </PageCard>
   );
 }
 
@@ -2956,63 +2992,59 @@ function AnalyticsPage() {
     setSearchParams(tabId === ANALYTICS_TABS[0].id ? {} : { tab: tabId });
   }
 
+  const tabs = ANALYTICS_TABS.map((tab) => ({
+    id: tab.id,
+    label: tab.label,
+    badge:
+      tab.id === "leads" && newLeads ? (
+        <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-800">{newLeads}</span>
+      ) : null,
+  }));
+
   return (
-    <div className="space-y-5">
-      <div className="border-b border-slate-200">
-        <div role="tablist" aria-label="Analytics sections" className="flex gap-6 overflow-x-auto">
-          {ANALYTICS_TABS.map((tab) => {
-            const isActive = tab.id === activeTab;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => selectTab(tab.id)}
-                className={[
-                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
-                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
-                ].join(" ")}
-              >
-                {tab.label}
-                {tab.id === "leads" && newLeads ? (
-                  <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-800">
-                    {newLeads}
-                  </span>
-                ) : null}
-              </button>
-            );
-          })}
-        </div>
+    <PageCard kicker="Data and analytics" title={portal.university?.name || "Your institution"}>
+      <TabBar
+        tabs={tabs}
+        activeId={activeTab}
+        onSelect={selectTab}
+        ariaLabel="Analytics sections"
+        idPrefix="analytics-tab"
+      />
+
+      <div
+        role="tabpanel"
+        id={`analytics-tab-panel-${activeTab}`}
+        aria-labelledby={`analytics-tab-${activeTab}`}
+        className="space-y-5 px-4 py-6 lg:px-6"
+      >
+        {activeTab === "leads" ? (
+          <LeadsSection portal={portal} />
+        ) : (
+          <>
+            <PartnerInsightsDashboard
+              universityName={portal.university?.name || portal.activeInstitutionId}
+              programmeCount={portal.institutionProgrammes.length}
+              tier={portal.partner?.tier || "verified"}
+              newLeads={newLeads}
+              summary={portal.analyticsSummary}
+              profileCompleteness={portal.profileCompleteness}
+              onOpenModule={(moduleId) => {
+                if (moduleId === "leads") {
+                  selectTab("leads");
+                }
+              }}
+            />
+
+            <Panel title="Export reports">
+              <p className="text-sm leading-relaxed text-slate-600">
+                CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme
+                views, link clicks, viewer countries, and institution profile performance.
+              </p>
+            </Panel>
+          </>
+        )}
       </div>
-
-      {activeTab === "leads" ? (
-        <LeadsSection portal={portal} />
-      ) : (
-        <>
-          <PartnerInsightsDashboard
-            universityName={portal.university?.name || portal.activeInstitutionId}
-            programmeCount={portal.institutionProgrammes.length}
-            tier={portal.partner?.tier || "verified"}
-            newLeads={newLeads}
-            summary={portal.analyticsSummary}
-            profileCompleteness={portal.profileCompleteness}
-            onOpenModule={(moduleId) => {
-              if (moduleId === "leads") {
-                selectTab("leads");
-              }
-            }}
-          />
-
-          <Panel title="Export reports">
-            <p className="text-sm leading-relaxed text-slate-600">
-              CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme views,
-              link clicks, viewer countries, and institution profile performance.
-            </p>
-          </Panel>
-        </>
-      )}
-    </div>
+    </PageCard>
   );
 }
 
@@ -3091,49 +3123,46 @@ function ApplicationsPage() {
   // Manual applications are not stored yet, so every stage reads zero for now.
   const countByStage = Object.fromEntries(APPLICATION_STAGES.map((stage) => [stage.id, 0]));
 
+  const tabs = APPLICATION_STAGES.map((stage) => ({
+    id: stage.id,
+    label: stage.label,
+    badge: (
+      <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+        {formatCount(countByStage[stage.id])}
+      </span>
+    ),
+  }));
+
   return (
-    <div className="space-y-5">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Applications</p>
-        <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Track applicants by stage</h2>
-        <p className="mt-1 text-sm text-slate-600">
-          For institutions without an online application system — receive applications through Thuto and move each one
-          through your admissions stages.
-        </p>
-      </div>
+    <PageCard
+      kicker="Applications"
+      title="Track applicants by stage"
+      description="For institutions without an online application system — receive applications through Thuto and move each one through your admissions stages."
+    >
+      <TabBar
+        tabs={tabs}
+        activeId={activeStage}
+        onSelect={(stageId) => setSearchParams(stageId === APPLICATION_STAGES[0].id ? {} : { stage: stageId })}
+        ariaLabel="Application stages"
+        idPrefix="application-stage"
+      />
 
-      <div role="tablist" aria-label="Application stages" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {APPLICATION_STAGES.map((stage) => {
-          const isActive = stage.id === activeStage;
-          return (
-            <button
-              key={stage.id}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              onClick={() => setSearchParams(stage.id === APPLICATION_STAGES[0].id ? {} : { stage: stage.id })}
-              className={[
-                "rounded-3xl border px-4 py-4 text-left transition",
-                isActive
-                  ? "border-brand-300 bg-brand-50 text-brand-900 shadow-card"
-                  : "border-slate-200 bg-white text-slate-800 hover:border-brand-200 hover:bg-brand-50/40",
-              ].join(" ")}
-            >
-              <span className="block text-sm font-semibold">{stage.label}</span>
-              <span className="mt-2 block font-display text-3xl font-semibold">{formatCount(countByStage[stage.id])}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      <Panel title={activeStageMeta?.label}>
-        <p className="text-sm leading-relaxed text-slate-600">{activeStageMeta?.hint}</p>
-        <p className="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+      <div
+        role="tabpanel"
+        id={`application-stage-panel-${activeStage}`}
+        aria-labelledby={`application-stage-${activeStage}`}
+        className="space-y-4 px-4 py-6 lg:px-6"
+      >
+        <div>
+          <h3 className="font-display text-xl font-semibold text-slate-900">{activeStageMeta?.label}</h3>
+          <p className="mt-1 text-sm text-slate-600">{activeStageMeta?.hint}</p>
+        </div>
+        <p className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
           No applications in this stage yet. Once Thuto starts accepting applications on your behalf, they will arrive here
           and you can move them between stages.
         </p>
-      </Panel>
-    </div>
+      </div>
+    </PageCard>
   );
 }
 
@@ -3142,7 +3171,7 @@ function ClaimPage() {
   useDocumentTitle("Claim profile | Institution Dashboard");
 
   return (
-    <div className="mx-auto max-w-2xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-card">
+    <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-card">
       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Claim access</p>
       <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Claim your institution</h2>
       <p className="mt-2 text-sm leading-relaxed text-slate-600">
@@ -3183,7 +3212,7 @@ function ClaimPage() {
 function StubPage({ title, description, icon = "faq" }) {
   useDocumentTitle(`${title} | Institution Dashboard`);
   return (
-    <div className="grid min-h-[60vh] place-items-center rounded-[2rem] border border-dashed border-slate-300 bg-white p-6 shadow-card">
+    <div className="grid min-h-[60vh] place-items-center rounded-2xl border border-dashed border-slate-300 bg-white p-6 shadow-card">
       <div className="max-w-2xl text-center">
         <span className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-brand-50 text-brand-800">
           <Icon name={icon} className="h-7 w-7" />
@@ -3198,7 +3227,7 @@ function StubPage({ title, description, icon = "faq" }) {
 
 function Panel({ title, action, onAction, children }) {
   return (
-    <section className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card">
+    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h3 className="font-display text-xl font-semibold text-slate-900">{title}</h3>
         {action ? (
@@ -3212,9 +3241,59 @@ function Panel({ title, action, onAction, children }) {
   );
 }
 
+/** Card shell shared by Profile, Programmes, Applications, and Analytics. */
+function PageCard({ kicker, title, description, actions, children }) {
+  return (
+    <section className="rounded-2xl border border-slate-200 bg-white shadow-card">
+      <div className="flex flex-wrap items-start justify-between gap-4 px-4 pt-5 lg:px-6">
+        <div className="min-w-0">
+          {kicker ? (
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">{kicker}</p>
+          ) : null}
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">{title}</h2>
+          {description ? <p className="mt-1 text-sm text-slate-600">{description}</p> : null}
+        </div>
+        {actions ? <div className="flex flex-wrap items-center gap-3">{actions}</div> : null}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+/** Underline tabs. Each tab may carry a `badge` node rendered after the label. */
+function TabBar({ tabs, activeId, onSelect, ariaLabel, idPrefix = "tab" }) {
+  return (
+    <div className="mt-5 border-b border-slate-200 px-4 lg:px-6">
+      <div role="tablist" aria-label={ariaLabel} className="flex gap-6 overflow-x-auto">
+        {tabs.map((tab) => {
+          const isActive = tab.id === activeId;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              id={`${idPrefix}-${tab.id}`}
+              aria-selected={isActive}
+              aria-controls={`${idPrefix}-panel-${tab.id}`}
+              onClick={() => onSelect(tab.id)}
+              className={[
+                "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
+                isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
+              ].join(" ")}
+            >
+              {tab.label}
+              {tab.badge}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function FormSection({ title, description, action, children }) {
   return (
-    <section className="space-y-4 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+    <section className="space-y-4 border-t border-slate-200 pt-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="font-semibold text-slate-900">{title}</h3>
@@ -3236,6 +3315,7 @@ export default function CmsApp() {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="staff" element={<Navigate to="/profile?tab=staff" replace />} />
           <Route path="programmes" element={<ProgrammesPage />} />
+          <Route path="programmes/:programmeId" element={<ProgrammeDetailPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route
             path="feed"
