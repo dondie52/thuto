@@ -14,6 +14,11 @@ import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from "../lib/urlSafety.js";
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
+import ShowMoreButton from "../components/ShowMoreButton.jsx";
+import { availabilityLabel, facilityMeta, sportMeta } from "../lib/campusFacilities.js";
+import UniversityReviews from "../components/UniversityReviews.jsx";
+import { publishedInstitutionFaqs } from "../lib/institutionFaqs.js";
+import { useCollapsibleList } from "../hooks/useCollapsibleList.js";
 import UniversityStudentIncentives from "../components/UniversityStudentIncentives.jsx";
 import UniversityFacultyFeesSection from "../components/UniversityFacultyFeesSection.jsx";
 import InternationalApplicantsSection from "../components/InternationalApplicantsSection.jsx";
@@ -21,14 +26,18 @@ import { resolveMarketCountry } from "../lib/marketCountry.js";
 import {
   UNIVERSITY_SOCIAL_PLATFORMS,
   getUniversityTypeLabel,
-  isAffirmativeStatus,
   normalizeUniversityAccreditation,
   normalizeUniversityCampusPhotos,
   normalizeUniversityContacts,
   normalizeUniversitySocialLinks,
   normalizeUniversityStudentLife,
+  displayFacultyName,
+  normalizeUniversityAdmissions,
+  openStateLabel,
 } from "../lib/institutionProfile.js";
 import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
+
+const PROGRAMMES_PREVIEW = 8;
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
@@ -179,7 +188,6 @@ export default function UniversityDetail() {
   const [university, setUniversity] = useState(null);
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
-  const [fieldFilter, setFieldFilter] = useState("All");
   const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
@@ -245,10 +253,9 @@ export default function UniversityDetail() {
     return <p className="text-sm text-slate-500">Loading…</p>;
   }
 
-  const forUniversity = programmes.filter((p) => programmeBelongsToUniversity(p, university));
-  const fields = ["All", ...new Set(forUniversity.map((p) => p.field).filter(Boolean))];
-  const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
   const resources = normalizeResources(university.resources);
+  const admissions = normalizeUniversityAdmissions(university);
+  const faqs = publishedInstitutionFaqs(university.faqs);
   const websiteHref = safeExternalUrl(university.website);
   const contacts = normalizeUniversityContacts(university);
   const accreditation = normalizeUniversityAccreditation(university);
@@ -274,14 +281,7 @@ export default function UniversityDetail() {
               {isVerified ? <InstitutionVerificationBadge /> : null}
               <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">{getUniversityTypeLabel(university)}</span>
               {accreditation.status ? (
-                <span
-                  className={[
-                    "rounded-full px-3 py-1 text-xs font-semibold",
-                    isAffirmativeStatus(accreditation.status)
-                      ? "bg-emerald-50 text-emerald-800"
-                      : "bg-slate-100 text-slate-700",
-                  ].join(" ")}
-                >
+                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
                   {accreditation.status}
                 </span>
               ) : null}
@@ -382,10 +382,32 @@ export default function UniversityDetail() {
       />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Applications & intake</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Applications & intake</h2>
+          <div className="flex flex-wrap gap-2">
+            <OpenStatePill label="Applications" value={admissions.applicationsStatus} />
+            <OpenStatePill label="Registration" value={admissions.registrationStatus} />
+          </div>
+        </div>
         <div className="mt-3">
           <UniversityApplicationBlock university={university} compact={false} profileLink={false} />
         </div>
+        {admissions.registrationOpen || admissions.registrationClose ? (
+          <dl className="mt-4 grid gap-3 border-t border-brand-100 pt-4 text-sm text-slate-700 sm:grid-cols-2">
+            {admissions.registrationOpen ? (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Registration opens</dt>
+                <dd className="mt-1 font-medium text-brand-900">{formatLongDate(admissions.registrationOpen)}</dd>
+              </div>
+            ) : null}
+            {admissions.registrationClose ? (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Registration closes</dt>
+                <dd className="mt-1 font-medium text-brand-900">{formatLongDate(admissions.registrationClose)}</dd>
+              </div>
+            ) : null}
+          </dl>
+        ) : null}
       </section>
 
       <InternationalApplicantsSection
@@ -395,6 +417,41 @@ export default function UniversityDetail() {
 
       {isVerified ? (
         <LeadInquiryForm institutionId={university.id} institutionName={university.name} />
+      ) : null}
+
+      {(accreditation.status || accreditation.body || accreditation.notes) ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Accreditation</h2>
+          <div className="mt-3 grid gap-3 text-sm text-slate-700 sm:grid-cols-2">
+            {accreditation.status ? (
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Status</p>
+                <p className="mt-1 font-medium text-brand-900">{accreditation.status}</p>
+              </div>
+            ) : null}
+            {accreditation.body ? (
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Accrediting body</p>
+                <p className="mt-1 font-medium text-brand-900">{accreditation.body}</p>
+              </div>
+            ) : null}
+          </div>
+          {accreditation.notes ? <p className="mt-3 text-sm leading-relaxed text-slate-700">{accreditation.notes}</p> : null}
+          {accreditation.sourceUrl ? (
+            <div className="mt-3">
+              <ExternalSiteLink
+                href={safeExternalUrl(accreditation.sourceUrl)}
+                variant="secondary"
+                institutionName={university.name}
+                institutionId={university.id}
+                linkKind="resource"
+                useInterstitial
+              >
+                View official accreditation source
+              </ExternalSiteLink>
+            </div>
+          ) : null}
+        </section>
       ) : null}
 
       {campusPhotos.length ? (
@@ -424,23 +481,20 @@ export default function UniversityDetail() {
       ) : null}
 
       {(studentLife.accommodationStatus ||
-        studentLife.healthDetails ||
-        studentLife.safetyDetails ||
-        studentLife.sportsDetails ||
-        studentLife.careerSupportDetails) ? (
+        studentLife.accommodationDetails ||
+        studentLife.facilities.length ||
+        studentLife.sports.length ||
+        studentLife.careerSupport ||
+        studentLife.campusSecurity) ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
           <h2 className="font-display text-lg font-semibold text-brand-900">Student life, support, and career outcomes</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <StudentLifeCard title="Accommodation" kicker={studentLife.accommodationStatus} />
-            <StudentLifeCard title="Health support" body={studentLife.healthDetails} />
-            <StudentLifeCard title="Safety and security" body={studentLife.safetyDetails} />
-            <StudentLifeCard title="Sports and entertainment" body={studentLife.sportsDetails} />
-            <StudentLifeCard
-              title="Career support and jobs"
-              body={studentLife.careerSupportDetails}
-              className="sm:col-span-2"
-            />
+            <StudentLifeCard title="Accommodation" body={studentLife.accommodationDetails} kicker={studentLife.accommodationStatus} />
+            <StudentLifeCard title="Career support and jobs" kicker={availabilityKicker(studentLife.careerSupport)} />
+            <StudentLifeCard title="On-campus security" kicker={availabilityKicker(studentLife.campusSecurity)} />
           </div>
+          <CampusTagList title="On campus" items={studentLife.facilities} meta={facilityMeta} />
+          <CampusTagList title="Sports offered" items={studentLife.sports} meta={sportMeta} />
         </section>
       ) : null}
 
@@ -459,25 +513,22 @@ export default function UniversityDetail() {
             {university.staff
               .filter((person) => person?.name)
               .map((person, index) => (
-                <li key={`${person.name}-${person.title || index}`} className="flex gap-3 px-3 py-3 text-sm">
-                  <StaffAvatar person={person} />
-                  <div className="min-w-0">
-                    <p className="font-semibold text-brand-900">{person.name}</p>
-                    <p className="text-xs text-slate-600">
-                      {[person.title, person.department].filter(Boolean).join(" · ") || "Staff contact"}
-                    </p>
-                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-brand-800">
-                      {person.email ? (
-                        <a href={`mailto:${person.email}`} className="underline hover:text-brand-950">
-                          {person.email}
-                        </a>
-                      ) : null}
-                      {person.phone ? (
-                        <a href={`tel:${String(person.phone).replace(/\s/g, "")}`} className="underline hover:text-brand-950">
-                          {person.phone}
-                        </a>
-                      ) : null}
-                    </div>
+                <li key={`${person.name}-${person.title || index}`} className="px-3 py-3 text-sm">
+                  <p className="font-semibold text-brand-900">{person.name}</p>
+                  <p className="text-xs text-slate-600">
+                    {[person.title, person.department].filter(Boolean).join(" · ") || "Staff contact"}
+                  </p>
+                  <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-brand-800">
+                    {person.email ? (
+                      <a href={`mailto:${person.email}`} className="underline hover:text-brand-950">
+                        {person.email}
+                      </a>
+                    ) : null}
+                    {person.phone ? (
+                      <a href={`tel:${String(person.phone).replace(/\s/g, "")}`} className="underline hover:text-brand-950">
+                        {person.phone}
+                      </a>
+                    ) : null}
                   </div>
                 </li>
               ))}
@@ -485,53 +536,25 @@ export default function UniversityDetail() {
         </section>
       ) : null}
 
-      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Programmes offered</h2>
-          <p className="text-xs text-slate-500">{forUniversity.length} listed</p>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Programme field filters">
-          {fields.map((field) => (
-            <button
-              key={field}
-              type="button"
-              onClick={() => setFieldFilter(field)}
-              className={[
-                "rounded-full px-3 py-1 text-xs font-semibold transition-colors",
-                fieldFilter === field ? "bg-brand-700 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100",
-              ].join(" ")}
-            >
-              {field}
-            </button>
-          ))}
-        </div>
-        {filteredProgrammes.length ? (
-          <ul className="mt-4 divide-y divide-brand-100 rounded-xl border border-brand-100">
-            {filteredProgrammes.map((programme) => (
-              <li key={programme.id} className="flex items-stretch">
-                <ProgrammeThemeAccent programme={programme} />
-                <Link
-                  to={`/programmes/${programme.id}`}
-                  className="flex min-w-0 flex-1 items-center justify-between gap-3 px-3 py-3 text-sm transition hover:bg-brand-50"
-                >
-                  <span className="min-w-0">
-                    <span className="block truncate font-medium text-brand-900">{programme.name}</span>
-                    <span className="text-xs text-slate-500">
-                      {programme.field || "General"}
-                      {programme.duration ? ` · ${programme.duration}` : ""}
-                    </span>
-                  </span>
-                  <span className="text-xs font-semibold text-brand-700">View →</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
-        )}
-      </section>
+      <ProgrammesOfferedSection programmes={programmes} university={university} />
 
       <UniversityResourcesSection university={university} resources={resources} />
+
+      {faqs.length ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Frequently asked questions</h2>
+          <dl className="mt-4 grid gap-3">
+            {faqs.map((faq) => (
+              <div key={faq.question} className="rounded-xl border border-brand-100 bg-brand-50/40 p-4">
+                <dt className="font-semibold text-brand-900">{faq.question}</dt>
+                <dd className="mt-2 text-sm leading-relaxed text-slate-700">{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
+
+      <UniversityReviews university={university} />
 
       <p className="text-xs leading-relaxed text-slate-500">
         Thuto is not affiliated with, endorsed by, or partnered with {university.name}. Institution logos and links are
@@ -541,25 +564,117 @@ export default function UniversityDetail() {
   );
 }
 
-function StaffAvatar({ person }) {
-  const initial = String(person?.name || "?").trim().charAt(0).toUpperCase() || "?";
-  if (person?.photo) {
-    return (
-      <img
-        src={person.photo}
-        alt=""
-        loading="lazy"
-        className="h-11 w-11 shrink-0 rounded-full border border-brand-100 object-cover"
-      />
-    );
-  }
+function ProgrammesOfferedSection({ programmes, university }) {
+  const [fieldFilter, setFieldFilter] = useState("All");
+  const forUniversity = programmes.filter((p) => programmeBelongsToUniversity(p, university));
+  const fields = ["All", ...new Set(forUniversity.map((p) => p.field).filter(Boolean))];
+  const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
+  const list = useCollapsibleList(filteredProgrammes, PROGRAMMES_PREVIEW, fieldFilter);
+
+  return (
+    <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display text-lg font-semibold text-brand-900">Programmes offered</h2>
+        <p className="text-xs text-slate-500">{forUniversity.length} listed</p>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Programme field filters">
+        {fields.map((field) => (
+          <button
+            key={field}
+            type="button"
+            onClick={() => setFieldFilter(field)}
+            className={[
+              "rounded-full px-3 py-1 text-xs font-semibold transition-colors",
+              fieldFilter === field ? "bg-brand-700 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100",
+            ].join(" ")}
+          >
+            {field}
+          </button>
+        ))}
+      </div>
+      {filteredProgrammes.length ? (
+        <>
+          <ul id={list.contentId} className="mt-4 divide-y divide-brand-100 rounded-xl border border-brand-100">
+            {list.visible.map((programme) => (
+              <li key={programme.id} className="flex items-stretch">
+                <ProgrammeThemeAccent programme={programme} />
+                <Link
+                  to={`/programmes/${programme.id}`}
+                  className="flex min-w-0 flex-1 items-center justify-between gap-3 px-3 py-3 text-sm transition hover:bg-brand-50"
+                >
+                  <span className="min-w-0">
+                    <span className="block truncate font-medium text-brand-900">{programme.name}</span>
+                    <span className="text-xs text-slate-500">
+                      {displayFacultyName(university, programme.faculty) || programme.field || "General"}
+                      {programme.duration ? ` · ${programme.duration}` : ""}
+                    </span>
+                  </span>
+                  <span className="text-xs font-semibold text-brand-700">View →</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {list.canCollapse ? (
+            <ShowMoreButton
+              expanded={list.expanded}
+              onToggle={list.toggle}
+              controls={list.contentId}
+              total={list.total}
+              noun="programmes"
+            />
+          ) : null}
+        </>
+      ) : (
+        <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
+      )}
+    </section>
+  );
+}
+
+function formatLongDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value || "");
+  return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+}
+
+function OpenStatePill({ label, value }) {
+  if (!value) return null;
+  const open = value === "open";
   return (
     <span
-      aria-hidden
-      className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-brand-100 bg-brand-50 text-sm font-semibold text-brand-800"
+      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+        open ? "bg-emerald-50 text-emerald-800" : "bg-stone-100 text-stone-700"
+      }`}
     >
-      {initial}
+      {label}: {openStateLabel(value)}
     </span>
+  );
+}
+
+function availabilityKicker(value) {
+  return value ? availabilityLabel(value) : "";
+}
+
+function CampusTagList({ title, items, meta }) {
+  if (!items.length) return null;
+  return (
+    <div className="mt-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {items.map((item) => {
+          const { label, icon } = meta(item);
+          return (
+            <span
+              key={item}
+              className="rounded-full border border-brand-100 bg-white px-3 py-1 text-xs font-semibold text-brand-800"
+            >
+              <span aria-hidden="true">{icon} </span>
+              {label}
+            </span>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

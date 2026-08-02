@@ -9,7 +9,7 @@
  * Official sites rarely offer CORS-friendly JSON; this is the practical pattern.
  */
 
-import { fetchUniversityOverrides, mergeContentOverrides } from "./contentManagement.js";
+import { carryCanonicalName, fetchUniversityOverrides, mergeContentOverrides } from "./contentManagement.js";
 import { filterByMarketCountry, resolveMarketCountry } from "./marketCountry.js";
 
 const BUNDLED_PATH = `${import.meta.env.BASE_URL}data/universities.json`;
@@ -229,7 +229,7 @@ export function mergeUniversityRecords(base, overlays) {
   for (const patch of overlays) {
     if (!patch || typeof patch !== "object" || !patch.id) continue;
     const cur = byId.get(patch.id);
-    byId.set(patch.id, cur ? { ...cur, ...patch } : { ...patch });
+    byId.set(patch.id, cur ? { ...cur, ...patch, ...carryCanonicalName(cur, patch) } : { ...patch });
   }
   const ordered = base.map((u) => byId.get(u.id)).filter(Boolean);
   const baseIds = new Set(base.map((b) => b.id));

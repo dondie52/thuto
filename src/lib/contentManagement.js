@@ -21,6 +21,20 @@ function isPlainObject(value) {
   return Boolean(value && typeof value === "object" && !Array.isArray(value));
 }
 
+/**
+ * Institutions can rename themselves from the CMS, but programmes are matched to a university
+ * by name (see `programmeBelongsToUniversity`), so the pre-override name has to survive the
+ * merge or a rename silently detaches every programme.
+ *
+ * @param {Record<string, unknown>} current
+ * @param {Record<string, unknown>} patch
+ */
+export function carryCanonicalName(current, patch) {
+  if (current?.canonicalName) return { canonicalName: current.canonicalName };
+  if (!patch?.name || !current?.name || patch.name === current.name) return {};
+  return { canonicalName: current.name };
+}
+
 export function mergeContentOverrides(baseRows, overrideRows) {
   const byId = new Map((baseRows || []).map((row) => [row.id, { ...row }]));
   for (const override of overrideRows || []) {
@@ -28,7 +42,7 @@ export function mergeContentOverrides(baseRows, overrideRows) {
     if (!id || !isPlainObject(override.patch)) continue;
     const current = byId.get(id);
     const patch = { ...override.patch, id };
-    byId.set(id, current ? { ...current, ...patch } : patch);
+    byId.set(id, current ? { ...current, ...patch, ...carryCanonicalName(current, patch) } : patch);
   }
   const ordered = (baseRows || []).map((row) => byId.get(row.id)).filter(Boolean);
   const baseIds = new Set((baseRows || []).map((row) => row.id));

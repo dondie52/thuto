@@ -184,10 +184,13 @@ export default function Partner() {
         accreditationSourceUrl: accreditation.sourceUrl,
         accommodationStatus: studentLife.accommodationStatus,
         accommodationDetails: studentLife.accommodationDetails,
-        healthDetails: studentLife.healthDetails,
-        safetyDetails: studentLife.safetyDetails,
-        sportsDetails: studentLife.sportsDetails,
-        careerSupportDetails: studentLife.careerSupportDetails,
+        // Superseded by campusFacilities/campusSports/careerSupport/campusSecurity in the CMS.
+        // This legacy portal is no longer routed, so it reads the raw record rather than the
+        // normalizer, which no longer carries these keys.
+        healthDetails: uni.healthDetails || "",
+        safetyDetails: uni.safetyDetails || "",
+        sportsDetails: uni.sportsDetails || "",
+        careerSupportDetails: uni.careerSupportDetails || "",
         campusPhotosText: normalizeUniversityCampusPhotos(uni).join("\n"),
         socialFacebook: socialLinks.facebook,
         socialInstagram: socialLinks.instagram,

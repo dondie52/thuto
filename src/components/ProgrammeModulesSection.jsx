@@ -1,24 +1,30 @@
+import { useId, useState } from "react";
+import ShowMoreButton from "./ShowMoreButton.jsx";
 import {
-  countProgrammeModules,
   formatModuleSemesterLabel,
   getProgrammeModuleBlocks,
+  getProgrammeModulePreview,
   isResearchDegreeProgramme,
-  parseModuleEntry,
-  programmeHasModules,
 } from "../lib/programmeModules.js";
+
+const MODULES_PREVIEW = 10;
 
 /**
  * @param {{ programme: Record<string, unknown> }} props
  */
 export default function ProgrammeModulesSection({ programme }) {
+  const [expanded, setExpanded] = useState(false);
+  const listId = useId();
   const blocks = getProgrammeModuleBlocks(programme);
-  const total = countProgrammeModules(programme);
+  const total = blocks.reduce((sum, block) => sum + block.modules.length, 0);
+  const canCollapse = total > MODULES_PREVIEW;
+  const visibleBlocks = canCollapse && !expanded ? getProgrammeModulePreview(blocks, MODULES_PREVIEW) : blocks;
   const research = isResearchDegreeProgramme(programme);
   const isPostgraduate =
     String(programme?.qualification || "").toLowerCase() === "postgraduate" ||
     /master|mphil|phd|mba|llm|mmed|post.?grad|pgd|pgde/i.test(String(programme?.name || ""));
 
-  if (!programmeHasModules(programme)) {
+  if (!blocks.length) {
     return (
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Modules &amp; courses</h2>
@@ -54,28 +60,30 @@ export default function ProgrammeModulesSection({ programme }) {
           Module list may be incomplete. Confirm the latest curriculum on the institution&apos;s official page.
         </p>
       ) : null}
-      <div className="mt-4 space-y-4">
-        {blocks.map((block, index) => (
+      <div id={listId} className="mt-4 space-y-4">
+        {visibleBlocks.map((block, index) => (
           <div key={`${block.semester}-${index}`} className="rounded-xl border border-brand-100 bg-brand-50/40 p-4">
             <h3 className="text-sm font-semibold text-brand-900">{formatModuleSemesterLabel(block.semester)}</h3>
             <ul className="mt-2 space-y-1.5 text-sm text-slate-700">
-              {block.modules.map((moduleName) => {
-                const { code, name } = parseModuleEntry(moduleName);
-                return (
-                  <li key={moduleName} className="flex gap-2">
-                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden />
-                    <span>
-                      {code ? <span className="font-medium text-brand-900">{code}</span> : null}
-                      {code ? " · " : ""}
-                      {name}
-                    </span>
-                  </li>
-                );
-              })}
+              {block.modules.map((moduleName) => (
+                <li key={moduleName} className="flex gap-2">
+                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden />
+                  <span>{moduleName}</span>
+                </li>
+              ))}
             </ul>
           </div>
         ))}
       </div>
+      {canCollapse ? (
+        <ShowMoreButton
+          expanded={expanded}
+          onToggle={() => setExpanded((value) => !value)}
+          controls={listId}
+          total={total}
+          noun={research ? "phases" : "modules"}
+        />
+      ) : null}
     </section>
   );
 }
