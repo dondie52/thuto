@@ -14,6 +14,8 @@ import UniversityInitialsBadge from "../components/UniversityInitialsBadge.jsx";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from "../lib/urlSafety.js";
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
+import ShowMoreButton from "../components/ShowMoreButton.jsx";
+import { useCollapsibleList } from "../hooks/useCollapsibleList.js";
 import UniversityStudentIncentives from "../components/UniversityStudentIncentives.jsx";
 import UniversityFacultyFeesSection from "../components/UniversityFacultyFeesSection.jsx";
 import InternationalApplicantsSection from "../components/InternationalApplicantsSection.jsx";
@@ -28,6 +30,8 @@ import {
   normalizeUniversityStudentLife,
 } from "../lib/institutionProfile.js";
 import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
+
+const PROGRAMMES_PREVIEW = 8;
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
@@ -178,7 +182,6 @@ export default function UniversityDetail() {
   const [university, setUniversity] = useState(null);
   const [programmes, setProgrammes] = useState([]);
   const [error, setError] = useState(null);
-  const [fieldFilter, setFieldFilter] = useState("All");
   const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
@@ -244,9 +247,6 @@ export default function UniversityDetail() {
     return <p className="text-sm text-slate-500">Loading…</p>;
   }
 
-  const forUniversity = programmes.filter((p) => programmeBelongsToUniversity(p, university));
-  const fields = ["All", ...new Set(forUniversity.map((p) => p.field).filter(Boolean))];
-  const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
   const resources = normalizeResources(university.resources);
   const websiteHref = safeExternalUrl(university.website);
   const contacts = normalizeUniversityContacts(university);
@@ -510,29 +510,50 @@ export default function UniversityDetail() {
         </section>
       ) : null}
 
-      <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Programmes offered</h2>
-          <p className="text-xs text-slate-500">{forUniversity.length} listed</p>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Programme field filters">
-          {fields.map((field) => (
-            <button
-              key={field}
-              type="button"
-              onClick={() => setFieldFilter(field)}
-              className={[
-                "rounded-full px-3 py-1 text-xs font-semibold transition-colors",
-                fieldFilter === field ? "bg-brand-700 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100",
-              ].join(" ")}
-            >
-              {field}
-            </button>
-          ))}
-        </div>
-        {filteredProgrammes.length ? (
-          <ul className="mt-4 divide-y divide-brand-100 rounded-xl border border-brand-100">
-            {filteredProgrammes.map((programme) => (
+      <ProgrammesOfferedSection programmes={programmes} university={university} />
+
+      <UniversityResourcesSection university={university} resources={resources} />
+
+      <p className="text-xs leading-relaxed text-slate-500">
+        Thuto is not affiliated with, endorsed by, or partnered with {university.name}. Institution logos and links are
+        for identification and navigation only — confirm all requirements on the official website before you apply.
+      </p>
+    </article>
+  );
+}
+
+function ProgrammesOfferedSection({ programmes, university }) {
+  const [fieldFilter, setFieldFilter] = useState("All");
+  const forUniversity = programmes.filter((p) => programmeBelongsToUniversity(p, university));
+  const fields = ["All", ...new Set(forUniversity.map((p) => p.field).filter(Boolean))];
+  const filteredProgrammes = fieldFilter === "All" ? forUniversity : forUniversity.filter((p) => p.field === fieldFilter);
+  const list = useCollapsibleList(filteredProgrammes, PROGRAMMES_PREVIEW, fieldFilter);
+
+  return (
+    <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display text-lg font-semibold text-brand-900">Programmes offered</h2>
+        <p className="text-xs text-slate-500">{forUniversity.length} listed</p>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Programme field filters">
+        {fields.map((field) => (
+          <button
+            key={field}
+            type="button"
+            onClick={() => setFieldFilter(field)}
+            className={[
+              "rounded-full px-3 py-1 text-xs font-semibold transition-colors",
+              fieldFilter === field ? "bg-brand-700 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100",
+            ].join(" ")}
+          >
+            {field}
+          </button>
+        ))}
+      </div>
+      {filteredProgrammes.length ? (
+        <>
+          <ul id={list.contentId} className="mt-4 divide-y divide-brand-100 rounded-xl border border-brand-100">
+            {list.visible.map((programme) => (
               <li key={programme.id} className="flex items-stretch">
                 <ProgrammeThemeAccent programme={programme} />
                 <Link
@@ -551,18 +572,20 @@ export default function UniversityDetail() {
               </li>
             ))}
           </ul>
-        ) : (
-          <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
-        )}
-      </section>
-
-      <UniversityResourcesSection university={university} resources={resources} />
-
-      <p className="text-xs leading-relaxed text-slate-500">
-        Thuto is not affiliated with, endorsed by, or partnered with {university.name}. Institution logos and links are
-        for identification and navigation only — confirm all requirements on the official website before you apply.
-      </p>
-    </article>
+          {list.canCollapse ? (
+            <ShowMoreButton
+              expanded={list.expanded}
+              onToggle={list.toggle}
+              controls={list.contentId}
+              total={list.total}
+              noun="programmes"
+            />
+          ) : null}
+        </>
+      ) : (
+        <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
+      )}
+    </section>
   );
 }
 

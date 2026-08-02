@@ -347,8 +347,6 @@ export default function ProgrammeDetail() {
         </div>
       </section>
 
-      <ProgrammeModulesSection programme={programme} />
-
       <ProgrammeFeeSection programme={programme} university={university} isDtefSponsored={isDtefSponsored} />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
