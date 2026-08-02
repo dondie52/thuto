@@ -30,8 +30,13 @@ import {
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
+  OPEN_STATE_OPTIONS,
   UNIVERSITY_SOCIAL_PLATFORMS,
+  normalizeFacultyNames,
+  normalizeOpenState,
   normalizeUniversityAccreditation,
+  normalizeUniversityAdmissions,
+  openStateLabel,
   normalizeUniversityCampusPhotos,
   normalizeUniversityContacts,
   normalizeUniversitySocialLinks,
@@ -52,6 +57,8 @@ import {
   sportMeta,
 } from "../lib/campusFacilities.js";
 import FieldInterestPills from "../components/onboarding/FieldInterestPills.jsx";
+import { normalizeInstitutionFaqs, unusedSuggestedQuestions } from "../lib/institutionFaqs.js";
+import { fetchInstitutionReviews, replyToReview, summarizeReviews } from "../lib/institutionReviews.js";
 import { buildAppUrl } from "../lib/cmsUrl.js";
 import { marketCountryLabel } from "../lib/marketCountry.js";
 
@@ -62,7 +69,7 @@ const NAV_ITEMS = [
   { to: "/leads", label: "Leads", icon: "leads" },
   { to: "/analytics", label: "Data and Analytics", icon: "analytics" },
   { to: "/feed", label: "Feed", icon: "feed" },
-  { to: "/faq", label: "FAQ", icon: "faq" },
+  { to: "/faq", label: "FAQ and Student Reviews", icon: "faq" },
 ];
 
 const RAIL_FOOTER_ITEMS = [
@@ -451,6 +458,10 @@ function usePartnerPortalData() {
     description: "",
     applicationOpen: "",
     applicationClose: "",
+    registrationOpen: "",
+    registrationClose: "",
+    applicationsStatus: "",
+    registrationStatus: "",
     applyUrl: "",
     website: "",
     logo: "",
@@ -481,6 +492,9 @@ function usePartnerPortalData() {
   const [studentLifeRows, setStudentLifeRows] = useState([]);
   const [facilities, setFacilities] = useState([]);
   const [sports, setSports] = useState([]);
+  const [facultyNames, setFacultyNames] = useState({});
+  const [faqRows, setFaqRows] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [selectedProgrammeId, setSelectedProgrammeId] = useState("");
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
 
@@ -502,27 +516,34 @@ function usePartnerPortalData() {
 
   const loadInstitution = useCallback(async (institutionId) => {
     if (!institutionId) return;
-    const [partnerRow, analyticsRows, leadRows, universityData] = await Promise.all([
+    const [partnerRow, analyticsRows, leadRows, universityData, reviewRows] = await Promise.all([
       fetchInstitutionPartner(institutionId),
       fetchInstitutionAnalytics(institutionId, 14),
       fetchInstitutionLeads(institutionId),
       fetchUniversities(),
+      fetchInstitutionReviews(institutionId),
     ]);
     setPartner(partnerRow);
     setAnalytics(analyticsRows);
     setLeads(leadRows);
+    setReviews(reviewRows);
     const uni = (universityData.list || []).find((row) => row.id === institutionId);
     setUniversity(uni || null);
     if (uni) {
       const contacts = normalizeUniversityContacts(uni);
       const accreditation = normalizeUniversityAccreditation(uni);
       const studentLife = normalizeUniversityStudentLife(uni);
+      const admissions = normalizeUniversityAdmissions(uni);
       const socialLinks = normalizeUniversitySocialLinks(uni);
       setProfileForm({
         name: uni.name || "",
         description: uni.description || "",
-        applicationOpen: uni.applicationOpen || "",
-        applicationClose: uni.applicationClose || "",
+        applicationOpen: admissions.applicationOpen,
+        applicationClose: admissions.applicationClose,
+        registrationOpen: admissions.registrationOpen,
+        registrationClose: admissions.registrationClose,
+        applicationsStatus: admissions.applicationsStatus,
+        registrationStatus: admissions.registrationStatus,
         applyUrl: uni.applyUrl || "",
         website: uni.website || "",
         logo: uni.logo || "",
@@ -550,6 +571,8 @@ function usePartnerPortalData() {
       });
       setFacilities(studentLife.facilities);
       setSports(studentLife.sports);
+      setFacultyNames(normalizeFacultyNames(uni));
+      setFaqRows(normalizeInstitutionFaqs(uni.faqs));
       setResourceRows(normalizeResourceRows(uni.resources));
       setStaffRows(normalizeStaffRows(uni.staff));
       setStudentLifeRows(
@@ -608,6 +631,11 @@ function usePartnerPortalData() {
         description: profileForm.description,
         applicationOpen: profileForm.applicationOpen || null,
         applicationClose: profileForm.applicationClose || null,
+        registrationOpen: profileForm.registrationOpen || null,
+        registrationClose: profileForm.registrationClose || null,
+        applicationsStatus: normalizeOpenState(profileForm.applicationsStatus),
+        registrationStatus: normalizeOpenState(profileForm.registrationStatus),
+        facultyNames,
         applyUrl: profileForm.applyUrl || null,
         website: profileForm.website || null,
         logo: profileForm.logo || null,
@@ -665,6 +693,34 @@ function usePartnerPortalData() {
       return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
+      return false;
+    }
+  }
+
+  async function handleSaveFaqs() {
+    setError("");
+    setMessage("");
+    try {
+      await saveInstitutionOverride(activeInstitutionId, { faqs: normalizeInstitutionFaqs(faqRows) });
+      setMessage("FAQs saved and published.");
+      await loadInstitution(activeInstitutionId);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed.");
+      return false;
+    }
+  }
+
+  async function handleReplyToReview(reviewId, reply) {
+    setError("");
+    setMessage("");
+    try {
+      await replyToReview(reviewId, reply);
+      setMessage(reply.trim() ? "Reply published." : "Reply removed.");
+      await loadInstitution(activeInstitutionId);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Reply failed.");
       return false;
     }
   }
@@ -802,6 +858,13 @@ function usePartnerPortalData() {
     setFacilities,
     sports,
     setSports,
+    facultyNames,
+    setFacultyNames,
+    faqRows,
+    setFaqRows,
+    reviews,
+    handleSaveFaqs,
+    handleReplyToReview,
     selectedProgrammeId,
     programmeForm,
     setProgrammeForm,
@@ -1250,6 +1313,8 @@ const TAB_FIELDS = {
   admissions: [
     { key: "applicationOpen", label: "Applications open", type: "date" },
     { key: "applicationClose", label: "Applications close", type: "date" },
+    { key: "registrationOpen", label: "Registration opens", type: "date" },
+    { key: "registrationClose", label: "Registration closes", type: "date" },
     { key: "applyUrl", label: "Application website", type: "url" },
     { key: "admissionsEmail", label: "Admissions email", type: "email" },
     { key: "admissionsPhone", label: "Admissions phone" },
@@ -1270,6 +1335,11 @@ const TAB_FIELDS = {
     { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3 },
   ],
 };
+
+const OPEN_STATE_FIELDS = [
+  { key: "applicationsStatus", label: "Applications", hint: "Whether students can apply right now." },
+  { key: "registrationStatus", label: "Registration", hint: "Whether accepted students can register right now." },
+];
 
 const AVAILABILITY_FIELDS = [
   { key: "careerSupport", label: "Career support", hint: "Careers office, job placement, or internship support." },
@@ -1455,8 +1525,8 @@ function TagPicker({ label, description, options, selected, onChange, editing, m
   );
 }
 
-function AvailabilityPicker({ field, value, editing, onChange }) {
-  const current = normalizeAvailability(value);
+function ChoicePicker({ field, value, editing, onChange, options, normalize, toLabel }) {
+  const current = normalize(value);
 
   return (
     <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3">
@@ -1464,7 +1534,7 @@ function AvailabilityPicker({ field, value, editing, onChange }) {
       {editing ? (
         <>
           <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label={field.label}>
-            {AVAILABILITY_OPTIONS.map((option) => {
+            {options.map((option) => {
               const active = option.value === current;
               return (
                 <button
@@ -1489,10 +1559,27 @@ function AvailabilityPicker({ field, value, editing, onChange }) {
         </>
       ) : (
         <p className={`mt-1.5 text-sm ${current ? "text-slate-800" : "text-slate-400"}`}>
-          {current ? availabilityLabel(current) : "—"}
+          {current ? toLabel(current) : "—"}
         </p>
       )}
     </div>
+  );
+}
+
+function AvailabilityPicker(props) {
+  return (
+    <ChoicePicker
+      {...props}
+      options={AVAILABILITY_OPTIONS}
+      normalize={normalizeAvailability}
+      toLabel={availabilityLabel}
+    />
+  );
+}
+
+function OpenStatePicker(props) {
+  return (
+    <ChoicePicker {...props} options={OPEN_STATE_OPTIONS} normalize={normalizeOpenState} toLabel={openStateLabel} />
   );
 }
 
@@ -1664,6 +1751,383 @@ function CampusTab({ portal, editing, onChange }) {
                 ) : null}
               </div>
             ))}
+          </div>
+        )}
+      </FormSection>
+    </div>
+  );
+}
+
+const FAQ_TABS = [
+  { id: "faq", label: "FAQ", hint: "Answer the questions students ask most." },
+  { id: "reviews", label: "Student Reviews", hint: "Read what students said, and reply." },
+];
+
+function StarRow({ rating, className = "" }) {
+  return (
+    <span className={className} aria-label={`${rating} out of 5 stars`}>
+      <span aria-hidden="true" className="text-amber-500">
+        {"★".repeat(rating)}
+        <span className="text-slate-300">{"★".repeat(5 - rating)}</span>
+      </span>
+    </span>
+  );
+}
+
+function FaqEditor({ portal, editing }) {
+  const suggestions = unusedSuggestedQuestions(portal.faqRows);
+
+  function updateRow(index, patch) {
+    portal.setFaqRows((rows) => rows.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+  }
+
+  return (
+    <div className="space-y-5">
+      <FormSection
+        title="Published questions"
+        description="Only questions with an answer are shown to students."
+        action={
+          editing ? (
+            <button
+              type="button"
+              onClick={() => portal.setFaqRows((rows) => [...rows, { question: "", answer: "" }])}
+              className="rounded-2xl border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-900"
+            >
+              Add question
+            </button>
+          ) : null
+        }
+      >
+        {!portal.faqRows.length ? <EmptyRowsNote>No questions yet.</EmptyRowsNote> : null}
+
+        <div className="space-y-3">
+          {portal.faqRows.map((row, index) => (
+            <div key={`faq-${index}`} className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
+              {editing ? (
+                <>
+                  <input
+                    value={row.question}
+                    onChange={(event) => updateRow(index, { question: event.target.value })}
+                    placeholder="Question"
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold"
+                  />
+                  <textarea
+                    value={row.answer}
+                    onChange={(event) => updateRow(index, { answer: event.target.value })}
+                    rows={3}
+                    placeholder="Answer — leave blank to keep this question unpublished"
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => portal.setFaqRows((rows) => rows.filter((_, i) => i !== index))}
+                    className="text-sm font-semibold text-red-700"
+                  >
+                    Remove question
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <p className="font-semibold text-slate-900">{row.question || "Untitled question"}</p>
+                    {!row.answer ? (
+                      <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-900">
+                        Needs an answer
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className={`text-sm ${row.answer ? "text-slate-700" : "text-slate-400"}`}>
+                    {row.answer || "Not answered yet — students will not see this."}
+                  </p>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </FormSection>
+
+      {editing && suggestions.length ? (
+        <FormSection
+          title="Suggested questions"
+          description="Tap one to add it to your list, then write the answer above."
+        >
+          <div className="flex flex-wrap gap-2">
+            {suggestions.map((question) => (
+              <button
+                key={question}
+                type="button"
+                onClick={() => portal.setFaqRows((rows) => [...rows, { question, answer: "" }])}
+                className="rounded-full border border-brand-200 bg-white px-3 py-1.5 text-xs font-medium text-brand-900 transition hover:border-brand-400"
+              >
+                + {question}
+              </button>
+            ))}
+          </div>
+        </FormSection>
+      ) : null}
+    </div>
+  );
+}
+
+function ReviewsManager({ portal }) {
+  const [drafts, setDrafts] = useState({});
+  const [openReply, setOpenReply] = useState("");
+  const summary = summarizeReviews(portal.reviews);
+
+  async function submitReply(review) {
+    const saved = await portal.handleReplyToReview(review.id, drafts[review.id] ?? review.reply ?? "");
+    if (saved) setOpenReply("");
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Average rating</p>
+          <p className="mt-1 font-display text-3xl font-semibold text-slate-900">{summary.average || "—"}</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Reviews</p>
+          <p className="mt-1 font-display text-3xl font-semibold text-slate-900">{summary.count}</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Awaiting a reply</p>
+          <p className="mt-1 font-display text-3xl font-semibold text-slate-900">
+            {portal.reviews.filter((review) => !review.reply).length}
+          </p>
+        </div>
+      </div>
+
+      <p className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+        Reviews are written by students and cannot be edited or removed here. You can reply to any of them.
+      </p>
+
+      {!portal.reviews.length ? <EmptyRowsNote>No reviews yet.</EmptyRowsNote> : null}
+
+      <div className="space-y-3">
+        {portal.reviews.map((review) => {
+          const isOpen = openReply === review.id;
+          return (
+            <article key={review.id} className="rounded-2xl border border-slate-200 bg-white p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <StarRow rating={review.rating} />
+                <p className="text-xs text-slate-500">{new Date(review.created_at).toLocaleDateString()}</p>
+              </div>
+              {review.body ? <p className="mt-2 text-sm leading-relaxed text-slate-700">{review.body}</p> : null}
+
+              {review.reply && !isOpen ? (
+                <div className="mt-3 rounded-2xl bg-brand-50/60 px-4 py-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Your reply</p>
+                  <p className="mt-1 text-sm text-slate-700">{review.reply}</p>
+                </div>
+              ) : null}
+
+              {isOpen ? (
+                <div className="mt-3 space-y-2">
+                  <textarea
+                    value={drafts[review.id] ?? review.reply ?? ""}
+                    onChange={(event) => setDrafts((current) => ({ ...current, [review.id]: event.target.value }))}
+                    rows={3}
+                    placeholder="Write a reply — clear the box to remove an existing reply"
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => submitReply(review)}
+                      className="rounded-2xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+                    >
+                      Publish reply
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setOpenReply("")}
+                      className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setOpenReply(review.id)}
+                  className="mt-3 text-sm font-semibold text-brand-700 hover:text-brand-900"
+                >
+                  {review.reply ? "Edit reply" : "Reply"}
+                </button>
+              )}
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function FaqPage() {
+  const portal = usePortal();
+  useDocumentTitle("FAQ and Student Reviews | Institution Dashboard");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [editing, setEditing] = useState(false);
+  const [snapshot, setSnapshot] = useState(null);
+
+  const requested = searchParams.get("tab");
+  const activeTab = FAQ_TABS.some((tab) => tab.id === requested) ? requested : FAQ_TABS[0].id;
+  const activeMeta = FAQ_TABS.find((tab) => tab.id === activeTab);
+
+  useEffect(() => {
+    setEditing(false);
+    setSnapshot(null);
+  }, [portal.activeInstitutionId]);
+
+  function selectTab(tabId) {
+    setSearchParams(tabId === FAQ_TABS[0].id ? {} : { tab: tabId });
+  }
+
+  async function save() {
+    const saved = await portal.handleSaveFaqs();
+    if (!saved) return;
+    setSnapshot(null);
+    setEditing(false);
+  }
+
+  return (
+    <section className="rounded-[2rem] border border-slate-200 bg-white shadow-card">
+      <div className="px-5 pt-6 lg:px-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">FAQ and Student Reviews</p>
+        <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">
+          {portal.university?.name || "Your institution"}
+        </h2>
+      </div>
+
+      <div className="mt-5 border-b border-slate-200 px-5 lg:px-6">
+        <div role="tablist" aria-label="FAQ and reviews sections" className="flex gap-6 overflow-x-auto">
+          {FAQ_TABS.map((tab) => {
+            const isActive = tab.id === activeTab;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                id={`faq-tab-${tab.id}`}
+                aria-selected={isActive}
+                aria-controls={`faq-panel-${tab.id}`}
+                onClick={() => selectTab(tab.id)}
+                className={[
+                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
+                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                ].join(" ")}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div
+        role="tabpanel"
+        id={`faq-panel-${activeTab}`}
+        aria-labelledby={`faq-tab-${activeTab}`}
+        className="space-y-5 px-5 py-6 lg:px-6"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="font-display text-xl font-semibold text-slate-900">{activeMeta?.label}</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              {activeTab === "faq" && editing ? "Editing — changes publish when you save." : activeMeta?.hint}
+            </p>
+          </div>
+          {activeTab === "faq" ? (
+            <EditControls
+              editing={editing}
+              locked={false}
+              onEdit={() => {
+                setSnapshot(portal.faqRows);
+                setEditing(true);
+              }}
+              onSave={save}
+              onCancel={() => {
+                if (snapshot) portal.setFaqRows(snapshot);
+                setSnapshot(null);
+                setEditing(false);
+              }}
+            />
+          ) : null}
+        </div>
+
+        {activeTab === "faq" ? <FaqEditor portal={portal} editing={editing} /> : <ReviewsManager portal={portal} />}
+      </div>
+    </section>
+  );
+}
+
+function AdmissionsTab({ portal, editing, onChange }) {
+  // Faculty names come from the programmes themselves; institutions only relabel them.
+  const originalFaculties = useMemo(() => {
+    const names = new Set();
+    for (const programme of portal.institutionProgrammes) {
+      const faculty = String(programme?.faculty || "").trim();
+      if (faculty) names.add(faculty);
+    }
+    return [...names].sort((a, b) => a.localeCompare(b));
+  }, [portal.institutionProgrammes]);
+
+  function renameFaculty(original, next) {
+    portal.setFacultyNames((current) => {
+      const updated = { ...current };
+      const value = next.trim();
+      if (!value || value === original) delete updated[original];
+      else updated[original] = value;
+      return updated;
+    });
+  }
+
+  return (
+    <div className="space-y-5">
+      <dl className="grid gap-4 md:grid-cols-2">
+        {OPEN_STATE_FIELDS.map((field) => (
+          <OpenStatePicker
+            key={field.key}
+            field={field}
+            value={portal.profileForm[field.key]}
+            editing={editing}
+            onChange={(next) => onChange(field.key, next)}
+          />
+        ))}
+      </dl>
+
+      <FieldGrid fields={TAB_FIELDS.admissions} form={portal.profileForm} editing={editing} onChange={onChange} />
+
+      <FormSection
+        title="Faculty names"
+        description="Rename the faculties your programmes are grouped under. This changes the label students see — it does not move any programme."
+      >
+        {!originalFaculties.length ? (
+          <EmptyRowsNote>None of your programmes carry a faculty yet.</EmptyRowsNote>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+            {originalFaculties.map((original) => {
+              const renamed = portal.facultyNames[original] || "";
+              return (
+                <div key={original} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{original}</p>
+                  {editing ? (
+                    <input
+                      value={renamed}
+                      onChange={(event) => renameFaculty(original, event.target.value)}
+                      placeholder={original}
+                      className="mt-1.5 w-full rounded-2xl border border-slate-200 px-4 py-2.5 text-sm"
+                    />
+                  ) : (
+                    <p className="mt-1.5 text-sm text-slate-800">
+                      {renamed || <span className="text-slate-400">Shown as written</span>}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </FormSection>
@@ -1988,6 +2452,7 @@ function ProfilePage() {
       studentLifeRows: portal.studentLifeRows,
       facilities: portal.facilities,
       sports: portal.sports,
+      facultyNames: portal.facultyNames,
     });
     setEditingTab(activeTab);
   }
@@ -2000,6 +2465,7 @@ function ProfilePage() {
       portal.setStudentLifeRows(snapshot.studentLifeRows);
       portal.setFacilities(snapshot.facilities);
       portal.setSports(snapshot.sports);
+      portal.setFacultyNames(snapshot.facultyNames);
     }
     setSnapshot(null);
     setEditingTab(null);
@@ -2101,7 +2567,9 @@ function ProfilePage() {
           />
         </div>
 
-        {activeTab === "campus" ? (
+        {activeTab === "admissions" ? (
+          <AdmissionsTab portal={portal} editing={editing} onChange={updateField} />
+        ) : activeTab === "campus" ? (
           <CampusTab portal={portal} editing={editing} onChange={updateField} />
         ) : activeTab === "student-life" ? (
           <StudentLifeTab portal={portal} editing={editing} onChange={updateField} />
@@ -2416,15 +2884,7 @@ export default function CmsApp() {
               />
             }
           />
-          <Route
-            path="faq"
-            element={
-              <StubPage
-                title="FAQ"
-                description="FAQ management and review workflows are next. This placeholder keeps the standalone dashboard aligned with the agreed 7-section information architecture."
-              />
-            }
-          />
+          <Route path="faq" element={<FaqPage />} />
           <Route
             path="settings"
             element={

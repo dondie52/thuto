@@ -16,6 +16,8 @@ import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from 
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import ShowMoreButton from "../components/ShowMoreButton.jsx";
 import { availabilityLabel, facilityMeta, sportMeta } from "../lib/campusFacilities.js";
+import UniversityReviews from "../components/UniversityReviews.jsx";
+import { publishedInstitutionFaqs } from "../lib/institutionFaqs.js";
 import { useCollapsibleList } from "../hooks/useCollapsibleList.js";
 import UniversityStudentIncentives from "../components/UniversityStudentIncentives.jsx";
 import UniversityFacultyFeesSection from "../components/UniversityFacultyFeesSection.jsx";
@@ -29,6 +31,9 @@ import {
   normalizeUniversityContacts,
   normalizeUniversitySocialLinks,
   normalizeUniversityStudentLife,
+  displayFacultyName,
+  normalizeUniversityAdmissions,
+  openStateLabel,
 } from "../lib/institutionProfile.js";
 import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
 
@@ -249,6 +254,8 @@ export default function UniversityDetail() {
   }
 
   const resources = normalizeResources(university.resources);
+  const admissions = normalizeUniversityAdmissions(university);
+  const faqs = publishedInstitutionFaqs(university.faqs);
   const websiteHref = safeExternalUrl(university.website);
   const contacts = normalizeUniversityContacts(university);
   const accreditation = normalizeUniversityAccreditation(university);
@@ -375,10 +382,32 @@ export default function UniversityDetail() {
       />
 
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Applications & intake</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Applications & intake</h2>
+          <div className="flex flex-wrap gap-2">
+            <OpenStatePill label="Applications" value={admissions.applicationsStatus} />
+            <OpenStatePill label="Registration" value={admissions.registrationStatus} />
+          </div>
+        </div>
         <div className="mt-3">
           <UniversityApplicationBlock university={university} compact={false} profileLink={false} />
         </div>
+        {admissions.registrationOpen || admissions.registrationClose ? (
+          <dl className="mt-4 grid gap-3 border-t border-brand-100 pt-4 text-sm text-slate-700 sm:grid-cols-2">
+            {admissions.registrationOpen ? (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Registration opens</dt>
+                <dd className="mt-1 font-medium text-brand-900">{formatLongDate(admissions.registrationOpen)}</dd>
+              </div>
+            ) : null}
+            {admissions.registrationClose ? (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Registration closes</dt>
+                <dd className="mt-1 font-medium text-brand-900">{formatLongDate(admissions.registrationClose)}</dd>
+              </div>
+            ) : null}
+          </dl>
+        ) : null}
       </section>
 
       <InternationalApplicantsSection
@@ -511,6 +540,22 @@ export default function UniversityDetail() {
 
       <UniversityResourcesSection university={university} resources={resources} />
 
+      {faqs.length ? (
+        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+          <h2 className="font-display text-lg font-semibold text-brand-900">Frequently asked questions</h2>
+          <dl className="mt-4 grid gap-3">
+            {faqs.map((faq) => (
+              <div key={faq.question} className="rounded-xl border border-brand-100 bg-brand-50/40 p-4">
+                <dt className="font-semibold text-brand-900">{faq.question}</dt>
+                <dd className="mt-2 text-sm leading-relaxed text-slate-700">{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
+
+      <UniversityReviews university={university} />
+
       <p className="text-xs leading-relaxed text-slate-500">
         Thuto is not affiliated with, endorsed by, or partnered with {university.name}. Institution logos and links are
         for identification and navigation only — confirm all requirements on the official website before you apply.
@@ -560,7 +605,7 @@ function ProgrammesOfferedSection({ programmes, university }) {
                   <span className="min-w-0">
                     <span className="block truncate font-medium text-brand-900">{programme.name}</span>
                     <span className="text-xs text-slate-500">
-                      {programme.field || "General"}
+                      {displayFacultyName(university, programme.faculty) || programme.field || "General"}
                       {programme.duration ? ` · ${programme.duration}` : ""}
                     </span>
                   </span>
@@ -583,6 +628,26 @@ function ProgrammesOfferedSection({ programmes, university }) {
         <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
       )}
     </section>
+  );
+}
+
+function formatLongDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value || "");
+  return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+}
+
+function OpenStatePill({ label, value }) {
+  if (!value) return null;
+  const open = value === "open";
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+        open ? "bg-emerald-50 text-emerald-800" : "bg-stone-100 text-stone-700"
+      }`}
+    >
+      {label}: {openStateLabel(value)}
+    </span>
   );
 }
 
