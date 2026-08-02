@@ -15,6 +15,7 @@ import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
 import { safeExternalUrl, isAllowedExternalResourceUrl, externalHostname } from "../lib/urlSafety.js";
 import ProgrammeThemeAccent from "../components/ProgrammeThemeAccent.jsx";
 import ShowMoreButton from "../components/ShowMoreButton.jsx";
+import { availabilityLabel, facilityMeta, sportMeta } from "../lib/campusFacilities.js";
 import { useCollapsibleList } from "../hooks/useCollapsibleList.js";
 import UniversityStudentIncentives from "../components/UniversityStudentIncentives.jsx";
 import UniversityFacultyFeesSection from "../components/UniversityFacultyFeesSection.jsx";
@@ -452,23 +453,19 @@ export default function UniversityDetail() {
 
       {(studentLife.accommodationStatus ||
         studentLife.accommodationDetails ||
-        studentLife.healthDetails ||
-        studentLife.safetyDetails ||
-        studentLife.sportsDetails ||
-        studentLife.careerSupportDetails) ? (
+        studentLife.facilities.length ||
+        studentLife.sports.length ||
+        studentLife.careerSupport ||
+        studentLife.campusSecurity) ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
           <h2 className="font-display text-lg font-semibold text-brand-900">Student life, support, and career outcomes</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <StudentLifeCard title="Accommodation" body={studentLife.accommodationDetails} kicker={studentLife.accommodationStatus} />
-            <StudentLifeCard title="Health support" body={studentLife.healthDetails} />
-            <StudentLifeCard title="Safety and security" body={studentLife.safetyDetails} />
-            <StudentLifeCard title="Sports and entertainment" body={studentLife.sportsDetails} />
-            <StudentLifeCard
-              title="Career support and jobs"
-              body={studentLife.careerSupportDetails}
-              className="sm:col-span-2"
-            />
+            <StudentLifeCard title="Career support and jobs" kicker={availabilityKicker(studentLife.careerSupport)} />
+            <StudentLifeCard title="On-campus security" kicker={availabilityKicker(studentLife.campusSecurity)} />
           </div>
+          <CampusTagList title="On campus" items={studentLife.facilities} meta={facilityMeta} />
+          <CampusTagList title="Sports offered" items={studentLife.sports} meta={sportMeta} />
         </section>
       ) : null}
 
@@ -586,6 +583,33 @@ function ProgrammesOfferedSection({ programmes, university }) {
         <p className="mt-4 text-sm text-slate-500">No programmes match this field filter yet.</p>
       )}
     </section>
+  );
+}
+
+function availabilityKicker(value) {
+  return value ? availabilityLabel(value) : "";
+}
+
+function CampusTagList({ title, items, meta }) {
+  if (!items.length) return null;
+  return (
+    <div className="mt-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {items.map((item) => {
+          const { label, icon } = meta(item);
+          return (
+            <span
+              key={item}
+              className="rounded-full border border-brand-100 bg-white px-3 py-1 text-xs font-semibold text-brand-800"
+            >
+              <span aria-hidden="true">{icon} </span>
+              {label}
+            </span>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

@@ -40,6 +40,18 @@ import {
   summarizeUniversityProfileCompleteness,
 } from "../lib/institutionProfile.js";
 import { STUDENT_INCENTIVE_CATEGORY_META } from "../lib/studentIncentives.js";
+import {
+  AVAILABILITY_OPTIONS,
+  CAMPUS_FACILITY_OPTIONS,
+  CAMPUS_SPORT_OPTIONS,
+  availabilityLabel,
+  facilityMeta,
+  normalizeAvailability,
+  normalizeCampusFacilities,
+  normalizeCampusSports,
+  sportMeta,
+} from "../lib/campusFacilities.js";
+import FieldInterestPills from "../components/onboarding/FieldInterestPills.jsx";
 import { buildAppUrl } from "../lib/cmsUrl.js";
 import { marketCountryLabel } from "../lib/marketCountry.js";
 
@@ -435,6 +447,7 @@ function usePartnerPortalData() {
   const [claimInstitutionId, setClaimInstitutionId] = useState("");
   const [allUniversities, setAllUniversities] = useState([]);
   const [profileForm, setProfileForm] = useState({
+    name: "",
     description: "",
     applicationOpen: "",
     applicationClose: "",
@@ -453,10 +466,8 @@ function usePartnerPortalData() {
     accreditationSourceUrl: "",
     accommodationStatus: "",
     accommodationDetails: "",
-    healthDetails: "",
-    safetyDetails: "",
-    sportsDetails: "",
-    careerSupportDetails: "",
+    careerSupport: "",
+    campusSecurity: "",
     campusPhotosText: "",
     socialFacebook: "",
     socialInstagram: "",
@@ -468,6 +479,8 @@ function usePartnerPortalData() {
   const [resourceRows, setResourceRows] = useState([]);
   const [staffRows, setStaffRows] = useState([]);
   const [studentLifeRows, setStudentLifeRows] = useState([]);
+  const [facilities, setFacilities] = useState([]);
+  const [sports, setSports] = useState([]);
   const [selectedProgrammeId, setSelectedProgrammeId] = useState("");
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
 
@@ -506,6 +519,7 @@ function usePartnerPortalData() {
       const studentLife = normalizeUniversityStudentLife(uni);
       const socialLinks = normalizeUniversitySocialLinks(uni);
       setProfileForm({
+        name: uni.name || "",
         description: uni.description || "",
         applicationOpen: uni.applicationOpen || "",
         applicationClose: uni.applicationClose || "",
@@ -524,10 +538,8 @@ function usePartnerPortalData() {
         accreditationSourceUrl: accreditation.sourceUrl,
         accommodationStatus: studentLife.accommodationStatus,
         accommodationDetails: studentLife.accommodationDetails,
-        healthDetails: studentLife.healthDetails,
-        safetyDetails: studentLife.safetyDetails,
-        sportsDetails: studentLife.sportsDetails,
-        careerSupportDetails: studentLife.careerSupportDetails,
+        careerSupport: studentLife.careerSupport,
+        campusSecurity: studentLife.campusSecurity,
         campusPhotosText: normalizeUniversityCampusPhotos(uni).join("\n"),
         socialFacebook: socialLinks.facebook,
         socialInstagram: socialLinks.instagram,
@@ -536,6 +548,8 @@ function usePartnerPortalData() {
         socialYoutube: socialLinks.youtube,
         socialTiktok: socialLinks.tiktok,
       });
+      setFacilities(studentLife.facilities);
+      setSports(studentLife.sports);
       setResourceRows(normalizeResourceRows(uni.resources));
       setStaffRows(normalizeStaffRows(uni.staff));
       setStudentLifeRows(
@@ -589,6 +603,8 @@ function usePartnerPortalData() {
     setMessage("");
     try {
       await saveInstitutionOverride(activeInstitutionId, {
+        // Blank would wipe the institution's name, so only send a real one.
+        ...(profileForm.name.trim() ? { name: profileForm.name.trim() } : {}),
         description: profileForm.description,
         applicationOpen: profileForm.applicationOpen || null,
         applicationClose: profileForm.applicationClose || null,
@@ -609,10 +625,12 @@ function usePartnerPortalData() {
         accreditationSourceUrl: profileForm.accreditationSourceUrl || null,
         accommodationStatus: profileForm.accommodationStatus || null,
         accommodationDetails: profileForm.accommodationDetails || null,
-        healthDetails: profileForm.healthDetails || null,
-        safetyDetails: profileForm.safetyDetails || null,
-        sportsDetails: profileForm.sportsDetails || null,
-        careerSupportDetails: profileForm.careerSupportDetails || null,
+        // Arrays and tri-state strings must not use the `|| null` idiom used above: an empty
+        // selection is a deliberate "none of these", not an unanswered field.
+        campusFacilities: normalizeCampusFacilities(facilities),
+        campusSports: normalizeCampusSports(sports),
+        careerSupport: normalizeAvailability(profileForm.careerSupport),
+        campusSecurity: normalizeAvailability(profileForm.campusSecurity),
         studentIncentives: studentLifeRows
           .map((row) => ({
             category: row.category || "other",
@@ -780,6 +798,10 @@ function usePartnerPortalData() {
     setStaffRows,
     studentLifeRows,
     setStudentLifeRows,
+    facilities,
+    setFacilities,
+    sports,
+    setSports,
     selectedProgrammeId,
     programmeForm,
     setProgrammeForm,
@@ -1220,9 +1242,10 @@ const SOCIAL_FIELDS = UNIVERSITY_SOCIAL_PLATFORMS.map((platform) => ({
 
 const TAB_FIELDS = {
   basics: [
-    { key: "description", label: "Institution description", type: "textarea", rows: 5, span: "full" },
+    { key: "name", label: "Institution name", hint: "The name students see everywhere in the app." },
     { key: "universityType", label: "Institution type" },
     { key: "logo", label: "Logo URL", type: "url" },
+    { key: "description", label: "Institution description", type: "textarea", rows: 5, span: "full" },
   ],
   admissions: [
     { key: "applicationOpen", label: "Applications open", type: "date" },
@@ -1244,13 +1267,14 @@ const TAB_FIELDS = {
     { key: "accreditationBody", label: "Accreditation body" },
     { key: "accreditationSourceUrl", label: "Accreditation source URL", type: "url" },
     { key: "accommodationDetails", label: "Accommodation details", type: "textarea", rows: 3 },
-    { key: "careerSupportDetails", label: "Career support details", type: "textarea", rows: 3 },
-    { key: "healthDetails", label: "Health and wellbeing", type: "textarea", rows: 3 },
-    { key: "safetyDetails", label: "Safety and security", type: "textarea", rows: 3 },
-    { key: "sportsDetails", label: "Sport and recreation", type: "textarea", rows: 3 },
     { key: "accreditationNotes", label: "Accreditation notes", type: "textarea", rows: 3 },
   ],
 };
+
+const AVAILABILITY_FIELDS = [
+  { key: "careerSupport", label: "Career support", hint: "Careers office, job placement, or internship support." },
+  { key: "campusSecurity", label: "On-campus security", hint: "Security personnel, access control, or campus patrols." },
+];
 
 const FIELD_INPUT_CLASS = "mt-1.5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm";
 
@@ -1321,6 +1345,7 @@ function ProfileField({ field, value, editing, onChange }) {
           <ReadOnlyValue field={field} value={value} />
         )}
       </dd>
+      {field.hint && editing ? <p className="mt-1.5 text-xs text-slate-500">{field.hint}</p> : null}
     </div>
   );
 }
@@ -1338,6 +1363,136 @@ function FieldGrid({ fields, form, editing, onChange }) {
         />
       ))}
     </dl>
+  );
+}
+
+/**
+ * Preset chips plus anything the institution types itself. Custom entries are stored as their
+ * label, so they round-trip without a second field.
+ */
+function TagPicker({ label, description, options, selected, onChange, editing, meta }) {
+  const [draft, setDraft] = useState("");
+  const presetValues = new Set(options.map((option) => option.value));
+
+  function addCustom() {
+    const value = draft.trim();
+    if (!value) return;
+    const exists = selected.some((item) => item.toLowerCase() === value.toLowerCase());
+    if (!exists) onChange([...selected, value]);
+    setDraft("");
+  }
+
+  const custom = selected.filter((item) => !presetValues.has(item));
+
+  return (
+    <FormSection title={label} description={description}>
+      {editing ? (
+        <>
+          <FieldInterestPills options={options} selected={selected} onChange={onChange} ariaLabel={label} />
+
+          {custom.length ? (
+            <div className="flex flex-wrap gap-2">
+              {custom.map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-1 rounded-full border border-brand-700 bg-brand-700 px-3 py-1.5 text-xs font-medium text-white"
+                >
+                  {item}
+                  <button
+                    type="button"
+                    onClick={() => onChange(selected.filter((value) => value !== item))}
+                    aria-label={`Remove ${item}`}
+                    className="text-white/80 hover:text-white"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          <div className="flex flex-wrap gap-2">
+            <input
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key !== "Enter") return;
+                event.preventDefault();
+                addCustom();
+              }}
+              placeholder="Add something not listed…"
+              className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm"
+            />
+            <button
+              type="button"
+              onClick={addCustom}
+              disabled={!draft.trim()}
+              className="rounded-2xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand-900 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400"
+            >
+              Add
+            </button>
+          </div>
+        </>
+      ) : selected.length ? (
+        <div className="flex flex-wrap gap-2">
+          {selected.map((item) => {
+            const info = meta(item);
+            return (
+              <span
+                key={item}
+                className="rounded-full border border-brand-100 bg-white px-3 py-1 text-xs font-semibold text-brand-800"
+              >
+                <span aria-hidden="true">{info.icon} </span>
+                {info.label}
+              </span>
+            );
+          })}
+        </div>
+      ) : (
+        <EmptyRowsNote>Nothing selected yet.</EmptyRowsNote>
+      )}
+    </FormSection>
+  );
+}
+
+function AvailabilityPicker({ field, value, editing, onChange }) {
+  const current = normalizeAvailability(value);
+
+  return (
+    <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{field.label}</p>
+      {editing ? (
+        <>
+          <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label={field.label}>
+            {AVAILABILITY_OPTIONS.map((option) => {
+              const active = option.value === current;
+              return (
+                <button
+                  key={option.value || "unset"}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() => onChange(option.value)}
+                  className={[
+                    "focus-ring rounded-full border px-3 py-1.5 text-xs font-medium transition",
+                    active
+                      ? "border-brand-700 bg-brand-700 text-white"
+                      : "border-brand-200 bg-white text-brand-900 hover:border-brand-400",
+                  ].join(" ")}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-1.5 text-xs text-slate-500">{field.hint}</p>
+        </>
+      ) : (
+        <p className={`mt-1.5 text-sm ${current ? "text-slate-800" : "text-slate-400"}`}>
+          {current ? availabilityLabel(current) : "—"}
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -1519,6 +1674,38 @@ function CampusTab({ portal, editing, onChange }) {
 function StudentLifeTab({ portal, editing, onChange }) {
   return (
     <div className="space-y-5">
+      <TagPicker
+        label="On campus"
+        description="Tap everything students can actually use on your campus."
+        options={CAMPUS_FACILITY_OPTIONS}
+        selected={portal.facilities}
+        onChange={portal.setFacilities}
+        editing={editing}
+        meta={facilityMeta}
+      />
+
+      <TagPicker
+        label="Sports offered"
+        description="Tap the sports your students can take part in."
+        options={CAMPUS_SPORT_OPTIONS}
+        selected={portal.sports}
+        onChange={portal.setSports}
+        editing={editing}
+        meta={sportMeta}
+      />
+
+      <dl className="grid gap-4 md:grid-cols-2">
+        {AVAILABILITY_FIELDS.map((field) => (
+          <AvailabilityPicker
+            key={field.key}
+            field={field}
+            value={portal.profileForm[field.key]}
+            editing={editing}
+            onChange={(next) => onChange(field.key, next)}
+          />
+        ))}
+      </dl>
+
       <FieldGrid fields={TAB_FIELDS["student-life"]} form={portal.profileForm} editing={editing} onChange={onChange} />
 
       <FormSection
@@ -1799,6 +1986,8 @@ function ProfilePage() {
       resourceRows: portal.resourceRows,
       staffRows: portal.staffRows,
       studentLifeRows: portal.studentLifeRows,
+      facilities: portal.facilities,
+      sports: portal.sports,
     });
     setEditingTab(activeTab);
   }
@@ -1809,6 +1998,8 @@ function ProfilePage() {
       portal.setResourceRows(snapshot.resourceRows);
       portal.setStaffRows(snapshot.staffRows);
       portal.setStudentLifeRows(snapshot.studentLifeRows);
+      portal.setFacilities(snapshot.facilities);
+      portal.setSports(snapshot.sports);
     }
     setSnapshot(null);
     setEditingTab(null);

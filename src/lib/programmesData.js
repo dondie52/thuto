@@ -112,8 +112,10 @@ const UNIVERSITY_ALIASES = {
 };
 
 export function programmeBelongsToUniversity(programme, university) {
-  const aliases = UNIVERSITY_ALIASES[university.id] ?? [university.name];
-  const aliasSet = new Set(aliases.map(normalize));
+  // `canonicalName` is the pre-override name, kept so an institution renaming itself in the CMS
+  // does not detach its own programmes. Only 29 of 389 institutions have an alias entry.
+  const aliases = UNIVERSITY_ALIASES[university.id] ?? [];
+  const aliasSet = new Set([...aliases, university.name, university.canonicalName].filter(Boolean).map(normalize));
   const short = normalize(programme.universityShort);
   const full = normalize(programme.university);
   return aliasSet.has(short) || aliasSet.has(full);

@@ -134,6 +134,7 @@ export function resolveUniversityId(university) {
     university?.university,
     university?.universityShort,
     university?.name,
+    university?.canonicalName,
     university?.shortName,
   ].map(normalizeUniversity);
 

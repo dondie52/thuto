@@ -1,4 +1,5 @@
 import { categorizeUniversity, UNIVERSITY_CATEGORY_META } from "./universitiesData.js";
+import { normalizeAvailability, normalizeCampusFacilities, normalizeCampusSports } from "./campusFacilities.js";
 
 export const UNIVERSITY_SOCIAL_PLATFORMS = [
   { key: "facebook", label: "Facebook" },
@@ -61,10 +62,10 @@ export function normalizeUniversityStudentLife(university) {
   return {
     accommodationStatus: normalizeText(university?.accommodationStatus),
     accommodationDetails: normalizeText(university?.accommodationDetails),
-    healthDetails: normalizeText(university?.healthDetails),
-    safetyDetails: normalizeText(university?.safetyDetails),
-    sportsDetails: normalizeText(university?.sportsDetails),
-    careerSupportDetails: normalizeText(university?.careerSupportDetails),
+    facilities: normalizeCampusFacilities(university?.campusFacilities),
+    sports: normalizeCampusSports(university?.campusSports),
+    careerSupport: normalizeAvailability(university?.careerSupport),
+    campusSecurity: normalizeAvailability(university?.campusSecurity),
   };
 }
 
@@ -89,7 +90,11 @@ export function summarizeUniversityProfileCompleteness(university, programmeCoun
     accreditation.status,
     Object.values(socials).some(Boolean),
     campusPhotos.length > 0,
-    studentLife.accommodationStatus || studentLife.healthDetails || studentLife.safetyDetails || studentLife.sportsDetails,
+    studentLife.accommodationStatus ||
+      studentLife.facilities.length > 0 ||
+      studentLife.sports.length > 0 ||
+      studentLife.careerSupport ||
+      studentLife.campusSecurity,
     programmeCount > 0,
   ].filter(Boolean).length;
 
