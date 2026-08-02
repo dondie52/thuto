@@ -76,6 +76,33 @@ export function getProgrammeModulePreview(blocks, limit) {
   return preview;
 }
 
+// Module codes are stored inline in the module string ("ECO111 - Basic Microeconomics"),
+// which the CMS splits into separate code and name boxes for editing.
+const MODULE_CODE_RE = /^([A-Z]{2,6}\s?\d{2,4}[A-Z]?)\s*[-–—:]\s*(.+)$/;
+
+/**
+ * @param {string} text
+ * @returns {{ code: string, name: string }}
+ */
+export function parseModuleEntry(text) {
+  const trimmed = String(text || "").trim();
+  const match = MODULE_CODE_RE.exec(trimmed);
+  if (!match) return { code: "", name: trimmed };
+  return { code: match[1].trim(), name: match[2].trim() };
+}
+
+/**
+ * @param {{ code?: string, name?: string }} entry
+ * @returns {string}
+ */
+export function formatModuleEntry(entry) {
+  const code = String(entry?.code || "").trim();
+  const name = String(entry?.name || "").trim();
+  if (!code) return name;
+  if (!name) return code;
+  return `${code} - ${name}`;
+}
+
 /**
  * @param {string|number} semester
  * @returns {string}

@@ -56,32 +56,26 @@ export default function PartnerInsightsDashboard({
             hint={topCountry ? `${topCountry.count} engagements` : "Traffic will appear here"}
           />
         </div>
-        <div className="mt-4 flex flex-wrap gap-2 text-xs text-teal-100/90">
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-teal-100/90">
           <span className="rounded-full bg-white/10 px-3 py-1">{programmeCount} programmes listed</span>
           <span className="rounded-full bg-white/10 px-3 py-1 capitalize">{tier} partner</span>
           <span className="rounded-full bg-white/10 px-3 py-1">{newLeads} new leads</span>
           <span className="rounded-full bg-white/10 px-3 py-1">{clarity}</span>
+          {onOpenModule ? (
+            <button
+              type="button"
+              onClick={() => onOpenModule("leads")}
+              className="rounded-full bg-white/20 px-3 py-1 font-semibold text-white transition hover:bg-white/30"
+            >
+              Open leads
+            </button>
+          ) : null}
         </div>
       </section>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <ModuleCard
-          kicker="01 · At a glance"
-          title="Student interest summary"
-          question="Are students viewing the profile, opening programme pages, and clicking through?"
-          actionLabel="Open leads"
-          onAction={onOpenModule ? () => onOpenModule("leads") : undefined}
-        >
-          <div className="grid grid-cols-2 gap-3">
-            <MiniStat label="Profile views" value={profileViews} />
-            <MiniStat label="Programme views" value={programmeViews} />
-            <MiniStat label="Apply clicks" value={applyClicks} />
-            <MiniStat label="Outbound clicks" value={outbound} />
-          </div>
-        </ModuleCard>
-
-        <ModuleCard
-          kicker="02 · Top demand"
+          kicker="01 · Top demand"
           title="Most viewed programmes"
           question="These are the programmes students are opening most often."
         >
@@ -96,7 +90,7 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="03 · Audience location"
+          kicker="02 · Audience location"
           title="Where interest comes from"
           question="Use this to spot where your current awareness is strongest."
         >
@@ -112,7 +106,7 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="04 · Discovery context"
+          kicker="03 · Discovery context"
           title="Fields students explore"
           question="This shows which academic areas are driving attention to your catalogue."
         >
@@ -128,7 +122,7 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="05 · Conversion signals"
+          kicker="04 · Conversion signals"
           title="Clicks to your website and admissions links"
           question="Students are moving from discovery on Thuto to your official channels."
           className="lg:col-span-2"
@@ -164,15 +158,6 @@ function HeroMetric({ label, value, hint }) {
       <p className="text-[11px] font-semibold uppercase tracking-wide text-teal-100/80">{label}</p>
       <p className="mt-1 font-display text-xl font-bold tabular-nums sm:text-2xl">{value}</p>
       {hint ? <p className="mt-0.5 text-[11px] text-teal-100/70">{hint}</p> : null}
-    </div>
-  );
-}
-
-function MiniStat({ label, value }) {
-  return (
-    <div className="rounded-xl border border-brand-100 bg-brand-50/60 px-3 py-3">
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 font-display text-xl font-bold text-brand-900 tabular-nums">{value}</p>
     </div>
   );
 }

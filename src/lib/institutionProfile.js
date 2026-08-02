@@ -1,5 +1,4 @@
 import { categorizeUniversity, UNIVERSITY_CATEGORY_META } from "./universitiesData.js";
-import { normalizeAvailability, normalizeCampusFacilities, normalizeCampusSports } from "./campusFacilities.js";
 
 export const UNIVERSITY_SOCIAL_PLATFORMS = [
   { key: "facebook", label: "Facebook" },
@@ -49,79 +48,52 @@ export function normalizeUniversityCampusPhotos(university) {
   return uniqueStrings([...list, fallback]);
 }
 
+export const ACCREDITATION_ON = "Accredited";
+export const ACCREDITATION_OFF = "Not accredited";
+export const ACCOMMODATION_ON = "Available";
+export const ACCOMMODATION_OFF = "Unavailable";
+export const APPLICATION_WINDOW_OPEN = "open";
+export const APPLICATION_WINDOW_CLOSED = "closed";
+
+const NEGATIVE_STATUS = /^(no|not|un|non|false|closed|unavailable|pending)\b/i;
+
+/**
+ * Read a legacy free-text status ("Fully accredited by BQA", "Not accredited") as a
+ * yes/no answer so the CMS toggles hydrate from values saved before they existed.
+ * @param {unknown} value
+ */
+export function isAffirmativeStatus(value) {
+  const text = normalizeText(value);
+  if (!text) return false;
+  return !NEGATIVE_STATUS.test(text);
+}
+
+/**
+ * Applications are treated as open unless an institution explicitly closed them, so
+ * the bundled catalogue keeps its current behaviour.
+ * @param {unknown} value
+ */
+export function isApplicationWindowOpen(value) {
+  return normalizeText(value).toLowerCase() !== APPLICATION_WINDOW_CLOSED;
+}
+
+export function normalizeUniversityFaculties(university) {
+  return uniqueStrings(Array.isArray(university?.faculties) ? university.faculties : []);
+}
+
 export function normalizeUniversityAccreditation(university) {
   return {
     status: normalizeText(university?.accreditationStatus),
-    body: normalizeText(university?.accreditationBody),
-    notes: normalizeText(university?.accreditationNotes),
-    sourceUrl: normalizeText(university?.accreditationSourceUrl),
   };
-}
-
-/**
- * Institutions can tidy the faculty labels their programmes carry (UB alone has both
- * "Humanities" and "Faculty of Humanities & Social Sciences"). Stored as a map of
- * original name -> preferred name so the underlying programme records stay untouched.
- */
-export function normalizeFacultyNames(university) {
-  const source = university?.facultyNames;
-  if (!source || typeof source !== "object" || Array.isArray(source)) return {};
-  const out = {};
-  for (const [original, replacement] of Object.entries(source)) {
-    const from = normalizeText(original);
-    const to = normalizeText(replacement);
-    if (from && to && from !== to) out[from] = to;
-  }
-  return out;
-}
-
-/**
- * @param {Record<string, unknown> | null | undefined} university
- * @param {string} faculty
- * @returns {string}
- */
-export function displayFacultyName(university, faculty) {
-  const name = normalizeText(faculty);
-  if (!name) return "";
-  return normalizeFacultyNames(university)[name] || name;
-}
-
-export function normalizeUniversityAdmissions(university) {
-  return {
-    applicationOpen: normalizeText(university?.applicationOpen),
-    applicationClose: normalizeText(university?.applicationClose),
-    registrationOpen: normalizeText(university?.registrationOpen),
-    registrationClose: normalizeText(university?.registrationClose),
-    applicationsStatus: normalizeOpenState(university?.applicationsStatus),
-    registrationStatus: normalizeOpenState(university?.registrationStatus),
-  };
-}
-
-/** @param {unknown} value @returns {"open" | "closed" | ""} */
-export function normalizeOpenState(value) {
-  const text = String(value || "").trim().toLowerCase();
-  return text === "open" || text === "closed" ? text : "";
-}
-
-export const OPEN_STATE_OPTIONS = [
-  { value: "open", label: "Open" },
-  { value: "closed", label: "Closed" },
-  { value: "", label: "Not stated" },
-];
-
-/** @param {string} value */
-export function openStateLabel(value) {
-  return OPEN_STATE_OPTIONS.find((option) => option.value === normalizeOpenState(value))?.label || "Not stated";
 }
 
 export function normalizeUniversityStudentLife(university) {
   return {
     accommodationStatus: normalizeText(university?.accommodationStatus),
-    accommodationDetails: normalizeText(university?.accommodationDetails),
-    facilities: normalizeCampusFacilities(university?.campusFacilities),
-    sports: normalizeCampusSports(university?.campusSports),
-    careerSupport: normalizeAvailability(university?.careerSupport),
-    campusSecurity: normalizeAvailability(university?.campusSecurity),
+    healthDetails: normalizeText(university?.healthDetails),
+    safetyDetails: normalizeText(university?.safetyDetails),
+    sportsDetails: normalizeText(university?.sportsDetails),
+    careerSupportDetails: normalizeText(university?.careerSupportDetails),
   };
 }
 
@@ -146,11 +118,7 @@ export function summarizeUniversityProfileCompleteness(university, programmeCoun
     accreditation.status,
     Object.values(socials).some(Boolean),
     campusPhotos.length > 0,
-    studentLife.accommodationStatus ||
-      studentLife.facilities.length > 0 ||
-      studentLife.sports.length > 0 ||
-      studentLife.careerSupport ||
-      studentLife.campusSecurity,
+    studentLife.accommodationStatus || studentLife.healthDetails || studentLife.safetyDetails || studentLife.sportsDetails,
     programmeCount > 0,
   ].filter(Boolean).length;
 

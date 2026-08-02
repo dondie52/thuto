@@ -274,6 +274,7 @@ function MobileCompareCards({
                   careers={p.careers || p.careerOpportunities || []}
                   maxCareers={careersPerProgramme}
                   showSalary={showSalary}
+                  programme={p}
                   empty={EMPTY_MARK}
                 />
               </MobileFactRow>
@@ -818,6 +819,7 @@ export default function CompareProgrammes() {
                     careers={p.careers || p.careerOpportunities || []}
                     maxCareers={entitlements.careersPerProgramme}
                     showSalary={entitlements.showSalaryEstimates}
+                    programme={p}
                     empty={EMPTY_MARK}
                   />
                 </td>
