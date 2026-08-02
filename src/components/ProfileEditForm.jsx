@@ -39,7 +39,7 @@ function profileSaveErrorMessage(err) {
   return message;
 }
 
-function useProfileEditFormState(profile, onSave, disabled) {
+function useProfileEditFormState(profile, onSave, disabled, onEditComplete) {
   const [universities, setUniversities] = useState([]);
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -140,6 +140,9 @@ function useProfileEditFormState(profile, onSave, disabled) {
       });
       await saveTargetInstitutions(targetInstitutionIds);
       setNotice("Saved.");
+      if (onEditComplete) {
+        setTimeout(onEditComplete, 100);
+      }
     } catch (err) {
       setError(profileSaveErrorMessage(err));
     } finally {
@@ -176,6 +179,7 @@ function useProfileEditFormState(profile, onSave, disabled) {
     previewUniversity,
     selectedUniversities,
     handleSubmit,
+    onEditComplete,
   };
 }
 
@@ -357,15 +361,27 @@ export function ProfilePersonalFields() {
 }
 
 function ProfileSaveButton({ usernameValid }) {
-  const { disabled, isSaving, username } = useProfileEditFormContext();
+  const { disabled, isSaving, username, onEditComplete } = useProfileEditFormContext();
   return (
-    <button
-      type="submit"
-      disabled={disabled || isSaving || (username.trim() && !usernameValid)}
-      className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
-    >
-      {isSaving ? "Saving..." : "Save profile"}
-    </button>
+    <div className="flex gap-2">
+      <button
+        type="submit"
+        disabled={disabled || isSaving || (username.trim() && !usernameValid)}
+        className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {isSaving ? "Saving..." : "Save profile"}
+      </button>
+      {onEditComplete ? (
+        <button
+          type="button"
+          onClick={onEditComplete}
+          disabled={disabled || isSaving}
+          className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-brand-200 bg-white px-5 py-2.5 text-sm font-semibold text-brand-700 shadow-sm hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          Cancel
+        </button>
+      ) : null}
+    </div>
   );
 }
 
@@ -413,11 +429,12 @@ function PersonIcon() {
  *   profile: object | null,
  *   onSave: (patch: object) => Promise<object>,
  *   disabled?: boolean,
+ *   onEditComplete?: () => void,
  *   children?: import("react").ReactNode,
  * }} props
  */
-export default function ProfileEditForm({ profile, onSave, disabled = false, children }) {
-  const formState = useProfileEditFormState(profile, onSave, disabled);
+export default function ProfileEditForm({ profile, onSave, disabled = false, onEditComplete, children }) {
+  const formState = useProfileEditFormState(profile, onSave, disabled, onEditComplete);
 
   return (
     <ProfileEditFormContext.Provider value={formState}>
