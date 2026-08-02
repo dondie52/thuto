@@ -10,6 +10,7 @@ import ProfileEditForm, {
   StarIcon,
   UniversityIcon,
 } from "../components/ProfileEditForm.jsx";
+import ProfileAboutSummary from "../components/profile/ProfileAboutSummary.jsx";
 import AccountActivitySummary from "../components/profile/AccountActivitySummary.jsx";
 import ChangePasswordForm from "../components/profile/ChangePasswordForm.jsx";
 import DeleteAccountForm from "../components/profile/DeleteAccountForm.jsx";
@@ -99,6 +100,7 @@ export default function Profile() {
   const [billingNotice, setBillingNotice] = useState("");
   const [logoutError, setLogoutError] = useState("");
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isEditingAbout, setIsEditingAbout] = useState(false);
   const savedCount = getBookmarkIds().length;
   const predictor = readPredictorSummary();
   const isSignedIn = Boolean(user);
@@ -210,30 +212,41 @@ export default function Profile() {
       {showSignedInContent && profileReady ? (
         <>
           {activeTab === "about" ? (
-            <ProfileEditForm profile={profile} onSave={saveProfile} disabled={isProfileLoading}>
-              <ProfileSection id="about-summary" title="About" hideDescription icon={<AboutIcon />}>
-                <ProfileAboutFields />
-              </ProfileSection>
-              <ProfileSection
-                id="universities"
-                title="Universities you're interested in"
-                hideDescription
-                icon={<UniversityIcon />}
+            isEditingAbout ? (
+              <ProfileEditForm
+                profile={profile}
+                onSave={saveProfile}
+                disabled={isProfileLoading}
+                onEditComplete={() => setIsEditingAbout(false)}
               >
-                <ProfileUniversitiesFields />
+                <ProfileSection id="about-summary" title="About" hideDescription icon={<AboutIcon />}>
+                  <ProfileAboutFields />
+                </ProfileSection>
+                <ProfileSection
+                  id="universities"
+                  title="Universities you're interested in"
+                  hideDescription
+                  icon={<UniversityIcon />}
+                >
+                  <ProfileUniversitiesFields />
+                </ProfileSection>
+                <ProfileSection id="fields-of-interest" title="Fields of interest" hideDescription icon={<StarIcon />}>
+                  <ProfileFieldsOfInterest />
+                </ProfileSection>
+                <ProfileSection
+                  id="personal-info"
+                  title="Personal information"
+                  hideDescription
+                  icon={<PersonIcon />}
+                >
+                  <ProfilePersonalFields />
+                </ProfileSection>
+              </ProfileEditForm>
+            ) : (
+              <ProfileSection id="about-summary" hideDescription>
+                <ProfileAboutSummary profile={profile} onEdit={() => setIsEditingAbout(true)} disabled={isProfileLoading} />
               </ProfileSection>
-              <ProfileSection id="fields-of-interest" title="Fields of interest" hideDescription icon={<StarIcon />}>
-                <ProfileFieldsOfInterest />
-              </ProfileSection>
-              <ProfileSection
-                id="personal-info"
-                title="Personal information"
-                hideDescription
-                icon={<PersonIcon />}
-              >
-                <ProfilePersonalFields />
-              </ProfileSection>
-            </ProfileEditForm>
+            )
           ) : null}
 
           {activeTab === "activity" ? (
