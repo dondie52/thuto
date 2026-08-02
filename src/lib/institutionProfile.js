@@ -1,4 +1,5 @@
 import { categorizeUniversity, UNIVERSITY_CATEGORY_META } from "./universitiesData.js";
+import { normalizeAvailability, normalizeCampusFacilities, normalizeCampusSports } from "./campusFacilities.js";
 
 export const UNIVERSITY_SOCIAL_PLATFORMS = [
   { key: "facebook", label: "Facebook" },
@@ -81,19 +82,79 @@ export function normalizeUniversityFaculties(university) {
   return uniqueStrings(Array.isArray(university?.faculties) ? university.faculties : []);
 }
 
+/**
+ * Institutions can tidy the faculty labels their programmes carry (UB alone has both
+ * "Humanities" and "Faculty of Humanities & Social Sciences"). Stored as a map of
+ * original name -> preferred name so the underlying programme records stay untouched.
+ */
+export function normalizeFacultyNames(university) {
+  const source = university?.facultyNames;
+  if (!source || typeof source !== "object" || Array.isArray(source)) return {};
+  const out = {};
+  for (const [original, replacement] of Object.entries(source)) {
+    const from = normalizeText(original);
+    const to = normalizeText(replacement);
+    if (from && to && from !== to) out[from] = to;
+  }
+  return out;
+}
+
+/**
+ * @param {Record<string, unknown> | null | undefined} university
+ * @param {string} faculty
+ * @returns {string}
+ */
+export function displayFacultyName(university, faculty) {
+  const name = normalizeText(faculty);
+  if (!name) return "";
+  return normalizeFacultyNames(university)[name] || name;
+}
+
 export function normalizeUniversityAccreditation(university) {
   return {
     status: normalizeText(university?.accreditationStatus),
+    body: normalizeText(university?.accreditationBody),
+    notes: normalizeText(university?.accreditationNotes),
+    sourceUrl: normalizeText(university?.accreditationSourceUrl),
   };
+}
+
+export function normalizeUniversityAdmissions(university) {
+  return {
+    applicationOpen: normalizeText(university?.applicationOpen),
+    applicationClose: normalizeText(university?.applicationClose),
+    registrationOpen: normalizeText(university?.registrationOpen),
+    registrationClose: normalizeText(university?.registrationClose),
+    applicationsStatus: normalizeOpenState(university?.applicationsStatus),
+    registrationStatus: normalizeOpenState(university?.registrationStatus),
+  };
+}
+
+/** @param {unknown} value @returns {"open" | "closed" | ""} */
+export function normalizeOpenState(value) {
+  const text = String(value || "").trim().toLowerCase();
+  return text === "open" || text === "closed" ? text : "";
+}
+
+export const OPEN_STATE_OPTIONS = [
+  { value: "open", label: "Open" },
+  { value: "closed", label: "Closed" },
+  { value: "", label: "Not stated" },
+];
+
+/** @param {string} value */
+export function openStateLabel(value) {
+  return OPEN_STATE_OPTIONS.find((option) => option.value === normalizeOpenState(value))?.label || "Not stated";
 }
 
 export function normalizeUniversityStudentLife(university) {
   return {
     accommodationStatus: normalizeText(university?.accommodationStatus),
-    healthDetails: normalizeText(university?.healthDetails),
-    safetyDetails: normalizeText(university?.safetyDetails),
-    sportsDetails: normalizeText(university?.sportsDetails),
-    careerSupportDetails: normalizeText(university?.careerSupportDetails),
+    accommodationDetails: normalizeText(university?.accommodationDetails),
+    facilities: normalizeCampusFacilities(university?.campusFacilities),
+    sports: normalizeCampusSports(university?.campusSports),
+    careerSupport: normalizeAvailability(university?.careerSupport),
+    campusSecurity: normalizeAvailability(university?.campusSecurity),
   };
 }
 
@@ -118,7 +179,11 @@ export function summarizeUniversityProfileCompleteness(university, programmeCoun
     accreditation.status,
     Object.values(socials).some(Boolean),
     campusPhotos.length > 0,
-    studentLife.accommodationStatus || studentLife.healthDetails || studentLife.safetyDetails || studentLife.sportsDetails,
+    studentLife.accommodationStatus ||
+      studentLife.facilities.length > 0 ||
+      studentLife.sports.length > 0 ||
+      studentLife.careerSupport ||
+      studentLife.campusSecurity,
     programmeCount > 0,
   ].filter(Boolean).length;
 
