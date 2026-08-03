@@ -14,6 +14,7 @@ import {
 import { thutoLogoSrc } from "../components/BrandMark.jsx";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
 import PartnerInsightsDashboard from "../components/partner/PartnerInsightsDashboard.jsx";
+import { PhotoGalleryField, PhotoUploadField } from "../components/partner/PhotoUploadField.jsx";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
 import {
@@ -28,6 +29,7 @@ import {
   updateLeadStatus,
 } from "../lib/partner.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
+import { inferQualificationLevel } from "../lib/programmeQualification.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
   OPEN_STATE_OPTIONS,
@@ -78,12 +80,13 @@ const RAIL_FOOTER_ITEMS = [
 ];
 
 const EMPTY_RESOURCE = { title: "", category: "", url: "", format: "Web page", sourceLabel: "" };
-const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "" };
+const EMPTY_STAFF = { name: "", title: "", email: "", phone: "", department: "", photo: "" };
 const EMPTY_INCENTIVE = { category: "other", label: "", detail: "", sourceUrl: "", sourceLabel: "" };
 const EMPTY_PROGRAMME_FORM = {
   description: "",
   applyUrl: "",
   officialUrl: "",
+  qualification: "",
   applicationDeadline: "",
   feesDomestic: "",
   minPoints: "",
@@ -113,7 +116,14 @@ function normalizeStaffRows(staff) {
     email: row?.email || "",
     phone: row?.phone || "",
     department: row?.department || "",
+    photo: row?.photo || "",
   }));
+}
+
+// Storage RLS only lets institution staff write under this prefix.
+function institutionAssetFolder(institutionId) {
+  const id = String(institutionId || "unknown").replace(/[^a-z0-9_-]+/gi, "-");
+  return `institutions/${id}`;
 }
 
 function formatCount(value) {
@@ -736,6 +746,7 @@ function usePartnerPortalData() {
           email: row.email.trim(),
           phone: row.phone.trim(),
           department: row.department.trim(),
+          photo: row.photo.trim(),
         }))
         .filter((row) => row.name);
       await saveInstitutionOverride(activeInstitutionId, { staff });
@@ -757,6 +768,7 @@ function usePartnerPortalData() {
         description: programmeForm.description || null,
         applyUrl: programmeForm.applyUrl || null,
         officialUrl: programmeForm.officialUrl || null,
+        qualification: programmeForm.qualification || null,
         applicationDeadline: programmeForm.applicationDeadline || null,
         accreditationStatus: programmeForm.accreditationStatus || null,
         accreditationBody: programmeForm.accreditationBody || null,
@@ -810,6 +822,7 @@ function usePartnerPortalData() {
       description: programme.description || "",
       applyUrl: programme.applyUrl || "",
       officialUrl: programme.officialUrl || "",
+      qualification: matchProgrammeLevel(programme.qualification),
       applicationDeadline: programme.applicationDeadline?.slice(0, 10) || "",
       feesDomestic: programme.fees?.domestic != null ? String(programme.fees.domestic) : "",
       minPoints: programme.minPoints != null ? String(programme.minPoints) : "",
@@ -1307,7 +1320,7 @@ const TAB_FIELDS = {
   basics: [
     { key: "name", label: "Institution name", hint: "The name students see everywhere in the app." },
     { key: "universityType", label: "Institution type" },
-    { key: "logo", label: "Logo URL", type: "url" },
+    { key: "logo", label: "Institution logo", type: "photo", folder: "logo", shape: "logo" },
     { key: "description", label: "Institution description", type: "textarea", rows: 5, span: "full" },
   ],
   admissions: [
@@ -1354,8 +1367,23 @@ function formatLongDate(value) {
   return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
 }
 
+function PhotoPreview({ value, shape }) {
+  if (!value) return <span className="mt-1.5 block text-sm text-slate-400">—</span>;
+  return (
+    <span
+      className={[
+        "mt-1.5 grid overflow-hidden border border-slate-200 bg-white",
+        shape === "avatar" ? "h-16 w-16 rounded-full" : "h-24 w-24 rounded-2xl",
+      ].join(" ")}
+    >
+      <img src={value} alt="" className="h-full w-full object-contain" />
+    </span>
+  );
+}
+
 function ReadOnlyValue({ field, value }) {
   const text = String(value ?? "").trim();
+  if (field.type === "photo") return <PhotoPreview value={text} shape={field.shape} />;
   if (!text) return <span className="mt-1.5 block text-sm text-slate-400">—</span>;
   if (field.type === "url") {
     return (
@@ -1383,7 +1411,7 @@ function ReadOnlyValue({ field, value }) {
   );
 }
 
-function ProfileField({ field, value, editing, onChange }) {
+function ProfileField({ field, value, editing, onChange, uploadFolder }) {
   const spanClass = field.span === "full" ? "md:col-span-2 2xl:col-span-3" : "";
   const inputType = field.type === "date" ? "date" : field.type === "email" ? "email" : "text";
 
@@ -1394,7 +1422,30 @@ function ProfileField({ field, value, editing, onChange }) {
       <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{field.label}</dt>
       <dd>
         {editing ? (
-          field.type === "textarea" ? (
+          field.type === "select" ? (
+            <select
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+              className={FIELD_INPUT_CLASS}
+            >
+              <option value="">Select {field.label.toLowerCase()}</option>
+              {(field.options || []).map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          ) : field.type === "photo" ? (
+            <div className="mt-2">
+              <PhotoUploadField
+                value={value}
+                onChange={onChange}
+                folder={[uploadFolder, field.folder].filter(Boolean).join("/") || "general"}
+                label={String(field.label || "photo").toLowerCase()}
+                shape={field.shape}
+              />
+            </div>
+          ) : field.type === "textarea" ? (
             <textarea
               value={value}
               onChange={(event) => onChange(event.target.value)}
@@ -1420,7 +1471,7 @@ function ProfileField({ field, value, editing, onChange }) {
   );
 }
 
-function FieldGrid({ fields, form, editing, onChange }) {
+function FieldGrid({ fields, form, editing, onChange, uploadFolder }) {
   return (
     <dl className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
       {fields.map((field) => (
@@ -1430,6 +1481,7 @@ function FieldGrid({ fields, form, editing, onChange }) {
           value={form[field.key] || ""}
           editing={editing}
           onChange={(next) => onChange(field.key, next)}
+          uploadFolder={uploadFolder}
         />
       ))}
     </dl>
@@ -1624,19 +1676,17 @@ function EmptyRowsNote({ children }) {
   );
 }
 
-function CampusTab({ portal, editing, onChange }) {
+function CampusTab({ portal, editing, onChange, uploadFolder }) {
   const photos = splitMultilineList(portal.profileForm.campusPhotosText);
 
   return (
     <div className="space-y-5">
       <FormSection title="Campus photos" description="Shown in the photo strip on your public institution page.">
         {editing ? (
-          <textarea
-            value={portal.profileForm.campusPhotosText}
-            onChange={(event) => onChange("campusPhotosText", event.target.value)}
-            rows={5}
-            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
-            placeholder="One campus photo URL per line"
+          <PhotoGalleryField
+            value={photos}
+            onChange={(urls) => onChange("campusPhotosText", urls.join("\n"))}
+            folder={`${uploadFolder}/campus`}
           />
         ) : photos.length ? (
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
@@ -2289,7 +2339,7 @@ function StudentLifeTab({ portal, editing, onChange }) {
   );
 }
 
-function StaffTab({ portal, editing }) {
+function StaffTab({ portal, editing, uploadFolder }) {
   return (
     <div className="space-y-5">
       <FormSection
@@ -2316,6 +2366,18 @@ function StaffTab({ portal, editing }) {
                 key={`staff-${index}`}
                 className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-2 2xl:grid-cols-3"
               >
+                <div className="md:col-span-2 2xl:col-span-3">
+                  <PhotoUploadField
+                    value={row.photo}
+                    onChange={(url) =>
+                      portal.setStaffRows((rows) => rows.map((item, i) => (i === index ? { ...item, photo: url } : item)))
+                    }
+                    folder={`${uploadFolder}/staff`}
+                    label="photo"
+                    shape="avatar"
+                    hint="Optional headshot. JPG, PNG or WebP."
+                  />
+                </div>
                 <input
                   value={row.name}
                   onChange={(event) =>
@@ -2381,6 +2443,14 @@ function StaffTab({ portal, editing }) {
           <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-4">
             {portal.staffRows.map((row, index) => (
               <div key={`staff-view-${index}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                {row.photo ? (
+                  <img
+                    src={row.photo}
+                    alt=""
+                    loading="lazy"
+                    className="mb-2 h-14 w-14 rounded-full border border-slate-200 object-cover"
+                  />
+                ) : null}
                 <p className="font-semibold text-slate-900">{row.name || "Unnamed"}</p>
                 <p className="mt-1 text-sm text-slate-600">{[row.title, row.department].filter(Boolean).join(" · ") || "—"}</p>
                 {row.email ? (
@@ -2429,6 +2499,7 @@ function ProfilePage() {
   const previewHref = portal.activeInstitutionId
     ? buildAppUrl(`/universities/${portal.activeInstitutionId}`)
     : buildAppUrl("/universities");
+  const uploadFolder = institutionAssetFolder(portal.activeInstitutionId);
 
   // Switching institutions reloads every form, so any in-flight edit no longer applies.
   useEffect(() => {
@@ -2570,23 +2641,53 @@ function ProfilePage() {
         {activeTab === "admissions" ? (
           <AdmissionsTab portal={portal} editing={editing} onChange={updateField} />
         ) : activeTab === "campus" ? (
-          <CampusTab portal={portal} editing={editing} onChange={updateField} />
+          <CampusTab portal={portal} editing={editing} onChange={updateField} uploadFolder={uploadFolder} />
         ) : activeTab === "student-life" ? (
           <StudentLifeTab portal={portal} editing={editing} onChange={updateField} />
         ) : activeTab === "staff" ? (
-          <StaffTab portal={portal} editing={editing} />
+          <StaffTab portal={portal} editing={editing} uploadFolder={uploadFolder} />
         ) : (
-          <FieldGrid fields={TAB_FIELDS[activeTab]} form={portal.profileForm} editing={editing} onChange={updateField} />
+          <FieldGrid
+            fields={TAB_FIELDS[activeTab]}
+            form={portal.profileForm}
+            editing={editing}
+            onChange={updateField}
+            uploadFolder={uploadFolder}
+          />
         )}
       </div>
     </section>
   );
 }
 
+const PROGRAMME_LEVEL_OPTIONS = ["Certificate", "Short Course", "Diploma", "Undergraduate", "Postgraduate"];
+
+// Bundled data uses free-text levels ("Degree", "Higher Diploma"). Map them onto the
+// small set of options this dropdown offers, so existing programmes still show a level.
+function matchProgrammeLevel(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  const exact = PROGRAMME_LEVEL_OPTIONS.find((option) => option.toLowerCase() === text.toLowerCase());
+  if (exact) return exact;
+  const level = inferQualificationLevel({ qualification: text });
+  if (level === "degree") return "Undergraduate";
+  if (level === "postgraduate" || level === "phd") return "Postgraduate";
+  if (level === "diploma") return "Diploma";
+  if (level === "certificate") return "Certificate";
+  if (level === "short_course") return "Short Course";
+  return "";
+}
+
 const PROGRAMME_FIELDS = [
   { key: "description", label: "Programme description", type: "textarea", rows: 5, span: "full" },
   { key: "applyUrl", label: "External application link", type: "url" },
   { key: "officialUrl", label: "Official programme page", type: "url" },
+  {
+    key: "qualification",
+    label: "Level",
+    type: "select",
+    options: PROGRAMME_LEVEL_OPTIONS.map((label) => ({ value: label, label })),
+  },
   { key: "applicationDeadline", label: "Application deadline", type: "date" },
   { key: "minPoints", label: "Minimum points" },
   { key: "accreditationStatus", label: "Accreditation status" },
@@ -2601,6 +2702,13 @@ function ProgrammesPage() {
   useDocumentTitle("Programmes | Institution Dashboard");
   const [editing, setEditing] = useState(false);
   const [snapshot, setSnapshot] = useState(null);
+  const [search, setSearch] = useState("");
+
+  const filteredProgrammes = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return portal.institutionProgrammes;
+    return portal.institutionProgrammes.filter((programme) => (programme.name || "").toLowerCase().includes(query));
+  }, [portal.institutionProgrammes, search]);
 
   const feeField = {
     key: "feesDomestic",
@@ -2650,19 +2758,31 @@ function ProgrammesPage() {
         ) : null}
       </div>
 
-      <select
-        value={portal.selectedProgrammeId}
-        onChange={(event) => portal.fillProgrammeForm(event.target.value)}
-        aria-label="Select programme"
-        className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm lg:max-w-md"
-      >
-        <option value="">Select programme</option>
-        {portal.institutionProgrammes.map((programme) => (
-          <option key={programme.id} value={programme.id}>
-            {programme.name}
+      <div className="flex flex-col gap-3 lg:max-w-md">
+        <input
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Search programmes by name"
+          aria-label="Search programmes by name"
+          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        />
+        <select
+          value={portal.selectedProgrammeId}
+          onChange={(event) => portal.fillProgrammeForm(event.target.value)}
+          aria-label="Select programme"
+          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        >
+          <option value="">
+            {filteredProgrammes.length ? "Select programme" : "No programmes match your search"}
           </option>
-        ))}
-      </select>
+          {filteredProgrammes.map((programme) => (
+            <option key={programme.id} value={programme.id}>
+              {programme.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {portal.selectedProgrammeId ? (
         <>
