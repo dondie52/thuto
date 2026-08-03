@@ -32,7 +32,8 @@ export const QUALIFICATION_LEVEL_OPTIONS = [
   { value: "degree", label: "Degree" },
   { value: "postgraduate", label: "Postgraduate (Masters, PGD)" },
   { value: "phd", label: "PhD / MPhil (research)" },
-  { value: "professional", label: "Professional / short course" },
+  { value: "short_course", label: "Short course" },
+  { value: "professional", label: "Professional" },
 ];
 
 export const STUDY_MODE_OPTIONS = [

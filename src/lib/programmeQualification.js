@@ -7,7 +7,7 @@ function normalizeText(value) {
 
 /**
  * @param {Record<string, unknown>} programme
- * @returns {'phd' | 'postgraduate' | 'certificate' | 'diploma' | 'degree' | 'professional' | ''}
+ * @returns {'phd' | 'postgraduate' | 'certificate' | 'diploma' | 'degree' | 'short_course' | 'professional' | ''}
  */
 export function inferQualificationLevel(programme) {
   const explicit = normalizeText(programme.qualification);
@@ -20,6 +20,7 @@ export function inferQualificationLevel(programme) {
   ) {
     return "postgraduate";
   }
+  if (combined.includes("short course")) return "short_course";
   if (combined.includes("certificate")) return "certificate";
   if (combined.includes("diploma")) return "diploma";
   if (
@@ -30,7 +31,7 @@ export function inferQualificationLevel(programme) {
   ) {
     return "degree";
   }
-  if (combined.includes("professional") || combined.includes("short course")) return "professional";
+  if (combined.includes("professional")) return "professional";
   return "";
 }
 
