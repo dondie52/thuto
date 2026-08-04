@@ -122,7 +122,25 @@ export default function PartnerInsightsDashboard({
         </ModuleCard>
 
         <ModuleCard
-          kicker="04 · Conversion signals"
+          kicker="04 · Applications"
+          title="Application status"
+          question="Track applications that don't have online portals and are managed directly."
+          className="lg:col-span-2"
+        >
+          <BarList
+            rows={[
+              { id: "pending", label: "Pending", count: 0 },
+              { id: "accepted", label: "Accepted", count: 0 },
+              { id: "rejected", label: "Rejected", count: 0 },
+              { id: "awaiting_interview", label: "Awaiting Interview", count: 0 },
+            ]}
+            empty="No applications recorded yet. This section tracks manual applications for institutions without online portals."
+            accent="emerald"
+          />
+        </ModuleCard>
+
+        <ModuleCard
+          kicker="05 · Conversion signals"
           title="Clicks to your website and admissions links"
           question="Students are moving from discovery on Thuto to your official channels."
           className="lg:col-span-2"
@@ -196,7 +214,9 @@ function BarList({ rows, empty, accent = "brand" }) {
         ? "bg-slate-500"
         : accent === "teal"
           ? "bg-teal-600"
-          : "bg-brand-700";
+          : accent === "emerald"
+            ? "bg-emerald-600"
+            : "bg-brand-700";
 
   return (
     <ul className="space-y-3">
