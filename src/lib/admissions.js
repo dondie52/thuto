@@ -1,24 +1,30 @@
 import { SCIENCE_DOUBLE_SUBJECT_ID, SUBJECTS_BY_ID } from "./bgcseSubjects.js";
-import { getGradingProfile, gradeToPointsForSyllabus } from "./gradingSystems.js";
+import {
+  ALL_SYLLABUS_VALUES,
+  attainmentIndex,
+  bandRank,
+  getGradingProfile,
+  gradeToBand,
+  gradeToPointsForSyllabus,
+  indexToBgcsePoints,
+  requiredIndexFromMinPoints,
+} from "./gradingSystems.js";
+
+const GRADING_PROFILE_IDS = new Set(ALL_SYLLABUS_VALUES);
 
 export { SCIENCE_DOUBLE_SUBJECT_ID };
+
+const DEFAULT_SYLLABUS = "bgcse";
 
 /**
  * Official Botswana BGCSE grade points for admission scoring.
  * Best-six maximum total = 48 (six A grades at 8 points each).
  * A* counts the same as A under UB/BIUST admissions guides.
+ *
+ * @deprecated Read `getGradingProfile(syllabusType).gradePoints` instead — this map is BGCSE-only
+ * and is kept because it is a documented public export.
  */
-export const GRADE_POINTS = {
-  "A*": 8,
-  A: 8,
-  B: 7,
-  C: 6,
-  D: 5,
-  E: 4,
-  F: 3,
-  G: 2,
-  U: 0,
-};
+export const GRADE_POINTS = getGradingProfile(DEFAULT_SYLLABUS).gradePoints;
 
 /** Labels for `subjectRequirements` keys in programmes.json (eligibility messages). */
 export const SUBJECT_FIELDS = [
@@ -36,10 +42,7 @@ export const SUBJECT_FIELDS = [
  * @returns {number | null}
  */
 export function gradeToPoints(grade, syllabusType) {
-  if (syllabusType) return gradeToPointsForSyllabus(grade, syllabusType);
-  if (grade == null || String(grade).trim() === "") return null;
-  const g = String(grade).trim().toUpperCase();
-  return Object.prototype.hasOwnProperty.call(GRADE_POINTS, g) ? GRADE_POINTS[g] : null;
+  return gradeToPointsForSyllabus(grade, syllabusType || DEFAULT_SYLLABUS);
 }
 
 /**
@@ -56,43 +59,59 @@ export function scienceDoubleAwardPoints(grade1, grade2, syllabusType) {
 
 /**
  * Parse a combined double-award grade string (e.g. "CC", "A*B") into two components.
+ * Only letter-grade syllabi issue Science Double Award, so anything else short-circuits.
+ *
  * @param {string | undefined | null} combined
+ * @param {string | null | undefined} [syllabusType]
  * @returns {{ grade1: string, grade2: string } | null}
  */
-export function parseDoubleAwardGrades(combined) {
+export function parseDoubleAwardGrades(combined, syllabusType) {
+  const profile = getGradingProfile(syllabusType || DEFAULT_SYLLABUS);
+  if (!profile.allowsScienceDouble) return null;
   const raw = String(combined || "").trim().toUpperCase();
   if (!raw) return null;
   if (raw.startsWith("A*") && raw.length >= 3) {
     const g1 = "A*";
     const g2 = raw.slice(2, 3);
-    if (gradeToPoints(g2) != null) return { grade1: g1, grade2: g2 };
+    if (gradeToPoints(g2, profile.id) != null) return { grade1: g1, grade2: g2 };
   }
   if (raw.length >= 2) {
     const g1 = raw[0];
     const g2 = raw[1];
-    if (gradeToPoints(g1) != null && gradeToPoints(g2) != null) {
+    if (gradeToPoints(g1, profile.id) != null && gradeToPoints(g2, profile.id) != null) {
       return { grade1: g1, grade2: g2 };
     }
   }
   return null;
 }
 
-/** Weaker of two grades (used for programme science requirements). */
-export function weakerGrade(grade1, grade2) {
-  const p1 = gradeToPoints(grade1);
-  const p2 = gradeToPoints(grade2);
-  if (p1 == null || p2 == null) return null;
-  return p1 <= p2 ? String(grade1).trim().toUpperCase() : String(grade2).trim().toUpperCase();
+/**
+ * Weaker of two grades (used for programme science requirements).
+ *
+ * Compared by canonical band, not by points: on a `lower_better` scale like ECZ a *smaller*
+ * number is the stronger grade, so comparing raw points would pick the wrong one.
+ *
+ * @param {string | undefined | null} grade1
+ * @param {string | undefined | null} grade2
+ * @param {string | null | undefined} [syllabusType]
+ */
+export function weakerGrade(grade1, grade2, syllabusType) {
+  const syllabus = syllabusType || DEFAULT_SYLLABUS;
+  const r1 = bandRank(gradeToBand(grade1, syllabus));
+  const r2 = bandRank(gradeToBand(grade2, syllabus));
+  if (r1 < 0 || r2 < 0) return null;
+  return r1 <= r2 ? String(grade1).trim().toUpperCase() : String(grade2).trim().toUpperCase();
 }
 
 /**
  * @param {{ subjectId: string, grade: string, grade2?: string }} row
+ * @param {string | null | undefined} [syllabusType]
  */
-export function rowAdmissionPoints(row) {
+export function rowAdmissionPoints(row, syllabusType) {
   if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID) {
-    return scienceDoubleAwardPoints(row.grade, row.grade2);
+    return scienceDoubleAwardPoints(row.grade, row.grade2, syllabusType);
   }
-  return gradeToPoints(row.grade);
+  return gradeToPoints(row.grade, syllabusType);
 }
 
 /**
@@ -106,18 +125,21 @@ export function formatRowGradeDisplay(row) {
 }
 
 /**
- * Sum of the best six subject points from entered grades (fewer than six subjects → sum all entered).
+ * Aggregate of the counted subjects from entered grades (fewer entered → sum all of them).
+ * The number counted and which end of the scale is "best" both come from the syllabus profile.
+ *
  * @param {Record<string, string>} gradesBySubject
+ * @param {string | null | undefined} [syllabusType]
  */
-export function computeBestSixTotal(gradesBySubject) {
+export function computeBestSixTotal(gradesBySubject, syllabusType) {
+  const profile = getGradingProfile(syllabusType || DEFAULT_SYLLABUS);
   const pointsList = [];
   for (const grade of Object.values(gradesBySubject)) {
-    const p = gradeToPoints(grade);
+    const p = gradeToPoints(grade, profile.id);
     if (p != null) pointsList.push(p);
   }
-  pointsList.sort((a, b) => b - a);
-  const top6 = pointsList.slice(0, 6);
-  return top6.reduce((sum, p) => sum + p, 0);
+  pointsList.sort((a, b) => (profile.direction === "lower_better" ? a - b : b - a));
+  return pointsList.slice(0, profile.subjectsCounted).reduce((sum, p) => sum + p, 0);
 }
 
 /**
@@ -201,22 +223,45 @@ export function computeBestSixBreakdown(rows, syllabusType) {
   if (scored.length === 0) {
     return { total: 0, counted: [], dropped: [], invalid: null, aggregateLabel: profile.aggregateLabel };
   }
-  const sorted = [...scored].sort((a, b) => b.points - a.points || a.label.localeCompare(b.label));
-  // APS and best-six both use top six subjects for a comparable guidance total.
-  const counted = sorted.slice(0, 6);
-  const dropped = sorted.slice(6);
+  // "Best" is the smallest number on scales like ECZ, WASSCE and MSCE, so the sort direction
+  // has to follow the profile or the aggregate counts a student's six *worst* subjects.
+  const sorted = [...scored].sort((a, b) =>
+    profile.direction === "lower_better"
+      ? a.points - b.points || a.label.localeCompare(b.label)
+      : b.points - a.points || a.label.localeCompare(b.label),
+  );
+  const counted = sorted.slice(0, profile.subjectsCounted);
+  const dropped = sorted.slice(profile.subjectsCounted);
   const total = counted.reduce((s, e) => s + e.points, 0);
-  return { total, counted, dropped, invalid: null, aggregateLabel: profile.aggregateLabel };
+  const index = attainmentIndex(total, profile);
+  return {
+    total,
+    counted,
+    dropped,
+    invalid: null,
+    aggregateLabel: profile.aggregateLabel,
+    index,
+    bgcseEquivalent: indexToBgcsePoints(index),
+    syllabusType: profile.id,
+  };
 }
 
 /**
- * Fold predictor rows into requirement keys for programme.json checks.
+ * Fold predictor rows into requirement keys for programmes.json checks.
  * When several rows map to the same key (e.g. Biology + Physics → science), keep the best grade.
+ *
+ * Returns **canonical bands**, not native grades. Requirements in programmes.json are written as
+ * BGCSE letters ("english": "C"), so a South African achievement level or a Zambian numeric
+ * grade can only be evaluated against them ordinally. Returning native grades here is what made
+ * every NSC and ECZ student fail every subject requirement.
+ *
  * @param {GradeRow[]} rows
- * @returns {Record<string, string>}
+ * @param {string | null | undefined} [syllabusType]
+ * @returns {Record<string, string>} requirement key → canonical band
  */
-export function rowsToRequirementGrades(rows) {
-  /** @type {Record<string, { grade: string, points: number }>} */
+export function rowsToRequirementGrades(rows, syllabusType) {
+  const syllabus = syllabusType || DEFAULT_SYLLABUS;
+  /** @type {Record<string, { band: string, rank: number }>} */
   const best = {};
   for (const row of rows) {
     const g = row.grade?.trim();
@@ -225,32 +270,33 @@ export function rowsToRequirementGrades(rows) {
     if (!meta?.requirementKey) continue;
     const k = meta.requirementKey;
 
-    if (row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID) {
-      const weaker = weakerGrade(g, row.grade2);
-      const pts = weaker != null ? gradeToPoints(weaker) : null;
-      if (pts == null) continue;
-      if (best[k] == null || pts > best[k].points) {
-        best[k] = { grade: weaker, points: pts };
-      }
-      continue;
-    }
+    const grade = row.subjectId === SCIENCE_DOUBLE_SUBJECT_ID ? weakerGrade(g, row.grade2, syllabus) : g;
+    if (grade == null) continue;
 
-    const pts = gradeToPoints(g);
-    if (pts == null) continue;
-    if (best[k] == null || pts > best[k].points) {
-      best[k] = { grade: g.toUpperCase(), points: pts };
+    const band = gradeToBand(grade, syllabus);
+    const rank = bandRank(band);
+    if (rank < 0) continue;
+    if (best[k] == null || rank > best[k].rank) {
+      best[k] = { band: /** @type {string} */ (band), rank };
     }
   }
-  return Object.fromEntries(Object.entries(best).map(([k, v]) => [k, v.grade]));
+  return Object.fromEntries(Object.entries(best).map(([k, v]) => [k, v.band]));
 }
 
 /**
- * User meets requirement if their grade is the same or better (e.g. B satisfies "C").
+ * User meets the requirement if their band is the same or better (B satisfies "C").
+ *
+ * Both sides are canonical bands: the left comes from `rowsToRequirementGrades`, the right is a
+ * BGCSE letter straight out of programmes.json. No syllabus argument is needed precisely because
+ * the comparison is scale-free.
+ *
+ * @param {string | null | undefined} userBand
+ * @param {string | null | undefined} requiredGrade
  */
-export function meetsSubjectRequirement(userGrade, requiredGrade) {
-  const u = gradeToPoints(userGrade);
-  const r = gradeToPoints(requiredGrade);
-  if (u == null || r == null) return false;
+export function meetsSubjectRequirement(userBand, requiredGrade) {
+  const u = bandRank(gradeToBand(userBand, DEFAULT_SYLLABUS));
+  const r = bandRank(gradeToBand(requiredGrade, DEFAULT_SYLLABUS));
+  if (u < 0 || r < 0) return false;
   return u >= r;
 }
 
@@ -283,17 +329,43 @@ export function programmeHasAdmissionPoints(programme) {
   return typeof programme.minPoints === "number" && Number.isFinite(programme.minPoints);
 }
 
+// "Close" was a 2-4 BGCSE point gap. Expressed on the 0-100 index that is 4.17-8.33, so these
+// bounds reproduce BGCSE behaviour exactly while giving every other scale a proportionate band.
+const CLOSE_INDEX_MIN = 4;
+const CLOSE_INDEX_MAX = 8.5;
+
 /**
  * @param {Programme} programme
- * @param {Record<string, string>} gradesBySubject requirement-keyed grades (from rowsToRequirementGrades)
- * @param {number} [bestSixTotal] when using dynamic rows, pass total from computeBestSixBreakdown
- * @returns {{ status: 'Qualified' | 'Close' | 'Not eligible' | 'Unknown', reason: string | null, total: number }}
+ * @param {Record<string, string>} gradesBySubject requirement-keyed bands (from rowsToRequirementGrades)
+ * @param {number} [aggregateTotal] when using dynamic rows, pass total from computeBestSixBreakdown
+ * @param {{ syllabusType?: string | null }} [options]
+ * @returns {{
+ *   status: 'Qualified' | 'Close' | 'Not eligible' | 'Unknown',
+ *   reason: string | null,
+ *   total: number,
+ *   index: number,
+ *   bgcseEquivalent: number,
+ *   syllabusType: string,
+ *   estimated: boolean,
+ * }}
  */
-export function evaluateProgramme(programme, gradesBySubject, bestSixTotal) {
-  const total = bestSixTotal ?? computeBestSixTotal(gradesBySubject);
+export function evaluateProgramme(programme, gradesBySubject, aggregateTotal, options = {}) {
+  const profile = getGradingProfile(options.syllabusType || DEFAULT_SYLLABUS);
+  const total = aggregateTotal ?? computeBestSixTotal(gradesBySubject, profile.id);
+  const index = attainmentIndex(total, profile);
+  const bgcseEquivalent = indexToBgcsePoints(index);
+  const base = {
+    total,
+    index,
+    bgcseEquivalent,
+    syllabusType: profile.id,
+    // Non-BGCSE results go through a linear conversion, and unverified scales are guesses at
+    // the scale itself. Both need the UI to soften how it states the outcome.
+    estimated: profile.id !== DEFAULT_SYLLABUS || !profile.verified,
+  };
 
   if (!programmeHasAdmissionPoints(programme)) {
-    return { status: "Unknown", reason: UNKNOWN_ADMISSION_REASON, total };
+    return { status: "Unknown", reason: UNKNOWN_ADMISSION_REASON, ...base };
   }
 
   const failures = [];
@@ -309,77 +381,84 @@ export function evaluateProgramme(programme, gradesBySubject, bestSixTotal) {
   }
   const subjOk = failures.length === 0;
   const minPts = /** @type {number} */ (programme.minPoints);
-  const pointsOk = total >= minPts;
-  const gap = minPts - total;
+  const requiredIndex = requiredIndexFromMinPoints(minPts);
+  const indexGap = requiredIndex - index;
 
-  if (pointsOk && subjOk) {
-    return { status: "Qualified", reason: null, total };
+  if (indexGap <= 0 && subjOk) {
+    return { status: "Qualified", reason: null, ...base };
   }
 
   if (!subjOk) {
     const reason = failures
       .map((f) => `${subjectLabel(f.key)} needs at least ${f.required} (you have ${f.actual})`)
       .join("; ");
-    return { status: "Not eligible", reason, total };
+    return { status: "Not eligible", reason, ...base };
   }
 
-  if (gap >= 2 && gap <= 4) {
-    return {
-      status: "Close",
-      reason: `${gap} points below the minimum (${minPts} pts required).`,
-      total,
-    };
+  // Reason strings speak the student's own units, with the BGCSE threshold alongside so the
+  // comparison against Thuto's catalogue is legible rather than mysterious.
+  const shortfall =
+    profile.id === DEFAULT_SYLLABUS
+      ? `${Math.round(minPts - total)} points below the minimum (${minPts} pts required).`
+      : `About ${Math.max(1, minPts - bgcseEquivalent)} points short — this programme needs ${minPts}/48 BGCSE-equivalent and your ${profile.aggregateLabel.toLowerCase()} of ${total} converts to about ${bgcseEquivalent}.`;
+
+  if (indexGap >= CLOSE_INDEX_MIN && indexGap <= CLOSE_INDEX_MAX) {
+    return { status: "Close", reason: shortfall, ...base };
   }
 
-  return {
-    status: "Not eligible",
-    reason:
-      gap > 4
-        ? `${gap} points below the minimum (${minPts} pts required).`
-        : `Need at least ${minPts} points (you have ${total}).`,
-    total,
-  };
+  return { status: "Not eligible", reason: shortfall, ...base };
 }
 
 /**
  * @param {Programme[]} programmes
  * @param {Record<string, string>} gradesBySubject
- * @param {number} [bestSixTotal]
+ * @param {number} [aggregateTotal]
+ * @param {{ syllabusType?: string | null }} [options]
  */
-export function evaluateAllProgrammes(programmes, gradesBySubject, bestSixTotal) {
+export function evaluateAllProgrammes(programmes, gradesBySubject, aggregateTotal, options = {}) {
   return programmes.map((p) => ({
     programme: p,
-    ...evaluateProgramme(p, gradesBySubject, bestSixTotal),
+    ...evaluateProgramme(p, gradesBySubject, aggregateTotal, options),
   }));
 }
 
-/** sessionStorage key: best-six total for Programmes "qualify on points" filter */
+/** sessionStorage key: aggregate total for the Programmes "qualify on points" filter */
 export const PREDICTOR_BEST_SIX_STORAGE_KEY = "thuto_predictor_best_six_total";
 
-/** sessionStorage key: JSON object of requirement-key grades (from rowsToRequirementGrades) */
+/** sessionStorage key: JSON object of requirement-key bands (from rowsToRequirementGrades) */
 export const PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY = "thuto_predictor_requirement_grades";
 
 /**
+ * sessionStorage key: which syllabus the total belongs to. Without it a South African APS of 34
+ * would be read as 34 BGCSE points by every page that consumes the snapshot.
+ */
+export const PREDICTOR_SYLLABUS_STORAGE_KEY = "thuto_predictor_syllabus";
+
+/**
  * Read predictor snapshot from sessionStorage for programme detail / list qualify filter.
- * @returns {{ total: number | null, grades: Record<string, string> | null }}
+ * A snapshot written before the multi-syllabus change has no syllabus key and is BGCSE.
+ *
+ * @returns {{ total: number | null, grades: Record<string, string> | null, syllabusType: string }}
  */
 export function readPredictorSession() {
   try {
     const totalRaw = sessionStorage.getItem(PREDICTOR_BEST_SIX_STORAGE_KEY);
     const gradesRaw = sessionStorage.getItem(PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY);
+    const syllabusRaw = sessionStorage.getItem(PREDICTOR_SYLLABUS_STORAGE_KEY);
+    const syllabusType = syllabusRaw && GRADING_PROFILE_IDS.has(syllabusRaw) ? syllabusRaw : DEFAULT_SYLLABUS;
     const total = totalRaw != null && totalRaw !== "" ? Number(totalRaw) : null;
-    if (!Number.isFinite(total)) return { total: null, grades: null };
+    if (!Number.isFinite(total)) return { total: null, grades: null, syllabusType };
 
     if (gradesRaw == null || gradesRaw === "") {
-      return { total, grades: null };
+      return { total, grades: null, syllabusType };
     }
     const parsed = JSON.parse(gradesRaw);
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-      return { total, grades: null };
+      return { total, grades: null, syllabusType };
     }
-    return { total, grades: /** @type {Record<string, string>} */ (parsed) };
+    return { total, grades: /** @type {Record<string, string>} */ (parsed), syllabusType };
   } catch {
-    return { total: null, grades: null };
+    return { total: null, grades: null, syllabusType: DEFAULT_SYLLABUS };
   }
 }
 
@@ -388,6 +467,7 @@ export function clearPredictorSession() {
   try {
     sessionStorage.removeItem(PREDICTOR_BEST_SIX_STORAGE_KEY);
     sessionStorage.removeItem(PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY);
+    sessionStorage.removeItem(PREDICTOR_SYLLABUS_STORAGE_KEY);
   } catch {
     /* ignore */
   }

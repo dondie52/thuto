@@ -127,7 +127,9 @@ export default function ProgrammeDetail() {
   const predictorSnap = readPredictorSession();
   const eligibility =
     predictorSnap.grades != null && predictorSnap.total != null
-      ? evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total)
+      ? evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total, {
+          syllabusType: predictorSnap.syllabusType,
+        })
       : null;
 
   const inCompare = isSelected(programme.id);

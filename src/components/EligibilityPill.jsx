@@ -25,6 +25,12 @@ export default function EligibilityPill({ eligibility, className = "" }) {
   if (!eligibility?.status) return null;
   const v = VARIANT[eligibility.status];
   if (!v) return null;
+  // Results on a non-BGCSE scale go through a linear conversion against BGCSE-calibrated
+  // thresholds, so the label should not sound more certain than the arithmetic is.
+  const estimated = Boolean(eligibility.estimated) && eligibility.status !== "Unknown";
+  const title = [eligibility.reason, estimated ? "Converted from your exam system — treat as an estimate." : null]
+    .filter(Boolean)
+    .join(" ");
   return (
     <span
       className={[
@@ -34,9 +40,9 @@ export default function EligibilityPill({ eligibility, className = "" }) {
       ]
         .filter(Boolean)
         .join(" ")}
-      title={eligibility.reason ?? undefined}
+      title={title || undefined}
     >
-      {v.label}
+      {estimated ? `${v.label} (est.)` : v.label}
     </span>
   );
 }

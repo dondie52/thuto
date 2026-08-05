@@ -99,7 +99,9 @@ function compactCareers(programme) {
 function compactProgramme(programme, predictorSnap) {
   const admission =
     predictorSnap?.grades && predictorSnap?.total != null
-      ? evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total)
+      ? evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total, {
+          syllabusType: predictorSnap.syllabusType,
+        })
       : null;
   return {
     id: programme.id,
@@ -185,7 +187,9 @@ function programmeSummary(programme, predictorSnap) {
   if (programme.field) bits.push(programme.field);
   bits.push(programmeHasAdmissionPoints(programme) ? `min ${programme.minPoints} pts` : "min points not listed");
   if (predictorSnap?.grades && predictorSnap?.total != null) {
-    const admission = evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total);
+    const admission = evaluateProgramme(programme, predictorSnap.grades, predictorSnap.total, {
+      syllabusType: predictorSnap.syllabusType,
+    });
     bits.push(admission.status === "Unknown" ? "admission unverified" : admission.status.toLowerCase());
   }
   return bits.join(" · ");

@@ -50,6 +50,7 @@ export default function FitFinder() {
     bgcseSubjects,
     replaceRows,
     gradeOptions,
+    gradeChoices,
     gradingProfile,
   } = usePredictorGradeInput({ syllabusType });
 
@@ -101,9 +102,10 @@ export default function FitFinder() {
       ...parseFitAnswers(profile),
       requirementGrades,
       bestSixTotal: breakdown?.total,
+      syllabusType,
       subjectIds: rows.filter((row) => row.grade?.trim()).map((row) => row.subjectId),
     }),
-    [profile, requirementGrades, breakdown, rows],
+    [profile, requirementGrades, breakdown, rows, syllabusType],
   );
 
   const ranked = useMemo(() => {
@@ -187,6 +189,7 @@ export default function FitFinder() {
             canAdd={canAdd}
             subjects={filteredSubjects}
             gradeOptions={gradeOptions}
+            gradeChoices={gradeChoices}
             helpText={gradingProfile.helpText}
             allowScienceDouble={Boolean(gradingProfile.allowsScienceDouble)}
           />

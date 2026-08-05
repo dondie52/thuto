@@ -14,10 +14,16 @@ export default function PredictorGradeSection({
   canAdd,
   subjects,
   gradeOptions = ["A*", "A", "B", "C", "D", "E", "F", "G", "U"],
+  // Numeric scales need their meaning spelled out — a bare "5" is ambiguous on NSC (good),
+  // ECZ (mid) and WASSCE (credit) alike.
+  gradeChoices = null,
   helpText = "Thuto updates points as soon as each subject has a grade.",
   allowScienceDouble = true,
 }) {
-  const options = ["", ...gradeOptions];
+  const choices = gradeChoices?.length
+    ? gradeChoices.map((choice) => ({ value: choice.value, label: choice.label || choice.value }))
+    : gradeOptions.map((value) => ({ value, label: value }));
+  const options = [{ value: "", label: "-" }, ...choices];
   return (
     <div id="predictor-grade-section" className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
       <fieldset className="space-y-3">
@@ -60,7 +66,7 @@ export default function PredictorGradeSection({
                 </div>
                 {isDoubleAward ? (
                   <>
-                    <div className="w-full sm:w-28">
+                    <div className="w-full sm:w-56">
                       <label htmlFor={`grade1-${row.key}`} className="block text-xs font-medium text-slate-600">
                         Component 1
                       </label>
@@ -71,13 +77,13 @@ export default function PredictorGradeSection({
                         className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
                       >
                         {options.map((g) => (
-                          <option key={g || "empty"} value={g}>
-                            {g === "" ? "-" : g}
+                          <option key={g.value || "empty"} value={g.value}>
+                            {g.label}
                           </option>
                         ))}
                       </select>
                     </div>
-                    <div className="w-full sm:w-28">
+                    <div className="w-full sm:w-56">
                       <label htmlFor={`grade2-${row.key}`} className="block text-xs font-medium text-slate-600">
                         Component 2
                       </label>
@@ -88,15 +94,15 @@ export default function PredictorGradeSection({
                         className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
                       >
                         {options.map((g) => (
-                          <option key={`g2-${g || "empty"}`} value={g}>
-                            {g === "" ? "-" : g}
+                          <option key={`g2-${g.value || "empty"}`} value={g.value}>
+                            {g.label}
                           </option>
                         ))}
                       </select>
                     </div>
                   </>
                 ) : (
-                  <div className="w-full sm:w-28">
+                  <div className="w-full sm:w-56">
                     <label htmlFor={`grade-${row.key}`} className="block text-xs font-medium text-slate-600">
                       Grade
                     </label>
@@ -107,8 +113,8 @@ export default function PredictorGradeSection({
                       className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400"
                     >
                       {options.map((g) => (
-                        <option key={g || "empty"} value={g}>
-                          {g === "" ? "-" : g}
+                        <option key={g.value || "empty"} value={g.value}>
+                          {g.label}
                         </option>
                       ))}
                     </select>
@@ -157,6 +163,12 @@ export default function PredictorGradeSection({
             <span className="text-lg font-bold text-brand-800">{breakdown.total}</span>
             {breakdown.aggregateLabel?.includes("APS") ? "" : " pts"}
           </p>
+          {breakdown.syllabusType && breakdown.syllabusType !== "bgcse" ? (
+            <p className="text-xs text-emerald-900/90">
+              About <strong>{breakdown.bgcseEquivalent}/48</strong> on the BGCSE scale Thuto&apos;s minimum points
+              are published against. Conversions are guidance only.
+            </p>
+          ) : null}
           <div>
             <p className="font-medium text-brand-900">Counted toward total</p>
             <ul className="mt-1 list-inside list-disc text-emerald-900">

@@ -4,6 +4,7 @@ import {
   rowsToRequirementGrades,
   PREDICTOR_BEST_SIX_STORAGE_KEY,
   PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY,
+  PREDICTOR_SYLLABUS_STORAGE_KEY,
 } from "../lib/admissions.js";
 import { BGCSE_SUBJECTS, SCIENCE_DOUBLE_SUBJECT_ID } from "../lib/bgcseSubjects.js";
 import { getGradingProfile, gradeOptionsForSyllabus } from "../lib/gradingSystems.js";
@@ -81,19 +82,22 @@ export function usePredictorGradeInput(options = {}) {
     const gradeRows = rows
       .filter((r) => r.subjectId && r.grade?.trim())
       .map((r) => ({ subjectId: r.subjectId, grade: r.grade, grade2: r.grade2 }));
-    return rowsToRequirementGrades(gradeRows);
-  }, [rows, breakdown]);
+    return rowsToRequirementGrades(gradeRows, syllabusType);
+  }, [rows, breakdown, syllabusType]);
 
   useEffect(() => {
     if (breakdown && !breakdown.invalid && breakdown.counted.length > 0 && requirementGrades) {
       try {
         sessionStorage.setItem(PREDICTOR_BEST_SIX_STORAGE_KEY, String(breakdown.total));
         sessionStorage.setItem(PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY, JSON.stringify(requirementGrades));
+        // Without the syllabus, every page that reads this snapshot would treat an APS of 34
+        // or a WASSCE aggregate of 18 as though it were 34 or 18 BGCSE points.
+        sessionStorage.setItem(PREDICTOR_SYLLABUS_STORAGE_KEY, String(syllabusType || "bgcse"));
       } catch {
         /* ignore */
       }
     }
-  }, [breakdown, requirementGrades]);
+  }, [breakdown, requirementGrades, syllabusType]);
 
   function updateRow(rowKey, patch) {
     setRows((prev) =>
@@ -151,6 +155,7 @@ export function usePredictorGradeInput(options = {}) {
     canAdd: rows.length < 12,
     bgcseSubjects: BGCSE_SUBJECTS,
     gradeOptions,
+    gradeChoices: profile.grades,
     gradingProfile: profile,
   };
 }
