@@ -9,6 +9,7 @@ import {
   useLocation,
   useNavigate,
   useOutletContext,
+  useParams,
   useSearchParams,
 } from "react-router-dom";
 import { thutoLogoSrc } from "../components/BrandMark.jsx";
@@ -2699,9 +2700,8 @@ const PROGRAMME_FIELDS = [
 
 function ProgrammesPage() {
   const portal = usePortal();
+  const navigate = useNavigate();
   useDocumentTitle("Programmes | Institution Dashboard");
-  const [editing, setEditing] = useState(false);
-  const [snapshot, setSnapshot] = useState(null);
   const [search, setSearch] = useState("");
 
   const filteredProgrammes = useMemo(() => {
@@ -2710,12 +2710,75 @@ function ProgrammesPage() {
     return portal.institutionProgrammes.filter((programme) => (programme.name || "").toLowerCase().includes(query));
   }, [portal.institutionProgrammes, search]);
 
+  function handleSelectProgramme(programmeId) {
+    if (programmeId) {
+      portal.fillProgrammeForm(programmeId);
+      navigate(`/programmes/${programmeId}`);
+    }
+  }
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programmes</p>
+        <h2 className="font-display text-2xl font-semibold text-slate-900">Manage institution programmes</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Select a programme to edit its public details, deadlines, and application links.
+        </p>
+      </div>
+
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+        <div className="max-w-2xl space-y-4">
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+              Search programmes
+            </label>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search by name..."
+              aria-label="Search programmes by name"
+              className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+            />
+          </div>
+
+          <div className="space-y-2">
+            {filteredProgrammes.length ? (
+              filteredProgrammes.map((programme) => (
+                <button
+                  key={programme.id}
+                  type="button"
+                  onClick={() => handleSelectProgramme(programme.id)}
+                  className="w-full text-left rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm transition hover:bg-slate-50 hover:border-slate-300"
+                >
+                  <p className="font-semibold text-slate-900">{programme.name}</p>
+                  <p className="mt-1 text-xs text-slate-500">{programme.field || 'No field specified'}</p>
+                </button>
+              ))
+            ) : (
+              <p className="py-8 text-center text-sm text-slate-500">No programmes match your search.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProgrammeDetailPage() {
+  const portal = usePortal();
+  const navigate = useNavigate();
+  const { programmeId } = useParams();
+  const [editing, setEditing] = useState(false);
+  const [snapshot, setSnapshot] = useState(null);
+  useDocumentTitle(`${portal.programmeForm?.name || 'Programme'} | Institution Dashboard`);
+
   const feeField = {
     key: "feesDomestic",
     label: `Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`,
   };
 
-  // Changing the selected programme swaps the whole form out from under an edit.
   useEffect(() => {
     setEditing(false);
     setSnapshot(null);
@@ -2744,66 +2807,41 @@ function ProgrammesPage() {
   }
 
   return (
-    <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+    <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programmes</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Manage institution programmes</h2>
+          <button
+            type="button"
+            onClick={() => navigate("/programmes")}
+            className="text-sm font-semibold text-brand-700 hover:text-brand-800"
+          >
+            ← Back to programmes
+          </button>
+          <p className="mt-3 text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme details</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">{portal.programmeForm?.name}</h2>
           <p className="mt-1 text-sm text-slate-600">
-            {editing ? "Editing — changes publish when you save." : "Pick a programme to review what students currently see."}
+            {editing ? "Editing — changes publish when you save." : "Review and update programme details."}
           </p>
         </div>
-        {portal.selectedProgrammeId ? (
-          <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
-        ) : null}
+        <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
       </div>
 
-      <div className="flex flex-col gap-3 lg:max-w-md">
-        <input
-          type="search"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search programmes by name"
-          aria-label="Search programmes by name"
-          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6 space-y-6">
+        <FieldGrid
+          fields={[...PROGRAMME_FIELDS, feeField]}
+          form={portal.programmeForm}
+          editing={editing}
+          onChange={updateField}
         />
-        <select
-          value={portal.selectedProgrammeId}
-          onChange={(event) => portal.fillProgrammeForm(event.target.value)}
-          aria-label="Select programme"
-          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-        >
-          <option value="">
-            {filteredProgrammes.length ? "Select programme" : "No programmes match your search"}
-          </option>
-          {filteredProgrammes.map((programme) => (
-            <option key={programme.id} value={programme.id}>
-              {programme.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {portal.selectedProgrammeId ? (
-        <>
-          <FieldGrid
-            fields={[...PROGRAMME_FIELDS, feeField]}
-            form={portal.programmeForm}
-            editing={editing}
-            onChange={updateField}
-          />
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
-            </div>
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
-            </div>
+        <div className="grid gap-4 md:grid-cols-2 pt-6 border-t border-slate-200">
+          <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+            Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
           </div>
-        </>
-      ) : (
-        <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
-      )}
+          <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+            Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -2843,53 +2881,93 @@ function LeadsPage() {
   const portal = usePortal();
   useDocumentTitle("Leads | Institution Dashboard");
 
+  const stats = {
+    total: portal.leads.length,
+    new: portal.leads.filter((lead) => lead.status === "new").length,
+    contacted: portal.leads.filter((lead) => lead.status === "contacted").length,
+    archived: portal.leads.filter((lead) => lead.status === "archived").length,
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Leads</p>
         <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Admissions lead inbox</h2>
+        <p className="mt-1 text-sm text-slate-600">Track and manage student inquiries and applications.</p>
       </div>
-      <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-        {portal.leads.map((lead) => (
-          <article key={lead.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="font-semibold text-slate-900">{lead.lead_type}</p>
-                <p className="text-sm text-slate-500">{new Date(lead.created_at).toLocaleString()}</p>
-              </div>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
-                {lead.status}
-              </span>
+
+      {portal.leads.length > 0 ? (
+        <>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Total leads</p>
+              <p className="mt-2 font-display text-3xl font-bold text-slate-900">{stats.total}</p>
             </div>
-            <pre className="mt-4 overflow-auto rounded-2xl bg-slate-50 p-4 text-xs text-slate-700">
-              {JSON.stringify(lead.payload, null, 2)}
-            </pre>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={async () => {
-                  await portal.updateLeadStatus(lead.id, "contacted");
-                  await portal.loadInstitution(portal.activeInstitutionId);
-                }}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
-              >
-                Mark contacted
-              </button>
-              <button
-                type="button"
-                onClick={async () => {
-                  await portal.updateLeadStatus(lead.id, "archived");
-                  await portal.loadInstitution(portal.activeInstitutionId);
-                }}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
-              >
-                Archive
-              </button>
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">New</p>
+              <p className="mt-2 font-display text-3xl font-bold text-emerald-700">{stats.new}</p>
             </div>
-          </article>
-        ))}
-      </div>
-      {!portal.leads.length ? <p className="text-sm text-slate-500">No leads yet.</p> : null}
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Contacted</p>
+              <p className="mt-2 font-display text-3xl font-bold text-slate-700">{stats.contacted}</p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Archived</p>
+              <p className="mt-2 font-display text-3xl font-bold text-slate-500">{stats.archived}</p>
+            </div>
+          </div>
+
+          <div className="space-y-3 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+            {portal.leads.map((lead) => (
+              <article
+                key={lead.id}
+                className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-semibold text-slate-900">{lead.lead_type}</p>
+                    <span className="rounded-full bg-white border border-slate-200 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+                      {lead.status}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-500">{new Date(lead.created_at).toLocaleString()}</p>
+                  <div className="mt-3 rounded-xl bg-white p-3 border border-slate-200">
+                    <pre className="overflow-auto text-xs text-slate-700 max-h-40">
+                      {JSON.stringify(lead.payload, null, 2)}
+                    </pre>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 sm:flex-col sm:shrink-0">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await portal.updateLeadStatus(lead.id, "contacted");
+                      await portal.loadInstitution(portal.activeInstitutionId);
+                    }}
+                    className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
+                  >
+                    Contacted
+                  </button>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await portal.updateLeadStatus(lead.id, "archived");
+                      await portal.loadInstitution(portal.activeInstitutionId);
+                    }}
+                    className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                  >
+                    Archive
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="rounded-[2rem] border border-dashed border-slate-300 bg-slate-50/50 p-12 text-center">
+          <p className="text-sm text-slate-500">No leads yet. When students express interest, they'll appear here.</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -2993,6 +3071,7 @@ export default function CmsApp() {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="staff" element={<Navigate to="/profile?tab=staff" replace />} />
           <Route path="programmes" element={<ProgrammesPage />} />
+          <Route path="programmes/:programmeId" element={<ProgrammeDetailPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route
             path="feed"
