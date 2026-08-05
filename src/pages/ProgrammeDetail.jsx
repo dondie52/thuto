@@ -333,6 +333,7 @@ export default function ProgrammeDetail() {
                   variant="programmePrimary"
                   institutionName={programme.university || university?.name}
                   programmeId={programme.id}
+                  programmeName={programme.name}
                   institutionId={university?.id}
                   linkKind="apply"
                   useInterstitial

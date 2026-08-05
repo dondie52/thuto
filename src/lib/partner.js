@@ -22,6 +22,41 @@ export async function fetchInstitutionMemberships() {
 }
 
 /**
+ * Every user with access to this institution, for the CMS Settings > Team and access tab.
+ * Requires institution_users_team_read + profiles_select_institution_colleagues
+ * (20260805140000_institution_team_read.sql) — without them this returns only the caller's own row.
+ *
+ * @param {string} institutionId
+ * @returns {Promise<{ userId: string, role: string, fullName: string, verifiedAdminAt: string|null, createdAt: string }[]>}
+ */
+export async function fetchInstitutionTeam(institutionId) {
+  const supabase = getSupabase();
+  if (!supabase || !institutionId) return [];
+  const { data, error } = await supabase
+    .from("institution_users")
+    .select("user_id, role, verified_admin_at, created_at")
+    .eq("institution_id", institutionId)
+    .order("created_at", { ascending: true });
+  if (error) {
+    console.warn("Institution team fetch failed:", error.message);
+    return [];
+  }
+  const userIds = [...new Set((data || []).map((row) => row.user_id))];
+  let namesById = {};
+  if (userIds.length) {
+    const { data: profileRows } = await supabase.from("profiles").select("id, full_name").in("id", userIds);
+    namesById = Object.fromEntries((profileRows || []).map((row) => [row.id, row.full_name]));
+  }
+  return (data || []).map((row) => ({
+    userId: row.user_id,
+    role: row.role,
+    fullName: namesById[row.user_id] || "",
+    verifiedAdminAt: row.verified_admin_at,
+    createdAt: row.created_at,
+  }));
+}
+
+/**
  * Whether the signed-in user belongs to any institution partner membership.
  * @returns {Promise<boolean>}
  */

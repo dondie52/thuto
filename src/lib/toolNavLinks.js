@@ -24,6 +24,12 @@ export const primaryToolNavLinks = [
 
 export const drawerPrimaryToolItems = [
   ...primaryToolNavLinks,
+  {
+    to: "/applications",
+    label: "My Applications",
+    description: "Track where you've applied and what happens next",
+    icon: "applications",
+  },
   { to: "/saved", label: "Saved Programmes", description: "Your shortlisted options", icon: "saved" },
   { to: "/compare", label: "Compare Programmes", description: "Review up to three options side by side", icon: "compare" },
 ];

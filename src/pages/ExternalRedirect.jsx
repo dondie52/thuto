@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { trackOutboundLinkClick } from "../lib/analytics.js";
 import { externalHostname, safeExternalUrl } from "../lib/urlSafety.js";
+import { recordApplyClick } from "../lib/applications.js";
 
 const LINK_KINDS = new Set(["website", "apply", "resource", "other"]);
 
@@ -14,6 +15,7 @@ export default function ExternalRedirect() {
   const hostname = externalHostname(href);
   const institutionName = String(location.state?.institutionName || "").trim();
   const documentNotice = Boolean(location.state?.documentNotice);
+  const programmeName = String(location.state?.programmeName || "").trim();
 
   if (!href) {
     return (
@@ -38,6 +40,16 @@ export default function ExternalRedirect() {
       destinationUrl: href,
       linkKind: institutionId ? linkKind : "other",
     });
+    if (institutionId && linkKind === "apply") {
+      recordApplyClick({
+        institutionId,
+        institutionName,
+        programmeId: programmeId || null,
+        programmeName,
+        externalUrl: href,
+        source: programmeId ? "programme_detail" : "university_detail",
+      });
+    }
     window.open(href, "_blank", "noopener,noreferrer");
   }
 

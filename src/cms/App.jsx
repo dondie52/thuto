@@ -9,6 +9,7 @@ import {
   useLocation,
   useNavigate,
   useOutletContext,
+  useParams,
   useSearchParams,
 } from "react-router-dom";
 import { thutoLogoSrc } from "../components/BrandMark.jsx";
@@ -22,6 +23,7 @@ import {
   fetchInstitutionLeads,
   fetchInstitutionMemberships,
   fetchInstitutionPartner,
+  fetchInstitutionTeam,
   saveInstitutionOverride,
   saveProgrammeOverrideForPartner,
   submitInstitutionClaim,
@@ -63,12 +65,24 @@ import { normalizeInstitutionFaqs, unusedSuggestedQuestions } from "../lib/insti
 import { fetchInstitutionReviews, replyToReview, summarizeReviews } from "../lib/institutionReviews.js";
 import { buildAppUrl } from "../lib/cmsUrl.js";
 import { marketCountryLabel } from "../lib/marketCountry.js";
+import {
+  APPLICATION_STATUS_META,
+  CMS_STATUS_TABS,
+  addInternalNote,
+  createDocumentSignedUrl,
+  fetchApplicationEvents,
+  fetchApplicationSettings,
+  fetchInstitutionApplications,
+  saveApplicationSettings,
+  summarizeApplications,
+  updateApplicationStatus,
+} from "../lib/applications.js";
 
 const NAV_ITEMS = [
   { to: "/", end: true, label: "Home", icon: "home" },
   { to: "/profile", label: "Profile", icon: "profile" },
   { to: "/programmes", label: "Programmes", icon: "programmes" },
-  { to: "/leads", label: "Leads", icon: "leads" },
+  { to: "/applications", label: "Applications", icon: "applications" },
   { to: "/analytics", label: "Data and Analytics", icon: "analytics" },
   { to: "/feed", label: "Feed", icon: "feed" },
   { to: "/faq", label: "FAQ and Student Reviews", icon: "faq" },
@@ -181,6 +195,11 @@ const ICON_PATHS = {
     "M9.75 11.5a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z",
     "M3 20.25v-.75a5.5 5.5 0 0 1 5.5-5.5h2.5a5.5 5.5 0 0 1 5.5 5.5v.75",
     "M18.75 6v5M21.25 8.5h-5",
+  ],
+  applications: [
+    "M7 3.5h7l4 4v12.5a1.25 1.25 0 0 1-1.25 1.25h-9.5A1.25 1.25 0 0 1 6 20.25V4.75A1.25 1.25 0 0 1 7 3.5Z",
+    "M14 3.5v4h4",
+    "M9 13.25l1.75 1.75L15 10.75",
   ],
   reviews: ["m12 4.25 2.4 4.86 5.35.78-3.87 3.77.91 5.34L12 16.48l-4.79 2.52.91-5.34-3.87-3.77 5.35-.78Z"],
   edit: ["M4.5 19.5h4l10-10a2.12 2.12 0 0 0-3-3l-10 10Z", "M14.5 6.5l3 3"],
@@ -458,6 +477,8 @@ function usePartnerPortalData() {
   const [programmes, setProgrammes] = useState([]);
   const [analytics, setAnalytics] = useState([]);
   const [leads, setLeads] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [applicationSettings, setApplicationSettings] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [claimEmail, setClaimEmail] = useState("");
@@ -526,17 +547,22 @@ function usePartnerPortalData() {
 
   const loadInstitution = useCallback(async (institutionId) => {
     if (!institutionId) return;
-    const [partnerRow, analyticsRows, leadRows, universityData, reviewRows] = await Promise.all([
-      fetchInstitutionPartner(institutionId),
-      fetchInstitutionAnalytics(institutionId, 14),
-      fetchInstitutionLeads(institutionId),
-      fetchUniversities(),
-      fetchInstitutionReviews(institutionId),
-    ]);
+    const [partnerRow, analyticsRows, leadRows, universityData, reviewRows, applicationRows, applicationSettingsRow] =
+      await Promise.all([
+        fetchInstitutionPartner(institutionId),
+        fetchInstitutionAnalytics(institutionId, 14),
+        fetchInstitutionLeads(institutionId),
+        fetchUniversities(),
+        fetchInstitutionReviews(institutionId),
+        fetchInstitutionApplications(institutionId),
+        fetchApplicationSettings(institutionId),
+      ]);
     setPartner(partnerRow);
     setAnalytics(analyticsRows);
     setLeads(leadRows);
     setReviews(reviewRows);
+    setApplications(applicationRows);
+    setApplicationSettings(applicationSettingsRow);
     const uni = (universityData.list || []).find((row) => row.id === institutionId);
     setUniversity(uni || null);
     if (uni) {
@@ -893,6 +919,13 @@ function usePartnerPortalData() {
     handleClaim,
     loadInstitution,
     updateLeadStatus,
+    applications,
+    applicationSettings,
+    updateApplicationStatus,
+    saveApplicationSettings,
+    addInternalNote,
+    fetchApplicationEvents,
+    createDocumentSignedUrl,
   };
 }
 
@@ -2808,88 +2841,495 @@ function ProgrammesPage() {
   );
 }
 
+const ANALYTICS_TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "leads", label: "Leads" },
+];
+
 function AnalyticsPage() {
   const portal = usePortal();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   useDocumentTitle("Data and Analytics | Institution Dashboard");
+
+  const requested = searchParams.get("tab");
+  const activeTab = ANALYTICS_TABS.some((tab) => tab.id === requested) ? requested : ANALYTICS_TABS[0].id;
+
+  function selectTab(tabId) {
+    setSearchParams(tabId === ANALYTICS_TABS[0].id ? {} : { tab: tabId });
+  }
+
+  const programmeNameById = useMemo(
+    () => new Map(portal.institutionProgrammes.map((programme) => [programme.id, programme.name])),
+    [portal.institutionProgrammes],
+  );
 
   return (
     <div className="space-y-5">
-      <PartnerInsightsDashboard
-        universityName={portal.university?.name || portal.activeInstitutionId}
-        programmeCount={portal.institutionProgrammes.length}
-        tier={portal.partner?.tier || "verified"}
-        newLeads={portal.leads.filter((lead) => lead.status === "new").length}
-        summary={portal.analyticsSummary}
-        profileCompleteness={portal.profileCompleteness}
-        onOpenModule={(moduleId) => {
-          if (moduleId === "leads") {
-            navigate("/leads");
-          }
-        }}
-      />
+      <div className="border-b border-slate-200">
+        <div role="tablist" aria-label="Data and analytics sections" className="flex gap-6 overflow-x-auto">
+          {ANALYTICS_TABS.map((tab) => {
+            const isActive = tab.id === activeTab;
+            const count = tab.id === "leads" ? portal.leads.filter((lead) => lead.status === "new").length : 0;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => selectTab(tab.id)}
+                className={[
+                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
+                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                ].join(" ")}
+              >
+                {tab.label}
+                {count > 0 ? (
+                  <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">
+                    {count}
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-      <Panel title="Export reports">
-        <p className="text-sm leading-relaxed text-slate-600">
-          CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme views, link
-          clicks, viewer countries, and institution profile performance.
-        </p>
-      </Panel>
+      {activeTab === "overview" ? (
+        <div className="space-y-5">
+          <PartnerInsightsDashboard
+            universityName={portal.university?.name || portal.activeInstitutionId}
+            programmeCount={portal.institutionProgrammes.length}
+            tier={portal.partner?.tier || "verified"}
+            newLeads={portal.leads.filter((lead) => lead.status === "new").length}
+            applicationSummary={summarizeApplications(portal.applications)}
+            summary={portal.analyticsSummary}
+            profileCompleteness={portal.profileCompleteness}
+            onOpenModule={(moduleId) => {
+              if (moduleId === "leads") selectTab("leads");
+              if (moduleId === "applications") navigate("/applications");
+            }}
+          />
+
+          <Panel title="Export reports">
+            <p className="text-sm leading-relaxed text-slate-600">
+              CSV/PDF exports are stubbed in this release. For now, use the live dashboard above to monitor programme
+              views, link clicks, viewer countries, and institution profile performance.
+            </p>
+          </Panel>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600">
+            Students who asked to be contacted, before a formal application. See the Applications tab for admissions
+            decisions.
+          </p>
+          <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+            {portal.leads.map((lead) => (
+              <article key={lead.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-slate-900 capitalize">{lead.lead_type.replace(/_/g, " ")}</p>
+                    <p className="text-sm text-slate-500">{new Date(lead.created_at).toLocaleString()}</p>
+                  </div>
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+                    {lead.status}
+                  </span>
+                </div>
+                <dl className="mt-4 space-y-1.5 text-sm text-slate-700">
+                  {lead.programme_id ? (
+                    <div>
+                      <dt className="inline text-xs font-medium uppercase tracking-wide text-slate-500">Programme: </dt>
+                      <dd className="inline">{programmeNameById.get(lead.programme_id) || lead.programme_id}</dd>
+                    </div>
+                  ) : null}
+                  {lead.payload?.name ? (
+                    <div>
+                      <dt className="inline text-xs font-medium uppercase tracking-wide text-slate-500">Name: </dt>
+                      <dd className="inline">{lead.payload.name}</dd>
+                    </div>
+                  ) : null}
+                  {lead.payload?.email ? (
+                    <div>
+                      <dt className="inline text-xs font-medium uppercase tracking-wide text-slate-500">Email: </dt>
+                      <dd className="inline">
+                        <a href={`mailto:${lead.payload.email}`} className="text-brand-700 hover:underline">
+                          {lead.payload.email}
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                  {lead.payload?.message ? (
+                    <div>
+                      <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Message</dt>
+                      <dd className="mt-0.5">{lead.payload.message}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await portal.updateLeadStatus(lead.id, "contacted");
+                      await portal.loadInstitution(portal.activeInstitutionId);
+                    }}
+                    className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
+                  >
+                    Mark contacted
+                  </button>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await portal.updateLeadStatus(lead.id, "archived");
+                      await portal.loadInstitution(portal.activeInstitutionId);
+                    }}
+                    className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
+                  >
+                    Archive
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+          {!portal.leads.length ? <p className="text-sm text-slate-500">No leads yet.</p> : null}
+        </div>
+      )}
     </div>
   );
 }
 
-function LeadsPage() {
+const APPLICATION_STATUS_TONE = {
+  pending: "bg-amber-100 text-amber-950",
+  awaiting_interview: "bg-brand-100 text-brand-900",
+  accepted: "bg-emerald-100 text-emerald-900",
+  rejected: "bg-rose-100 text-rose-900",
+};
+
+function ApplicationsPage() {
   const portal = usePortal();
-  useDocumentTitle("Leads | Institution Dashboard");
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState("");
+  useDocumentTitle("Applications | Institution Dashboard");
+
+  const requested = searchParams.get("status");
+  const activeStatus = CMS_STATUS_TABS.includes(requested) ? requested : CMS_STATUS_TABS[0];
+
+  const counts = useMemo(() => {
+    const byStatus = {};
+    for (const status of CMS_STATUS_TABS) {
+      byStatus[status] = portal.applications.filter((row) => row.status === status).length;
+    }
+    return byStatus;
+  }, [portal.applications]);
+
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return portal.applications
+      .filter((row) => row.status === activeStatus)
+      .filter(
+        (row) =>
+          !query ||
+          (row.formData?.full_name || "").toLowerCase().includes(query) ||
+          (row.programmeName || "").toLowerCase().includes(query) ||
+          (row.referenceCode || "").toLowerCase().includes(query),
+      );
+  }, [portal.applications, activeStatus, search]);
+
+  if (!portal.applicationSettings?.acceptsHosted) {
+    return (
+      <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Applications</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Take applications through Thuto</h2>
+        </div>
+        <p className="max-w-xl text-sm leading-relaxed text-slate-600">
+          Students can apply to programmes that have no online portal directly through Thuto. Turn this on in
+          Settings to start receiving hosted applications here — set your application fee, required documents, and
+          whether you are currently open.
+        </p>
+        <button
+          type="button"
+          onClick={() => navigate("/settings?tab=applications")}
+          className="inline-flex rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+        >
+          Set up applications
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Leads</p>
-        <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Admissions lead inbox</h2>
+    <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Applications</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Applications received</h2>
+        </div>
+        <button
+          type="button"
+          onClick={() => navigate("/settings?tab=applications")}
+          className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800 hover:border-slate-300"
+        >
+          Application settings
+        </button>
       </div>
-      <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-        {portal.leads.map((lead) => (
-          <article key={lead.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="font-semibold text-slate-900">{lead.lead_type}</p>
-                <p className="text-sm text-slate-500">{new Date(lead.created_at).toLocaleString()}</p>
-              </div>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
-                {lead.status}
+
+      <div role="tablist" aria-label="Application status" className="flex flex-wrap gap-2">
+        {CMS_STATUS_TABS.map((status) => {
+          const isActive = status === activeStatus;
+          return (
+            <button
+              key={status}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setSearchParams(status === CMS_STATUS_TABS[0] ? {} : { status })}
+              className={[
+                "rounded-2xl border px-4 py-2.5 text-sm font-semibold transition",
+                isActive ? "border-brand-700 bg-brand-700 text-white" : "border-slate-200 bg-white text-slate-800 hover:border-slate-300",
+              ].join(" ")}
+            >
+              {APPLICATION_STATUS_META[status]?.label}
+              <span className={`ml-2 rounded-full px-2 py-0.5 text-xs ${isActive ? "bg-white/20" : "bg-slate-100"}`}>
+                {counts[status]}
               </span>
-            </div>
-            <pre className="mt-4 overflow-auto rounded-2xl bg-slate-50 p-4 text-xs text-slate-700">
-              {JSON.stringify(lead.payload, null, 2)}
-            </pre>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={async () => {
-                  await portal.updateLeadStatus(lead.id, "contacted");
-                  await portal.loadInstitution(portal.activeInstitutionId);
-                }}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
-              >
-                Mark contacted
-              </button>
-              <button
-                type="button"
-                onClick={async () => {
-                  await portal.updateLeadStatus(lead.id, "archived");
-                  await portal.loadInstitution(portal.activeInstitutionId);
-                }}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
-              >
-                Archive
-              </button>
-            </div>
-          </article>
-        ))}
+            </button>
+          );
+        })}
       </div>
-      {!portal.leads.length ? <p className="text-sm text-slate-500">No leads yet.</p> : null}
+
+      <input
+        type="search"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        placeholder="Search by applicant name, programme, or reference"
+        aria-label="Search applications"
+        className="w-full max-w-md rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+      />
+
+      {filtered.length ? (
+        <ul className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200">
+          {filtered.map((application) => (
+            <li key={application.id}>
+              <button
+                type="button"
+                onClick={() => navigate(`/applications/${application.id}`)}
+                className="flex w-full flex-wrap items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-slate-50"
+              >
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-slate-900">
+                    {application.formData?.full_name || "Applicant"}
+                  </p>
+                  <p className="truncate text-sm text-slate-600">{application.programmeName || "No programme selected"}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-3 text-xs text-slate-500">
+                  <span>{application.documents.length} document{application.documents.length === 1 ? "" : "s"}</span>
+                  <span>{application.submittedAt ? new Date(application.submittedAt).toLocaleDateString() : "—"}</span>
+                  <span className={`rounded-full px-2.5 py-1 font-semibold ${APPLICATION_STATUS_TONE[application.status]}`}>
+                    {APPLICATION_STATUS_META[application.status]?.label}
+                  </span>
+                </div>
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-sm text-slate-500">No applications in this status yet.</p>
+      )}
+    </div>
+  );
+}
+
+function ApplicationDetailPage() {
+  const portal = usePortal();
+  const navigate = useNavigate();
+  const { applicationId } = useParams();
+  const [events, setEvents] = useState([]);
+  const [note, setNote] = useState("");
+  const [message, setMessage] = useState("");
+  const [documentUrls, setDocumentUrls] = useState({});
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const application = portal.applications.find((row) => row.id === applicationId);
+  useDocumentTitle(application ? `${application.formData?.full_name || "Applicant"} | Applications` : "Applications");
+
+  const loadEvents = useCallback(async () => {
+    if (!applicationId) return;
+    setEvents(await portal.fetchApplicationEvents(applicationId));
+  }, [applicationId, portal]);
+
+  useEffect(() => {
+    loadEvents();
+  }, [loadEvents]);
+
+  async function handleOpenDocument(storagePath) {
+    if (documentUrls[storagePath]) {
+      window.open(documentUrls[storagePath], "_blank", "noopener,noreferrer");
+      return;
+    }
+    const url = await portal.createDocumentSignedUrl(storagePath);
+    if (url) {
+      setDocumentUrls((current) => ({ ...current, [storagePath]: url }));
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  }
+
+  async function handleTransition(status) {
+    if (!application) return;
+    setBusy(true);
+    setError("");
+    try {
+      await portal.updateApplicationStatus(application.id, status, { message: message.trim() });
+      setMessage("");
+      await Promise.all([portal.loadInstitution(portal.activeInstitutionId), loadEvents()]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not update this application.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleAddNote() {
+    if (!note.trim() || !application) return;
+    setBusy(true);
+    try {
+      await portal.addInternalNote(application.id, note.trim());
+      setNote("");
+      await loadEvents();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not save that note.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!application) {
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-slate-600">Application not found.</p>
+        <button type="button" onClick={() => navigate("/applications")} className="text-sm font-semibold text-brand-700 hover:underline">
+          ← Back to applications
+        </button>
+      </div>
+    );
+  }
+
+  const fieldEntries = Object.entries(application.formData || {}).filter(([key]) => key !== "marketing_consent");
+
+  return (
+    <div className="space-y-5">
+      <button type="button" onClick={() => navigate("/applications")} className="text-sm font-semibold text-brand-700 hover:underline">
+        ← Back to applications
+      </button>
+
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Application</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">
+              {application.formData?.full_name || "Applicant"}
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">{application.programmeName || "No programme selected"}</p>
+          </div>
+          <span className={`rounded-full px-3 py-1 text-sm font-semibold ${APPLICATION_STATUS_TONE[application.status]}`}>
+            {APPLICATION_STATUS_META[application.status]?.label}
+          </span>
+        </div>
+
+        <dl className="mt-5 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+          {fieldEntries.map(([key, value]) => (
+            <div key={key} className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3">
+              <dt className="text-xs uppercase tracking-[0.14em] text-slate-500">{key.replace(/_/g, " ")}</dt>
+              <dd className="mt-1 truncate text-sm text-slate-900">{String(value || "—")}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <h3 className="mt-6 font-display text-lg font-semibold text-slate-900">Documents</h3>
+        {application.documents.length ? (
+          <ul className="mt-3 space-y-2">
+            {application.documents.map((doc) => (
+              <li key={doc.storagePath} className="flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2 text-sm">
+                <span>{doc.label}</span>
+                <button
+                  type="button"
+                  onClick={() => handleOpenDocument(doc.storagePath)}
+                  className="font-semibold text-brand-700 hover:underline"
+                >
+                  {doc.fileName || "View"}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-2 text-sm text-slate-500">No documents uploaded.</p>
+        )}
+
+        <h3 className="mt-6 font-display text-lg font-semibold text-slate-900">Update status</h3>
+        {error ? <p className="mt-2 text-sm text-red-700">{error}</p> : null}
+        <textarea
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          rows={2}
+          maxLength={1500}
+          placeholder="Optional message to the applicant"
+          className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        />
+        <div className="mt-3 flex flex-wrap gap-2">
+          {CMS_STATUS_TABS.map((status) => (
+            <button
+              key={status}
+              type="button"
+              disabled={busy || application.status === status}
+              onClick={() => handleTransition(status)}
+              className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Mark {APPLICATION_STATUS_META[status]?.label}
+            </button>
+          ))}
+        </div>
+
+        <h3 className="mt-6 font-display text-lg font-semibold text-slate-900">Internal notes</h3>
+        <p className="text-xs text-slate-500">Only your team sees these — the applicant never does.</p>
+        <div className="mt-2 flex gap-2">
+          <input
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
+            placeholder="Add a note"
+            className="flex-1 rounded-2xl border border-slate-200 px-4 py-2.5 text-sm"
+          />
+          <button
+            type="button"
+            onClick={handleAddNote}
+            disabled={busy || !note.trim()}
+            className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-50"
+          >
+            Add
+          </button>
+        </div>
+
+        <h3 className="mt-6 font-display text-lg font-semibold text-slate-900">History</h3>
+        <ol className="mt-2 space-y-2">
+          {events.map((event) => (
+            <li key={event.id} className="border-l-2 border-slate-200 pl-3 text-sm">
+              <p className="font-medium text-slate-900">
+                {event.event_type === "status_changed"
+                  ? `Status changed to ${APPLICATION_STATUS_META[event.to_status]?.label || event.to_status}`
+                  : event.event_type === "submitted"
+                    ? "Application submitted"
+                    : event.event_type === "note"
+                      ? "Note"
+                      : event.event_type}
+              </p>
+              {event.message ? <p className="text-slate-600">{event.message}</p> : null}
+              <p className="text-xs text-slate-500">{new Date(event.created_at).toLocaleString()}</p>
+            </li>
+          ))}
+          {!events.length ? <p className="text-sm text-slate-500">No history yet.</p> : null}
+        </ol>
+      </div>
     </div>
   );
 }
@@ -2934,6 +3374,328 @@ function ClaimPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+const SETTINGS_TABS = [
+  { id: "branding", label: "Branding" },
+  { id: "applications", label: "Applications" },
+  { id: "team", label: "Team and access" },
+];
+
+function ApplicationSettingsForm({ portal }) {
+  const settings = portal.applicationSettings;
+  const [form, setForm] = useState({
+    acceptsHosted: false,
+    applicationsOpen: true,
+    feeAmount: "",
+    feeCurrency: defaultCurrencyForCountry(portal.university?.country),
+    feeNote: "",
+    instructions: "",
+    notifyEmail: "",
+  });
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setForm({
+      acceptsHosted: Boolean(settings?.acceptsHosted),
+      applicationsOpen: settings?.applicationsOpen ?? true,
+      feeAmount: settings?.feeAmount != null ? String(settings.feeAmount) : "",
+      feeCurrency: settings?.feeCurrency || defaultCurrencyForCountry(portal.university?.country),
+      feeNote: settings?.feeNote || "",
+      instructions: settings?.instructions || "",
+      notifyEmail: settings?.notifyEmail || "",
+    });
+  }, [settings, portal.university?.country]);
+
+  async function save() {
+    setSaving(true);
+    setError("");
+    setStatus("");
+    try {
+      await portal.saveApplicationSettings(portal.activeInstitutionId, {
+        acceptsHosted: form.acceptsHosted,
+        applicationsOpen: form.applicationsOpen,
+        feeAmount: form.feeAmount === "" ? null : Number(form.feeAmount),
+        feeCurrency: form.feeCurrency,
+        feeNote: form.feeNote,
+        instructions: form.instructions,
+        notifyEmail: form.notifyEmail || null,
+      });
+      await portal.loadInstitution(portal.activeInstitutionId);
+      setStatus("Application settings saved.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not save these settings.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-slate-600">
+        Turn this on so students can apply to programmes with no online portal directly through Thuto. Applications
+        arrive in the Applications tab.
+      </p>
+
+      <label className="flex items-center gap-3 text-sm font-medium text-slate-800">
+        <input
+          type="checkbox"
+          checked={form.acceptsHosted}
+          onChange={(event) => setForm((f) => ({ ...f, acceptsHosted: event.target.checked }))}
+          className="h-5 w-5 rounded border-slate-300"
+        />
+        Accept applications through Thuto
+      </label>
+
+      <label className="flex items-center gap-3 text-sm font-medium text-slate-800">
+        <input
+          type="checkbox"
+          checked={form.applicationsOpen}
+          onChange={(event) => setForm((f) => ({ ...f, applicationsOpen: event.target.checked }))}
+          className="h-5 w-5 rounded border-slate-300"
+        />
+        Currently open for applications
+      </label>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="block text-sm">
+          <span className="font-medium text-slate-700">Application fee amount</span>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            value={form.feeAmount}
+            onChange={(event) => setForm((f) => ({ ...f, feeAmount: event.target.value }))}
+            placeholder="Leave blank if not listed"
+            className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+          />
+        </label>
+        <label className="block text-sm">
+          <span className="font-medium text-slate-700">Currency</span>
+          <input
+            value={form.feeCurrency}
+            onChange={(event) => setForm((f) => ({ ...f, feeCurrency: event.target.value.toUpperCase().slice(0, 3) }))}
+            maxLength={3}
+            className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm uppercase"
+          />
+        </label>
+      </div>
+
+      <label className="block text-sm">
+        <span className="font-medium text-slate-700">Fee note (optional)</span>
+        <input
+          value={form.feeNote}
+          onChange={(event) => setForm((f) => ({ ...f, feeNote: event.target.value }))}
+          placeholder="e.g. Non-refundable, waived for DTEF-sponsored applicants"
+          className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        />
+      </label>
+
+      <label className="block text-sm">
+        <span className="font-medium text-slate-700">Instructions shown to applicants</span>
+        <textarea
+          value={form.instructions}
+          onChange={(event) => setForm((f) => ({ ...f, instructions: event.target.value }))}
+          rows={3}
+          maxLength={2000}
+          className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        />
+      </label>
+
+      <label className="block text-sm">
+        <span className="font-medium text-slate-700">Notify this email on new submissions</span>
+        <input
+          type="email"
+          value={form.notifyEmail}
+          onChange={(event) => setForm((f) => ({ ...f, notifyEmail: event.target.value }))}
+          className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        />
+      </label>
+
+      {error ? <p className="text-sm text-red-700">{error}</p> : null}
+      {status ? <p className="text-sm text-emerald-700">{status}</p> : null}
+
+      <button
+        type="button"
+        onClick={save}
+        disabled={saving}
+        className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-60"
+      >
+        {saving ? "Saving…" : "Save application settings"}
+      </button>
+    </div>
+  );
+}
+
+function TeamAccessPanel({ portal }) {
+  const [team, setTeam] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [inviteEmail, setInviteEmail] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    fetchInstitutionTeam(portal.activeInstitutionId).then((rows) => {
+      if (!cancelled) {
+        setTeam(rows);
+        setLoading(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [portal.activeInstitutionId]);
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-slate-600">Everyone with access to this institution&apos;s dashboard.</p>
+      {loading ? (
+        <p className="text-sm text-slate-500">Loading…</p>
+      ) : (
+        <ul className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200">
+          {team.map((member) => (
+            <li key={member.userId} className="flex items-center justify-between px-4 py-3 text-sm">
+              <span className="font-medium text-slate-900">{member.fullName || "Team member"}</span>
+              <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                {member.role}
+              </span>
+            </li>
+          ))}
+          {!team.length ? <li className="px-4 py-3 text-sm text-slate-500">No team members found.</li> : null}
+        </ul>
+      )}
+
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4">
+        <p className="text-sm font-semibold text-slate-800">Invite a teammate</p>
+        <p className="mt-1 text-xs text-slate-600">
+          Role management is superuser-only for now — send them this email and ask an admin to add them.
+        </p>
+        <div className="mt-2 flex gap-2">
+          <input
+            type="email"
+            value={inviteEmail}
+            onChange={(event) => setInviteEmail(event.target.value)}
+            placeholder="colleague@institution.ac.bw"
+            className="flex-1 rounded-2xl border border-slate-200 px-4 py-2.5 text-sm"
+          />
+          <a
+            href={inviteEmail ? `mailto:${inviteEmail}?subject=${encodeURIComponent("Join our Thuto dashboard")}` : "#"}
+            className="rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-slate-300"
+          >
+            Email invite
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SettingsPage() {
+  const portal = usePortal();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [editing, setEditing] = useState(false);
+  useDocumentTitle("Settings | Institution Dashboard");
+
+  const requested = searchParams.get("tab");
+  const activeTab = SETTINGS_TABS.some((tab) => tab.id === requested) ? requested : SETTINGS_TABS[0].id;
+  const uploadFolder = institutionAssetFolder(portal.activeInstitutionId);
+  const previewHref = portal.activeInstitutionId
+    ? buildAppUrl(`/universities/${portal.activeInstitutionId}`)
+    : buildAppUrl("/universities");
+
+  function selectTab(tabId) {
+    setSearchParams(tabId === SETTINGS_TABS[0].id ? {} : { tab: tabId });
+    setEditing(false);
+  }
+
+  return (
+    <section className="rounded-[2rem] border border-slate-200 bg-white shadow-card">
+      <div className="flex flex-wrap items-start justify-between gap-3 px-5 pt-6 lg:px-6">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Settings</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">
+            {portal.university?.name || "Your institution"}
+          </h2>
+        </div>
+        <a
+          href={previewHref}
+          target="_blank"
+          rel="noreferrer"
+          className="text-sm font-semibold text-brand-700 hover:text-brand-900"
+        >
+          Preview in student app →
+        </a>
+      </div>
+
+      <div className="mt-5 border-b border-slate-200 px-5 lg:px-6">
+        <div role="tablist" aria-label="Settings sections" className="flex gap-6 overflow-x-auto">
+          {SETTINGS_TABS.map((tab) => {
+            const isActive = tab.id === activeTab;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => selectTab(tab.id)}
+                className={[
+                  "-mb-px whitespace-nowrap border-b-2 pb-3 pt-1 text-sm font-semibold transition",
+                  isActive ? "border-brand-700 text-brand-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                ].join(" ")}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div role="tabpanel" className="space-y-5 px-5 py-6 lg:px-6">
+        {activeTab === "branding" ? (
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h3 className="font-display text-xl font-semibold text-slate-900">Institution logo</h3>
+                <p className="mt-1 text-sm text-slate-600">Shown on your institution page and programme cards.</p>
+              </div>
+              <EditControls
+                editing={editing}
+                locked={false}
+                onEdit={() => setEditing(true)}
+                onSave={async () => {
+                  const saved = await portal.handleSaveProfile();
+                  if (saved !== false) setEditing(false);
+                }}
+                onCancel={() => setEditing(false)}
+              />
+            </div>
+            {editing ? (
+              <PhotoUploadField
+                value={portal.profileForm.logo}
+                onChange={(url) => portal.setProfileForm((form) => ({ ...form, logo: url }))}
+                folder={[uploadFolder, "logo"].filter(Boolean).join("/")}
+                label="institution logo"
+                shape="logo"
+              />
+            ) : portal.profileForm.logo ? (
+              <img
+                src={portal.profileForm.logo}
+                alt=""
+                className="h-24 w-24 rounded-2xl border border-slate-200 object-contain p-2"
+              />
+            ) : (
+              <p className="text-sm text-slate-500">No logo uploaded yet.</p>
+            )}
+          </div>
+        ) : null}
+
+        {activeTab === "applications" ? <ApplicationSettingsForm portal={portal} /> : null}
+        {activeTab === "team" ? <TeamAccessPanel portal={portal} /> : null}
+      </div>
+    </section>
   );
 }
 
@@ -3005,17 +3767,10 @@ export default function CmsApp() {
             }
           />
           <Route path="faq" element={<FaqPage />} />
-          <Route
-            path="settings"
-            element={
-              <StubPage
-                title="Settings"
-                icon="settings"
-                description="Branding, notification, and integration controls live here. Settings sits at the bottom of the sidebar, separate from the primary content sections."
-              />
-            }
-          />
-          <Route path="leads" element={<LeadsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="applications" element={<ApplicationsPage />} />
+          <Route path="applications/:applicationId" element={<ApplicationDetailPage />} />
+          <Route path="leads" element={<Navigate to="/analytics?tab=leads" replace />} />
           <Route path="claim" element={<ClaimPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

@@ -16,6 +16,7 @@ import { marketCountryLabel } from "../../lib/marketCountry.js";
  *     outboundClicks: number,
  *   },
  *   profileCompleteness?: { completed: number, total: number, ratio: number },
+ *   applicationSummary?: { total: number, byStatus: Record<string, number> },
  *   onOpenModule?: (id: string) => void,
  * }} props
  */
@@ -26,6 +27,7 @@ export default function PartnerInsightsDashboard({
   newLeads = 0,
   summary,
   profileCompleteness,
+  applicationSummary,
   onOpenModule,
 }) {
   const profileViews = summary.totals.institution_profile_view || 0;
@@ -124,19 +126,32 @@ export default function PartnerInsightsDashboard({
         <ModuleCard
           kicker="04 · Applications"
           title="Application status"
-          question="Track applications that don't have online portals and are managed directly."
+          question="Applications submitted to you through Thuto."
           className="lg:col-span-2"
         >
           <BarList
             rows={[
-              { id: "pending", label: "Pending", count: 0 },
-              { id: "accepted", label: "Accepted", count: 0 },
-              { id: "rejected", label: "Rejected", count: 0 },
-              { id: "awaiting_interview", label: "Awaiting Interview", count: 0 },
+              { id: "pending", label: "Pending", count: applicationSummary?.byStatus?.pending || 0 },
+              { id: "accepted", label: "Accepted", count: applicationSummary?.byStatus?.accepted || 0 },
+              { id: "rejected", label: "Rejected", count: applicationSummary?.byStatus?.rejected || 0 },
+              {
+                id: "awaiting_interview",
+                label: "Awaiting Interview",
+                count: applicationSummary?.byStatus?.awaiting_interview || 0,
+              },
             ]}
-            empty="No applications recorded yet. This section tracks manual applications for institutions without online portals."
+            empty="No applications recorded yet. Turn on Thuto-hosted applications in Settings to start receiving them, or track manual applications for institutions without online portals."
             accent="emerald"
           />
+          {onOpenModule ? (
+            <button
+              type="button"
+              onClick={() => onOpenModule("applications")}
+              className="mt-3 text-sm font-semibold text-brand-700 hover:text-brand-900"
+            >
+              Open applications →
+            </button>
+          ) : null}
         </ModuleCard>
 
         <ModuleCard
