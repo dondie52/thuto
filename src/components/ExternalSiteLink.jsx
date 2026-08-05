@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { trackOutboundLinkClick } from "../lib/analytics.js";
 import { externalGoPath, externalHostname, safeExternalUrl } from "../lib/urlSafety.js";
+import { recordApplyClick } from "../lib/applications.js";
 
 const VARIANT_CLASS = {
   primary:
@@ -33,6 +34,7 @@ const VARIANT_CLASS = {
  *   className?: string,
  *   showDomain?: boolean,
  *   programmeId?: string,
+ *   programmeName?: string,
  *   institutionId?: string,
  *   linkKind?: 'website' | 'apply' | 'resource' | 'other',
  * }} props
@@ -47,6 +49,7 @@ export default function ExternalSiteLink({
   className = "",
   showDomain = false,
   programmeId = "",
+  programmeName = "",
   institutionId = "",
   linkKind = "other",
 }) {
@@ -74,6 +77,16 @@ export default function ExternalSiteLink({
           destinationUrl: safeHref,
           linkKind: resolvedKind,
         });
+        if (resolvedKind === "apply") {
+          recordApplyClick({
+            institutionId,
+            institutionName,
+            programmeId: programmeId || null,
+            programmeName,
+            externalUrl: safeHref,
+            source: programmeId ? "programme_detail" : "university_detail",
+          });
+        }
       }
 
       const institution = institutionName.trim();
@@ -97,6 +110,7 @@ export default function ExternalSiteLink({
       openExternal,
       institutionId,
       programmeId,
+      programmeName,
       resolvedKind,
     ],
   );
@@ -113,7 +127,7 @@ export default function ExternalSiteLink({
       <span className="inline-flex flex-col gap-1">
         <Link
           to={goPath}
-          state={{ institutionName, documentNotice }}
+          state={{ institutionName, documentNotice, programmeName }}
           className={[variantClass, className].filter(Boolean).join(" ")}
         >
           {children}

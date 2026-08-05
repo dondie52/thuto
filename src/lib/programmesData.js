@@ -17,10 +17,18 @@ function withCacheBuster(path, cacheBuster) {
  *   includeDrafts?: boolean,
  *   country?: string | null,
  *   includeAllCountries?: boolean,
+ *   includeArchived?: boolean,
  * }} [options]
  */
 export async function fetchProgrammes(options = {}) {
-  const { signal, cacheBuster, includeDrafts = false, country, includeAllCountries = false } = options;
+  const {
+    signal,
+    cacheBuster,
+    includeDrafts = false,
+    country,
+    includeAllCountries = false,
+    includeArchived = false,
+  } = options;
   const market = includeAllCountries ? "all" : country === undefined ? resolveMarketCountry() : country;
   const url = withCacheBuster(PROGRAMMES_PATH, cacheBuster);
   const response = await fetch(url, { signal, cache: "no-store" });
@@ -29,7 +37,10 @@ export async function fetchProgrammes(options = {}) {
   const bundled = Array.isArray(data) ? data : [];
   const overrides = await fetchProgrammeOverrides({ includeDrafts });
   const merged = mergeContentOverrides(bundled, overrides);
-  return filterByMarketCountry(merged, market, { includeAllCountries });
+  // Archiving hides a bundled programme the CMS cannot delete outright. The CMS itself passes
+  // includeArchived so partner staff can still find and restore it.
+  const visible = includeArchived ? merged : merged.filter((programme) => !programme.archived);
+  return filterByMarketCountry(visible, market, { includeAllCountries });
 }
 
 function normalize(value) {

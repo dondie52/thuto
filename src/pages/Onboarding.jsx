@@ -18,9 +18,10 @@ import {
   saveTargetInstitutions,
 } from "../lib/onboarding.js";
 import MarketCountrySelect from "../components/MarketCountrySelect.jsx";
+import SyllabusPicker from "../components/SyllabusPicker.jsx";
 import {
+  ALL_SYLLABUS_VALUES,
   filterSubjectsBySyllabus,
-  syllabusOptionsForCountry,
   sponsorshipOptionsForCountry,
   defaultSyllabusForCountry,
 } from "../lib/syllabus.js";
@@ -74,10 +75,10 @@ export default function Onboarding() {
     replaceRows,
     bgcseSubjects,
     gradeOptions,
+    gradeChoices,
     gradingProfile,
   } = usePredictorGradeInput({ syllabusType: syllabusType || defaultSyllabusForCountry(country) });
 
-  const syllabusOptions = useMemo(() => syllabusOptionsForCountry(country), [country]);
   const sponsorshipOptions = useMemo(() => sponsorshipOptionsForCountry(country), [country]);
 
   const filteredSubjects = useMemo(
@@ -122,9 +123,10 @@ export default function Onboarding() {
   useEffect(() => {
     let active = true;
     setMarketCountry(country);
-    // Reset syllabus/sponsorship when they no longer belong to the selected country.
-    const syllabi = syllabusOptionsForCountry(country).map((o) => o.value);
-    setSyllabusType((current) => (current && syllabi.includes(current) ? current : ""));
+    // Sponsorship really is country-specific, so it resets. The exam system is not: a student
+    // who sat WASSCE in Ghana and is applying to Botswana institutions keeps WASSCE. Only clear
+    // a value that is not a real grading profile at all.
+    setSyllabusType((current) => (current && ALL_SYLLABUS_VALUES.includes(current) ? current : ""));
     const funding = sponsorshipOptionsForCountry(country).map((o) => o.value);
     setSponsorshipIntent((current) => (current && funding.includes(current) ? current : ""));
     fetchUniversities({ country })
@@ -437,27 +439,18 @@ export default function Onboarding() {
         <section className="space-y-4">
           <div className="rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
             <h2 className="text-sm font-semibold text-brand-900">Syllabus / curriculum</h2>
-            <p className="mt-1 text-xs text-stone-500">Required to unlock the Admission Predictor.</p>
-            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {syllabusOptions.map((option) => {
-                const active = syllabusType === option.value;
-                return (
-                  <button
-                    key={option.value}
-                    type="button"
-                    disabled={isSaving}
-                    onClick={() => setSyllabusType(option.value)}
-                    className={[
-                      "rounded-xl border px-3 py-2.5 text-sm font-semibold transition",
-                      active
-                        ? "border-brand-700 bg-brand-700 text-white"
-                        : "border-brand-200 bg-white text-brand-900 hover:border-brand-400",
-                    ].join(" ")}
-                  >
-                    {option.label}
-                  </button>
-                );
-              })}
+            <p className="mt-1 text-xs text-stone-500">
+              Required to unlock the Admission Predictor. Search for the system on your certificate — Thuto covers
+              exam systems across Africa, not only your current country.
+            </p>
+            <div className="mt-3">
+              <SyllabusPicker
+                value={syllabusType}
+                onChange={setSyllabusType}
+                country={country}
+                label="Exam system"
+                required
+              />
             </div>
           </div>
           <PredictorGradeSection
@@ -471,6 +464,7 @@ export default function Onboarding() {
             canAdd={canAdd && Boolean(syllabusType)}
             subjects={filteredSubjects}
             gradeOptions={gradeOptions}
+            gradeChoices={gradeChoices}
             helpText={gradingProfile.helpText}
             allowScienceDouble={Boolean(gradingProfile.allowsScienceDouble)}
           />

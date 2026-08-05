@@ -22,6 +22,7 @@
     "validate-university-logos": "node scripts/validate-university-logos.mjs",
     "test:certificate-import": "node scripts/test-certificate-import.mjs",
     "test:admissions-scoring": "node scripts/test-admissions-scoring.mjs",
+    "validate-syllabus-registry": "node scripts/validate-syllabus-registry.mjs",
     "test:programme-branding": "node scripts/test-programme-branding.mjs",
     "test:university-branding": "node scripts/test-university-branding.mjs",
     "test:programme-insights": "node scripts/test-programme-insights.mjs",

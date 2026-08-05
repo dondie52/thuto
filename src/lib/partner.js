@@ -22,6 +22,41 @@ export async function fetchInstitutionMemberships() {
 }
 
 /**
+ * Every user with access to this institution, for the CMS Settings > Team and access tab.
+ * Requires institution_users_team_read + profiles_select_institution_colleagues
+ * (20260805140000_institution_team_read.sql) — without them this returns only the caller's own row.
+ *
+ * @param {string} institutionId
+ * @returns {Promise<{ userId: string, role: string, fullName: string, verifiedAdminAt: string|null, createdAt: string }[]>}
+ */
+export async function fetchInstitutionTeam(institutionId) {
+  const supabase = getSupabase();
+  if (!supabase || !institutionId) return [];
+  const { data, error } = await supabase
+    .from("institution_users")
+    .select("user_id, role, verified_admin_at, created_at")
+    .eq("institution_id", institutionId)
+    .order("created_at", { ascending: true });
+  if (error) {
+    console.warn("Institution team fetch failed:", error.message);
+    return [];
+  }
+  const userIds = [...new Set((data || []).map((row) => row.user_id))];
+  let namesById = {};
+  if (userIds.length) {
+    const { data: profileRows } = await supabase.from("profiles").select("id, full_name").in("id", userIds);
+    namesById = Object.fromEntries((profileRows || []).map((row) => [row.id, row.full_name]));
+  }
+  return (data || []).map((row) => ({
+    userId: row.user_id,
+    role: row.role,
+    fullName: namesById[row.user_id] || "",
+    verifiedAdminAt: row.verified_admin_at,
+    createdAt: row.created_at,
+  }));
+}
+
+/**
  * Whether the signed-in user belongs to any institution partner membership.
  * @returns {Promise<boolean>}
  */
@@ -308,6 +343,38 @@ export async function saveInstitutionOverride(institutionId, patch, published = 
     { onConflict: "id" },
   );
   if (error) throw new Error(error.message);
+}
+
+function slugify(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+/**
+ * A programme with no bundled catalogue row. mergeContentOverrides
+ * (contentManagement.js:47-52) already appends any override whose id is not in the bundled
+ * JSON, so creating one is just calling saveProgrammeOverrideForPartner with a fresh id.
+ *
+ * @param {{
+ *   institutionId: string, name: string, university: string,
+ *   universityShort?: string, country?: string,
+ * }} input
+ * @returns {Promise<string>} the new programme id
+ */
+export async function createProgrammeForPartner(input) {
+  const name = String(input.name || "").trim();
+  if (!name) throw new Error("A programme name is required.");
+  const id = `${slugify(input.institutionId)}-${slugify(name) || "programme"}-${Math.random().toString(36).slice(2, 7)}`;
+  await saveProgrammeOverrideForPartner(id, input.institutionId, {
+    name,
+    university: input.university,
+    universityShort: input.universityShort || input.university,
+    country: input.country || "bw",
+  });
+  return id;
 }
 
 /**

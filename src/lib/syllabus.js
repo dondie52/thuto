@@ -9,7 +9,11 @@ import {
 import { ALL_SPONSORSHIP_VALUES, sponsorshipOptionsForCountry } from "./marketLocales.js";
 import { DEFAULT_MARKET_COUNTRY, resolveMarketCountry } from "./marketCountry.js";
 
-/** @typedef {'bgcse' | 'igcse' | 'as_level' | 'o_level' | 'nssc' | 'zimsec_o' | 'zimsec_a' | 'ecz' | 'nsc_matric'} SyllabusType */
+/**
+ * A grading profile id. There are ~27 of them across African exam systems, so this is a plain
+ * string rather than a union — see `GRADING_PROFILES` in `./gradingSystems.js` for the registry.
+ * @typedef {string} SyllabusType
+ */
 
 /** @deprecated Prefer syllabusOptionsForCountry(country) */
 export const SYLLABUS_OPTIONS = syllabusOptionsForCountry("bw");
@@ -32,15 +36,8 @@ export {
  * @returns {string[]}
  */
 export function examBoardsForSyllabus(syllabusType) {
-  if (syllabusType === "bgcse") return ["bgcse"];
-  if (syllabusType === "igcse" || syllabusType === "as_level" || syllabusType === "o_level") {
-    return ["igcse"];
-  }
-  if (syllabusType === "nssc") return ["bgcse", "igcse"];
-  if (syllabusType === "zimsec_o" || syllabusType === "zimsec_a") return ["igcse", "bgcse"];
-  if (syllabusType === "ecz") return ["igcse", "bgcse"];
-  if (syllabusType === "nsc_matric") return ["igcse", "bgcse"];
-  return ["bgcse", "igcse"];
+  if (!syllabusType) return ["bgcse", "igcse"];
+  return getGradingProfile(syllabusType).examBoards;
 }
 
 /**

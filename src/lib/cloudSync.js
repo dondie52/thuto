@@ -1,4 +1,8 @@
-import { PREDICTOR_BEST_SIX_STORAGE_KEY, PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY } from "./admissions.js";
+import {
+  PREDICTOR_BEST_SIX_STORAGE_KEY,
+  PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY,
+  PREDICTOR_SYLLABUS_STORAGE_KEY,
+} from "./admissions.js";
 import { getBookmarkIds, STORAGE_KEY as BOOKMARK_STORAGE_KEY } from "./bookmarks.js";
 import { getSupabase } from "./supabase.js";
 import { isPremiumActive } from "./premium.js";
@@ -30,7 +34,7 @@ export async function syncFromCloud(profile) {
 
   const { data: snapshot } = await supabase
     .from("user_predictor_snapshots")
-    .select("best_six_total, requirement_grades")
+    .select("best_six_total, requirement_grades, syllabus_type")
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -38,6 +42,9 @@ export async function syncFromCloud(profile) {
     try {
       if (snapshot.best_six_total != null) {
         sessionStorage.setItem(PREDICTOR_BEST_SIX_STORAGE_KEY, String(snapshot.best_six_total));
+      }
+      if (snapshot.syllabus_type) {
+        sessionStorage.setItem(PREDICTOR_SYLLABUS_STORAGE_KEY, String(snapshot.syllabus_type));
       }
       if (snapshot.requirement_grades) {
         sessionStorage.setItem(
@@ -75,11 +82,13 @@ export async function syncToCloud(profile) {
 
   let bestSix = null;
   let requirementGrades = null;
+  let syllabusType = null;
   try {
     const total = sessionStorage.getItem(PREDICTOR_BEST_SIX_STORAGE_KEY);
     if (total != null) bestSix = Number(total);
     const grades = sessionStorage.getItem(PREDICTOR_REQUIREMENT_GRADES_STORAGE_KEY);
     if (grades) requirementGrades = JSON.parse(grades);
+    syllabusType = sessionStorage.getItem(PREDICTOR_SYLLABUS_STORAGE_KEY);
   } catch {
     /* ignore */
   }
@@ -89,6 +98,8 @@ export async function syncToCloud(profile) {
       user_id: userId,
       best_six_total: bestSix,
       requirement_grades: requirementGrades,
+      // Null means the snapshot predates multi-syllabus support and reads as BGCSE.
+      syllabus_type: syllabusType || null,
       updated_at: new Date().toISOString(),
     });
   }

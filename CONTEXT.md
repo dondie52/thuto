@@ -34,12 +34,16 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 - **Application deadline urgency** shown first when university JSON includes close dates within 30 days (see `src/lib/applicationDates.js`).
 - No bottom navigation on Home — students reach other tools via the account drawer (mobile) or desktop top nav.
 
-### BGCSE admission predictor (`/predictor`)
+### Admission predictor (`/predictor`)
 
-- Enter **multiple BGCSE subjects** (canonical list in `src/lib/bgcseSubjects.js`).
-- **Best-six** total: highest six subject point scores count; breakdown of counted vs dropped subjects (`computeBestSixBreakdown` in `src/lib/admissions.js`).
-- **Grade → points** (official Botswana BGCSE scale): A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0 (`GRADE_POINTS` in `admissions.js`). Best-six maximum total = **48**.
-- **Programme matching**: compares totals and **subject requirement keys** (`math`, `english`, `science`, etc.) against each programme in `public/data/programmes.json` via `evaluateProgramme` and related helpers.
+- **27 grading profiles** across five regions (`GRADING_PROFILES` in `src/lib/gradingSystems.js`, split by region under `src/lib/grading/`) — not BGCSE-only. Botswana's BGCSE remains the curated reference scale: every programme `minPoints` in `public/data/programmes.json` is calibrated to its **48-point best-six** maximum.
+- Enter subjects for the chosen syllabus (canonical BGCSE/IGCSE subject list in `src/lib/bgcseSubjects.js`, reused across profiles via each profile's `examBoards`).
+- **Aggregate** style varies by profile (`aggregate` field: `bestSix`, `aps`, `aggregatePoints`, `advancedPoints`, …) and the strongest result is not always the highest number — ECZ, WASSCE, MSCE and similar scales are `direction: "lower_better"`. `computeBestSixBreakdown` in `src/lib/admissions.js` sorts and slices per the profile.
+- **Cross-syllabus comparison**: results are normalised onto a shared 0–100 **attainment index** (`attainmentIndex` / `requiredIndexFromMinPoints` / `indexToBgcsePoints` in `gradingSystems.js`) so any scale can be compared against a BGCSE-calibrated `minPoints`. Non-BGCSE results always show a "≈ n/48 BGCSE-equivalent" conversion and the `CROSS_SYLLABUS_DISCLAIMER` — treat this as guidance, never an official equivalency.
+- **Subject requirements** (`programme.subjectRequirements`, e.g. `{"english": "C"}`) are BGCSE letters, so they are only comparable across scales via a **canonical band ladder** (`CANONICAL_BANDS` in `src/lib/grading/builders.js`). `rowsToRequirementGrades` returns bands, not native grades; `meetsSubjectRequirement` compares band rank, not points. Comparing raw points across scales does not work — a low number is a strong ECZ grade and a failing BGCSE one.
+- **Searchable picker** (`src/components/SyllabusPicker.jsx`, `searchSyllabi`/`groupedSyllabi` in `gradingSystems.js`): searches by abbreviation (WASSCE, WAEC, NSC, KCSE, BAC, …). A student's market country only scopes the *default* list shown, never which syllabus they can pick.
+- **`verified: false`** profiles (11 of 27) could not be confirmed against an official source; the UI shows a "Guidance scale" chip and `GUIDANCE_SCALE_NOTICE`. See each profile's `sourceNote`.
+- `scripts/validate-syllabus-registry.mjs` keeps the JS registry and the Supabase `syllabus_types` seed (`supabase/migrations/20260805130000_syllabus_registry.sql`) in sync.
 
 ### Programme catalogue (`/programmes`, `/programmes/:id`)
 
@@ -55,6 +59,13 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 ### Saved programmes (`/saved`)
 
 - **Bookmarks** in **localStorage** (max **10**, LRU trim when over limit — see `src/lib/bookmarks.js`, `useBookmarks`).
+
+### My applications (`/applications`, `/applications/:id`)
+
+- Tracks every programme a student has applied to, across three channels (`src/lib/applications.js`): **hosted** (submitted through Thuto, for institutions with no online portal of their own), **external** (student clicked Apply on the institution's own site — a click is intent, not a submission, until the student confirms), and **manual** (added after the fact).
+- Signed out, or with Supabase unconfigured, external/manual tracking works entirely from **localStorage** (`useApplications` mirrors `useBookmarks`); the hosted application form is hidden rather than shown broken, since it needs an account to save to.
+- Schema: `supabase/migrations/20260805120000_student_applications.sql` (`student_applications`, `institution_application_settings`, `student_application_events`, a `submit_student_application` RPC, and a private `application-documents` storage bucket).
+- CMS side: a top-level **Applications** page (four status tabs: Pending, Awaiting Interview, Accepted, Rejected) plus a **Settings → Applications** tab where a partner turns on hosted applications, sets an application fee, and configures required fields/documents.
 
 ### Scroll Feed (`/feed`, `/admin/feed`)
 
@@ -88,7 +99,7 @@ This document summarizes **what Thuto is**, **what it ships today**, **how data 
 
 - **vite-plugin-pwa**: manifest, icons, service worker, `StaleWhileRevalidate` for `/data/*` JSON (`vite.config.js`).
 - **Global Open Graph / Twitter** tags and default `<title>` in `index.html`; **per-route titles** via `useDocumentTitle` on pages (deep links still get the **global** OG card unless prerender/server meta is added later — see `thuto_roadmap.md`).
-- **Institution CMS**: partner staff now use a **separate frontend** served from **`/cms/`** (same repo, shared Supabase/backend, distinct shell and navigation from the student PWA). Legacy `/partner` links hand off to the CMS.
+- **Institution CMS**: partner staff now use a **separate frontend** served from **`/cms/`** (same repo, shared Supabase/backend, distinct shell and navigation from the student PWA). Legacy `/partner` links hand off to the CMS. Nav: Home, Profile, **Programmes** (searchable list → dedicated `/programmes/:id` edit page, with create and archive/delete), **Applications** (four status tabs, the primary admissions surface), Data and Analytics (Leads lives here now as a tab, since it's top-of-funnel "contact me" rather than a formal application), Feed (stub), FAQ and Student Reviews, and **Settings** (Branding / Applications / Team and access).
 
 ---
 
@@ -106,9 +117,12 @@ Array of programme objects. Typical fields include:
 | `subjectRequirements` | e.g. `{ "math": "B", "english": "C", "science": "C" }` |
 | `duration`, `description` | Narrative |
 | `fees` | `{ domestic, currency, per, note }` |
+| `applicationFee`, `applicationFeeCurrency`, `applicationFeeNote` | Rare on the record itself; usually resolved from the institution's `institution_application_settings` instead (`resolveApplicationFee` in `src/lib/universityFees.js`) |
 | `modules` | Semester-grouped module strings |
 | `careers` | String array |
 | `officialUrl`, apply-related fields | Where documented in JSON |
+| `archived` | CMS-set override flag; hides the programme from `fetchProgrammes()` unless `includeArchived` is passed (the CMS itself always passes it) |
+| `hasBundledRecord` | Not stored — added at merge time (`mergeContentOverrides`) to tell a CMS-created programme (no bundled row, can be hard-deleted) from a bundled one (can only be archived) |
 
 ### `public/data/universities.json`
 
@@ -158,8 +172,10 @@ From **`.env.example`** (Vite `VITE_*` prefix):
 
 | Module | Responsibility |
 |--------|----------------|
-| `admissions.js` | Points, best-six, requirement evaluation vs programmes |
-| `bgcseSubjects.js` | Canonical subject ids/labels for predictor UI |
+| `admissions.js` | Aggregate scoring, requirement evaluation vs programmes, syllabus-aware throughout |
+| `gradingSystems.js` (+ `grading/*`) | 27-profile registry, canonical band ladder, cross-syllabus normalisation, search |
+| `bgcseSubjects.js` | Canonical subject ids/labels for predictor UI, shared across syllabi via `examBoards` |
+| `applications.js` | Student application tracking (hosted/external/manual channels) + CMS-side reads/writes |
 | `universitiesData.js` | Load + merge bundled + remote university JSON |
 | `applicationDates.js` | Deadline copy and urgency for UI |
 | `bookmarks.js` / `compareSelection.js` | localStorage persistence + limits |
@@ -178,12 +194,14 @@ From **`.env.example`** (Vite `VITE_*` prefix):
 | `/feed` | Moderated community scroll feed |
 | `/admin/feed` | Feed moderation panel for seeded admins |
 | `/fit-finder` | Fit Finder quiz + results |
-| `/predictor` | BGCSE predictor |
+| `/predictor` | Admission predictor (27 African exam systems) |
 | `/programmes` | Catalogue |
 | `/programmes/:id` | Programme detail |
 | `/universities` | University list |
 | `/universities/:id` | University detail |
 | `/saved` | Bookmarked programmes |
+| `/applications` | My applications tracker |
+| `/applications/:id` | Application detail / hosted application form |
 | `/compare` | Compare selection |
 | `/share` | Share admission result (Supabase optional) |
 | `/sponsorships` | Funding routes + private sponsorship posts |

@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
-import { formatFeeAmount, resolveProgrammeFees } from "../lib/universityFees.js";
+import { formatFeeAmount, resolveApplicationFee, resolveProgrammeFees } from "../lib/universityFees.js";
 import ExternalSiteLink from "./ExternalSiteLink.jsx";
 
-export default function ProgrammeFeeSection({ programme, university, isDtefSponsored }) {
+export default function ProgrammeFeeSection({ programme, university, isDtefSponsored, applicationSettings = null }) {
   const { source, fees, scheduleLookup } = resolveProgrammeFees(programme, university);
   const schedule = scheduleLookup?.schedule;
   const group = scheduleLookup?.group;
   const estimates = scheduleLookup?.estimates;
+  const applicationFee = resolveApplicationFee(programme, university, applicationSettings);
 
   const durationYears = programme?.durationYears ?? group?.durationYears ?? null;
 
   return (
     <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 shadow-sm">
       <div className="flex flex-wrap items-center gap-2">
-        <h2 className="font-display text-lg font-semibold text-brand-900">Fee &amp; funding</h2>
+        <h2 className="font-display text-lg font-semibold text-brand-900">Fees &amp; funding</h2>
         {isDtefSponsored ? (
           <span
             className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-950"
@@ -25,9 +26,22 @@ export default function ProgrammeFeeSection({ programme, university, isDtefSpons
         ) : null}
       </div>
 
+      <p className="mt-2 text-sm text-slate-700">
+        <span className="font-medium text-slate-800">Application fee: </span>
+        {applicationFee ? (
+          <>
+            <strong>{formatFeeAmount(applicationFee.amount, applicationFee.currency)}</strong>
+            {applicationFee.amount === 0 ? " — no application fee." : " payable when you submit your application."}
+          </>
+        ) : (
+          "not listed in Thuto yet. Confirm with the institution before you apply."
+        )}
+      </p>
+      {applicationFee?.note ? <p className="mt-1 text-xs text-amber-950/90">{applicationFee.note}</p> : null}
+
       {source === "programme" ? (
         <p className="mt-2 text-sm text-slate-700">
-          <span className="font-medium text-slate-800">Estimated fees: </span>
+          <span className="font-medium text-slate-800">Tuition: </span>
           from approximately{" "}
           <strong>
             {fees.currency} {fees.domestic.toLocaleString()}
@@ -90,7 +104,7 @@ export default function ProgrammeFeeSection({ programme, university, isDtefSpons
 
       {!source ? (
         <p className="mt-2 text-sm text-slate-700">
-          <span className="font-medium text-slate-800">Estimated fees: </span>
+          <span className="font-medium text-slate-800">Tuition: </span>
           not listed in Thuto yet. Check the institution&apos;s fee schedule or prospectus.
         </p>
       ) : null}

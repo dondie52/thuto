@@ -7,7 +7,9 @@ import {
   isResearchDegreeProgramme,
 } from "../lib/programmeModules.js";
 
-const MODULES_PREVIEW = 10;
+// Full curricula run to 40+ modules across eight semesters, which buries every section below
+// them. Only the first block (typically semester 1) is shown until the student asks for the rest.
+const FALLBACK_PREVIEW = 10;
 
 /**
  * @param {{ programme: Record<string, unknown> }} props
@@ -17,8 +19,12 @@ export default function ProgrammeModulesSection({ programme }) {
   const listId = useId();
   const blocks = getProgrammeModuleBlocks(programme);
   const total = blocks.reduce((sum, block) => sum + block.modules.length, 0);
-  const canCollapse = total > MODULES_PREVIEW;
-  const visibleBlocks = canCollapse && !expanded ? getProgrammeModulePreview(blocks, MODULES_PREVIEW) : blocks;
+  // A single unlabelled block means the source had a flat module list with no semester grouping,
+  // so fall back to a count-based preview rather than showing all of it.
+  const grouped = blocks.length > 1;
+  const canCollapse = grouped || total > FALLBACK_PREVIEW;
+  const previewBlocks = grouped ? blocks.slice(0, 1) : getProgrammeModulePreview(blocks, FALLBACK_PREVIEW);
+  const visibleBlocks = canCollapse && !expanded ? previewBlocks : blocks;
   const research = isResearchDegreeProgramme(programme);
   const isPostgraduate =
     String(programme?.qualification || "").toLowerCase() === "postgraduate" ||

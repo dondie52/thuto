@@ -63,12 +63,18 @@ export default function UniversityReviews({ university }) {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  // Read first, write second: the composer stays closed until the reader asks for it.
+  const [composerOpen, setComposerOpen] = useState(false);
 
   const ownReview = user ? reviews.find((review) => review.user_id === user.id) : null;
   const others = reviews.filter((review) => review.id !== ownReview?.id);
   const summary = summarizeReviews(reviews);
   const list = useCollapsibleList(others, REVIEWS_PREVIEW, institutionId);
   const words = countWords(body);
+
+  useEffect(() => {
+    setComposerOpen(false);
+  }, [institutionId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -103,6 +109,7 @@ export default function UniversityReviews({ university }) {
     try {
       await saveOwnReview({ institutionId, rating, body });
       setStatus(ownReview ? "Your review was updated." : "Thanks — your review is live.");
+      setComposerOpen(false);
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save your review.");
@@ -119,6 +126,7 @@ export default function UniversityReviews({ university }) {
       setRating(0);
       setBody("");
       setStatus("Your review was removed.");
+      setComposerOpen(false);
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not remove your review.");
@@ -146,7 +154,17 @@ export default function UniversityReviews({ university }) {
         Reviews are written by students and are their own opinions, not Thuto&apos;s.
       </p>
 
-      {user ? (
+      {user && !composerOpen ? (
+        <button
+          type="button"
+          onClick={() => setComposerOpen(true)}
+          className="focus-ring mt-4 inline-flex min-h-11 items-center rounded-xl border border-brand-200 bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-100"
+        >
+          {ownReview ? "Edit your review" : "Leave a review"}
+        </button>
+      ) : null}
+
+      {user && composerOpen ? (
         <form onSubmit={submit} className="mt-4 rounded-xl border border-brand-100 bg-brand-50/40 p-4">
           <p className="text-sm font-semibold text-brand-900">
             {ownReview ? "Your review" : `Rate ${university?.name || "this institution"}`}
@@ -167,6 +185,13 @@ export default function UniversityReviews({ university }) {
               {words}/{REVIEW_MAX_WORDS} words
             </p>
             <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setComposerOpen(false)}
+                className="focus-ring rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:underline"
+              >
+                Cancel
+              </button>
               {ownReview ? (
                 <button
                   type="button"
@@ -186,16 +211,20 @@ export default function UniversityReviews({ university }) {
             </div>
           </div>
           {error ? <p className="mt-2 text-sm text-red-800">{error}</p> : null}
-          {status ? <p className="mt-2 text-sm text-emerald-800">{status}</p> : null}
         </form>
-      ) : (
+      ) : null}
+
+      {!user ? (
         <p className="mt-4 rounded-xl border border-brand-100 bg-brand-50/40 px-4 py-3 text-sm text-slate-600">
           <Link to="/auth?mode=login" className="font-semibold text-brand-700 hover:underline">
             Sign in
           </Link>{" "}
           to leave a review.
         </p>
-      )}
+      ) : null}
+
+      {/* Kept outside the form so confirmation survives the composer closing on save. */}
+      {status ? <p className="mt-2 text-sm text-emerald-800">{status}</p> : null}
 
       {loading ? (
         <p className="mt-4 text-sm text-slate-500">Loading reviews…</p>

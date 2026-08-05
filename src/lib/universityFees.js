@@ -247,3 +247,49 @@ export function resolveProgrammeFees(programme, university) {
     scheduleLookup,
   };
 }
+
+/**
+ * Non-refundable fee charged to lodge an application, which is separate from tuition and is
+ * usually the first cost a student actually has to pay.
+ *
+ * Precedence: what the institution configured in the CMS, then anything curated on the
+ * programme record, then the institution record.
+ *
+ * @param {object | null | undefined} programme
+ * @param {object | null | undefined} university
+ * @param {{ feeAmount?: number | null, feeCurrency?: string, feeNote?: string } | null} [settings]
+ * @returns {{ amount: number, currency: string, note: string, source: 'settings'|'programme'|'university' } | null}
+ */
+export function resolveApplicationFee(programme, university, settings = null) {
+  const country = programme?.country || university?.country;
+  const fallbackCurrency = defaultCurrencyForCountry(country || resolveMarketCountry());
+
+  const candidates = [
+    { source: "settings", amount: settings?.feeAmount, currency: settings?.feeCurrency, note: settings?.feeNote },
+    {
+      source: "programme",
+      amount: programme?.applicationFee,
+      currency: programme?.applicationFeeCurrency,
+      note: programme?.applicationFeeNote,
+    },
+    {
+      source: "university",
+      amount: university?.applicationFee,
+      currency: university?.applicationFeeCurrency,
+      note: university?.applicationFeeNote,
+    },
+  ];
+
+  for (const candidate of candidates) {
+    const amount = Number(candidate.amount);
+    if (candidate.amount == null || candidate.amount === "" || !Number.isFinite(amount) || amount < 0) continue;
+    return {
+      amount,
+      currency: String(candidate.currency || fallbackCurrency).trim() || fallbackCurrency,
+      note: String(candidate.note || "").trim(),
+      source: /** @type {'settings'|'programme'|'university'} */ (candidate.source),
+    };
+  }
+
+  return null;
+}

@@ -15,24 +15,34 @@ import { useEntitlements } from "../hooks/useEntitlements.js";
 import { useAuth } from "../lib/auth.jsx";
 import { hasPredictorAccess } from "../lib/onboarding.js";
 import { filterSubjectsBySyllabus } from "../lib/syllabus.js";
+import {
+  ALL_SYLLABUS_VALUES,
+  CROSS_SYLLABUS_DISCLAIMER,
+  GUIDANCE_SCALE_NOTICE,
+} from "../lib/gradingSystems.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { scrollElementIntoView } from "../lib/motion.js";
 
-function buildShareText(breakdownTotal, results) {
+/**
+ * The syllabus has to be named: a bare "38 pts" reads as BGCSE to anyone who sees it, which is
+ * wrong for an APS of 38 and badly wrong for a WASSCE aggregate where lower is better.
+ */
+function buildShareText(breakdownTotal, results, profile) {
   const qualified = results.filter((r) => r.status === "Qualified");
   const origin =
     typeof window !== "undefined" && window.location?.origin ? window.location.origin : "https://thuto.bw";
+  const score = `${breakdownTotal} ${profile.abbreviation} ${profile.aggregate === "aps" ? "APS" : "pts"}`;
   if (qualified.length === 0) {
-    return `I scored ${breakdownTotal} pts on Thuto. Check yours at ${origin}`;
+    return `I scored ${score} on Thuto. Check yours at ${origin}`;
   }
   const first = qualified[0].programme.name;
   if (qualified.length === 1) {
-    return `I scored ${breakdownTotal} pts on Thuto - I may qualify for ${first}. Check yours at ${origin}`;
+    return `I scored ${score} on Thuto - I may qualify for ${first}. Check yours at ${origin}`;
   }
   const second = qualified[1].programme.name;
   const more = qualified.length - 2;
   const tail = more > 0 ? `, ${second} and ${more} more` : ` and ${second}`;
-  return `I scored ${breakdownTotal} pts on Thuto - I may qualify for ${first}${tail}. Check yours at ${origin}`;
+  return `I scored ${score} on Thuto - I may qualify for ${first}${tail}. Check yours at ${origin}`;
 }
 
 export default function Predictor() {
@@ -59,6 +69,7 @@ export default function Predictor() {
     canAdd,
     bgcseSubjects,
     gradeOptions,
+    gradeChoices,
     gradingProfile,
   } = usePredictorGradeInput({ syllabusType: syllabusType || "bgcse" });
 
@@ -88,8 +99,8 @@ export default function Predictor() {
 
   const results = useMemo(() => {
     if (!programmes.length || !requirementGrades || !breakdown || breakdown.invalid) return null;
-    return evaluateAllProgrammes(programmes, requirementGrades, breakdown.total);
-  }, [programmes, requirementGrades, breakdown]);
+    return evaluateAllProgrammes(programmes, requirementGrades, breakdown.total, { syllabusType });
+  }, [programmes, requirementGrades, breakdown, syllabusType]);
 
   const summary = useMemo(() => {
     if (!results) return null;
@@ -134,7 +145,7 @@ export default function Predictor() {
 
   async function handleShare() {
     if (!breakdown || breakdown.invalid || !results?.length) return;
-    const text = buildShareText(breakdown.total, results);
+    const text = buildShareText(breakdown.total, results, gradingProfile);
     try {
       await navigator.clipboard.writeText(text);
       setShareFeedback("Copied summary - paste into WhatsApp or notes.");
@@ -156,12 +167,17 @@ export default function Predictor() {
       <div>
         <h1 className="font-display text-2xl font-bold text-brand-900">Admission Predictor</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Thuto calculates your best-six points and shows programmes you may qualify for.
+          Thuto works out your {gradingProfile.aggregateLabel.toLowerCase()} and shows programmes you may qualify for.
         </p>
-        <p className="mt-2 text-xs text-slate-500">
-          A*=8, A=8, B=7, C=6, D=5, E=4, F=3, G=2, U=0. Science Double Award sums both components (CC = 12).
-          Best-six maximum = 48 pts.
-        </p>
+        <p className="mt-2 text-xs text-slate-500">{gradingProfile.helpText}</p>
+        {!gradingProfile.verified ? (
+          <p className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-950">
+            {GUIDANCE_SCALE_NOTICE}
+          </p>
+        ) : null}
+        {gradingProfile.id !== "bgcse" ? (
+          <p className="mt-2 text-xs leading-relaxed text-slate-500">{CROSS_SYLLABUS_DISCLAIMER}</p>
+        ) : null}
       </div>
 
       <ol className="grid gap-3 sm:grid-cols-2" aria-label="Eligibility check steps">
@@ -193,7 +209,8 @@ export default function Predictor() {
         <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
           <p className="font-semibold">Choose your syllabus to unlock the Predictor</p>
           <p className="mt-1 text-brand-800/90">
-            Tell us whether you are on BGCSE, IGCSE, AS Level, or O-Level so we can match the right grading scale.
+            Search for the exam system on your certificate — Thuto covers {ALL_SYLLABUS_VALUES.length} systems
+            across Africa — so we can score you on the right grading scale.
           </p>
           <Link
             to="/onboarding?next=%2Fpredictor&step=academics"
@@ -230,6 +247,7 @@ export default function Predictor() {
             canAdd={canAdd}
             subjects={activeSubjects}
             gradeOptions={gradeOptions}
+            gradeChoices={gradeChoices}
             helpText={gradingProfile.helpText}
             allowScienceDouble={Boolean(gradingProfile.allowsScienceDouble)}
           />

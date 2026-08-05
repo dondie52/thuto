@@ -427,7 +427,7 @@ export default function CompareProgrammes() {
   const eligibilityFor = useCallback(
     (p) => {
       if (predSnap.grades == null || predSnap.total == null) return null;
-      return evaluateProgramme(p, predSnap.grades, predSnap.total);
+      return evaluateProgramme(p, predSnap.grades, predSnap.total, { syllabusType: predSnap.syllabusType });
     },
     [predSnap.grades, predSnap.total],
   );

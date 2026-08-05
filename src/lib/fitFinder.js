@@ -244,7 +244,7 @@ export function mapSubjectsToFields(subjects) {
 export function getAdmissionCompatibility(programme, profile = {}) {
   const total = Number.isFinite(profile.bestSixTotal) ? profile.bestSixTotal : undefined;
   const grades = profile.requirementGrades || {};
-  return evaluateProgramme(programme, grades, total);
+  return evaluateProgramme(programme, grades, total, { syllabusType: profile.syllabusType });
 }
 
 function helpfulSubjects(programme) {
@@ -464,11 +464,12 @@ function oldAnswersToProfile(answers) {
   };
 }
 
-export function computeProgrammeInterestScore(programme, evaluation, answers, requirementGrades) {
+export function computeProgrammeInterestScore(programme, evaluation, answers, requirementGrades, syllabusType) {
   const profile = {
     ...oldAnswersToProfile(answers),
     requirementGrades,
     bestSixTotal: evaluation?.total,
+    syllabusType: syllabusType ?? evaluation?.syllabusType,
   };
   const result = scoreProgrammeFit(programme, profile);
   return {
@@ -495,11 +496,12 @@ export function assignFitBucket(status, interestScore, total, minPoints, subject
   return gap <= 4 || interestScore >= 72 ? "stretch" : "worth";
 }
 
-export function rankProgrammesForFit(programmes, requirementGrades, bestSixTotal, answers) {
+export function rankProgrammesForFit(programmes, requirementGrades, bestSixTotal, answers, syllabusType) {
   const profile = {
     ...oldAnswersToProfile(answers),
     requirementGrades,
     bestSixTotal,
+    syllabusType,
   };
   return rankProgrammeMatches(programmes, profile).map((row) => {
     const programme = row.programme;
@@ -515,7 +517,8 @@ export function rankProgrammesForFit(programmes, requirementGrades, bestSixTotal
       bucket: assignFitBucket(
         evaluation.status,
         row.fitScore,
-        evaluation.total,
+        // Compare on the BGCSE-equivalent, since minPoints is always on that scale.
+        evaluation.bgcseEquivalent ?? evaluation.total,
         programmeHasAdmissionPoints(programme) ? programme.minPoints : null,
         subjectFail,
       ),

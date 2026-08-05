@@ -21,6 +21,7 @@ import {
   getProgrammeCareers,
 } from "../lib/programmeInsights.js";
 import { matchesQualificationFilter } from "../lib/programmeQualification.js";
+import { attainmentIndex, getGradingProfile, indexToBgcsePoints, requiredIndexFromMinPoints } from "../lib/gradingSystems.js";
 
 const SORT_OPTIONS = [
   { value: "name_asc", label: "Name (A–Z)" },
@@ -70,13 +71,21 @@ export default function Programmes() {
   const { ids: compareIds, toggle: toggleCompare, clear: clearCompare, isSelected, canAdd, max: compareMax } = useCompareSelection();
   const { entitlements } = useEntitlements();
 
-  const predTotal = readPredictorSession().total;
+  const predictorSnap = readPredictorSession();
+  const predTotal = predictorSnap.total;
+  // `minPoints` is calibrated to the BGCSE 48-point scale, so a raw total from any other
+  // syllabus cannot be compared against it directly — normalise both onto the shared index.
+  const predIndex =
+    predTotal != null ? attainmentIndex(predTotal, getGradingProfile(predictorSnap.syllabusType)) : null;
+  const predBgcseEquivalent = predIndex != null ? indexToBgcsePoints(predIndex) : null;
 
   const eligibilityById = useMemo(() => {
     if (!programmes.length) return new Map();
     const snap = readPredictorSession();
     if (snap.grades == null || snap.total == null) return new Map();
-    const results = evaluateAllProgrammes(programmes, snap.grades, snap.total);
+    const results = evaluateAllProgrammes(programmes, snap.grades, snap.total, {
+      syllabusType: snap.syllabusType,
+    });
     const m = new Map();
     for (const r of results) {
       m.set(r.programme.id, { status: r.status, reason: r.reason, total: r.total });
@@ -176,8 +185,10 @@ export default function Programmes() {
     if (field !== "All") list = list.filter((p) => p.field === field);
     if (!pointsRangeInvalid && minPtsValid) list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints >= minPts);
     if (!pointsRangeInvalid && maxPtsValid) list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints <= maxPts);
-    if (qualifyPoints && predTotal != null) {
-      list = list.filter((p) => programmeHasAdmissionPoints(p) && p.minPoints <= predTotal);
+    if (qualifyPoints && predIndex != null) {
+      list = list.filter(
+        (p) => programmeHasAdmissionPoints(p) && requiredIndexFromMinPoints(p.minPoints) <= predIndex,
+      );
     }
     if (levelFilter) {
       list = list.filter((p) => matchesQualificationFilter(p, levelFilter));
@@ -206,7 +217,7 @@ export default function Programmes() {
     } else sorted.sort((a, b) => a.name.localeCompare(b.name));
 
     return sorted;
-  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, pointsRangeInvalid, sort, qualifyPoints, predTotal, levelFilter]);
+  }, [programmes, q, uni, field, minPts, maxPts, minPtsValid, maxPtsValid, pointsRangeInvalid, sort, qualifyPoints, predIndex, levelFilter]);
 
   const hasActiveFilters =
     (searchParams.get("q") ?? "").trim() !== "" ||
@@ -224,7 +235,7 @@ export default function Programmes() {
     minPtsRaw !== "" ? `From ${minPtsRaw} pts` : null,
     maxPtsRaw !== "" ? `Up to ${maxPtsRaw} pts` : null,
     sort !== "name_asc" ? SORT_OPTIONS.find((option) => option.value === sort)?.label : null,
-    qualifyPoints ? (predTotal != null ? `Within ${predTotal} pts` : "Predictor points") : null,
+    qualifyPoints ? (predTotal != null ? `Within ${predTotal} ${predictorSnap.syllabusType === "bgcse" ? "pts" : "pts (converted)"}` : "Predictor points") : null,
     levelFilter === "postgraduate" ? "Master's / taught postgraduate" : null,
     levelFilter === "phd" ? "PhD / research" : null,
     levelFilter === "pg" ? "All postgraduate" : null,
@@ -441,7 +452,11 @@ export default function Programmes() {
               {predTotal != null ? (
                 <>
                   {" "}
-                  using <strong>{predTotal}</strong> pts.
+                  using <strong>{predTotal}</strong> {getGradingProfile(predictorSnap.syllabusType).aggregateLabel.toLowerCase()}
+                  {predictorSnap.syllabusType !== "bgcse" ? (
+                    <> (about {predBgcseEquivalent}/48 BGCSE-equivalent)</>
+                  ) : null}
+                  .
                 </>
               ) : (
                 <> after using the predictor.</>

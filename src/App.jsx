@@ -23,6 +23,8 @@ const ProgrammeDetail = lazy(() => import("./pages/ProgrammeDetail.jsx"));
 const Universities = lazy(() => import("./pages/Universities.jsx"));
 const UniversityDetail = lazy(() => import("./pages/UniversityDetail.jsx"));
 const SavedProgrammes = lazy(() => import("./pages/SavedProgrammes.jsx"));
+const MyApplications = lazy(() => import("./pages/MyApplications.jsx"));
+const ApplicationDetail = lazy(() => import("./pages/ApplicationDetail.jsx"));
 const CompareProgrammes = lazy(() => import("./pages/CompareProgrammes.jsx"));
 const FitFinder = lazy(() => import("./pages/FitFinder.jsx"));
 const Assistant = lazy(() => import("./pages/Assistant.jsx"));
@@ -98,6 +100,8 @@ export default function App() {
             <Route path="/universities" element={<Universities />} />
             <Route path="/universities/:id" element={<UniversityDetail />} />
             <Route path="/saved" element={<SavedProgrammes />} />
+            <Route path="/applications" element={<MyApplications />} />
+            <Route path="/applications/:id" element={<ApplicationDetail />} />
             <Route path="/compare" element={<CompareProgrammes />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/share" element={<ShareAdmissionResult />} />

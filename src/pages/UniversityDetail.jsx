@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import InstitutionCampaignBanner from "../components/InstitutionCampaignBanner.jsx";
 import UniversityApplicationBlock from "../components/UniversityApplicationBlock.jsx";
 import InstitutionVerificationBadge from "../components/InstitutionVerificationBadge.jsx";
-import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
+import RequestInformationSection from "../components/RequestInformationSection.jsx";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
@@ -37,7 +37,8 @@ import {
 } from "../lib/institutionProfile.js";
 import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
 
-const PROGRAMMES_PREVIEW = 8;
+const PROGRAMMES_PREVIEW = 3;
+const RESOURCES_PREVIEW = 3;
 
 function normalizeResources(resources) {
   if (!Array.isArray(resources)) return [];
@@ -75,6 +76,7 @@ function UniversityResourcesSection({ university, resources }) {
   const applyHref = safeExternalUrl(university.applyUrl);
   const hasResources = resources.length > 0;
   const categories = [...new Set(resources.map((resource) => resource.category).filter(Boolean))];
+  const resourceList = useCollapsibleList(resources, RESOURCES_PREVIEW);
 
   return (
     <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
@@ -137,8 +139,8 @@ function UniversityResourcesSection({ university, resources }) {
             </div>
           ) : null}
 
-          <ul className="mt-4 grid gap-3">
-            {resources.map((resource) => (
+          <ul id={resourceList.contentId} className="mt-4 grid gap-3">
+            {resourceList.visible.map((resource) => (
               <li key={`${resource.title}-${resource.url}`}>
                 <div className="group flex min-w-0 flex-col gap-3 rounded-xl border border-brand-100 bg-brand-50/40 p-3 text-sm transition hover:border-brand-300 hover:bg-brand-50 sm:flex-row sm:items-center sm:justify-between">
                   <span className="flex min-w-0 items-start gap-2 sm:items-center">
@@ -172,6 +174,15 @@ function UniversityResourcesSection({ university, resources }) {
               </li>
             ))}
           </ul>
+          {resourceList.canCollapse ? (
+            <ShowMoreButton
+              expanded={resourceList.expanded}
+              onToggle={resourceList.toggle}
+              controls={resourceList.contentId}
+              total={resourceList.total}
+              noun="resources"
+            />
+          ) : null}
           <p className="mt-3 text-xs leading-relaxed text-slate-500">
             Links open the institution&apos;s official site in your browser. Files and dates may change — verify before
             you apply.
@@ -182,6 +193,65 @@ function UniversityResourcesSection({ university, resources }) {
   );
 }
 
+
+/**
+ * Contact details used to live in the header, which pushed the description and the apply
+ * window below the fold. They get their own section directly after Applications & intake.
+ */
+function AdmissionsContactSection({ university, contacts, socialEntries }) {
+  const rows = [
+    { label: "Admissions phone", value: contacts.admissionsPhone, href: (v) => `tel:${String(v).replace(/\s/g, "")}` },
+    { label: "Admissions email", value: contacts.admissionsEmail, href: (v) => `mailto:${v}` },
+    { label: "General email", value: contacts.generalEmail, href: (v) => `mailto:${v}` },
+    { label: "Physical address", value: contacts.address, href: null },
+  ].filter((row) => row.value);
+
+  if (!rows.length && !socialEntries.length) return null;
+
+  return (
+    <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
+      <h2 className="font-display text-lg font-semibold text-brand-900">Admissions &amp; contact details</h2>
+      <p className="mt-1 text-sm text-slate-600">
+        Published by {university.name}. Confirm on the official site before you rely on them.
+      </p>
+      {rows.length ? (
+        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+          {rows.map((row) => (
+            <div key={row.label}>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">{row.label}</dt>
+              <dd className="mt-0.5 font-medium text-brand-900">
+                {row.href ? (
+                  <a href={row.href(row.value)} className="text-brand-700 hover:underline">
+                    {row.value}
+                  </a>
+                ) : (
+                  row.value
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+      {socialEntries.length ? (
+        <div className="mt-4 flex flex-wrap gap-2 border-t border-brand-100 pt-4">
+          {socialEntries.map(([key, href]) => (
+            <ExternalSiteLink
+              key={key}
+              href={safeExternalUrl(href)}
+              variant="secondary"
+              institutionName={university.name}
+              institutionId={university.id}
+              linkKind="other"
+              useInterstitial
+            >
+              {socialLabel(key)}
+            </ExternalSiteLink>
+          ))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
 
 export default function UniversityDetail() {
   const { id } = useParams();
@@ -291,88 +361,58 @@ export default function UniversityDetail() {
         </div>
         <p className="mt-3 text-sm leading-relaxed text-slate-700">{university.description}</p>
         <dl className="mt-4 grid gap-3 border-t border-brand-100 pt-4 text-sm text-slate-600 sm:grid-cols-2">
-          {contacts.address ? (
-            <div>
-              <dt className="text-xs font-medium text-slate-500">Physical address</dt>
-              <dd>{contacts.address}</dd>
-            </div>
-          ) : null}
-          {contacts.generalPhone && (
-            <div>
-              <dt className="text-xs font-medium text-slate-500">General phone</dt>
-              <dd>
-                <a href={`tel:${String(contacts.generalPhone).replace(/\s/g, "")}`} className="text-brand-700 hover:underline">
+          <div>
+            <dt className="text-xs font-medium text-slate-500">General phone</dt>
+            <dd>
+              {contacts.generalPhone ? (
+                <a
+                  href={`tel:${String(contacts.generalPhone).replace(/\s/g, "")}`}
+                  className="font-medium text-brand-700 hover:underline"
+                >
                   {contacts.generalPhone}
                 </a>
-              </dd>
-            </div>
-          )}
-          {contacts.admissionsPhone ? (
-            <div>
-              <dt className="text-xs font-medium text-slate-500">Admissions phone</dt>
-              <dd>
-                <a href={`tel:${String(contacts.admissionsPhone).replace(/\s/g, "")}`} className="text-brand-700 hover:underline">
-                  {contacts.admissionsPhone}
-                </a>
-              </dd>
-            </div>
-          ) : null}
-          {contacts.generalEmail ? (
-            <div>
-              <dt className="text-xs font-medium text-slate-500">General email</dt>
-              <dd>
-                <a href={`mailto:${contacts.generalEmail}`} className="text-brand-700 hover:underline">
-                  {contacts.generalEmail}
-                </a>
-              </dd>
-            </div>
-          ) : null}
-          {contacts.admissionsEmail ? (
-            <div>
-              <dt className="text-xs font-medium text-slate-500">Admissions email</dt>
-              <dd>
-                <a href={`mailto:${contacts.admissionsEmail}`} className="text-brand-700 hover:underline">
-                  {contacts.admissionsEmail}
-                </a>
-              </dd>
-            </div>
-          ) : null}
-          {websiteHref && (
-            <div>
-              <dt className="text-xs font-medium text-slate-500">Website</dt>
-              <dd>
-                <ExternalSiteLink
-                  href={websiteHref}
-                  variant="inline"
-                  institutionName={university.name}
-                  institutionId={university.id}
-                  linkKind="website"
-                  showDomain
-                  useInterstitial
-                >
-                  {university.website}
-                </ExternalSiteLink>
-              </dd>
-            </div>
-          )}
-        </dl>
-        {socialEntries.length ? (
-          <div className="mt-4 flex flex-wrap gap-2 border-t border-brand-100 pt-4">
-            {socialEntries.map(([key, href]) => (
-              <ExternalSiteLink
-                key={key}
-                href={safeExternalUrl(href)}
-                variant="secondary"
-                institutionName={university.name}
-                institutionId={university.id}
-                linkKind="other"
-                useInterstitial
-              >
-                {socialLabel(key)}
-              </ExternalSiteLink>
-            ))}
+              ) : (
+                <span className="text-slate-500">Not listed in Thuto yet</span>
+              )}
+            </dd>
           </div>
+          <div>
+            <dt className="text-xs font-medium text-slate-500">Accreditation</dt>
+            <dd className="font-medium text-brand-900">
+              {accreditation.status || <span className="font-normal text-slate-500">Not listed in Thuto yet</span>}
+            </dd>
+            {accreditation.body ? <dd className="mt-0.5 text-xs text-slate-600">{accreditation.body}</dd> : null}
+          </div>
+        </dl>
+        {accreditation.notes ? (
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">{accreditation.notes}</p>
         ) : null}
+        <div className="mt-4 flex flex-wrap gap-2 border-t border-brand-100 pt-4">
+          {websiteHref ? (
+            <ExternalSiteLink
+              href={websiteHref}
+              variant="primary"
+              institutionName={university.name}
+              institutionId={university.id}
+              linkKind="website"
+              useInterstitial
+            >
+              Visit website
+            </ExternalSiteLink>
+          ) : null}
+          {accreditation.sourceUrl ? (
+            <ExternalSiteLink
+              href={safeExternalUrl(accreditation.sourceUrl)}
+              variant="secondary"
+              institutionName={university.name}
+              institutionId={university.id}
+              linkKind="resource"
+              useInterstitial
+            >
+              Accreditation source
+            </ExternalSiteLink>
+          ) : null}
+        </div>
       </header>
 
       <InstitutionCampaignBanner
@@ -410,47 +450,38 @@ export default function UniversityDetail() {
         ) : null}
       </section>
 
+      <AdmissionsContactSection
+        university={university}
+        contacts={contacts}
+        socialEntries={socialEntries}
+      />
+
       <InternationalApplicantsSection
         university={university}
         marketCountry={university.country || resolveMarketCountry()}
       />
 
-      {isVerified ? (
-        <LeadInquiryForm institutionId={university.id} institutionName={university.name} />
-      ) : null}
+      <ProgrammesOfferedSection programmes={programmes} university={university} />
 
-      {(accreditation.status || accreditation.body || accreditation.notes) ? (
+      <UniversityFacultyFeesSection university={university} />
+
+      <UniversityStudentIncentives university={university} />
+
+      {(studentLife.accommodationStatus ||
+        studentLife.accommodationDetails ||
+        studentLife.facilities.length ||
+        studentLife.sports.length ||
+        studentLife.careerSupport ||
+        studentLife.campusSecurity) ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Accreditation</h2>
-          <div className="mt-3 grid gap-3 text-sm text-slate-700 sm:grid-cols-2">
-            {accreditation.status ? (
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Status</p>
-                <p className="mt-1 font-medium text-brand-900">{accreditation.status}</p>
-              </div>
-            ) : null}
-            {accreditation.body ? (
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Accrediting body</p>
-                <p className="mt-1 font-medium text-brand-900">{accreditation.body}</p>
-              </div>
-            ) : null}
+          <h2 className="font-display text-lg font-semibold text-brand-900">Student life, support, and career outcomes</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <StudentLifeCard title="Accommodation" body={studentLife.accommodationDetails} kicker={studentLife.accommodationStatus} />
+            <StudentLifeCard title="Career support and jobs" kicker={availabilityKicker(studentLife.careerSupport)} />
+            <StudentLifeCard title="On-campus security" kicker={availabilityKicker(studentLife.campusSecurity)} />
           </div>
-          {accreditation.notes ? <p className="mt-3 text-sm leading-relaxed text-slate-700">{accreditation.notes}</p> : null}
-          {accreditation.sourceUrl ? (
-            <div className="mt-3">
-              <ExternalSiteLink
-                href={safeExternalUrl(accreditation.sourceUrl)}
-                variant="secondary"
-                institutionName={university.name}
-                institutionId={university.id}
-                linkKind="resource"
-                useInterstitial
-              >
-                View official accreditation source
-              </ExternalSiteLink>
-            </div>
-          ) : null}
+          <CampusTagList title="On campus" items={studentLife.facilities} meta={facilityMeta} />
+          <CampusTagList title="Sports offered" items={studentLife.sports} meta={sportMeta} />
         </section>
       ) : null}
 
@@ -480,31 +511,9 @@ export default function UniversityDetail() {
         </section>
       ) : null}
 
-      {(studentLife.accommodationStatus ||
-        studentLife.accommodationDetails ||
-        studentLife.facilities.length ||
-        studentLife.sports.length ||
-        studentLife.careerSupport ||
-        studentLife.campusSecurity) ? (
-        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Student life, support, and career outcomes</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <StudentLifeCard title="Accommodation" body={studentLife.accommodationDetails} kicker={studentLife.accommodationStatus} />
-            <StudentLifeCard title="Career support and jobs" kicker={availabilityKicker(studentLife.careerSupport)} />
-            <StudentLifeCard title="On-campus security" kicker={availabilityKicker(studentLife.campusSecurity)} />
-          </div>
-          <CampusTagList title="On campus" items={studentLife.facilities} meta={facilityMeta} />
-          <CampusTagList title="Sports offered" items={studentLife.sports} meta={sportMeta} />
-        </section>
-      ) : null}
-
-      <UniversityStudentIncentives university={university} />
-
-      <UniversityFacultyFeesSection university={university} />
-
       {Array.isArray(university.staff) && university.staff.length > 0 ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Admissions & staff contacts</h2>
+          <h2 className="font-display text-lg font-semibold text-brand-900">Staff members</h2>
           <p className="mt-1 text-sm text-slate-600">
             Published by the institution for student enquiries. Confirm details on the official site before you contact
             anyone.
@@ -536,9 +545,9 @@ export default function UniversityDetail() {
         </section>
       ) : null}
 
-      <ProgrammesOfferedSection programmes={programmes} university={university} />
-
       <UniversityResourcesSection university={university} resources={resources} />
+
+      <RequestInformationSection university={university} isVerifiedPartner={isVerified} />
 
       {faqs.length ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
