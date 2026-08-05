@@ -32,7 +32,7 @@ import {
 } from "../lib/programmeInsights.js";
 import { isAffirmativeStatus, isApplicationWindowOpen } from "../lib/institutionProfile.js";
 import ExternalSiteLink from "../components/ExternalSiteLink.jsx";
-import LeadInquiryForm from "../components/LeadInquiryForm.jsx";
+import RequestInformationSection from "../components/RequestInformationSection.jsx";
 import { trackProgrammeView } from "../lib/analytics.js";
 import { buildTrackedApplyUrl } from "../lib/applyLinks.js";
 import { fetchVerifiedInstitutionIds } from "../lib/partner.js";
@@ -151,9 +151,11 @@ export default function ProgrammeDetail() {
   const aboutSummary = getProgrammeAboutSummary(programme);
   const interests = getProgrammeInterests(programme);
   const careers = getProgrammeCareers(programme);
-  const accreditation = getProgrammeAccreditation(programme);
+  const accreditation = getProgrammeAccreditation(programme, university);
+  const accreditationSourceHref = safeExternalUrl(accreditation.sourceUrl);
   const relatedSubjects = getProgrammeRelatedSubjects(programme);
   const fitCompatible = isFitFinderCompatible(programme);
+  const isVerifiedPartner = Boolean(university?.id && verifiedInstitutionIds.has(university.id));
 
   return (
     <article className="space-y-6 pb-24 sm:pb-6">
@@ -208,6 +210,9 @@ export default function ProgrammeDetail() {
                 {inCompare ? "In compare" : "Add to compare"}
               </button>
               {entitlements.acceptanceChance && eligibility ? <EligibilityPill eligibility={eligibility} /> : null}
+              {entitlements.pdfDownload ? (
+                <ProgrammePdfActions programme={programme} university={university} compact />
+              ) : null}
             </div>
           </div>
           {!entitlements.acceptanceChance && eligibility ? (
@@ -261,6 +266,41 @@ export default function ProgrammeDetail() {
                 <dd className="font-medium text-brand-900">{programme.studyMode}</dd>
               </div>
             ) : null}
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Accreditation</dt>
+              <dd className="font-medium text-brand-900">
+                {accreditation.status ? (
+                  <span
+                    className={[
+                      "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                      isAffirmativeStatus(accreditation.status)
+                        ? "bg-emerald-50 text-emerald-800"
+                        : "bg-slate-100 text-slate-700",
+                    ].join(" ")}
+                  >
+                    {accreditation.status}
+                  </span>
+                ) : (
+                  <span className="font-normal text-slate-500">Not listed — confirm with the institution</span>
+                )}
+              </dd>
+              {accreditation.body ? <dd className="mt-1 text-xs text-slate-600">{accreditation.body}</dd> : null}
+              {accreditation.notes ? <dd className="mt-1 text-xs text-slate-600">{accreditation.notes}</dd> : null}
+              {accreditationSourceHref ? (
+                <dd className="mt-1">
+                  <ExternalSiteLink
+                    href={accreditationSourceHref}
+                    variant="inline"
+                    institutionName={programme.university || university?.name}
+                    institutionId={university?.id}
+                    linkKind="website"
+                    useInterstitial
+                  >
+                    Accreditation source
+                  </ExternalSiteLink>
+                </dd>
+              ) : null}
+            </div>
           </dl>
         </div>
       </header>
@@ -324,8 +364,6 @@ export default function ProgrammeDetail() {
         )}
       </section>
 
-      <ProgrammeModulesSection programme={programme} />
-
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-lg font-semibold text-brand-900">Entry requirements</h2>
         <ul className="mt-3 list-inside list-disc text-sm text-slate-700">
@@ -380,30 +418,19 @@ export default function ProgrammeDetail() {
         </div>
       </section>
 
+      <ProgrammeModulesSection programme={programme} />
+
       <ProgrammeFeeSection programme={programme} university={university} isDtefSponsored={isDtefSponsored} />
 
+      <DocumentsChecklist programme={programme} locked={!entitlements.documentsChecklist} />
+
       <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="font-display text-lg font-semibold text-brand-900">Accreditation & career prospects</h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Students often ask whether a programme is accredited and what jobs it may lead to.
-            </p>
-          </div>
-          {accreditation.status ? (
-            <span
-              className={[
-                "rounded-full px-3 py-1 text-xs font-semibold",
-                isAffirmativeStatus(accreditation.status) ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-700",
-              ].join(" ")}
-            >
-              {accreditation.status}
-            </span>
-          ) : null}
-        </div>
-        {accreditation.status ? null : (
-          <p className="mt-3 text-sm text-slate-500">Accreditation is not listed in Thuto yet. Confirm with the institution.</p>
-        )}
+        <h2 className="font-display text-lg font-semibold text-brand-900">
+          Career prospects &amp; salary estimates
+        </h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Roles this programme commonly leads to. Salary ranges are broad market estimates, not offers.
+        </p>
         <div className="mt-3">
           <CareersList
             careers={careers}
@@ -415,31 +442,12 @@ export default function ProgrammeDetail() {
         </div>
       </section>
 
-      {entitlements.documentsChecklist ? (
-        <DocumentsChecklist programme={programme} />
-      ) : (
-        <UpgradePrompt feature="documentsChecklist" message="See which documents you need to apply with Thuto Pro's application checklist." />
-      )}
-
-      {entitlements.pdfDownload ? (
-        <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold text-brand-900">Download &amp; share</h2>
-          <p className="mt-1 text-sm text-slate-600">Send a programme summary to parents, teachers, or sponsors.</p>
-          <div className="mt-3">
-            <ProgrammePdfActions programme={programme} university={university} />
-          </div>
-        </section>
-      ) : (
-        <UpgradePrompt feature="pdfDownload" message="Download and share programme summaries with Thuto Pro." />
-      )}
-
-      {university?.id && verifiedInstitutionIds.has(university.id) ? (
-        <LeadInquiryForm
-          institutionId={university.id}
-          programmeId={programme.id}
-          institutionName={university.name}
-        />
-      ) : null}
+      <RequestInformationSection
+        university={university}
+        programmeId={programme.id}
+        programmeName={programme.name}
+        isVerifiedPartner={isVerifiedPartner}
+      />
 
       {similarProgrammes.length > 0 ? (
         <section className="rounded-2xl border border-brand-200 bg-white p-5 shadow-sm">

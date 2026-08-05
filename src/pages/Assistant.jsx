@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { useAuth } from "../lib/auth.jsx";
 import {
@@ -255,6 +255,17 @@ export default function Assistant() {
   const messagesScrollRef = useRef(null);
   const inputRef = useRef(null);
   const providerStatus = getProviderStatus();
+  const [searchParams] = useSearchParams();
+
+  // Programme and institution pages link here with a prefilled question when the institution
+  // does not take inquiries through Thuto. The student still presses send themselves.
+  const prefillQuestion = searchParams.get("q");
+  useEffect(() => {
+    const prefill = String(prefillQuestion || "").trim().slice(0, 300);
+    if (!prefill) return;
+    setQuestion(prefill);
+    inputRef.current?.focus();
+  }, [prefillQuestion]);
 
   useEffect(() => {
     let cancelled = false;

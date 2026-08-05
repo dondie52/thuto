@@ -96,9 +96,22 @@ export function getProgrammeCareers(programme) {
   ]);
 }
 
-export function getProgrammeAccreditation(programme) {
+/**
+ * Programme-level accreditation is rarely populated, so the institution's own accreditation
+ * record is used as the fallback — a programme at an accredited institution is the common case,
+ * and the header needs something truthful to show.
+ *
+ * @param {Record<string, unknown> | null | undefined} programme
+ * @param {Record<string, unknown> | null | undefined} [university]
+ */
+export function getProgrammeAccreditation(programme, university = null) {
+  const text = (value) => String(value || "").trim();
+  const status = text(programme?.accreditationStatus) || text(university?.accreditationStatus);
   return {
-    status: String(programme?.accreditationStatus || "").trim(),
+    status,
+    body: text(programme?.accreditationBody) || text(university?.accreditationBody),
+    notes: text(programme?.accreditationNotes) || text(university?.accreditationNotes),
+    sourceUrl: text(programme?.accreditationSourceUrl) || text(university?.accreditationSourceUrl),
   };
 }
 

@@ -141,6 +141,8 @@ export const PREMIUM_PLANS = [
     id: "yearly",
     name: "Yearly Pro",
     priceLabel: "P59 / year",
+    priceText: "P59",
+    periodLabel: "year",
     description: "One payment for a full year of Pro. Most popular for application season.",
     badge: "Most Popular",
     highlighted: true,
@@ -149,11 +151,29 @@ export const PREMIUM_PLANS = [
     id: "five_year",
     name: "5-Year Pro",
     priceLabel: "P199 / 5 years",
+    priceText: "P199",
+    periodLabel: "5 years",
     description: "Pay once, stay covered through school and early tertiary years. Save 33%.",
     badge: "Save 33%",
     highlighted: false,
   },
 ];
+
+/**
+ * Cheapest way in, for upsell copy ("Upgrade to Pro for P59"). Reading it from the plan
+ * list keeps paywall strings from drifting apart when pricing changes.
+ * @returns {string}
+ */
+export function getEntryPlanPriceText() {
+  return PREMIUM_PLANS[0]?.priceText || "P59";
+}
+
+/** @returns {string} e.g. "P59/year" */
+export function getEntryPlanPriceWithPeriod() {
+  const plan = PREMIUM_PLANS[0];
+  if (!plan) return "P59/year";
+  return `${plan.priceText}/${plan.periodLabel}`;
+}
 
 /** @param {'yearly' | 'five_year'} planId */
 export function getPlanCheckoutLabel(planId) {
