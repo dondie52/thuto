@@ -30,8 +30,13 @@ export function mergeContentOverrides(baseRows, overrideRows) {
     const patch = { ...override.patch, id };
     byId.set(id, current ? { ...current, ...patch, ...carryCanonicalName(current, patch) } : patch);
   }
-  const ordered = (baseRows || []).map((row) => byId.get(row.id)).filter(Boolean);
   const baseIds = new Set((baseRows || []).map((row) => row.id));
+  // A CMS-created row has no bundled JSON to fall back to, so it can be hard-deleted outright;
+  // a bundled row can only ever be archived. Downstream code (the CMS delete/archive choice)
+  // needs to tell the two apart.
+  for (const [id, row] of byId) row.hasBundledRecord = baseIds.has(id);
+
+  const ordered = (baseRows || []).map((row) => byId.get(row.id)).filter(Boolean);
   for (const override of overrideRows || []) {
     const id = override?.id || override?.patch?.id;
     if (id && !baseIds.has(id) && byId.has(id)) ordered.push(byId.get(id));

@@ -56,3 +56,30 @@ export function matchesQualificationFilter(programme, levelFilter) {
   if (levelFilter === "pg") return level === "postgraduate" || level === "phd";
   return true;
 }
+
+/**
+ * The literal level values a programme record can be edited to hold (CMS "Level" field). This is
+ * a narrower, display-facing vocabulary than inferQualificationLevel's buckets above — it is what
+ * gets written to `programme.qualification`, not what a filter groups by.
+ */
+export const PROGRAMME_LEVEL_OPTIONS = ["Certificate", "Short Course", "Diploma", "Undergraduate", "Postgraduate"];
+
+/**
+ * Bundled data uses free-text levels ("Degree", "Higher Diploma"). Map them onto
+ * PROGRAMME_LEVEL_OPTIONS so existing programmes still show a level in the CMS editor.
+ * @param {string | null | undefined} value
+ * @returns {string}
+ */
+export function matchProgrammeLevel(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  const exact = PROGRAMME_LEVEL_OPTIONS.find((option) => option.toLowerCase() === text.toLowerCase());
+  if (exact) return exact;
+  const level = inferQualificationLevel({ qualification: text });
+  if (level === "degree") return "Undergraduate";
+  if (level === "postgraduate" || level === "phd") return "Postgraduate";
+  if (level === "diploma") return "Diploma";
+  if (level === "certificate") return "Certificate";
+  if (level === "short_course") return "Short Course";
+  return "";
+}

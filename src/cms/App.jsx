@@ -19,6 +19,7 @@ import { PhotoGalleryField, PhotoUploadField } from "../components/partner/Photo
 import { useDocumentTitle } from "../hooks/useDocumentTitle.js";
 import { defaultCurrencyForCountry } from "../lib/marketLocales.js";
 import {
+  createProgrammeForPartner,
   fetchInstitutionAnalytics,
   fetchInstitutionLeads,
   fetchInstitutionMemberships,
@@ -30,8 +31,9 @@ import {
   summarizeInstitutionAnalytics,
   updateLeadStatus,
 } from "../lib/partner.js";
+import { deleteProgrammeOverride } from "../lib/contentManagement.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
-import { inferQualificationLevel } from "../lib/programmeQualification.js";
+import { PROGRAMME_LEVEL_OPTIONS, matchProgrammeLevel } from "../lib/programmeQualification.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
   OPEN_STATE_OPTIONS,
@@ -535,7 +537,8 @@ function usePartnerPortalData() {
     const [members, universityData, programmeData] = await Promise.all([
       fetchInstitutionMemberships(),
       fetchUniversities(),
-      fetchProgrammes(),
+      // Partner staff need to see their own archived programmes to restore them; students never do.
+      fetchProgrammes({ includeArchived: true, includeAllCountries: true }),
     ]);
     setMemberships(members);
     setAllUniversities(universityData.list || []);
@@ -2693,24 +2696,6 @@ function ProfilePage() {
   );
 }
 
-const PROGRAMME_LEVEL_OPTIONS = ["Certificate", "Short Course", "Diploma", "Undergraduate", "Postgraduate"];
-
-// Bundled data uses free-text levels ("Degree", "Higher Diploma"). Map them onto the
-// small set of options this dropdown offers, so existing programmes still show a level.
-function matchProgrammeLevel(value) {
-  const text = String(value || "").trim();
-  if (!text) return "";
-  const exact = PROGRAMME_LEVEL_OPTIONS.find((option) => option.toLowerCase() === text.toLowerCase());
-  if (exact) return exact;
-  const level = inferQualificationLevel({ qualification: text });
-  if (level === "degree") return "Undergraduate";
-  if (level === "postgraduate" || level === "phd") return "Postgraduate";
-  if (level === "diploma") return "Diploma";
-  if (level === "certificate") return "Certificate";
-  if (level === "short_course") return "Short Course";
-  return "";
-}
-
 const PROGRAMME_FIELDS = [
   { key: "description", label: "Programme description", type: "textarea", rows: 5, span: "full" },
   { key: "applyUrl", label: "External application link", type: "url" },
@@ -2730,29 +2715,199 @@ const PROGRAMME_FIELDS = [
   { key: "jobOpportunities", label: "Common jobs after graduation (one per line)", type: "textarea", rows: 4 },
 ];
 
+function NewProgrammeForm({ portal, onCreated, onCancel }) {
+  const [name, setName] = useState("");
+  const [level, setLevel] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleCreate() {
+    if (!name.trim()) {
+      setError("Give the programme a name.");
+      return;
+    }
+    setSaving(true);
+    setError("");
+    try {
+      const id = await createProgrammeForPartner({
+        institutionId: portal.activeInstitutionId,
+        name,
+        university: portal.university?.name || portal.university?.canonicalName || "",
+        country: portal.university?.country,
+      });
+      if (level) {
+        await saveProgrammeOverrideForPartner(id, portal.activeInstitutionId, { qualification: level });
+      }
+      await portal.loadBase();
+      onCreated(id);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not create this programme.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="space-y-3 rounded-3xl border border-brand-200 bg-brand-50/40 p-4">
+      <h3 className="font-display text-base font-semibold text-slate-900">Add a new programme</h3>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <input
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          placeholder="Programme name"
+          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        />
+        <select
+          value={level}
+          onChange={(event) => setLevel(event.target.value)}
+          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+        >
+          <option value="">Select level (optional)</option>
+          {PROGRAMME_LEVEL_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error ? <p className="text-sm text-red-700">{error}</p> : null}
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={handleCreate}
+          disabled={saving}
+          className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-60"
+        >
+          {saving ? "Creating…" : "Create programme"}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function ProgrammesPage() {
   const portal = usePortal();
+  const navigate = useNavigate();
   useDocumentTitle("Programmes | Institution Dashboard");
-  const [editing, setEditing] = useState(false);
-  const [snapshot, setSnapshot] = useState(null);
   const [search, setSearch] = useState("");
+  const [creating, setCreating] = useState(false);
 
   const filteredProgrammes = useMemo(() => {
     const query = search.trim().toLowerCase();
     if (!query) return portal.institutionProgrammes;
-    return portal.institutionProgrammes.filter((programme) => (programme.name || "").toLowerCase().includes(query));
+    return portal.institutionProgrammes.filter((programme) => {
+      const level = matchProgrammeLevel(programme.qualification).toLowerCase();
+      return (
+        (programme.name || "").toLowerCase().includes(query) ||
+        (programme.faculty || "").toLowerCase().includes(query) ||
+        level.includes(query)
+      );
+    });
   }, [portal.institutionProgrammes, search]);
+
+  return (
+    <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programmes</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Manage institution programmes</h2>
+          <p className="mt-1 text-sm text-slate-600">Select a programme to edit its own page.</p>
+        </div>
+        {!creating ? (
+          <button
+            type="button"
+            onClick={() => setCreating(true)}
+            className="rounded-2xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+          >
+            Add new programme
+          </button>
+        ) : null}
+      </div>
+
+      {creating ? (
+        <NewProgrammeForm
+          portal={portal}
+          onCancel={() => setCreating(false)}
+          onCreated={(id) => {
+            setCreating(false);
+            navigate(`/programmes/${id}`);
+          }}
+        />
+      ) : null}
+
+      <input
+        type="search"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        placeholder="Search by name, faculty, or level"
+        aria-label="Search programmes"
+        className="w-full max-w-md rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+      />
+
+      {filteredProgrammes.length ? (
+        <ul className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200">
+          {filteredProgrammes.map((programme) => (
+            <li key={programme.id}>
+              <button
+                type="button"
+                onClick={() => navigate(`/programmes/${programme.id}`)}
+                className="flex w-full flex-wrap items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-slate-50"
+              >
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-slate-900">{programme.name}</p>
+                  <p className="truncate text-sm text-slate-500">
+                    {[matchProgrammeLevel(programme.qualification), programme.faculty].filter(Boolean).join(" · ") ||
+                      "No level or faculty listed"}
+                  </p>
+                </div>
+                {programme.archived ? (
+                  <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                    Archived
+                  </span>
+                ) : null}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-sm text-slate-500">No programmes match your search.</p>
+      )}
+    </div>
+  );
+}
+
+function ProgrammeEditPage() {
+  const portal = usePortal();
+  const navigate = useNavigate();
+  const { programmeId } = useParams();
+  const [editing, setEditing] = useState(false);
+  const [snapshot, setSnapshot] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const programme = portal.institutionProgrammes.find((row) => row.id === programmeId);
+  useDocumentTitle(programme ? `${programme.name} | Institution Dashboard` : "Programme | Institution Dashboard");
+
+  useEffect(() => {
+    if (programme) portal.fillProgrammeForm(programmeId);
+    setEditing(false);
+    setSnapshot(null);
+    // Only re-fill when the id itself changes — fillProgrammeForm sets portal state, which
+    // would otherwise create a render loop if `portal` were in the dependency list.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [programmeId]);
 
   const feeField = {
     key: "feesDomestic",
     label: `Domestic fees (${defaultCurrencyForCountry(portal.university?.country)})`,
   };
-
-  // Changing the selected programme swaps the whole form out from under an edit.
-  useEffect(() => {
-    setEditing(false);
-    setSnapshot(null);
-  }, [portal.selectedProgrammeId]);
 
   function updateField(key, value) {
     portal.setProgrammeForm((state) => ({ ...state, [key]: value }));
@@ -2776,67 +2931,109 @@ function ProgrammesPage() {
     setEditing(false);
   }
 
-  return (
-    <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programmes</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">Manage institution programmes</h2>
-          <p className="mt-1 text-sm text-slate-600">
-            {editing ? "Editing — changes publish when you save." : "Pick a programme to review what students currently see."}
-          </p>
-        </div>
-        {portal.selectedProgrammeId ? (
-          <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
-        ) : null}
-      </div>
+  async function handleArchiveToggle() {
+    if (!programme) return;
+    setBusy(true);
+    setError("");
+    try {
+      await saveProgrammeOverrideForPartner(programme.id, portal.activeInstitutionId, {
+        archived: !programme.archived,
+      });
+      await portal.loadBase();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not update this programme.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
-      <div className="flex flex-col gap-3 lg:max-w-md">
-        <input
-          type="search"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search programmes by name"
-          aria-label="Search programmes by name"
-          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-        />
-        <select
-          value={portal.selectedProgrammeId}
-          onChange={(event) => portal.fillProgrammeForm(event.target.value)}
-          aria-label="Select programme"
-          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+  async function handleDelete() {
+    if (!programme) return;
+    if (!window.confirm(`Delete "${programme.name}"? This cannot be undone.`)) return;
+    setBusy(true);
+    setError("");
+    try {
+      await deleteProgrammeOverride(programme.id);
+      await portal.loadBase();
+      navigate("/programmes");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not delete this programme.");
+      setBusy(false);
+    }
+  }
+
+  if (!programme) {
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-slate-600">Programme not found.</p>
+        <button
+          type="button"
+          onClick={() => navigate("/programmes")}
+          className="text-sm font-semibold text-brand-700 hover:underline"
         >
-          <option value="">
-            {filteredProgrammes.length ? "Select programme" : "No programmes match your search"}
-          </option>
-          {filteredProgrammes.map((programme) => (
-            <option key={programme.id} value={programme.id}>
-              {programme.name}
-            </option>
-          ))}
-        </select>
+          ← Back to programmes
+        </button>
       </div>
+    );
+  }
 
-      {portal.selectedProgrammeId ? (
-        <>
-          <FieldGrid
-            fields={[...PROGRAMME_FIELDS, feeField]}
-            form={portal.programmeForm}
-            editing={editing}
-            onChange={updateField}
-          />
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
-            </div>
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
-              Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
-            </div>
+  return (
+    <div className="space-y-5">
+      <button
+        type="button"
+        onClick={() => navigate("/programmes")}
+        className="text-sm font-semibold text-brand-700 hover:underline"
+      >
+        ← Back to programmes
+      </button>
+
+      <div className="space-y-5 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-card lg:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">Programme</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">{programme.name}</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              {editing ? "Editing — changes publish when you save." : "This page shows only what students see for this programme."}
+              {programme.archived ? " Archived — hidden from the student catalogue." : ""}
+            </p>
           </div>
-        </>
-      ) : (
-        <p className="text-sm text-slate-500">Choose a programme to edit its public details, deadlines, and CTA links.</p>
-      )}
+          <EditControls editing={editing} locked={false} onEdit={startEditing} onSave={saveEditing} onCancel={cancelEditing} />
+        </div>
+
+        {error ? <p className="text-sm text-red-700">{error}</p> : null}
+
+        <FieldGrid fields={[...PROGRAMME_FIELDS, feeField]} form={portal.programmeForm} editing={editing} onChange={updateField} />
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+            Scholarship, media, SEO, and richer statistics panels are reserved spaces in this first release.
+          </div>
+          <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+            Views, saves, shares, and applications will populate here as the remaining analytics surfaces go live.
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-3 border-t border-slate-200 pt-4">
+          <button
+            type="button"
+            onClick={handleArchiveToggle}
+            disabled={busy}
+            className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800 hover:border-slate-300 disabled:opacity-60"
+          >
+            {programme.archived ? "Restore programme" : "Archive programme"}
+          </button>
+          {!programme.hasBundledRecord ? (
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={busy}
+              className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 hover:border-red-300 disabled:opacity-60"
+            >
+              Delete programme
+            </button>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }
@@ -3755,6 +3952,7 @@ export default function CmsApp() {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="staff" element={<Navigate to="/profile?tab=staff" replace />} />
           <Route path="programmes" element={<ProgrammesPage />} />
+          <Route path="programmes/:programmeId" element={<ProgrammeEditPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route
             path="feed"

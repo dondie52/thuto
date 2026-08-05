@@ -345,6 +345,38 @@ export async function saveInstitutionOverride(institutionId, patch, published = 
   if (error) throw new Error(error.message);
 }
 
+function slugify(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+/**
+ * A programme with no bundled catalogue row. mergeContentOverrides
+ * (contentManagement.js:47-52) already appends any override whose id is not in the bundled
+ * JSON, so creating one is just calling saveProgrammeOverrideForPartner with a fresh id.
+ *
+ * @param {{
+ *   institutionId: string, name: string, university: string,
+ *   universityShort?: string, country?: string,
+ * }} input
+ * @returns {Promise<string>} the new programme id
+ */
+export async function createProgrammeForPartner(input) {
+  const name = String(input.name || "").trim();
+  if (!name) throw new Error("A programme name is required.");
+  const id = `${slugify(input.institutionId)}-${slugify(name) || "programme"}-${Math.random().toString(36).slice(2, 7)}`;
+  await saveProgrammeOverrideForPartner(id, input.institutionId, {
+    name,
+    university: input.university,
+    universityShort: input.universityShort || input.university,
+    country: input.country || "bw",
+  });
+  return id;
+}
+
 /**
  * @param {string} programmeId
  * @param {string} institutionId
