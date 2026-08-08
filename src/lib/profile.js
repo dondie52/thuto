@@ -99,7 +99,7 @@ function safeFileName(name) {
  * @property {string | null} premium_until
  */
 
-const PROFILE_COUNTRIES = new Set(["bw", "na", "zw", "zm", "za"]);
+const PROFILE_COUNTRIES = new Set(["bw", "na", "zw", "zm", "za", "ls"]);
 const PROFILE_SYLLABI = new Set(ALL_SYLLABUS_VALUES);
 const PROFILE_SPONSORSHIP = new Set(ALL_SPONSORSHIP_VALUES);
 

@@ -7,6 +7,7 @@ export const MARKET_CURRENCY = {
   zw: "USD",
   zm: "ZMW",
   za: "ZAR",
+  ls: "LSL",
 };
 
 /**
@@ -54,6 +55,11 @@ export const SPONSORSHIP_BY_COUNTRY = {
   ],
   za: [
     { value: "nsfas", label: "NSFAS (Government) Funding" },
+    { value: "private", label: "Private / Corporate Funding" },
+    { value: "self_funded", label: "Self-Funded" },
+  ],
+  ls: [
+    { value: "nmds", label: "NMDS (Government) Bursary/Loan" },
     { value: "private", label: "Private / Corporate Funding" },
     { value: "self_funded", label: "Self-Funded" },
   ],
@@ -213,6 +219,32 @@ export const GOVERNMENT_FUNDING_BY_COUNTRY = {
     ],
     verifyBody: "Cross-check every requirement with NSFAS notices for the funding year you are applying in.",
   },
+  ls: {
+    schemeLabel: "NMDS",
+    fundingRouteTitle: "Government bursary / loan",
+    fundingRouteBody:
+      "National Manpower Development Secretariat (NMDS) bursaries and loans and related public funding for Lesotho tertiary study.",
+    portalUrl: "",
+    kicker: "Lesotho — NMDS",
+    heading: "NMDS student bursaries and loans",
+    subheading: "Guidance only — confirm each intake with NMDS",
+    intro:
+      "NMDS administers government bursaries and loans for eligible Basotho students. Windows, covered institutions, and documents change by year — confirm directly with NMDS or the Ministry of Education and Training before you rely on any detail here.",
+    portalButtonLabel: "Browse universities",
+    warningTitle: "No live portal listed",
+    warningBody: "Thuto does not list a live NMDS application portal. Prefer official NMDS or ministry notices.",
+    contactsHeading: "Where to look",
+    contactsNote: "Start with the NMDS office and official Ministry of Education and Training notices.",
+    contacts: [{ label: "NMDS", detail: "Ministry of Education and Training, Lesotho", tel: "" }],
+    stepsHeading: "Typical path",
+    steps: [
+      { title: "Confirm eligibility", body: "Check citizenship, institution, and programme rules for the current intake." },
+      { title: "Gather documents", body: "Prepare ID, academic results, and any forms required by NMDS." },
+      { title: "Apply through NMDS", body: "Submit through the official NMDS application process before the deadline." },
+      { title: "Track outcomes", body: "Follow up with NMDS on award status and any acceptance steps." },
+    ],
+    verifyBody: "Cross-check every requirement with NMDS or Ministry of Education and Training notices for the intake year you are applying in.",
+  },
 };
 
 /**
@@ -309,6 +341,23 @@ export const INTERNATIONAL_GUIDANCE_BY_COUNTRY = {
       {
         title: "DHET — private higher education register",
         url: "https://www.dhet.gov.za/",
+      },
+    ],
+  },
+  ls: {
+    title: "International applicants",
+    summary:
+      "International applicants to Lesotho institutions should confirm Council on Higher Education (CHE) accreditation, entry requirements, and study permit steps with the institution and Lesotho immigration.",
+    steps: [
+      "Confirm the institution and programme are CHE-accredited.",
+      "Check entry requirements and whether an international fee rate applies.",
+      "Prepare certified academic transcripts and identity documents for the application.",
+      "Apply for a Lesotho study/residence permit via official immigration channels if required.",
+    ],
+    links: [
+      {
+        title: "Lesotho Council on Higher Education (CHE)",
+        url: "https://che.org.ls/",
       },
     ],
   },
