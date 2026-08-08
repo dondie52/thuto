@@ -38,7 +38,7 @@ function slugify(s) {
     .replace(/^-|-$/g, "");
 }
 
-const COUNTRY_LABEL = { bw: "Botswana", na: "Namibia", zw: "Zimbabwe", zm: "Zambia", za: "South Africa" };
+const COUNTRY_LABEL = { bw: "Botswana", na: "Namibia", zw: "Zimbabwe", zm: "Zambia", za: "South Africa", ls: "Lesotho" };
 
 function pickFieldForName(name) {
   const n = String(name || "").toLowerCase();

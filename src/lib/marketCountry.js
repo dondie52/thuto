@@ -5,6 +5,7 @@ export const MARKET_COUNTRIES = [
   { code: "zw", label: "Zimbabwe" },
   { code: "zm", label: "Zambia" },
   { code: "za", label: "South Africa" },
+  { code: "ls", label: "Lesotho" },
 ];
 
 export const DEFAULT_MARKET_COUNTRY = "bw";
@@ -15,13 +16,13 @@ const VALID = new Set(MARKET_COUNTRIES.map((c) => c.code));
 
 /**
  * @param {unknown} value
- * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za' | null}
+ * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za' | 'ls' | null}
  */
 export function normalizeMarketCountry(value) {
   const code = String(value || "")
     .trim()
     .toLowerCase();
-  if (VALID.has(code)) return /** @type {'bw' | 'na' | 'zw' | 'zm' | 'za'} */ (code);
+  if (VALID.has(code)) return /** @type {'bw' | 'na' | 'zw' | 'zm' | 'za' | 'ls'} */ (code);
   return null;
 }
 
@@ -44,7 +45,7 @@ function readGuestCountry() {
 /**
  * Persist guest (and post-login sync) market country for catalogue filtering.
  * @param {unknown} value
- * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za'}
+ * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za' | 'ls'}
  */
 export function setMarketCountry(value) {
   const code = normalizeMarketCountry(value) || DEFAULT_MARKET_COUNTRY;
@@ -62,7 +63,7 @@ export function setMarketCountry(value) {
  * Resolve active market country.
  * Preference: explicit profile country → guest localStorage → Botswana.
  * @param {{ country?: string | null } | string | null | undefined} [profileOrCountry]
- * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za'}
+ * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za' | 'ls'}
  */
 export function resolveMarketCountry(profileOrCountry) {
   const fromProfile =
@@ -75,7 +76,7 @@ export function resolveMarketCountry(profileOrCountry) {
 
 /**
  * @param {Record<string, unknown> | null | undefined} item
- * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za'}
+ * @returns {'bw' | 'na' | 'zw' | 'zm' | 'za' | 'ls'}
  */
 export function itemMarketCountry(item) {
   return normalizeMarketCountry(item?.country) || DEFAULT_MARKET_COUNTRY;

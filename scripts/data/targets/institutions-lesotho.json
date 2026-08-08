@@ -1,0 +1,393 @@
+[
+  {
+    "id": "nul",
+    "nameCanonical": "National University of Lesotho",
+    "nameShort": "NUL",
+    "aliases": [
+      "National University of Lesotho",
+      "NUL"
+    ],
+    "location": "Roma",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 5221 3000",
+    "programmes": [
+      "Certificate in Statistics",
+      "Diploma in Adult Education",
+      "Diploma in Agricultural Education",
+      "Diploma in Applied Philosophy and Public Ethics",
+      "Diploma in Library & Information Studies",
+      "Diploma in Management",
+      "Diploma in Mass Communication",
+      "Diploma in Pastoral Care and Counselling",
+      "Diploma in Theatre for Development",
+      "Higher Diploma in Education (Primary)",
+      "B.Ed. in Special Education",
+      "BA in Business and Entrepreneurship",
+      "BA in Pastoral Care and Counselling",
+      "BA in Practical Philosophy and Applied Ethics",
+      "Bachelor of Accounting",
+      "Bachelor of Arts",
+      "BA in Economics",
+      "Bachelor of Arts in Urban and Regional Planning",
+      "Bachelor of Commerce",
+      "Bachelor of Education (Adult Education)",
+      "Bachelor of Education (B.Ed.)",
+      "Bachelor of Education (Primary)",
+      "Bachelor of Education in Special Education",
+      "Bachelor of Laws",
+      "Bachelor of Management",
+      "Bachelor of Marketing",
+      "Bachelor of Nursing Science",
+      "Bachelor of Science",
+      "Bachelor of Science in Agriculture (BSc Agric)",
+      "Bachelor of Science in Biotechnology",
+      "Bachelor of Science in Chemical Technology",
+      "Bachelor of Science in Electronics",
+      "B.Eng. in Electronics",
+      "Bachelor of Science in Nursing and Midwifery",
+      "Bachelor of Science in Nutrition",
+      "Bachelor of Science in Statistics",
+      "Bachelor of Science with Education",
+      "Bachelor of Social Work",
+      "B.Eng. Computer Systems and Networks",
+      "BSc Agric (Agric Extension)",
+      "BSc Agric (Agricultural Economics)",
+      "BSc Agric (Animal Science)",
+      "BSc Agric (Crop Science)",
+      "BSc Agric (Soil Science)",
+      "BSc Computer Science",
+      "BSc in Environmental Sciences",
+      "BSc in Consumer Sciences",
+      "BSc in Environmental Health",
+      "BSc in Nursing and Midwifery",
+      "BSc in Information Systems",
+      "Post-graduate Diploma in Economics",
+      "Post-graduate Diploma in Education",
+      "Bachelor of Pharmacy (Honours)",
+      "Master of Arts in Adult Education",
+      "Master of Arts in Education",
+      "Master of Arts in Development Studies",
+      "Master of Arts in History",
+      "Master of Arts in Literature in English",
+      "Master of Arts (English Language & Linguistics)",
+      "Master of Arts in Political Science",
+      "Master of Arts in Public Administration",
+      "Master of Education",
+      "Master of Education (Adult Education)",
+      "Master of Science in Agric Extension",
+      "Master of Science in Economics",
+      "Master of Science in Education",
+      "Master of Science in Sociology",
+      "Master of Social Work",
+      "PhD in Literature in English",
+      "PhD (English Language & Linguistics)"
+    ]
+  },
+  {
+    "id": "luct-lesotho",
+    "nameCanonical": "Limkokwing University of Creative Technology (Lesotho)",
+    "nameShort": "LUCT Lesotho",
+    "aliases": [
+      "Limkokwing University of Creative Technology",
+      "LUCT"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2231 5767",
+    "programmes": [
+      "Associate Degree in Business Management",
+      "Associate Degree in Marketing",
+      "Associate Degree in Retail Management",
+      "B Bus Hons in International Business",
+      "B Bus Hons in Entrepreneurship",
+      "B Bus Hons in Human Resource Management",
+      "Associate Degree in Information Technology",
+      "Associate Degree in Business Information Technology",
+      "Associate Degree in Multimedia in Software Engineering",
+      "BSc Hons in Information Technology",
+      "BSc Hons in Software Engineering with Multimedia",
+      "BSc Hons in Business Information Technology",
+      "Associate Degree in Public Relations",
+      "Associate Degree in Events Management",
+      "Associate Degree in Broadcasting Radio & TV",
+      "Associate Degree in Journalism",
+      "Associate Degree in Film Production",
+      "BA Hons in Professional Communication",
+      "BA Hons in Broadcasting & Journalism",
+      "BA Hons in Digital Film",
+      "Associate Degree in Graphic Design",
+      "Associate Degree in Creative Advertising",
+      "Associate Degree in Fashion & Apparel Design",
+      "B Des Hons in Professional Design",
+      "BA Hons in Fashion & Retailing",
+      "Associate Degree in Architecture Technology",
+      "BA Hons in Interior Architecture",
+      "Associate Degree in Tourism Management",
+      "Associate Degree in International Tourism",
+      "Associate Degree in Hotel Management",
+      "BA Hons in Tourism Management"
+    ]
+  },
+  {
+    "id": "lce",
+    "nameCanonical": "Lesotho College of Education",
+    "nameShort": "LCE",
+    "aliases": [
+      "Lesotho College of Education",
+      "LCE"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2231 2721",
+    "programmes": [
+      "Diploma in Education (Primary)",
+      "Diploma in Education (Secondary)",
+      "Certificate in Early Childhood Education (CECE)"
+    ]
+  },
+  {
+    "id": "lerotholi-polytechnic",
+    "nameCanonical": "Lerotholi Polytechnic",
+    "nameShort": "LP",
+    "aliases": [
+      "Lerotholi Polytechnic",
+      "LP"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2232 2851",
+    "programmes": [
+      "Diploma in Business Management",
+      "Diploma in Marketing Management",
+      "Diploma in Office Administration and Management",
+      "Diploma in Tourism Management",
+      "Diploma in Hospitality Management",
+      "Diploma in Mechanical Engineering",
+      "Diploma in Electrical and Electronic Engineering",
+      "Diploma in Computer Systems Engineering",
+      "Diploma in Civil Engineering",
+      "Diploma in Architectural Technology",
+      "Diploma in Construction Management",
+      "Diploma in Water and Environmental Engineering"
+    ]
+  },
+  {
+    "id": "lesotho-agricultural-college",
+    "nameCanonical": "Lesotho Agricultural College",
+    "nameShort": "LAC",
+    "aliases": [
+      "Lesotho Agricultural College",
+      "LAC"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2232 2484",
+    "programmes": [
+      "Diploma in Agriculture",
+      "Diploma in Agricultural Education",
+      "Diploma in Forestry and Resource Management",
+      "Diploma in Home Economics",
+      "Diploma in Home Economics Education",
+      "Diploma in Agricultural Engineering, Land and Water Management"
+    ]
+  },
+  {
+    "id": "national-health-training-college-lesotho",
+    "nameCanonical": "National Health Training College",
+    "nameShort": "NHTC",
+    "aliases": [
+      "National Health Training College",
+      "NHTC"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2831 2101",
+    "programmes": [
+      "Certificate in Auxiliary Social Work",
+      "Certificate in Nursing Assistant",
+      "Diploma in Environmental Health",
+      "Diploma in General Nursing",
+      "Diploma in Medical Laboratory Sciences",
+      "Diploma in Midwifery",
+      "Diploma in Primary Health Care (Nurse Clinician)",
+      "Diploma in Ophthalmic Nursing",
+      "Diploma in Pharmacy Technology",
+      "Diploma in Psychiatric and Mental Health Nursing",
+      "Diploma in Dental Therapy"
+    ]
+  },
+  {
+    "id": "roma-college-of-nursing",
+    "nameCanonical": "Roma College of Nursing",
+    "nameShort": "RCN",
+    "aliases": [
+      "Roma College of Nursing",
+      "RCN"
+    ],
+    "location": "Roma",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2834 0486",
+    "programmes": [
+      "Diploma in General Nursing",
+      "Diploma in Midwifery"
+    ]
+  },
+  {
+    "id": "paray-school-of-nursing",
+    "nameCanonical": "Paray School of Nursing",
+    "nameShort": "PSN",
+    "aliases": [
+      "Paray School of Nursing",
+      "PSN"
+    ],
+    "location": "Thaba-Tseka",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2290 0319",
+    "programmes": [
+      "Certificate in Nursing Assistant",
+      "Diploma in General Nursing",
+      "Diploma in Midwifery"
+    ]
+  },
+  {
+    "id": "scott-hospital-school-of-nursing",
+    "nameCanonical": "Scott Hospital School of Nursing",
+    "nameShort": "SSN",
+    "aliases": [
+      "Scott Hospital School of Nursing",
+      "SSN"
+    ],
+    "location": "Morija",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 5250 0110",
+    "programmes": [
+      "Certificate in Nursing Assistant",
+      "Diploma in General Nursing",
+      "Diploma in Midwifery"
+    ]
+  },
+  {
+    "id": "maluti-adventist-college",
+    "nameCanonical": "Maluti Adventist College",
+    "nameShort": "MAC",
+    "aliases": [
+      "Maluti Adventist College",
+      "MAC"
+    ],
+    "location": "Mapoteng",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2254 0211",
+    "programmes": [
+      "Diploma in General Nursing",
+      "Diploma in Midwifery"
+    ]
+  },
+  {
+    "id": "centre-for-accounting-studies-lesotho",
+    "nameCanonical": "Centre for Accounting Studies",
+    "nameShort": "CAS",
+    "aliases": [
+      "Centre for Accounting Studies",
+      "CAS"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2231 4257",
+    "programmes": [
+      "Association of Chartered Certified Accountants (ACCA) Programme",
+      "Chartered Institute of Public Finance and Accountancy (CIPFA) Programme",
+      "Chartered Institute of Management Accountants (CIMA) Programme"
+    ]
+  },
+  {
+    "id": "idm-lesotho",
+    "nameCanonical": "Institute of Development Management (IDM) Lesotho",
+    "nameShort": "IDM Lesotho",
+    "aliases": [
+      "Institute of Development Management (IDM) Lesotho"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2231 2868",
+    "programmes": [
+      "Diploma in Human Resource and Development",
+      "Advanced Diploma in Project Management",
+      "Certificate in Community Development",
+      "Diploma in Community Development",
+      "Diploma in HIV & AIDS Management",
+      "Diploma in Safety and Health",
+      "Diploma in Accounting and Business Studies",
+      "Certificate in Computer Engineering",
+      "Diploma in Computer Engineering",
+      "Diploma in Logistics and Transport",
+      "Chartered Institute of Procurement and Supply (CIPS) Programme"
+    ]
+  },
+  {
+    "id": "lipam",
+    "nameCanonical": "Lesotho Institute of Public Administration and Management",
+    "nameShort": "LIPAM",
+    "aliases": [
+      "Lesotho Institute of Public Administration and Management",
+      "LIPAM"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2231 2801",
+    "programmes": [
+      "Diploma in Public Administration and Management",
+      "Diploma in Human Resources Management and Labour Laws"
+    ]
+  },
+  {
+    "id": "leboha",
+    "nameCanonical": "Lesotho Boston Health Alliance (LeBOHA)",
+    "nameShort": "LeBOHA",
+    "aliases": [
+      "Lesotho Boston Health Alliance",
+      "LeBOHA"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2232 4262",
+    "programmes": [
+      "Family Medicine Speciality Training Programme (Post Graduate)"
+    ]
+  },
+  {
+    "id": "botho-lesotho",
+    "nameCanonical": "Botho University (Lesotho Campus)",
+    "nameShort": "Botho Lesotho",
+    "aliases": [
+      "Botho University (Lesotho Campus)"
+    ],
+    "location": "Maseru",
+    "country": "ls",
+    "website": "",
+    "phone": "+266 2231 3521",
+    "programmes": [
+      "Bachelor of Science (Honours) in Accounting",
+      "Bachelor of Science (Honours) in Business Management",
+      "Bachelor of Science (Honours) in Health Information Management",
+      "Bachelor of Science (Honours) in Computing",
+      "Bachelor of Science (Honours) in Mobile Computing",
+      "Bachelor of Science (Honours) in Finance",
+      "Bachelor of Education (Honours) Primary",
+      "Master of Education in Higher Education"
+    ]
+  }
+]
