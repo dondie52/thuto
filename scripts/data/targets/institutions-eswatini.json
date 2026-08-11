@@ -1,0 +1,683 @@
+[
+  {
+    "id": "uneswa",
+    "nameCanonical": "University of Eswatini",
+    "nameShort": "UNESWA",
+    "location": "Kwaluseni",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Doctor of Philosophy in Agricultural and Applied Economics",
+      "Doctor of Philosophy in Agricultural Education",
+      "Doctor of Philosophy in Horticulture (by Research)",
+      "Master of Science in Agricultural and Applied Economics",
+      "Master of Science in Agricultural Education",
+      "Master of Science in Agricultural Extension",
+      "Master of Science in Animal Science",
+      "Master of Science in Crop Protection",
+      "Master of Science in Crop Science",
+      "Master of Science in Horticulture",
+      "Bachelor of Science in Agricultural and Biosystems Engineering",
+      "Bachelor of Science in Agricultural Economics and Agribusiness Management",
+      "Bachelor of Science in Agricultural Education",
+      "Bachelor of Science in Agricultural Extension",
+      "Bachelor of Science in Agronomy",
+      "Bachelor of Science in Animal Science",
+      "Bachelor of Science in Horticulture",
+      "Diploma in Agriculture",
+      "Diploma in Agricultural Education",
+      "Certificate in Agriculture",
+      "Master of Science in Consumer Science Education",
+      "Master of Science in Food Science and Technology",
+      "Master of Science in Textiles",
+      "Bachelor of Science in Consumer Science",
+      "Bachelor of Science in Consumer Science Education",
+      "Bachelor of Science in Food Science, Nutrition and Technology",
+      "Bachelor of Science in Textile Apparel Design and Management",
+      "Diploma in Home Economics",
+      "Diploma in Home Economics Education",
+      "Master of Business Administration",
+      "Postgraduate Diploma in Taxation",
+      "Postgraduate Diploma in Public Sector Accounting",
+      "Bachelor of Commerce (Management, Accounting and Finance, Marketing)",
+      "Master of Science in Chemistry",
+      "Master of Science in Computational Physics",
+      "Master of Science in Computer Science",
+      "Master of Science in Conservation Ecology",
+      "Master of Science in Environmental Resources Management",
+      "Master of Science in Mathematics Finance",
+      "Master of Science in Mathematical Modelling",
+      "Master of Science in Pure Mathematics",
+      "Bachelor of Science (Mathematics, Physics, Chemistry, Biology)",
+      "Bachelor of Science in Geographic Information Science",
+      "Bachelor of Science in Geography, Environmental Science and Planning (GEP)",
+      "Bachelor of Science in Actuarial and Financial Mathematics",
+      "Bachelor of Science in Computer Science",
+      "Bachelor of Science in Computer Science Education",
+      "Bachelor of Science in Information Science",
+      "Bachelor of Science in Information Technology",
+      "Bachelor of Science in Urban & Regional Planning",
+      "Bachelor of Engineering in Electrical and Electronics Engineering",
+      "Postgraduate Diploma in Computer Science",
+      "Master of Arts in History",
+      "Master of Arts in Languages and Linguistics",
+      "Master of Arts in African Literature",
+      "Master of Arts in Linguistics",
+      "Bachelor of Arts in Humanities (History, Geography, Theology, African Languages, English, Literature)",
+      "Bachelor of Arts (Journalism and Mass Communication)",
+      "Master of Arts in Religious Studies",
+      "Diploma in Journalism and Mass Communication",
+      "Bachelor of Laws (LLB)",
+      "Bachelor of Arts in Social Sciences (BASS)",
+      "Bachelor of Social Work (BSW)",
+      "Master of Nursing Science in Family Nurse Practice",
+      "Master of Science in Midwifery",
+      "Bachelor of Nursing Science",
+      "Bachelor of Science in Community Health Nursing",
+      "Bachelor of Science in Environmental Health Science",
+      "Bachelor of Science in Environmental Health and Food Science",
+      "Bachelor of Science in Environmental Management and Occupational Safety and Health",
+      "Bachelor of Science in Environmental Management and Water Resources",
+      "Master of Science in Environmental Resources Management (Land & Water Management)",
+      "Diploma in General Nursing",
+      "Diploma in Environmental Health Science",
+      "Post Diploma Certificate in Community Health Nursing",
+      "Post Diploma Certificate in Community Mental Health Nursing",
+      "Post Diploma Certificate in Midwifery Science",
+      "Post-Diploma Certificate in Nephrology Nursing Science",
+      "Post Graduate Diploma in Neonatology",
+      "Certificate in Adult Education",
+      "Diploma in Adult Education",
+      "Bachelor of Education Primary (Language Arts)",
+      "Bachelor of Education Primary (Social Studies)",
+      "Bachelor of Education Primary (Science)",
+      "Bachelor of Education Secondary (Science)",
+      "Bachelor of Education Secondary (Business Education)",
+      "Bachelor of Education Secondary (Humanities)",
+      "Post-Graduate Certificate in Education",
+      "Doctor of Philosophy in Education (by Research)",
+      "Diploma in Law",
+      "Certificate in Portuguese",
+      "Certificate in Psychosocial Support",
+      "Diploma in Police Science",
+      "Certificate in Basic Recruit Training",
+      "Certificate in Middle Management Skills Development",
+      "Certificate in Junior Supervisory Skills Development",
+      "Secondary Teachers Diploma",
+      "Primary Teachers Diploma"
+    ]
+  },
+  {
+    "id": "asit-eswatini",
+    "nameCanonical": "Advanced School of Information Technology (ASIT)",
+    "nameShort": "ASIT",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Certified Computer Professional (CCP)",
+      "Diploma in Arena Animation International Programme (AAIP)",
+      "Diploma in Certified Network Specialist (ACNS)",
+      "Diploma in Information Security and Ethical Hacking (ISEH)"
+    ]
+  },
+  {
+    "id": "emcu",
+    "nameCanonical": "Eswatini Medical Christian University (EMCU)",
+    "nameShort": "EMCU",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Bachelor of Medicine and Surgery (MBBS)",
+      "Bachelor of Radiography",
+      "Bachelor of Nursing Science",
+      "Bachelor of Medical Laboratory Science",
+      "Bachelor of Psychology",
+      "Bachelor of Social Work",
+      "Bachelor of Pharmacy",
+      "Bachelor of Computer Science"
+    ]
+  },
+  {
+    "id": "good-shepherd-catholic-college-health-sciences",
+    "nameCanonical": "Good Shepherd Catholic College of Health Sciences",
+    "nameShort": "GSCCHS",
+    "location": "Siteki",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in General Nursing",
+      "Certificate in Nursing Assistant",
+      "Post Graduate Certificate in Midwifery",
+      "Diploma in Health and Safety"
+    ]
+  },
+  {
+    "id": "idm-eswatini",
+    "nameCanonical": "Institute of Development Management (IDM) Eswatini",
+    "nameShort": "IDM Eswatini",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Bachelor of Arts in Human Resources Management",
+      "Diploma in Human Resources Management",
+      "Certificate in Human Resources Management",
+      "Diploma in Information Technology",
+      "Certificate in Freight Forwarding and Customs Compliance",
+      "Bachelor of Science in Information Technology",
+      "Bachelor of Occupational Health and Safety",
+      "Bachelor of Education Management and School Leadership",
+      "Bachelor's in Community Development",
+      "Diploma in Occupational Health and Safety"
+    ]
+  },
+  {
+    "id": "limkokwing-eswatini",
+    "nameCanonical": "Limkokwing University of Creative Technology (Eswatini)",
+    "nameShort": "LUCT Eswatini",
+    "location": "Mbabane",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Associate Degree in Graphic Design",
+      "Associate Degree in Music Design",
+      "Associate Degree in Creative Multimedia",
+      "Associate Degree in Architectural Technology",
+      "Associate Degree in Public Relations",
+      "Associate Degree in Events Management",
+      "Associate Degree in Journalism and Media",
+      "Associate Degree in TV and Film Production",
+      "Associate Degree in International Tourism",
+      "Associate Degree in Information Technology",
+      "Associate Degree in Business Information Technology",
+      "Associate Degree in Hotel Management",
+      "Associate Degree in Business Management",
+      "Bachelor of Science in Information Technology",
+      "Bachelor of Arts in Professional Communication",
+      "Bachelor of Business in International Business Management"
+    ]
+  },
+  {
+    "id": "sanu",
+    "nameCanonical": "Southern African Nazarene University (SANU)",
+    "nameShort": "SANU",
+    "location": "Manzini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Pharmacy",
+      "Diploma in Business Management & Entrepreneurship",
+      "Diploma in Theology",
+      "Primary Teachers Diploma",
+      "Bachelor of Arts in Theology",
+      "Bachelor of Education in Special and Inclusive Education",
+      "Bachelor of Education in Leadership and Management for Inclusive Education",
+      "Bachelor of Education Primary Teaching (French)",
+      "Bachelor of Science in Nursing and Midwifery",
+      "Bachelor of Science in Pharmacy",
+      "Master of Science in Nursing"
+    ]
+  },
+  {
+    "id": "amadi-university-college",
+    "nameCanonical": "Amadi University College",
+    "nameShort": "Amadi",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Primary Teachers Diploma",
+      "Bachelor of Commerce (Accounting)",
+      "Bachelor of Education (Foundation)",
+      "Bachelor of Education in Early Childhood Care and Development (ECCD)"
+    ]
+  },
+  {
+    "id": "apist",
+    "nameCanonical": "African Prime Institute of Science and Technology (APIST)",
+    "nameShort": "APIST",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Health Records and Information Technology",
+      "Diploma in Agriculture and Community Development",
+      "Certificate in Architecture",
+      "Certificate in Electrical and Electronic Telecommunication"
+    ]
+  },
+  {
+    "id": "african-christian-college",
+    "nameCanonical": "African Christian College",
+    "nameShort": "ACC",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Leadership (Christian Studies)",
+      "Bachelor of Theology"
+    ]
+  },
+  {
+    "id": "botho-eswatini",
+    "nameCanonical": "Botho University (Eswatini Campus)",
+    "nameShort": "Botho Eswatini",
+    "location": "Mbabane",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Bachelor of Science in Network Security and Computer Forensics",
+      "Bachelor of Science in Computing",
+      "Bachelor of Commerce in Accounting",
+      "Bachelor of Business Administration in Business Management",
+      "Bachelor of Science in Mobile Computing",
+      "Bachelor of Science in Health Information Management"
+    ]
+  },
+  {
+    "id": "bradford-college",
+    "nameCanonical": "Bradford College",
+    "nameShort": "Bradford",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Primary Teachers Diploma",
+      "Secondary Teachers Diploma"
+    ]
+  },
+  {
+    "id": "cit-eswatini",
+    "nameCanonical": "Centre for International Technology and Consultancy (CIT)",
+    "nameShort": "CIT",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Primary Teachers Diploma"
+    ]
+  },
+  {
+    "id": "esami-eswatini",
+    "nameCanonical": "Eastern and Southern African Management Institute (ESAMI)",
+    "nameShort": "ESAMI",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Master of Business Administration",
+      "Master's in Human Resources Management",
+      "Master of Science in Project Management",
+      "Bachelor of Business Administration",
+      "Diploma in Management and Administration",
+      "Diploma in Human Resources",
+      "Diploma in Management"
+    ]
+  },
+  {
+    "id": "emrc",
+    "nameCanonical": "Emergency Medical Rescue College (EMRC)",
+    "nameShort": "EMRC",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Basic Ambulance Assistant",
+      "Certificate in Occupational Health and Safety",
+      "Certificate in Emergency Medical Care and Rescue",
+      "Diploma in Occupational Health and Safety",
+      "Diploma in Emergency Medical Care and Rescue",
+      "Diploma in Public Health",
+      "Diploma in Disaster & Risk Management",
+      "Bachelor of Science in Occupational Health and Safety",
+      "Bachelor's Degree in Public Health",
+      "Bachelor of Science in Emergency Medical Care",
+      "Bachelor's Degree in Disaster & Risk Management"
+    ]
+  },
+  {
+    "id": "emmanuel-wesleyan-bible-college",
+    "nameCanonical": "Emmanuel Wesleyan Bible College",
+    "nameShort": "EWBC",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Christian Service",
+      "Diploma in Counselling"
+    ]
+  },
+  {
+    "id": "irdm",
+    "nameCanonical": "Institute of Research Management and Development (IRDM)",
+    "nameShort": "IRDM",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Security Management",
+      "Diploma in Business Studies",
+      "Certificate in Counselling"
+    ]
+  },
+  {
+    "id": "mananga-centre",
+    "nameCanonical": "Mananga Centre for Regional Integration and Management Development",
+    "nameShort": "Mananga Centre",
+    "location": "Ezulwini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Marketing",
+      "Diploma in Public Sector Accounting",
+      "Diploma in Entrepreneurship",
+      "Certificate in Project Management",
+      "Supervisors' Development Programme",
+      "Certificate in Human Resources"
+    ]
+  },
+  {
+    "id": "muna-health-life-institute",
+    "nameCanonical": "Muna Health Life Institute",
+    "nameShort": "Muna",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Health Life Management Sciences"
+    ]
+  },
+  {
+    "id": "regent-business-school-eswatini",
+    "nameCanonical": "Regent Business School (RBS) Eswatini",
+    "nameShort": "RBS Eswatini",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Higher Certificate in Business Management",
+      "Higher Certificate in Entrepreneurship"
+    ]
+  },
+  {
+    "id": "springfield-research-university",
+    "nameCanonical": "Springfield Research University (SRU)",
+    "nameShort": "SRU",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Bachelor of Science in Forestry",
+      "Bachelor of Arts in Political Science and Governance",
+      "Bachelor of Arts in Psychology",
+      "Bachelor of Business Administration in Supply Chain Management and Logistics",
+      "Bachelor of Science in Computer Science",
+      "Bachelor of Laws (LLB)",
+      "Bachelor of Actuarial Science and Financial Mathematics",
+      "Master of Laws",
+      "Master of Public Health",
+      "Master of Research: Engineering and Technology",
+      "Master of Research: Education and Learning Science",
+      "Master of Research: Arts, Political Science and Law",
+      "Master of Research: Science and Medical Sciences",
+      "Master of Research: Business Management and Economics",
+      "Doctor of Philosophy: Engineering and Technology",
+      "Doctor of Philosophy: Education and Learning Science",
+      "Doctor of Philosophy: Arts, Political Science, and Law",
+      "Doctor of Philosophy: Science and Medical Sciences",
+      "Doctor of Philosophy: Business Management and Economics"
+    ]
+  },
+  {
+    "id": "eswatini-college-of-theology",
+    "nameCanonical": "Eswatini College of Theology",
+    "nameShort": "ECT",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Bachelor of Theology",
+      "Bachelor's in Psychology",
+      "Diploma in Bible and Theology",
+      "Diploma in Peace and Conflict Studies",
+      "Certificate in Psychosocial Counselling"
+    ]
+  },
+  {
+    "id": "workers-college-eswatini",
+    "nameCanonical": "Workers College",
+    "nameShort": "Workers College",
+    "location": "Manzini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Primary Teachers Diploma",
+      "Secondary Teachers Diploma",
+      "Early Childhood Teachers Diploma",
+      "Bachelor of Commerce",
+      "Diploma in Occupational Health and Safety",
+      "Diploma in Business Administration"
+    ]
+  },
+  {
+    "id": "soft-tech-college",
+    "nameCanonical": "Soft-Tech College",
+    "nameShort": "Soft-Tech",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Computer Hardware and Networking",
+      "Diploma in Business Information Technology",
+      "Certificate in Server Administration",
+      "Certificate in Office Management",
+      "Certificate in Project Management",
+      "Certificate in Database",
+      "Certificate in Storage Essentials",
+      "Certificate in Google Apps",
+      "Certificate in Android",
+      "Certificate in Certified Ethical Hacking",
+      "Certificate in CISCO Certified Network Associate",
+      "Certificate in CISCO Certified Network Professional"
+    ]
+  },
+  {
+    "id": "nosa-eswatini",
+    "nameCanonical": "NOSA Eswatini",
+    "nameShort": "NOSA",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Occupational Health and Safety Short Programmes"
+    ]
+  },
+  {
+    "id": "shak-enterprise",
+    "nameCanonical": "Shak Enterprise",
+    "nameShort": "Shak Enterprise",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Occupational Health and Safety Short Programmes"
+    ]
+  },
+  {
+    "id": "st-john-eswatini",
+    "nameCanonical": "St John Eswatini",
+    "nameShort": "St John",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Occupational Health and Safety Short Programmes"
+    ]
+  },
+  {
+    "id": "simavsheq",
+    "nameCanonical": "SIMAVSHEQ",
+    "nameShort": "SIMAVSHEQ",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Occupational Health and Safety Short Programmes"
+    ]
+  },
+  {
+    "id": "bethel-vocational-centre",
+    "nameCanonical": "Bethel Vocational Centre",
+    "nameShort": "Bethel VC",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Welding Design",
+      "Certificate in Construction and Building",
+      "Certificate in Electrical Engineering"
+    ]
+  },
+  {
+    "id": "bsa-training-centre",
+    "nameCanonical": "BSA Training Centre",
+    "nameShort": "BSA",
+    "location": "Motshane, Mbabane & Manzini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Heavy Motor Vehicle",
+      "Certificate in Light Motor Vehicle",
+      "Certificate in Health and Safety",
+      "Certificate in Electrical Engineering",
+      "Certificate in Plumbing"
+    ]
+  },
+  {
+    "id": "bosco-youth-agricultural-centre",
+    "nameCanonical": "Bosco Youth Agricultural Centre (BYAC)",
+    "nameShort": "BYAC",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Permaculture",
+      "Certificate in Horticulture",
+      "Certificate in Bee Keeping",
+      "Certificate in Pig Production"
+    ]
+  },
+  {
+    "id": "hillside-college",
+    "nameCanonical": "Hillside College",
+    "nameShort": "Hillside",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "HIV/AIDS Management"
+    ]
+  },
+  {
+    "id": "ngwane-park-tvet",
+    "nameCanonical": "Ngwane Park TVET",
+    "nameShort": "Ngwane Park TVET",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Fashion Design"
+    ]
+  },
+  {
+    "id": "sicobho-skills-centre",
+    "nameCanonical": "Sicobho Skills Centre",
+    "nameShort": "Sicobho",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Carpentry and Welding"
+    ]
+  },
+  {
+    "id": "solar-training-renewable-energy-centre",
+    "nameCanonical": "Solar Training and Renewable Energy Entrepreneurship Centre",
+    "nameShort": "Solar Training Centre",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Renewable Energy and Entrepreneurship"
+    ]
+  },
+  {
+    "id": "ubombo-technical-college",
+    "nameCanonical": "Ubombo Technical College (U-TECH)",
+    "nameShort": "U-TECH",
+    "location": "Big Bend",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Information Technology",
+      "Diploma in Data Science",
+      "Diploma in Electrical Engineering"
+    ]
+  },
+  {
+    "id": "ecot",
+    "nameCanonical": "Eswatini College of Technology (ECOT)",
+    "nameShort": "ECOT",
+    "location": "Mbabane",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Business Studies",
+      "Diploma in Quantity Surveying",
+      "Diploma in Architectural Technology",
+      "Diploma in Civil Engineering",
+      "Secondary Teacher's Diploma: Commercial",
+      "Secondary Teacher's Diploma: Information and Communication Technology",
+      "Secondary Teacher's Diploma: Design & Technology",
+      "Vocational Instructor's Diploma",
+      "Diploma in Office Management & Technology",
+      "Diploma in Human Resources Management",
+      "Diploma in Hospitality and Tourism",
+      "Diploma in Electrical and Electronics",
+      "Diploma in Automotive Engineering (Light and Heavy)",
+      "Diploma in Mechanical Engineering",
+      "Diploma in Computer Science",
+      "Diploma in Information Technology"
+    ]
+  },
+  {
+    "id": "ecodec",
+    "nameCanonical": "Eswatini Cooperative Development College (ECODEC)",
+    "nameShort": "ECODEC",
+    "location": "Eswatini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Certificate in Cooperatives Business Management",
+      "Diploma in Mechanical and Manufacturing Engineering",
+      "Diploma in Business and Accounting",
+      "Diploma in Automotive Engineering"
+    ]
+  },
+  {
+    "id": "gwamile-vcti",
+    "nameCanonical": "Gwamile Vocational and Commercial Training Institute",
+    "nameShort": "Gwamile VCTI",
+    "location": "Manzini",
+    "country": "sz",
+    "website": "",
+    "programmes": [
+      "Diploma in Vehicle Body Repairs",
+      "Diploma in Electrical Engineering",
+      "Diploma in Building and Construction Studies",
+      "Diploma in Carpentry and Joinery"
+    ]
+  }
+]

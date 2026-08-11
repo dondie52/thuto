@@ -8,6 +8,7 @@ export const MARKET_CURRENCY = {
   zm: "ZMW",
   za: "ZAR",
   ls: "LSL",
+  sz: "SZL",
 };
 
 /**
@@ -60,6 +61,11 @@ export const SPONSORSHIP_BY_COUNTRY = {
   ],
   ls: [
     { value: "nmds", label: "NMDS (Government) Bursary/Loan" },
+    { value: "private", label: "Private / Corporate Funding" },
+    { value: "self_funded", label: "Self-Funded" },
+  ],
+  sz: [
+    { value: "gov_sz", label: "Government Scholarship (Min. of Education and Training)" },
     { value: "private", label: "Private / Corporate Funding" },
     { value: "self_funded", label: "Self-Funded" },
   ],
@@ -245,6 +251,33 @@ export const GOVERNMENT_FUNDING_BY_COUNTRY = {
     ],
     verifyBody: "Cross-check every requirement with NMDS or Ministry of Education and Training notices for the intake year you are applying in.",
   },
+  sz: {
+    schemeLabel: "Government scholarship",
+    fundingRouteTitle: "Government scholarship",
+    fundingRouteBody:
+      "Ministry of Education and Training (Higher Education Scholarships) government scholarships and related public funding for Eswatini tertiary study.",
+    portalUrl: "",
+    kicker: "Eswatini — government scholarship",
+    heading: "Government scholarship funding",
+    subheading: "Guidance only — confirm each intake with the Ministry of Education and Training",
+    intro:
+      "The Eswatini government scholarship scheme funds eligible students at accredited institutions. Windows, covered institutions, and documents change by year — confirm directly with the Ministry of Education and Training before you rely on any detail here.",
+    portalButtonLabel: "Browse universities",
+    warningTitle: "No live portal listed",
+    warningBody:
+      "Thuto does not list a live Eswatini government scholarship portal. Prefer official Ministry of Education and Training notices.",
+    contactsHeading: "Where to look",
+    contactsNote: "Start with the Ministry of Education and Training and official scholarship office notices.",
+    contacts: [{ label: "Ministry of Education and Training", detail: "Government of Eswatini", tel: "" }],
+    stepsHeading: "Typical path",
+    steps: [
+      { title: "Confirm eligibility", body: "Check citizenship, institution accreditation (ESHEC), and programme rules for the current intake." },
+      { title: "Gather documents", body: "Prepare ID, academic results, and any forms required by the scholarship office." },
+      { title: "Apply through the ministry", body: "Submit through the official scholarship application process before the deadline." },
+      { title: "Track outcomes", body: "Follow up with the ministry on award status and any acceptance steps." },
+    ],
+    verifyBody: "Cross-check every requirement with Ministry of Education and Training notices for the intake year you are applying in.",
+  },
 };
 
 /**
@@ -358,6 +391,23 @@ export const INTERNATIONAL_GUIDANCE_BY_COUNTRY = {
       {
         title: "Lesotho Council on Higher Education (CHE)",
         url: "https://che.org.ls/",
+      },
+    ],
+  },
+  sz: {
+    title: "International applicants",
+    summary:
+      "International applicants to Eswatini institutions should confirm Eswatini Higher Education Council (ESHEC) registration/accreditation, entry requirements, and study permit steps with the institution and Eswatini immigration.",
+    steps: [
+      "Confirm the institution and programme are ESHEC-registered/accredited.",
+      "Check entry requirements and whether an international fee rate applies.",
+      "Prepare certified academic transcripts and identity documents for the application.",
+      "Apply for an Eswatini study/residence permit via official immigration channels if required.",
+    ],
+    links: [
+      {
+        title: "Eswatini Higher Education Council (ESHEC)",
+        url: "https://eshec.org.sz/",
       },
     ],
   },
