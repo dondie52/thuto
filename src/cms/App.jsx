@@ -33,6 +33,7 @@ import {
 } from "../lib/partner.js";
 import { deleteProgrammeOverride } from "../lib/contentManagement.js";
 import { fetchProgrammes, programmeBelongsToUniversity } from "../lib/programmesData.js";
+import { resolveProgrammeThemeUrl } from "../lib/programmeBranding.js";
 import { PROGRAMME_LEVEL_OPTIONS, matchProgrammeLevel } from "../lib/programmeQualification.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
 import {
@@ -1412,7 +1413,7 @@ function PhotoPreview({ value, shape }) {
         shape === "avatar" ? "h-16 w-16 rounded-full" : "h-24 w-24 rounded-2xl",
       ].join(" ")}
     >
-      <img src={value} alt="" className="h-full w-full object-contain" />
+      <img src={resolveProgrammeThemeUrl(value)} alt="" className="h-full w-full object-contain" />
     </span>
   );
 }
@@ -3879,7 +3880,7 @@ function SettingsPage() {
               />
             ) : portal.profileForm.logo ? (
               <img
-                src={portal.profileForm.logo}
+                src={resolveProgrammeThemeUrl(portal.profileForm.logo)}
                 alt=""
                 className="h-24 w-24 rounded-2xl border border-slate-200 object-contain p-2"
               />

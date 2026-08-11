@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { uploadContentAsset } from "../../lib/contentManagement.js";
+import { resolveProgrammeThemeUrl } from "../../lib/programmeBranding.js";
 
 const ACCEPTED_TYPES = "image/jpeg,image/png,image/webp";
 
@@ -52,7 +53,7 @@ export function PhotoUploadField({ value, onChange, folder, label = "photo", hin
         ].join(" ")}
       >
         {value ? (
-          <img src={value} alt="" className="h-full w-full object-contain" />
+          <img src={resolveProgrammeThemeUrl(value)} alt="" className="h-full w-full object-contain" />
         ) : (
           <span className="px-2 text-center text-[11px] font-medium text-slate-400">No photo</span>
         )}
