@@ -9130,5 +9130,23 @@
     "featured": false,
     "sponsorshipTier": "standard",
     "resources": []
+  },
+  {
+    "id": "mut",
+    "name": "Mangosuthu University of Technology",
+    "shortName": "MUT",
+    "location": "Umlazi, KwaZulu-Natal",
+    "country": "za",
+    "description": "A University of Technology in Umlazi, KwaZulu-Natal offering diplomas, degrees, and access/bridging programmes with a work-integrated learning curriculum across Engineering, Management Sciences, and Natural Sciences.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": null,
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [],
+    "studentIncentives": []
   }
 ]
