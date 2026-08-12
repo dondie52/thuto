@@ -67,12 +67,12 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "3 years",
     "durationYears": 3,
-    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Art, Design and Architecture (qualification code B8BA3Q). Graduates typically pursue roles such as: Architectural professionals are involved in shaping our built environment, from the simple construction of low-cost housing projects to the most sophisticated technology employed in the erection of skyscrapers. Architectural professionals are thus employed in the design, technological resolution and management of the design and construction process of buildings. Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Art, Design and Architecture (qualification code B8BA3Q). Graduates work across the design, technological resolution, and management of the building construction process, from low-cost housing to large-scale, technologically sophisticated developments. Guidance only — verify entry requirements, fees, and modules with UJ.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "Architectural professionals are involved in shaping our built environment, from the simple construction of low-cost housing projects to the most sophisticated technology employed in the erection of skyscrapers. Architectural professionals are thus employed in the design, technological resolution and management of th..."
+      "Architectural professionals are involved in shaping our built environment, from the simple construction of low-cost housing projects to the most sophisticated technology employed in the erection of skyscrapers. Architectural professionals are thus employed in the design, technological resolution and management of the design and construction process of buildings."
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
@@ -235,12 +235,21 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "3 years",
     "durationYears": 3,
-    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Art, Design and Architecture (qualification code B8FD1Q). Graduates typically pursue roles such as: Visual Art graduates find work in diverse fields of the visual arts industries. In addition to being a professional artist, graduates could work, in art education and training, art gallery and museum curating and management, art consulting, arts writing, art criticism, research and journalism, printmaking and print studio management, paper making and paper production design, community and arts project management, visual events management. Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Art, Design and Architecture (qualification code B8FD1Q). Graduates find work across the visual arts industries — as professional artists, or in art education, gallery and museum curation, arts writing and criticism, and creative project management. Guidance only — verify entry requirements, fees, and modules with UJ.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "Visual Art graduates find work in diverse fields of the visual arts industries. In addition to being a professional artist, graduates could work, in art education and training, art gallery and museum curating and management, art consulting, arts writing, art criticism, research and journalism, printmaking and print ..."
+      "Professional Artist",
+      "Art Education and Training",
+      "Art Gallery and Museum Curating and Management",
+      "Art Consulting",
+      "Arts Writing and Criticism",
+      "Research and Journalism",
+      "Printmaking and Print Studio Management",
+      "Paper Making and Paper Production Design",
+      "Community and Arts Project Management",
+      "Visual Events Management"
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
@@ -266,12 +275,21 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "3 years",
     "durationYears": 3,
-    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Art, Design and Architecture (qualification code B8BA7Q). Graduates typically pursue roles such as: Visual Art graduates find work in diverse fields of the visual arts industries. In addition to being a professional artist, graduates could work, in art education and training, art gallery and museum curating and management, art consulting, arts writing, art criticism, research and journalism, printmaking and print studio management, paper making and paper production design, community and arts project management, visual events management. Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Art, Design and Architecture (qualification code B8BA7Q). Graduates find work across the visual arts industries — as professional artists, or in art education, gallery and museum curation, arts writing and criticism, and creative project management. Guidance only — verify entry requirements, fees, and modules with UJ.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "Visual Art graduates find work in diverse fields of the visual arts industries. In addition to being a professional artist, graduates could work, in art education and training, art gallery and museum curating and management, art consulting, arts writing, art criticism, research and journalism, printmaking and print ..."
+      "Professional Artist",
+      "Art Education and Training",
+      "Art Gallery and Museum Curating and Management",
+      "Art Consulting",
+      "Arts Writing and Criticism",
+      "Research and Journalism",
+      "Printmaking and Print Studio Management",
+      "Paper Making and Paper Production Design",
+      "Community and Arts Project Management",
+      "Visual Events Management"
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
@@ -1202,12 +1220,12 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "3 years",
     "durationYears": 3,
-    "description": "Diploma offered by the University of Johannesburg's College of Business and Economics (qualification code D34FBQ). Graduates typically pursue roles such as: The successful food and beverage operations student will possess the appropriate skills at operational and supervisory levels within the food and beverage industry in South Africa or internationally. Persons can work in food and beverage units, private and executive catering, marketing and promotions, training or in areas of food and drinks within the industry. Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Diploma offered by the University of Johannesburg's College of Business and Economics (qualification code D34FBQ). Graduates gain operational and supervisory skills for the food and beverage industry in South Africa and internationally. Guidance only — verify entry requirements, fees, and modules with UJ.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "The successful food and beverage operations student will possess the appropriate skills at operational and supervisory levels within the food and beverage industry in South Africa or internationally. Persons can work in food and beverage units, private and executive catering, marketing and promotions, training or in..."
+      "The successful food and beverage operations student will possess the appropriate skills at operational and supervisory levels within the food and beverage industry in South Africa or internationally. Persons can work in food and beverage units, private and executive catering, marketing and promotions, training or in areas of food and drinks within the industry."
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
@@ -1302,12 +1320,20 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "3 years",
     "durationYears": 3,
-    "description": "Diploma offered by the University of Johannesburg's College of Business and Economics (qualification code D34P2Q). Graduates typically pursue roles such as: People Management Practitioners dealing with employee-related issues in organisations. Human Resource Officer, Employee Benefits Officer, Health and Wellness Official, Recruitment and Selection Official, Human Resource Researcher, Training and Development Officer, Change Facilitator, Organisational Development Practitioner. Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Diploma offered by the University of Johannesburg's College of Business and Economics (qualification code D34P2Q). Graduates work as people management practitioners handling employee-related issues, from HR administration and recruitment through to organisational development. Guidance only — verify entry requirements, fees, and modules with UJ.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "People Management Practitioners dealing with employee-related issues in organisations. Human Resource Officer, Employee Benefits Officer, Health and Wellness Official, Recruitment and Selection Official, Human Resource Researcher, Training and Development Officer, Change Facilitator, Organisational Development Pract..."
+      "People Management Practitioner",
+      "Human Resource Officer",
+      "Employee Benefits Officer",
+      "Health and Wellness Official",
+      "Recruitment and Selection Official",
+      "Human Resource Researcher",
+      "Training and Development Officer",
+      "Change Facilitator",
+      "Organisational Development Practitioner"
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
@@ -1499,12 +1525,20 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "4 years",
     "durationYears": 4,
-    "description": "Extended diploma offered by the University of Johannesburg's College of Business and Economics (qualification code D34PEQ). Graduates typically pursue roles such as: People Management Practitioners deal with employee-related issues in organisations. Human Resource Officer, Employee Benefits Officer, Health and Wellness Official, Recruitment and Selection Official, Human Resource Researcher, Training and Development Officer, Change Facilitator, Organisational Development Practitioner. Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Extended diploma offered by the University of Johannesburg's College of Business and Economics (qualification code D34PEQ). Graduates work as people management practitioners handling employee-related issues, from HR administration and recruitment through to organisational development. Guidance only — verify entry requirements, fees, and modules with UJ.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "People Management Practitioners deal with employee-related issues in organisations. Human Resource Officer, Employee Benefits Officer, Health and Wellness Official, Recruitment and Selection Official, Human Resource Researcher, Training and Development Officer, Change Facilitator, Organisational Development Practiti..."
+      "People Management Practitioner",
+      "Human Resource Officer",
+      "Employee Benefits Officer",
+      "Health and Wellness Official",
+      "Recruitment and Selection Official",
+      "Human Resource Researcher",
+      "Training and Development Officer",
+      "Change Facilitator",
+      "Organisational Development Practitioner"
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
@@ -2563,12 +2597,12 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "3 years",
     "durationYears": 3,
-    "description": "Diploma offered by the University of Johannesburg's Faculty of Engineering and the Built Environment (qualification code D6OPMQ). Graduates typically pursue roles such as: career equips the graduate with ability to plan, organise and operational activities organisation. (NCV) component with a minimum of 70%. 70%. component with a minimum of 70%. 60%. APPLICANTS: to all undergraduate Engineering the NASCA, provided that the applicant Plan of UJ as approved by the APPLICANTS: Engineering programmes (BEng). the SC(a), provided that the applicant meets Plan of UJ as approved by the UNIVERSITY OF JOHANNESBURG Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Diploma offered by the University of Johannesburg's Faculty of Engineering and the Built Environment (qualification code D6OPMQ). Graduates are equipped to plan, organise and control operational activities within an organisation. Guidance only — verify entry requirements, fees, and modules with UJ. Note: the source prospectus table's career-prospects text for this programme was heavily OCR-garbled (mixed with admissions-criteria text); only the clearly interpretable portion is reflected here.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "career equips the graduate with ability to plan, organise and operational activities organisation. (NCV) component with a minimum of 70%. 70%. component with a minimum of 70%. 60%. APPLICANTS: to all undergraduate Engineering the NASCA, provided that the applicant Plan of UJ as approved by the APPLICANTS: Engineerin..."
+      "This qualification equips graduates with the ability to plan, organise and control operational activities within an organisation."
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
@@ -3257,12 +3291,12 @@ const programmes = [
     "subjectRequirements": {},
     "duration": "4 years",
     "durationYears": 4,
-    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Health Sciences (qualification code B9O02Q). Graduates typically pursue roles such as: can pursue careers as providing primary eye in eyes examination and address a spectrum irregularities, such abnormalities injuty or ocular disease. patient care, other paediatric optometry, or contact lens fitting. can engage in research, hospital settings or public private practise, optometry and industry UNIVERSITY OF JOHANNESBURG Guidance only — verify entry requirements, fees, and modules with UJ.",
+    "description": "Bachelor's degree offered by the University of Johannesburg's Faculty of Health Sciences (qualification code B9O02Q). Graduates practise as optometrists providing primary eye care and vision examinations, with further specialisation possible in areas such as paediatric optometry or contact lens fitting. Guidance only — verify entry requirements, fees, and modules with UJ. Note: the source prospectus table's career-prospects text for this programme was heavily OCR-garbled; the wording below is reconstructed from the interpretable fragments.",
     "officialUrl": "https://www.uj.ac.za/",
     "applyUrl": "https://www.uj.ac.za/Apply",
     "modules": [],
     "careers": [
-      "can pursue careers as providing primary eye in eyes examination and address a spectrum irregularities, such abnormalities injuty or ocular disease. patient care, other paediatric optometry, or contact lens fitting. can engage in research, hospital settings or public private practise, optometry and industry UNIVERSIT..."
+      "Optometrists provide primary eye care, examining eyes and addressing visual irregularities and abnormalities such as injury or ocular disease, with career paths in general patient care, paediatric optometry, contact lens fitting, research, academia, hospital or private/public practice, and industry consulting."
     ],
     "applicationDeadline": "2025-10-31",
     "minPointsSource": null,
