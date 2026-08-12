@@ -9148,5 +9148,23 @@
     "sponsorshipTier": "standard",
     "resources": [],
     "studentIncentives": []
+  },
+  {
+    "id": "nmu",
+    "name": "Nelson Mandela University",
+    "shortName": "NMU",
+    "location": "Gqeberha, Eastern Cape",
+    "country": "za",
+    "description": "A multi-campus South African university based in Gqeberha (Port Elizabeth) with additional campuses including George, offering undergraduate and postgraduate programmes across business, education, engineering and the built environment, health sciences, humanities, law, and science.",
+    "website": null,
+    "phone": null,
+    "applicationOpen": null,
+    "applicationClose": null,
+    "academicYearStart": "2026-01",
+    "applyUrl": null,
+    "featured": false,
+    "sponsorshipTier": "standard",
+    "resources": [],
+    "studentIncentives": []
   }
 ]
