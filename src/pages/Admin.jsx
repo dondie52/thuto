@@ -88,6 +88,7 @@ const EMPTY_UNIVERSITY_FORM = {
   applicationOpen: "",
   applicationClose: "",
   applyUrl: "",
+  logo: "",
   campusPhoto: "",
   resourcesJson: "[]",
   studentIncentivesJson: "[]",
@@ -672,6 +673,7 @@ export default function Admin() {
       applicationOpen: university.applicationOpen || "",
       applicationClose: university.applicationClose || "",
       applyUrl: university.applyUrl || "",
+      logo: university.logo || "",
       campusPhoto: university.campusPhoto || university.campusImage || "",
       resourcesJson: toJson(university.resources),
       studentIncentivesJson: toJson(university.studentIncentives),
@@ -717,6 +719,8 @@ export default function Admin() {
       const url = await uploadContentAsset(file, target);
       if (target === "university-campus") {
         setUniversityForm((form) => ({ ...form, campusPhoto: url }));
+      } else if (target === "university-logo") {
+        setUniversityForm((form) => ({ ...form, logo: url }));
       } else if (target === "programme-cover") {
         setProgrammeForm((form) => ({ ...form, coverImage: url }));
       }
@@ -763,6 +767,7 @@ export default function Admin() {
         applicationOpen: universityForm.applicationOpen || null,
         applicationClose: universityForm.applicationClose || null,
         applyUrl: universityForm.applyUrl.trim(),
+        logo: universityForm.logo.trim(),
         campusPhoto: universityForm.campusPhoto.trim(),
         resources,
         studentIncentives,
@@ -1202,6 +1207,20 @@ export default function Admin() {
                   onChange={(event) => setUniversityForm((form) => ({ ...form, applicationClose: event.target.value }))}
                   className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
                 />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                Logo URL
+                <input
+                  value={universityForm.logo}
+                  onChange={(event) => setUniversityForm((form) => ({ ...form, logo: event.target.value }))}
+                  className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+                />
+              </label>
+              <label className="focus-ring self-end rounded-xl border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-brand-800 hover:bg-brand-50">
+                Upload logo
+                <input type="file" accept="image/*" onChange={(event) => handleContentUpload(event, "university-logo")} className="sr-only" />
               </label>
             </div>
             <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
