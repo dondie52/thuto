@@ -13,7 +13,8 @@ export default function PartnersLogos({ content }) {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([fetchUniversities(), fetchVerifiedPartnersForMarketing()])
+    // Verified partners span every market, so this must not be scoped to the viewer's country.
+    Promise.all([fetchUniversities({ includeAllCountries: true }), fetchVerifiedPartnersForMarketing()])
       .then(([uniData, verifiedPartners]) => {
         if (cancelled) return;
         setUniversitiesById(new Map((uniData.list || []).map((u) => [u.id, u])));
@@ -31,9 +32,10 @@ export default function PartnersLogos({ content }) {
     return orderedIds
       .map((id) => {
         const university = universitiesById.get(id);
-        if (university) return { ...university, verified: verifiedIds.includes(id) };
-        return { id, name: id, shortName: id.toUpperCase().slice(0, 6), verified: verifiedIds.includes(id) };
+        // Skip unknown ids rather than rendering the raw slug as an institution name.
+        return university ? { ...university, verified: verifiedIds.includes(id) } : null;
       })
+      .filter(Boolean)
       .slice(0, 12);
   }, [content?.featuredUniversityIds, universitiesById, verifiedIds]);
 
