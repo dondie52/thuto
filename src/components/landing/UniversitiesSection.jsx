@@ -55,7 +55,9 @@ export default function UniversitiesSection({ content }) {
   }, [content?.featuredUniversityIds, universitiesById]);
 
   const visibleInstitutions = useMemo(
-    () => (reducedMotion ? featuredInstitutions : [...featuredInstitutions, ...featuredInstitutions]),
+    // The marquee needs the list twice to loop seamlessly. Reduced motion shows a static grid
+    // instead, so it takes a short slice rather than the full list stacked vertically.
+    () => (reducedMotion ? featuredInstitutions.slice(0, 6) : [...featuredInstitutions, ...featuredInstitutions]),
     [featuredInstitutions, reducedMotion],
   );
 
@@ -145,7 +147,7 @@ export default function UniversitiesSection({ content }) {
       aria-labelledby="unis-heading"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
           <div>
             <p className="logo-showcase-copy text-xs font-bold uppercase tracking-[0.22em] text-brand-700">
               {content?.kicker}
@@ -195,7 +197,13 @@ export default function UniversitiesSection({ content }) {
               <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/95 to-transparent sm:w-20" aria-hidden />
               <ul
                 ref={trackRef}
-                className={["flex gap-3 py-2", reducedMotion ? "flex-wrap justify-center" : "w-max"].join(" ")}
+                className={[
+                  "gap-3 py-2",
+                  // Reduced motion has no marquee to scroll, so the cards need a bounded grid.
+                  // Free-flowing `flex-wrap` inside this narrow column stacked them into a very
+                  // tall stub that pushed the section copy to the bottom of the row.
+                  reducedMotion ? "grid grid-cols-2 justify-items-center xl:grid-cols-3" : "flex w-max",
+                ].join(" ")}
                 aria-label="Featured institutions"
               >
                 {visibleInstitutions.map((u, index) => {
