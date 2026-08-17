@@ -24,6 +24,7 @@ import {
 } from "../lib/contentManagement.js";
 import { fetchProgrammes } from "../lib/programmesData.js";
 import { fetchUniversities } from "../lib/universitiesData.js";
+import { DEFAULT_MARKET_COUNTRY, MARKET_COUNTRIES, marketCountryLabel, normalizeMarketCountry } from "../lib/marketCountry.js";
 import { PAGE_CONTENT_DEFAULTS, PAGE_CONTENT_META } from "../lib/pageContentDefaults.js";
 import {
   fetchSupportFeedback,
@@ -81,6 +82,9 @@ const EMPTY_OFFICIAL_POST = {
 const EMPTY_UNIVERSITY_FORM = {
   id: "",
   name: "",
+  // Records saved without a country fall back to Botswana in `itemMarketCountry`, so a new
+  // institution has to carry one explicitly or it silently files itself under the wrong market.
+  country: DEFAULT_MARKET_COUNTRY,
   location: "",
   description: "",
   website: "",
@@ -400,6 +404,8 @@ export default function Admin() {
   const [partnerInquiriesLoaded, setPartnerInquiriesLoaded] = useState(false);
   const [partnerInquiriesWarning, setPartnerInquiriesWarning] = useState("");
   const [universityForm, setUniversityForm] = useState(EMPTY_UNIVERSITY_FORM);
+  const [universityFilterCountry, setUniversityFilterCountry] = useState("all");
+  const [universitySearch, setUniversitySearch] = useState("");
   const [programmeForm, setProgrammeForm] = useState(EMPTY_PROGRAMME_FORM);
   const [editingOpportunityId, setEditingOpportunityId] = useState("");
   const [premiumEdits, setPremiumEdits] = useState({});
@@ -522,6 +528,32 @@ export default function Admin() {
       .sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime())
       .slice(0, 6);
   }, [overview]);
+
+  // The catalogue carries hundreds of institutions across every market, so the editor's picker
+  // needs narrowing before it is usable: country first, then a name/id search.
+  const filteredUniversities = useMemo(() => {
+    const query = universitySearch.trim().toLowerCase();
+    return contentUniversities.filter((university) => {
+      const country = normalizeMarketCountry(university.country) || DEFAULT_MARKET_COUNTRY;
+      if (universityFilterCountry !== "all" && country !== universityFilterCountry) return false;
+      if (!query) return true;
+      return `${university.name || ""} ${university.id || ""}`.toLowerCase().includes(query);
+    });
+  }, [contentUniversities, universityFilterCountry, universitySearch]);
+
+  const universityPickerGroups = useMemo(() => {
+    const byCountry = new Map();
+    for (const university of filteredUniversities) {
+      const code = normalizeMarketCountry(university.country) || DEFAULT_MARKET_COUNTRY;
+      if (!byCountry.has(code)) byCountry.set(code, []);
+      byCountry.get(code).push(university);
+    }
+    return MARKET_COUNTRIES.filter((country) => byCountry.has(country.code)).map((country) => ({
+      code: country.code,
+      label: `${country.label} (${byCountry.get(country.code).length})`,
+      items: byCountry.get(country.code),
+    }));
+  }, [filteredUniversities]);
 
   async function handleAction(targetType, targetId, action) {
     const key = `${targetType}:${targetId}:${action}`;
@@ -666,6 +698,7 @@ export default function Admin() {
     setUniversityForm({
       id: university.id || "",
       name: university.name || "",
+      country: normalizeMarketCountry(university.country) || DEFAULT_MARKET_COUNTRY,
       location: university.location || "",
       description: university.description || "",
       website: university.website || "",
@@ -760,6 +793,8 @@ export default function Admin() {
       const patch = {
         id: universityForm.id.trim(),
         name: universityForm.name.trim(),
+        // Never write a blank country: an unset value reads as Botswana downstream.
+        country: normalizeMarketCountry(universityForm.country) || DEFAULT_MARKET_COUNTRY,
         location: universityForm.location.trim(),
         description: universityForm.description.trim(),
         website: universityForm.website.trim(),
@@ -1105,22 +1140,58 @@ export default function Admin() {
             New university
           </button>
         </div>
-        <div className="mt-3 grid gap-3 sm:grid-cols-[16rem_1fr]">
-          <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
-            Load existing
-            <select
-              value={universityForm.id}
-              onChange={(event) => editUniversityContent(event.target.value)}
-              className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
-            >
-              <option value="">Choose university...</option>
-              {contentUniversities.map((university) => (
-                <option key={university.id} value={university.id}>
-                  {university.name || university.id}
-                </option>
-              ))}
-            </select>
-          </label>
+        <div className="mt-3 grid gap-3 sm:grid-cols-[18rem_1fr]">
+          <div className="space-y-2">
+            <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Filter by country
+              <select
+                value={universityFilterCountry}
+                onChange={(event) => setUniversityFilterCountry(event.target.value)}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              >
+                <option value="all">All countries</option>
+                {MARKET_COUNTRIES.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Search by name
+              <input
+                type="search"
+                value={universitySearch}
+                onChange={(event) => setUniversitySearch(event.target.value)}
+                placeholder="e.g. Cape Town, UB, wits"
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              />
+            </label>
+            <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Load existing
+              <select
+                value={universityForm.id}
+                onChange={(event) => editUniversityContent(event.target.value)}
+                size={12}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              >
+                <option value="">Choose university...</option>
+                {universityPickerGroups.map((group) => (
+                  <optgroup key={group.code} label={group.label}>
+                    {group.items.map((university) => (
+                      <option key={university.id} value={university.id}>
+                        {university.name || university.id}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </label>
+            <p className="text-xs normal-case tracking-normal text-stone-500">
+              Showing <span className="font-semibold text-brand-800">{filteredUniversities.length}</span> of{" "}
+              {contentUniversities.length} institutions.
+            </p>
+          </div>
           <form onSubmit={handleUniversitySave} className="grid gap-3 rounded-2xl bg-stone-50 p-3">
             <div className="grid gap-3 sm:grid-cols-3">
               <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
@@ -1142,6 +1213,25 @@ export default function Admin() {
                 />
               </label>
             </div>
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+              Country
+              <select
+                required
+                value={universityForm.country}
+                onChange={(event) => setUniversityForm((form) => ({ ...form, country: event.target.value }))}
+                className="focus-ring mt-1 w-full rounded-xl border border-brand-100 bg-white px-3 py-2 text-sm font-medium normal-case tracking-normal text-stone-800"
+              >
+                {MARKET_COUNTRIES.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.label}
+                  </option>
+                ))}
+              </select>
+              <span className="mt-1 block text-xs font-normal normal-case tracking-normal text-stone-500">
+                Decides which market catalogue lists this institution. Students browsing{" "}
+                {marketCountryLabel(universityForm.country)} will see it.
+              </span>
+            </label>
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
                 Location

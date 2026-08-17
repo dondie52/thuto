@@ -6,20 +6,21 @@ import { fetchUniversities } from "../../lib/universitiesData.js";
 import { deriveUniversityInitials } from "../../lib/universityBranding.js";
 import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
+// Spread across the live markets rather than Botswana only — the catalogue now covers seven
+// countries, and a Botswana-only strip misrepresents it to a first-time visitor.
 const DEFAULT_FEATURED_IDS = [
   "ub",
   "biust",
   "buan",
   "botho",
-  "ba-isago",
   "bou",
-  "limkokwing",
-  "bac",
-  "fctve",
-  "boitekanelo",
-  "abm",
-  "new-era",
-  "naledi-training-institute",
+  "uct",
+  "wits",
+  "up",
+  "stellenbosch",
+  "ukzn",
+  "university-of-zambia",
+  "international-university-of-management",
 ];
 
 export default function UniversitiesSection({ content }) {
@@ -28,14 +29,17 @@ export default function UniversitiesSection({ content }) {
   const marqueeTweenRef = useRef(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [universitiesById, setUniversitiesById] = useState(new Map());
+  const [catalogueSize, setCatalogueSize] = useState(0);
   const { isSignedIn } = useLandingAuth();
 
   useEffect(() => {
     let cancelled = false;
-    fetchUniversities()
+    // The landing strip advertises the whole catalogue, so it is never scoped to one market.
+    fetchUniversities({ includeAllCountries: true })
       .then(({ list }) => {
         if (cancelled) return;
         setUniversitiesById(new Map(list.map((u) => [u.id, u])));
+        setCatalogueSize(list.length);
       })
       .catch(() => {});
     return () => {
@@ -45,18 +49,15 @@ export default function UniversitiesSection({ content }) {
 
   const featuredInstitutions = useMemo(() => {
     const ids = Array.isArray(content?.featuredUniversityIds) ? content.featuredUniversityIds : DEFAULT_FEATURED_IDS;
-    const picked = ids
-      .map((id) => {
-        const university = universitiesById.get(id);
-        if (university) return university;
-        return { id, name: id, shortName: id.toUpperCase().slice(0, 6) };
-      })
-      .filter(Boolean);
-    return picked.length ? picked : DEFAULT_FEATURED_IDS.map((id) => ({ id, name: id, shortName: id.toUpperCase() }));
+    // Drop ids with no matching record instead of rendering the raw slug as a name — a
+    // CMS-supplied list can point at institutions that no longer exist.
+    return ids.map((id) => universitiesById.get(id)).filter(Boolean);
   }, [content?.featuredUniversityIds, universitiesById]);
 
   const visibleInstitutions = useMemo(
-    () => (reducedMotion ? featuredInstitutions : [...featuredInstitutions, ...featuredInstitutions]),
+    // The marquee needs the list twice to loop seamlessly. Reduced motion shows a static grid
+    // instead, so it takes a short slice rather than the full list stacked vertically.
+    () => (reducedMotion ? featuredInstitutions.slice(0, 6) : [...featuredInstitutions, ...featuredInstitutions]),
     [featuredInstitutions, reducedMotion],
   );
 
@@ -146,7 +147,7 @@ export default function UniversitiesSection({ content }) {
       aria-labelledby="unis-heading"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
           <div>
             <p className="logo-showcase-copy text-xs font-bold uppercase tracking-[0.22em] text-brand-700">
               {content?.kicker}
@@ -166,7 +167,7 @@ export default function UniversitiesSection({ content }) {
             <div className="flex items-center justify-between gap-4">
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{content?.featuredLabel}</span>
               <span className="rounded-full bg-brand-700 px-3 py-1 text-xs font-bold text-white">
-                {featuredInstitutions.length} {content?.badgeSuffix}
+                {catalogueSize ? `${catalogueSize}+ ${content?.badgeSuffix}` : content?.badgeSuffix}
               </span>
             </div>
             <ul className="grid grid-cols-2 gap-3 py-2 sm:hidden" aria-label="Featured institutions">
@@ -174,7 +175,7 @@ export default function UniversitiesSection({ content }) {
                 <li key={u.id}>
                   <Link
                     to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
-                    className="logo-card flex h-28 min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
+                    className="logo-card flex h-32 min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
                     onMouseEnter={liftCard}
                     onMouseLeave={settleCard}
                     onFocus={liftCard}
@@ -183,7 +184,9 @@ export default function UniversitiesSection({ content }) {
                     <span className="flex flex-1 items-center justify-center">
                       <UniversityInitialsBadge university={u} size="md" />
                     </span>
-                    <span className="mt-2 block truncate text-center text-[11px] font-semibold leading-tight text-slate-700">{institutionLabel(u)}</span>
+                    <span className="mt-2 line-clamp-2 block text-center text-[11px] font-semibold leading-tight text-slate-700">
+                      {institutionLabel(u)}
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -194,7 +197,13 @@ export default function UniversitiesSection({ content }) {
               <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/95 to-transparent sm:w-20" aria-hidden />
               <ul
                 ref={trackRef}
-                className={["flex gap-3 py-2", reducedMotion ? "flex-wrap justify-center" : "w-max"].join(" ")}
+                className={[
+                  "gap-3 py-2",
+                  // Reduced motion has no marquee to scroll, so the cards need a bounded grid.
+                  // Free-flowing `flex-wrap` inside this narrow column stacked them into a very
+                  // tall stub that pushed the section copy to the bottom of the row.
+                  reducedMotion ? "grid grid-cols-2 justify-items-center xl:grid-cols-3" : "flex w-max",
+                ].join(" ")}
                 aria-label="Featured institutions"
               >
                 {visibleInstitutions.map((u, index) => {
@@ -203,7 +212,7 @@ export default function UniversitiesSection({ content }) {
                     <li key={`${u.id}-${index}`} aria-hidden={duplicate}>
                       <Link
                         to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
-                        className="logo-card group flex h-32 w-40 shrink-0 flex-col rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
+                        className="logo-card group flex h-36 w-52 shrink-0 flex-col rounded-2xl border border-slate-200 bg-white p-3 shadow-sm outline-none transition-colors hover:border-brand-300 focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-brand-200"
                         tabIndex={duplicate ? -1 : undefined}
                         aria-hidden={duplicate}
                         onMouseEnter={liftCard}
@@ -214,7 +223,9 @@ export default function UniversitiesSection({ content }) {
                         <span className="flex flex-1 items-center justify-center">
                           <UniversityInitialsBadge university={u} size="lg" />
                         </span>
-                        <span className="mt-2 block truncate text-center text-[11px] font-semibold leading-tight text-slate-700">{institutionLabel(u)}</span>
+                        <span className="mt-2 line-clamp-2 block text-center text-[11px] font-semibold leading-tight text-slate-700">
+                          {institutionLabel(u)}
+                        </span>
                       </Link>
                     </li>
                   );

@@ -477,6 +477,7 @@ function usePartnerPortalData() {
   const [selectedInstitutionId, setSelectedInstitutionId] = useState("");
   const [partner, setPartner] = useState(null);
   const [university, setUniversity] = useState(null);
+  const [unresolvedInstitutionId, setUnresolvedInstitutionId] = useState("");
   const [programmes, setProgrammes] = useState([]);
   const [analytics, setAnalytics] = useState([]);
   const [leads, setLeads] = useState([]);
@@ -537,7 +538,9 @@ function usePartnerPortalData() {
   const loadBase = useCallback(async () => {
     const [members, universityData, programmeData] = await Promise.all([
       fetchInstitutionMemberships(),
-      fetchUniversities(),
+      // Staff must resolve their own institution whatever market country their browser has
+      // stored, so this is never scoped to the viewer's country.
+      fetchUniversities({ includeAllCountries: true, includeDrafts: true }),
       // Partner staff need to see their own archived programmes to restore them; students never do.
       fetchProgrammes({ includeArchived: true, includeAllCountries: true }),
     ]);
@@ -556,7 +559,7 @@ function usePartnerPortalData() {
         fetchInstitutionPartner(institutionId),
         fetchInstitutionAnalytics(institutionId, 14),
         fetchInstitutionLeads(institutionId),
-        fetchUniversities(),
+        fetchUniversities({ includeAllCountries: true, includeDrafts: true }),
         fetchInstitutionReviews(institutionId),
         fetchInstitutionApplications(institutionId),
         fetchApplicationSettings(institutionId),
@@ -569,6 +572,9 @@ function usePartnerPortalData() {
     setApplicationSettings(applicationSettingsRow);
     const uni = (universityData.list || []).find((row) => row.id === institutionId);
     setUniversity(uni || null);
+    // A membership pointing at an id no membership record matches used to render an empty editor
+    // that looked like a brand-new institution — and saving it would blank the real page.
+    setUnresolvedInstitutionId(uni ? "" : institutionId);
     if (uni) {
       const contacts = normalizeUniversityContacts(uni);
       const accreditation = normalizeUniversityAccreditation(uni);
@@ -664,6 +670,13 @@ function usePartnerPortalData() {
   async function handleSaveProfile() {
     setError("");
     setMessage("");
+    // Without this the empty form would overwrite the live institution page with blanks.
+    if (!university) {
+      setError(
+        `Your account is linked to "${activeInstitutionId}", which does not match any institution in the catalogue. Saving is disabled so the existing page is not overwritten. Ask a Thuto admin to correct the link.`,
+      );
+      return false;
+    }
     try {
       await saveInstitutionOverride(activeInstitutionId, {
         // Blank would wipe the institution's name, so only send a real one.
@@ -877,6 +890,7 @@ function usePartnerPortalData() {
     setSelectedInstitutionId,
     partner,
     university,
+    unresolvedInstitutionId,
     programmes,
     analytics,
     leads,
@@ -1046,6 +1060,18 @@ function CmsShell() {
           ) : null}
           {portal.error ? (
             <p className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{portal.error}</p>
+          ) : null}
+          {portal.unresolvedInstitutionId ? (
+            <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="alert">
+              <p className="font-semibold">This account is not linked to a listed institution.</p>
+              <p className="mt-1">
+                Your access record points at{" "}
+                <code className="rounded bg-amber-100 px-1.5 py-0.5 font-mono text-xs">{portal.unresolvedInstitutionId}</code>, but
+                no institution with that id exists in the catalogue. The editor below is empty because there is nothing to load
+                — it is not a new institution. Saving is disabled so an existing page cannot be overwritten with blanks. Ask a
+                Thuto admin to correct the link.
+              </p>
+            </div>
           ) : null}
           <Outlet context={portal} />
         </main>

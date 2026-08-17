@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
 import BottomNav from "./BottomNav.jsx";
+import DesktopSideNav from "./DesktopSideNav.jsx";
 import FeedTopBar from "./FeedTopBar.jsx";
 import OnboardingRedirect from "./OnboardingRedirect.jsx";
 import SubscriptionAdSlot from "./SubscriptionAdSlot.jsx";
@@ -42,6 +43,9 @@ export default function Layout() {
   const isMessageThread = useFeedMessageThread();
   const scrollChromeEnabled = !isMessageThread && !isAssistantRoute;
   const hideBottomNav = isPartnerRoute || isMessageThread;
+  // The rail is suppressed where it would fight the layout: the feed and assistant manage their
+  // own full-height chrome, message threads go edge to edge, and /partner has its own shell.
+  const showSideNav = !isFeedRoute && !isAssistantRoute && !isMessageThread && !isPartnerRoute;
   const chromeVisible = useScrollChrome({ enabled: scrollChromeEnabled });
   const headerRef = useRef(null);
   const [headerOffset, setHeaderOffset] = useState(0);
@@ -141,6 +145,9 @@ export default function Layout() {
           <div
             className={[
               "mx-auto max-w-lg px-4 sm:max-w-6xl",
+              // From lg the header spans the full width so it lines up with the side rail and the
+              // widened content beneath it, instead of sitting in a narrower centred column.
+              showSideNav ? "lg:max-w-none lg:px-6" : "",
               isFeedRoute ? (isFeedCompact ? "pt-0 sm:pt-1.5" : "pt-1.5") : "py-1.5",
             ].join(" ")}
           >
@@ -153,7 +160,14 @@ export default function Layout() {
               ].join(" ")}
             >
               <BrandMark className="min-w-0 justify-self-start" />
-              <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto sm:flex" aria-label="Primary desktop">
+              <nav
+                className={[
+                  "hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto sm:flex",
+                  // Tablets keep the inline nav; from lg the side rail replaces it.
+                  showSideNav ? "lg:hidden" : "",
+                ].join(" ")}
+                aria-label="Primary desktop"
+              >
                 {desktopLinks.map(({ to, label, end }) => (
                   <NavLink key={to} to={to} end={end} className={navLinkClass}>
                     {label}
@@ -176,6 +190,7 @@ export default function Layout() {
           </div>
         </header>
       ) : null}
+      {showSideNav ? <DesktopSideNav top={headerOffset} /> : null}
       <main
         className={[
           "mx-auto flex w-full flex-1 flex-col",
@@ -183,6 +198,9 @@ export default function Layout() {
             ? "max-w-none px-0 pb-0 pt-0"
             : [
                 isPartnerRoute ? "max-w-lg px-4 sm:max-w-6xl" : "max-w-lg px-4 sm:max-w-3xl",
+                // Below lg nothing changes. From lg the column cap is dropped so pages use the
+                // full screen, with left padding clearing the fixed rail (w-60 = 15rem).
+                showSideNav ? "lg:max-w-none lg:pl-64 lg:pr-6 2xl:pr-10" : "",
                 isFeedRoute ? "min-h-0 bg-white pb-6" : isAssistantRoute ? "min-h-0 flex-1 overflow-hidden pb-2" : "pb-6 sm:pb-8",
               ].join(" "),
         ].join(" ")}

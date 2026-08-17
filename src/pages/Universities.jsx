@@ -242,60 +242,63 @@ export default function Universities() {
       )}
 
       <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
-        <MarketCountrySelect
-          id="universities-country"
-          value={country}
-          onChange={handleCountryChange}
-          label="Country"
-          hint="Switch markets to browse institutions by country."
-        />
-        <div>
-          <label htmlFor="institution-name-search" className="block text-xs font-medium text-slate-600">
-            Search a university by name
-          </label>
-          <input
-            id="institution-name-search"
-            type="search"
-            value={rawNameQuery}
-            onChange={(e) => setPatch({ q: e.target.value })}
-            placeholder="e.g. Botho, UB, BAC"
-            className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+        {/* Wide screens fit all four controls on one row; below lg they keep stacking. */}
+        <div className="grid gap-4 lg:grid-cols-4 lg:items-start">
+          <MarketCountrySelect
+            id="universities-country"
+            value={country}
+            onChange={handleCountryChange}
+            label="Country"
+            hint="Switch markets to browse institutions by country."
           />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="institution-type-filter" className="block text-xs font-medium text-slate-600">
-              Institution type
+            <label htmlFor="institution-name-search" className="block text-xs font-medium text-slate-600">
+              Search a university by name
             </label>
-            <select
-              id="institution-type-filter"
-              value={institutionType}
-              onChange={(e) => setPatch({ type: e.target.value === "all" ? "" : e.target.value })}
+            <input
+              id="institution-name-search"
+              type="search"
+              value={rawNameQuery}
+              onChange={(e) => setPatch({ q: e.target.value })}
+              placeholder="e.g. Botho, UB, BAC"
               className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
-            >
-              {INSTITUTION_TYPE_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
           </div>
-          <div>
-            <label htmlFor="institution-sort-filter" className="block text-xs font-medium text-slate-600">
-              Sort
-            </label>
-            <select
-              id="institution-sort-filter"
-              value={sort}
-              onChange={(e) => setPatch({ sort: e.target.value === "name_asc" ? "" : e.target.value })}
-              className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
-            >
-              {SORT_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
+            <div>
+              <label htmlFor="institution-type-filter" className="block text-xs font-medium text-slate-600">
+                Institution type
+              </label>
+              <select
+                id="institution-type-filter"
+                value={institutionType}
+                onChange={(e) => setPatch({ type: e.target.value === "all" ? "" : e.target.value })}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              >
+                {INSTITUTION_TYPE_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="institution-sort-filter" className="block text-xs font-medium text-slate-600">
+                Sort
+              </label>
+              <select
+                id="institution-sort-filter"
+                value={sort}
+                onChange={(e) => setPatch({ sort: e.target.value === "name_asc" ? "" : e.target.value })}
+                className="mt-1 w-full rounded-lg border border-brand-200 bg-white px-3 py-3 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 sm:py-2 sm:text-sm"
+              >
+                {SORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -343,7 +346,7 @@ export default function Universities() {
               </div>
             ) : null}
 
-            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
               {group.items.map((university) => (
                 <InstitutionCard
                   key={university.id}
