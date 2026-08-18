@@ -33,31 +33,38 @@ export default function UseCaseShowcase({ content }) {
   }, [selectedIds]);
 
   return (
-    <section id="programmes" className="scroll-mt-24 py-14 sm:py-18" aria-labelledby="usecase-heading">
+    <section id="programmes" className="scroll-mt-24 bg-brand-950 py-16 sm:py-24" aria-labelledby="usecase-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <LandingReveal
-          as="h2"
-          id="usecase-heading"
-          className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl"
-        >
-          {content?.heading}
-        </LandingReveal>
-        <LandingReveal as="p" className="mt-3 max-w-2xl text-base text-slate-600" delay={80}>
-          {content?.body}
-        </LandingReveal>
-        <ul className="mt-8 grid gap-5 sm:grid-cols-3">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-200/70">Example programmes</p>
+            <LandingReveal
+              as="h2"
+              id="usecase-heading"
+              className="mt-3 max-w-[26ch] font-display text-3xl font-bold tracking-tight text-white sm:text-4xl"
+            >
+              {content?.heading}
+            </LandingReveal>
+          </div>
+          <LandingReveal as="p" className="max-w-xs text-sm text-slate-300/80" delay={80}>
+            {content?.body}
+          </LandingReveal>
+        </div>
+        <ul className="mt-12 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:mt-16 sm:grid-cols-3">
           {programmes.map((programme, index) => (
             <LandingReveal as="li" key={programme.id} delay={index * 90}>
               <Link
                 to={landingTo(isSignedIn, `/programmes/${programme.id}`, "#programmes")}
-                className="landing-motion-card flex h-full flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:border-brand-300 hover:shadow-md"
+                className="flex h-full flex-col justify-between bg-brand-950 p-8 transition-colors hover:bg-white/[0.04]"
               >
-                <span className="text-xs font-semibold uppercase tracking-wide text-brand-700">{programme.university}</span>
-                <h3 className="mt-2 font-display text-base font-semibold leading-snug text-slate-900">{programme.name}</h3>
-                {typeof programme.minPoints === "number" ? (
-                  <p className="mt-3 text-sm text-slate-500">From {programme.minPoints} points in the directory</p>
-                ) : null}
-                <span className="mt-4 text-sm font-semibold text-brand-700">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-brand-200/70">{programme.university}</p>
+                  <h3 className="mt-3 font-display text-xl font-semibold leading-snug text-white">{programme.name}</h3>
+                  {typeof programme.minPoints === "number" ? (
+                    <p className="mt-4 text-xs text-slate-400">From {programme.minPoints} points in the directory</p>
+                  ) : null}
+                </div>
+                <span className="mt-8 text-xs font-semibold text-brand-200">
                   {isSignedIn ? content?.signedInCta : content?.guestCta}
                 </span>
               </Link>

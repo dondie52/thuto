@@ -17,8 +17,19 @@ function LandingHeader({ headerRef }) {
       ].join(" ")}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-        <BrandMark />
+        <div className="flex items-center gap-2.5">
+          <BrandMark />
+          <span className="hidden rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-800 sm:inline-block">
+            Study in Africa
+          </span>
+        </div>
         <nav className="hidden items-center gap-1 sm:flex" aria-label="Marketing">
+          <Link
+            to="#how-it-works"
+            className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
+          >
+            How it works
+          </Link>
           <Link
             to={landingTo(isSignedIn, "/programmes", "#programmes")}
             className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
@@ -32,10 +43,10 @@ function LandingHeader({ headerRef }) {
             Universities
           </Link>
           <Link
-            to={landingTo(isSignedIn, "/app", "#features")}
+            to="/partners"
             className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
           >
-            App
+            Partners
           </Link>
           <Link
             to="/app"

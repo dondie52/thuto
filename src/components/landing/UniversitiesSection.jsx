@@ -154,7 +154,7 @@ export default function UniversitiesSection({ content }) {
             </p>
             <h2
               id="unis-heading"
-              className="logo-showcase-copy mt-3 max-w-xl font-display text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"
+              className="logo-showcase-copy mt-3 max-w-xl font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl"
             >
               {content?.heading}
             </h2>
