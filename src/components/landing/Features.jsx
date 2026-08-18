@@ -30,47 +30,42 @@ export default function Features({ content }) {
   const items = Array.isArray(content?.items) ? content.items : [];
 
   return (
-    <section id="features" className="scroll-mt-24 border-y border-slate-100 bg-slate-50/50 py-14 sm:py-18" aria-labelledby="features-heading">
+    <section id="features" className="scroll-mt-24 border-y border-slate-200 bg-[var(--thuto-surface)] py-16 sm:py-24" aria-labelledby="features-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <LandingReveal className="mb-12 max-w-2xl">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            {content?.introHeading}
-          </h2>
-          <p className="mt-3 text-base leading-relaxed text-slate-600">{content?.introBody}</p>
-        </LandingReveal>
-        <LandingReveal
-          as="h2"
-          id="features-heading"
-          className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl"
-          delay={80}
-        >
-          {content?.heading}
-        </LandingReveal>
-        <LandingReveal as="p" className="mt-3 max-w-2xl text-base text-slate-600" delay={150}>
-          {content?.body}
-        </LandingReveal>
-        <ul className="mt-10 grid gap-5 sm:grid-cols-2">
-          {items.map((item, index) => {
-            const href = item.to === "/predictor" ? "/predictor" : landingTo(isSignedIn, item.to, item.guestHash);
-            return (
-              <LandingReveal as="li" key={`${item.title}-${index}`} delay={index * 90}>
-                <Link
-                  to={href}
-                  className="landing-motion-card group flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-brand-200 hover:shadow-md"
-                >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-100 text-brand-800 transition-colors group-hover:bg-brand-200">
-                    {icons[item.icon] || icons.predictor}
-                  </span>
-                  <h3 className="mt-4 font-display text-lg font-semibold text-slate-900">{item.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{item.body}</p>
-                  <span className="mt-4 text-sm font-semibold text-brand-700">
-                    {item.to === "/predictor" ? "Check eligibility ->" : isSignedIn ? "Open in app ->" : "Learn more ->"}
-                  </span>
-                </Link>
-              </LandingReveal>
-            );
-          })}
-        </ul>
+        <div className="grid gap-12 md:grid-cols-2 md:items-center md:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-700">{content?.heading}</p>
+            <LandingReveal
+              as="h2"
+              id="features-heading"
+              className="mt-4 max-w-[18ch] font-display text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl"
+              delay={80}
+            >
+              {content?.introHeading}
+            </LandingReveal>
+            <LandingReveal as="div" className="mt-6 max-w-[42ch] space-y-3 text-base leading-relaxed text-slate-600" delay={150}>
+              <p>{content?.introBody}</p>
+              <p>{content?.body}</p>
+            </LandingReveal>
+          </div>
+          <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 sm:grid-cols-2">
+            {items.map((item, index) => {
+              const href = item.to === "/predictor" ? "/predictor" : landingTo(isSignedIn, item.to, item.guestHash);
+              return (
+                <LandingReveal as="li" key={`${item.title}-${index}`} delay={index * 90}>
+                  <Link to={href} className="landing-motion-card group flex h-full flex-col bg-white p-6">
+                    <span className="text-brand-700">{icons[item.icon] || icons.predictor}</span>
+                    <h3 className="mt-4 font-display text-base font-semibold text-slate-900">{item.title}</h3>
+                    <p className="mt-2 flex-1 text-xs leading-relaxed text-slate-600">{item.body}</p>
+                    <span className="mt-4 text-xs font-semibold text-brand-700">
+                      {item.to === "/predictor" ? "Check eligibility ->" : isSignedIn ? "Open in app ->" : "Learn more ->"}
+                    </span>
+                  </Link>
+                </LandingReveal>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     </section>
   );

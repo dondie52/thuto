@@ -4,23 +4,23 @@ export default function ProblemSection({ content }) {
   const items = Array.isArray(content?.items) ? content.items : [];
 
   return (
-    <section className="border-b border-slate-100 bg-slate-50/80 py-14 sm:py-18" aria-labelledby="problem-heading">
+    <section className="bg-[var(--thuto-surface)] py-16 sm:py-24" aria-labelledby="problem-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <LandingReveal
           as="h2"
           id="problem-heading"
-          className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl"
+          className="max-w-[18ch] font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"
         >
           {content?.heading}
         </LandingReveal>
-        <ul className="mt-8 grid gap-6 sm:grid-cols-3 sm:gap-8">
+        <div className="mt-12 grid divide-y divide-slate-200 border-y border-slate-200 sm:mt-16 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {items.map((text, index) => (
-            <LandingReveal as="li" key={`${text}-${index}`} className="relative pl-0 sm:pl-0" delay={index * 90}>
-              <span className="landing-rule mb-3 block h-1 w-10 rounded-full bg-brand-500" aria-hidden />
-              <p className="text-base leading-relaxed text-slate-600">{text}</p>
+            <LandingReveal key={`${text}-${index}`} delay={index * 90} className="py-8 sm:px-8 sm:first:pl-0 sm:last:pr-0">
+              <div className="text-xs font-semibold tracking-widest text-brand-700">0{index + 1}</div>
+              <p className="mt-4 text-base leading-relaxed text-slate-600">{text}</p>
             </LandingReveal>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

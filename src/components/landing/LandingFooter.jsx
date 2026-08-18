@@ -46,11 +46,11 @@ export default function LandingFooter({ content }) {
   const { isSignedIn } = useLandingAuth();
 
   return (
-    <footer className="border-t border-slate-200 bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+    <footer className="border-t border-slate-200 bg-[var(--thuto-surface)]">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="font-display text-lg font-semibold text-brand-800">{content?.brand}</p>
+            <p className="font-display text-xl font-bold text-brand-800">{content?.brand}</p>
             <p className="mt-1 text-sm text-slate-600">{content?.tagline}</p>
             <Link
               to={landingTo(isSignedIn, "/app", "#features")}
