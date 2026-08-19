@@ -14,17 +14,18 @@ export const PAGE_CONTENT_META = [
 export const PAGE_CONTENT_DEFAULTS = {
   landing: {
     hero: {
-      kicker: "Thuto - Botswana Tertiary Companion",
-      title: "Check what your BGCSE results may qualify you for",
-      body: "Start with real or estimated grades, see possible programme matches, and spot requirements to confirm before applications open.",
+      kicker: "Thuto - Study in Africa",
+      title: "Discover programmes you",
+      titleEmphasis: "actually qualify for.",
+      body: "Start with real or estimated grades, see possible programme matches, and spot requirements before applications open.",
       primaryCtaLabel: "Check eligibility",
       secondaryCtaLabel: "Browse programmes",
       note: "Thuto is planning guidance, not an admission decision. Always confirm final requirements with each institution.",
       image: "programme-themes/landing-hero-bw.jpg",
       stats: [
-        { value: "55+", label: "institutions" },
-        { value: "Best six", label: "BGCSE scoring" },
-        { value: "Shareable", label: "programme compare" },
+        { value: "5000+", label: "Programmes" },
+        { value: "500+", label: "Institutions" },
+        { value: "7+", label: "Countries" },
       ],
     },
     problem: {
@@ -64,7 +65,7 @@ export const PAGE_CONTENT_DEFAULTS = {
     },
     universities: {
       kicker: "University directory",
-      heading: "Compare institutions across southern Africa.",
+      heading: "Compare institutions across southern Africa. 🌍",
       body: "Browse universities, colleges, and training institutions across Botswana, South Africa, Namibia, Zambia, Zimbabwe, Lesotho, and Eswatini — then jump straight into their programmes.",
       featuredLabel: "Featured",
       badgeSuffix: "institutions",

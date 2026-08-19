@@ -37,7 +37,7 @@ export default function UseCaseShowcase({ content }) {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand-200/70">Example programmes</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-amber-400">Example programmes</p>
             <LandingReveal
               as="h2"
               id="usecase-heading"
@@ -50,21 +50,21 @@ export default function UseCaseShowcase({ content }) {
             {content?.body}
           </LandingReveal>
         </div>
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:mt-16 sm:grid-cols-3">
+        <ul className="mt-12 grid divide-y divide-white/10 border-y border-white/10 sm:mt-16 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {programmes.map((programme, index) => (
             <LandingReveal as="li" key={programme.id} delay={index * 90}>
               <Link
                 to={landingTo(isSignedIn, `/programmes/${programme.id}`, "#programmes")}
-                className="flex h-full flex-col justify-between bg-brand-950 p-8 transition-colors hover:bg-white/[0.04]"
+                className="flex h-full flex-col justify-between p-8 sm:first:pl-0 sm:last:pr-0"
               >
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-brand-200/70">{programme.university}</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-amber-400">{programme.university}</p>
                   <h3 className="mt-3 font-display text-xl font-semibold leading-snug text-white">{programme.name}</h3>
                   {typeof programme.minPoints === "number" ? (
                     <p className="mt-4 text-xs text-slate-400">From {programme.minPoints} points in the directory</p>
                   ) : null}
                 </div>
-                <span className="mt-8 text-xs font-semibold text-brand-200">
+                <span className="mt-8 text-xs font-semibold text-amber-400">
                   {isSignedIn ? content?.signedInCta : content?.guestCta}
                 </span>
               </Link>
