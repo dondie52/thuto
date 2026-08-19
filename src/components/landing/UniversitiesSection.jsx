@@ -143,7 +143,7 @@ export default function UniversitiesSection({ content }) {
     <section
       id="universities"
       ref={sectionRef}
-      className="scroll-mt-24 overflow-hidden border-t border-emerald-950/10 bg-[#f8f5ee] py-14 sm:py-18"
+      className="scroll-mt-24 overflow-hidden border-t border-emerald-950/10 bg-[var(--thuto-surface-elevated)] py-16 sm:py-24"
       aria-labelledby="unis-heading"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">

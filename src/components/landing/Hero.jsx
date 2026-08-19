@@ -50,7 +50,7 @@ export default function Hero({ content }) {
         </div>
 
         {stats.length ? (
-          <dl className="landing-hero-stats mt-12 flex max-w-2xl flex-wrap gap-x-10 gap-y-6 border-t border-white/12 pt-8 sm:mt-16">
+          <dl className="landing-hero-stats mt-12 flex max-w-xl flex-wrap gap-x-10 gap-y-6 border-t border-white/12 pt-8 sm:mt-16">
             {stats.map((item, index) => (
               <div key={`${item.label}-${index}`} className="landing-hero-stat" style={{ "--stat-delay": `${680 + index * 130}ms` }}>
                 <dd className="font-display text-3xl font-bold leading-none text-white">{item.value}</dd>

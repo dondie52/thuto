@@ -13,9 +13,9 @@ export default function ProblemSection({ content }) {
         >
           {content?.heading}
         </LandingReveal>
-        <div className="mt-12 grid divide-y divide-slate-200 border-y border-slate-200 sm:mt-16 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 sm:mt-16 sm:grid-cols-3">
           {items.map((text, index) => (
-            <LandingReveal key={`${text}-${index}`} delay={index * 90} className="py-8 sm:px-8 sm:first:pl-0 sm:last:pr-0">
+            <LandingReveal as="div" key={`${text}-${index}`} delay={index * 90} className="bg-white p-8">
               <div className="text-xs font-semibold tracking-widest text-brand-700">0{index + 1}</div>
               <p className="mt-4 text-base leading-relaxed text-slate-600">{text}</p>
             </LandingReveal>

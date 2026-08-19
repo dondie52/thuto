@@ -13,7 +13,7 @@ export default function AboutSection({ content }) {
         </LandingReveal>
         <div className="mt-8 grid gap-x-8 gap-y-4 text-sm leading-relaxed text-slate-600 sm:text-base md:grid-cols-2">
           {columns.map((column, columnIndex) => (
-            <LandingReveal key={columnIndex} className="space-y-4" delay={80 + columnIndex * 90}>
+            <LandingReveal key={columnIndex} className="max-w-[70ch] space-y-4" delay={80 + columnIndex * 90}>
               {column.map((paragraph, index) => (
                 <p key={`${paragraph}-${index}`}>{paragraph}</p>
               ))}
