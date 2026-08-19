@@ -34,7 +34,7 @@ export default function Features({ content }) {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-12 md:grid-cols-2 md:items-center md:gap-16">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand-700">{content?.heading}</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">{content?.heading}</p>
             <LandingReveal
               as="h2"
               id="features-heading"

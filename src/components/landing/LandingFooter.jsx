@@ -48,7 +48,7 @@ export default function LandingFooter({ content }) {
   return (
     <footer className="border-t border-slate-200 bg-[var(--thuto-surface)]">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="font-display text-xl font-bold text-brand-800">{content?.brand}</p>
             <p className="mt-1 text-sm text-slate-600">{content?.tagline}</p>
@@ -59,29 +59,40 @@ export default function LandingFooter({ content }) {
               {isSignedIn ? content?.signedInCta : content?.guestCta}
             </Link>
           </div>
-          <nav className="flex flex-wrap gap-x-8 gap-y-3 text-sm" aria-label="Footer">
-            <a href="#about" className="font-medium text-slate-700 hover:text-brand-800">
-              About
-            </a>
-            <Link to="/partners" className="font-medium text-slate-700 hover:text-brand-800">
-              Partners
-            </Link>
-            <Link to="/sponsorships" className="font-medium text-slate-700 hover:text-brand-800">
-              Sponsorships
-            </Link>
-            <a href="mailto:hello@thuto.bw" className="font-medium text-slate-700 hover:text-brand-800">
-              Contact
-            </a>
-            <Link to="/disclaimer" className="font-medium text-slate-700 hover:text-brand-800">
-              Disclaimer
-            </Link>
-            <Link to="/disclaimer#content-removal" className="font-medium text-slate-700 hover:text-brand-800">
-              IP &amp; Content Removal
-            </Link>
-            <Link to="/privacy" className="font-medium text-slate-700 hover:text-brand-800">
-              Privacy
-            </Link>
-          </nav>
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-12" aria-label="Footer">
+            <nav aria-label="Explore">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Explore</p>
+              <ul className="mt-3 space-y-2.5 text-sm">
+                <li><Link to="/programmes" className="font-medium text-slate-700 hover:text-brand-800">Programmes</Link></li>
+                <li><Link to="/postgraduate-studies" className="font-medium text-slate-700 hover:text-brand-800">Postgraduate Studies</Link></li>
+                <li><Link to="/universities" className="font-medium text-slate-700 hover:text-brand-800">Tertiary Institutions</Link></li>
+                <li><Link to="/center" className="font-medium text-slate-700 hover:text-brand-800">Thuto Centre</Link></li>
+                <li><Link to="/sponsorships" className="font-medium text-slate-700 hover:text-brand-800">Sponsorships</Link></li>
+                <li><Link to="/applications" className="font-medium text-slate-700 hover:text-brand-800">My Applications</Link></li>
+              </ul>
+            </nav>
+            <nav aria-label="Tools">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Tools</p>
+              <ul className="mt-3 space-y-2.5 text-sm">
+                <li><Link to="/assistant" className="font-medium text-slate-700 hover:text-brand-800">Ask Thuto</Link></li>
+                <li><Link to="/feed" className="font-medium text-slate-700 hover:text-brand-800">Feed</Link></li>
+                <li><Link to="/fit-finder" className="font-medium text-slate-700 hover:text-brand-800">Fit Finder</Link></li>
+                <li><Link to="/predictor" className="font-medium text-slate-700 hover:text-brand-800">Predictor</Link></li>
+                <li><Link to="/saved" className="font-medium text-slate-700 hover:text-brand-800">Saved Programmes</Link></li>
+                <li><Link to="/compare" className="font-medium text-slate-700 hover:text-brand-800">Compare Programmes</Link></li>
+              </ul>
+            </nav>
+            <nav aria-label="Company">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Company</p>
+              <ul className="mt-3 space-y-2.5 text-sm">
+                <li><Link to="/partners" className="font-medium text-slate-700 hover:text-brand-800">Partners</Link></li>
+                <li><a href="mailto:hello@thuto.bw" className="font-medium text-slate-700 hover:text-brand-800">Contact</a></li>
+                <li><Link to="/disclaimer" className="font-medium text-slate-700 hover:text-brand-800">Disclaimer &amp; IP</Link></li>
+                <li><Link to="/support" className="font-medium text-slate-700 hover:text-brand-800">Support</Link></li>
+                <li><Link to="/privacy" className="font-medium text-slate-700 hover:text-brand-800">Privacy</Link></li>
+              </ul>
+            </nav>
+          </div>
         </div>
         <div className="mt-8 flex items-center gap-3" aria-label="Follow Thuto on social media">
           {SOCIAL_LINKS.map((social) => (

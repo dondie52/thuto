@@ -19,7 +19,7 @@ export default function PartnersTeaser({ content }) {
         <LandingReveal delay={200} className="mt-8">
           <Link
             to={content.to || "/partners"}
-            className="landing-motion-press inline-flex min-h-[48px] items-center justify-center rounded-full bg-brand-700 px-8 py-3.5 text-sm font-semibold text-white shadow-md hover:bg-brand-800"
+            className="landing-motion-press inline-flex min-h-[48px] items-center justify-center rounded-md bg-brand-700 px-8 py-3.5 text-sm font-semibold text-white shadow-md hover:bg-brand-800"
           >
             {content.ctaLabel || "Explore partnerships"}
           </Link>

@@ -169,8 +169,9 @@ Thuto uses a hybrid of tonal layering and soft shadows. Surfaces are primarily s
 ## 5. Components
 
 ### Buttons
-- **Shape:** Rounded rectangles or pills depending on context. Product buttons default to 12px radius; landing CTAs may use full pills.
+- **Shape:** Rounded rectangles. Product buttons default to 12px radius; landing CTAs use an 8px radius (`rounded-md`), not full pills.
 - **Primary:** Admissions Teal background (#0f766e), raised-paper text, semibold Figtree, 10-12px vertical padding.
+- **Landing Accent:** A small set of high-emphasis landing elements (hero primary CTA, hero kicker/title emphasis, section kickers/numerals, "Study in Africa" pill, programme/university labels on dark panels) use a warm gold accent (Tailwind `amber-400/500/600`) instead of teal — reserved for landing-page emphasis only, not the in-app product UI.
 - **Hover / Focus:** Darken to #115e59 or #134e4a. Focus uses the shared teal ring, not a custom decorative treatment.
 - **Secondary / Ghost:** Raised Paper background with teal text and a 1px teal or stone border.
 

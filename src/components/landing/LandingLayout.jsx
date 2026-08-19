@@ -19,47 +19,47 @@ function LandingHeader({ headerRef }) {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2.5">
           <BrandMark />
-          <span className="hidden rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-800 sm:inline-block">
+          <span className="hidden rounded-full bg-amber-400 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-950 sm:inline-block">
             Study in Africa
           </span>
         </div>
         <nav className="hidden items-center gap-1 sm:flex" aria-label="Marketing">
           <Link
             to="#how-it-works"
-            className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
           >
             How it works
           </Link>
           <Link
             to={landingTo(isSignedIn, "/programmes", "#programmes")}
-            className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
           >
             Programmes
           </Link>
           <Link
             to={landingTo(isSignedIn, "/universities", "#universities")}
-            className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
           >
             Universities
           </Link>
           <Link
             to="/partners"
-            className="focus-ring landing-motion-press rounded-xl px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
           >
             Partners
           </Link>
           <Link
-            to="/app"
-            className="focus-ring landing-motion-press ml-1 rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-brand-800"
+            to={isSignedIn ? "/app" : "/auth?mode=login"}
+            className="focus-ring landing-motion-press ml-1 rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold uppercase tracking-wide text-white shadow-md hover:bg-brand-800"
           >
-            Open App
+            {isSignedIn ? "Open App" : "Log in"}
           </Link>
         </nav>
         <Link
-          to="/app"
-          className="focus-ring landing-motion-press rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-brand-800 sm:hidden"
+          to={isSignedIn ? "/app" : "/auth?mode=login"}
+          className="focus-ring landing-motion-press rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold uppercase tracking-wide text-white shadow-md hover:bg-brand-800 sm:hidden"
         >
-          Open App
+          {isSignedIn ? "Open App" : "Log in"}
         </Link>
       </div>
     </header>

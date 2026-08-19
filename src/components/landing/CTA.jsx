@@ -20,7 +20,7 @@ export default function CTA({ content }) {
         <LandingReveal
           as={Link}
           to="/predictor"
-          className="focus-ring-on-dark landing-motion-press mx-auto inline-flex min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-brand-900 shadow-lg hover:bg-brand-50 md:mx-0"
+          className="focus-ring-on-dark landing-motion-press mx-auto inline-flex min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-md bg-amber-500 px-8 py-3 text-sm font-semibold text-slate-950 shadow-lg hover:bg-amber-400 md:mx-0"
           delay={170}
         >
           {content?.buttonLabel}
