@@ -4,7 +4,7 @@ import BrandMark from "../BrandMark.jsx";
 import { useScrollChrome } from "../../hooks/useScrollChrome.js";
 import { LandingAuthProvider, landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
-function LandingHeader({ headerRef }) {
+function LandingHeader({ headerRef, mobileMenuOpen, setMobileMenuOpen }) {
   const { isSignedIn } = useLandingAuth();
   const chromeVisible = useScrollChrome();
 
@@ -55,23 +55,96 @@ function LandingHeader({ headerRef }) {
             {isSignedIn ? "Open App" : "Log in"}
           </Link>
         </nav>
-        <Link
-          to={isSignedIn ? "/app" : "/auth?mode=login"}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="focus-ring landing-motion-press flex flex-col gap-1 rounded-md p-2 sm:hidden"
-          title={isSignedIn ? "Open App" : "Log in"}
+          aria-label="Toggle mobile menu"
         >
           <span className="block h-0.5 w-6 bg-stone-900"></span>
           <span className="block h-0.5 w-6 bg-stone-900"></span>
           <span className="block h-0.5 w-6 bg-stone-900"></span>
-        </Link>
+        </button>
       </div>
     </header>
+  );
+}
+
+function MobileMenu({ isOpen, onClose }) {
+  const { isSignedIn } = useLandingAuth();
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-20 sm:hidden">
+      <div
+        className="absolute inset-0 bg-black/50"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <div className="relative flex h-full flex-col bg-white">
+        <div className="flex items-center justify-between border-b border-stone-200/80 px-4 py-3">
+          <div className="flex items-center gap-2.5">
+            <BrandMark />
+            <span className="rounded-full bg-amber-400 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-950">
+              Study in Africa
+            </span>
+          </div>
+          <button
+            onClick={onClose}
+            className="focus-ring rounded-md p-2 text-stone-600 hover:bg-stone-100"
+            aria-label="Close menu"
+          >
+            <span className="block h-6 w-6 text-2xl">✕</span>
+          </button>
+        </div>
+        <nav className="flex flex-1 flex-col gap-1 px-4 py-4" aria-label="Mobile navigation">
+          <Link
+            to="#how-it-works"
+            onClick={onClose}
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+          >
+            How it works
+          </Link>
+          <Link
+            to={isSignedIn ? "/programmes" : "#programmes"}
+            onClick={onClose}
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+          >
+            Programmes
+          </Link>
+          <Link
+            to={isSignedIn ? "/universities" : "#universities"}
+            onClick={onClose}
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+          >
+            Universities
+          </Link>
+          <Link
+            to="/partners"
+            onClick={onClose}
+            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+          >
+            Partners
+          </Link>
+        </nav>
+        <div className="border-t border-stone-200/80 px-4 py-4">
+          <Link
+            to={isSignedIn ? "/app" : "/auth?mode=login"}
+            onClick={onClose}
+            className="focus-ring landing-motion-press block rounded-md bg-brand-700 px-4 py-3 text-center font-semibold uppercase tracking-wide text-white shadow-md hover:bg-brand-800"
+          >
+            {isSignedIn ? "Open App" : "Log in"}
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
 
 export default function LandingLayout() {
   const headerRef = useRef(null);
   const [headerOffset, setHeaderOffset] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const node = headerRef.current;
@@ -87,10 +160,22 @@ export default function LandingLayout() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <LandingAuthProvider>
       <div className="thuto-page-bg flex min-h-dvh flex-col text-slate-900">
-        <LandingHeader headerRef={headerRef} />
+        <LandingHeader headerRef={headerRef} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+        <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
         <main className="flex flex-1 flex-col" style={{ paddingTop: headerOffset }}>
           <Outlet />
         </main>
