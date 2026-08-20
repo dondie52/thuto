@@ -57,9 +57,12 @@ function LandingHeader({ headerRef }) {
         </nav>
         <Link
           to={isSignedIn ? "/app" : "/auth?mode=login"}
-          className="focus-ring landing-motion-press rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold uppercase tracking-wide text-white shadow-md hover:bg-brand-800 sm:hidden"
+          className="focus-ring landing-motion-press flex flex-col gap-1 rounded-md p-2 sm:hidden"
+          title={isSignedIn ? "Open App" : "Log in"}
         >
-          {isSignedIn ? "Open App" : "Log in"}
+          <span className="block h-0.5 w-6 bg-stone-900"></span>
+          <span className="block h-0.5 w-6 bg-stone-900"></span>
+          <span className="block h-0.5 w-6 bg-stone-900"></span>
         </Link>
       </div>
     </header>
