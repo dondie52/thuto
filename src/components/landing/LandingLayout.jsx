@@ -57,12 +57,25 @@ function LandingHeader({ headerRef, mobileMenuOpen, setMobileMenuOpen }) {
         </nav>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="focus-ring landing-motion-press flex flex-col gap-1 rounded-md p-2 sm:hidden"
-          aria-label="Toggle mobile menu"
+          className="focus-ring landing-motion-press relative flex h-9 w-9 items-center justify-center rounded-md p-2 sm:hidden"
+          aria-label={mobileMenuOpen ? "Close menu" : "Toggle mobile menu"}
+          aria-expanded={mobileMenuOpen}
         >
-          <span className="block h-0.5 w-6 bg-stone-900"></span>
-          <span className="block h-0.5 w-6 bg-stone-900"></span>
-          <span className="block h-0.5 w-6 bg-stone-900"></span>
+          <span
+            className={`absolute block h-0.5 w-6 bg-stone-900 transition-transform duration-200 ease-out ${
+              mobileMenuOpen ? "rotate-45" : "-translate-y-2"
+            }`}
+          ></span>
+          <span
+            className={`absolute block h-0.5 w-6 bg-stone-900 transition-opacity duration-200 ease-out ${
+              mobileMenuOpen ? "opacity-0" : "opacity-100"
+            }`}
+          ></span>
+          <span
+            className={`absolute block h-0.5 w-6 bg-stone-900 transition-transform duration-200 ease-out ${
+              mobileMenuOpen ? "-rotate-45" : "translate-y-2"
+            }`}
+          ></span>
         </button>
       </div>
     </header>
