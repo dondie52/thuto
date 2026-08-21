@@ -1,56 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import UniversityInitialsBadge from "../UniversityInitialsBadge.jsx";
-import { fetchUniversities } from "../../lib/universitiesData.js";
-import { deriveUniversityInitials } from "../../lib/universityBranding.js";
 import { landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 import LandingReveal from "./LandingReveal.jsx";
 
-// Spread across the live markets rather than Botswana only — the catalogue now covers seven
-// countries, and a Botswana-only strip misrepresents it to a first-time visitor.
-const DEFAULT_FEATURED_IDS = [
-  "ub",
-  "biust",
-  "buan",
-  "botho",
-  "bou",
-  "uct",
-  "wits",
-  "up",
-  "stellenbosch",
-  "ukzn",
-  "university-of-zambia",
-  "international-university-of-management",
-];
+const universityLogosSrc = `${import.meta.env.BASE_URL}landing/university-logos.png`;
 
 export default function UniversitiesSection({ content }) {
-  const [universitiesById, setUniversitiesById] = useState(new Map());
   const { isSignedIn } = useLandingAuth();
-
-  useEffect(() => {
-    let cancelled = false;
-    // The landing strip advertises the whole catalogue, so it is never scoped to one market.
-    fetchUniversities({ includeAllCountries: true })
-      .then(({ list }) => {
-        if (cancelled) return;
-        setUniversitiesById(new Map(list.map((u) => [u.id, u])));
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const featuredInstitutions = useMemo(() => {
-    const ids = Array.isArray(content?.featuredUniversityIds) ? content.featuredUniversityIds : DEFAULT_FEATURED_IDS;
-    // Drop ids with no matching record instead of rendering the raw slug as a name — a
-    // CMS-supplied list can point at institutions that no longer exist.
-    return ids.map((id) => universitiesById.get(id)).filter(Boolean);
-  }, [content?.featuredUniversityIds, universitiesById]);
-
-  function institutionLabel(university) {
-    return university.name || deriveUniversityInitials(university);
-  }
 
   return (
     <section
@@ -75,22 +30,18 @@ export default function UniversitiesSection({ content }) {
           </div>
 
           <LandingReveal
-            className="grid grid-cols-4 gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-6 sm:p-5"
+            className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
             delay={140}
           >
-            {featuredInstitutions.map((u) => (
-              <Link
-                key={u.id}
-                to={landingTo(isSignedIn, `/universities/${u.id}`, "#universities")}
-                className="flex flex-col items-center justify-start gap-1.5 outline-none focus-visible:ring-2 focus-visible:ring-brand-200"
-                aria-label={institutionLabel(u)}
-              >
-                <UniversityInitialsBadge university={u} size="md" />
-                <span className="line-clamp-2 text-center text-[10px] font-semibold leading-tight text-slate-700">
-                  {institutionLabel(u)}
-                </span>
-              </Link>
-            ))}
+            <img
+              src={universityLogosSrc}
+              alt="Logos of universities and colleges on Thuto, including University of Botswana, UNAM, University of Zimbabwe, UCT, Wits, Stellenbosch, and more."
+              width={1105}
+              height={1080}
+              loading="lazy"
+              decoding="async"
+              className="h-auto w-full"
+            />
           </LandingReveal>
         </div>
 
