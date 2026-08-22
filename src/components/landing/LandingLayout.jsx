@@ -94,11 +94,11 @@ function MobileMenu({ isOpen, onClose }) {
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative flex h-full flex-col bg-white">
+      <div className="thuto-page-bg relative flex h-full flex-col overflow-y-auto">
         <div className="flex items-center justify-between border-b border-stone-200/80 px-4 py-3">
           <div className="flex items-center gap-2.5">
             <BrandMark />
-            <span className="rounded-full bg-amber-400 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-950">
+            <span className="rounded-full bg-amber-400 px-2.5 py-1 text-[11px] font-semibold text-slate-950">
               Study in Africa
             </span>
           </div>
@@ -110,41 +110,45 @@ function MobileMenu({ isOpen, onClose }) {
             <span className="block h-6 w-6 text-2xl">✕</span>
           </button>
         </div>
-        <nav className="flex flex-1 flex-col gap-1 px-4 py-4" aria-label="Mobile navigation">
+        <div className="px-4 pt-8" aria-hidden="true">
+          <span className="block h-16 w-px bg-stone-300" />
+          <span className="mt-6 block h-1.5 w-28 rounded-full bg-stone-400" />
+        </div>
+        <nav className="flex flex-col items-center gap-8 px-4 pt-10 text-center" aria-label="Mobile navigation">
           <Link
             to="#how-it-works"
             onClick={onClose}
-            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+            className="focus-ring landing-motion-press font-display text-3xl text-stone-900"
           >
             How it works
           </Link>
           <Link
             to={isSignedIn ? "/programmes" : "#programmes"}
             onClick={onClose}
-            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+            className="focus-ring landing-motion-press font-display text-3xl text-stone-900"
           >
             Programmes
           </Link>
           <Link
             to={isSignedIn ? "/universities" : "#universities"}
             onClick={onClose}
-            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+            className="focus-ring landing-motion-press font-display text-3xl text-stone-900"
           >
             Universities
           </Link>
           <Link
             to="/partners"
             onClick={onClose}
-            className="focus-ring landing-motion-press rounded-md px-3 py-2 text-lg font-medium text-stone-600 hover:bg-stone-100"
+            className="focus-ring landing-motion-press font-display text-3xl text-stone-900"
           >
             Partners
           </Link>
         </nav>
-        <div className="border-t border-stone-200/80 px-4 py-4">
+        <div className="flex justify-center px-4 pt-10">
           <Link
             to={isSignedIn ? "/app" : "/auth?mode=login"}
             onClick={onClose}
-            className="focus-ring landing-motion-press block rounded-md bg-brand-700 px-4 py-3 text-center font-semibold uppercase tracking-wide text-white shadow-md hover:bg-brand-800"
+            className="focus-ring landing-motion-press rounded-md bg-brand-700 px-8 py-3 text-center text-sm font-semibold uppercase tracking-wide text-white shadow-md hover:bg-brand-800"
           >
             {isSignedIn ? "Open App" : "Log in"}
           </Link>
