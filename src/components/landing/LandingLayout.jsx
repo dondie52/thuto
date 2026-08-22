@@ -88,7 +88,7 @@ function MobileMenu({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-20 sm:hidden">
+    <div className="fixed inset-0 z-40 sm:hidden">
       <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
