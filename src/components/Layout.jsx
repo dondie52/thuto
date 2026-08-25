@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import AccountDrawer from "./AccountDrawer.jsx";
 import BrandMark from "./BrandMark.jsx";
@@ -109,6 +109,14 @@ export default function Layout() {
     observer.observe(node);
     return () => observer.disconnect();
   }, [isMessageThread, isFeedRoute, isFeedCompact, chromeVisible, location.pathname]);
+
+  useLayoutEffect(() => {
+    // Feed and Ask lock the page to a different height/overflow model than the rest of the app
+    // (see the container and <main> classes below). Without resetting scroll on route change, a
+    // scroll position carried over from another page collides with that different layout and the
+    // page visibly snaps/resizes into place instead of opening like every other tab.
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   function handleFeedRefresh() {
     triggerFeedRefresh();
