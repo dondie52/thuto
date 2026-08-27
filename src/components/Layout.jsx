@@ -91,7 +91,12 @@ export default function Layout() {
     };
   }, [isFeedRoute]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // The header's own height changes with the route (Feed embeds FeedTopBar and is taller than
+    // the default header). This has to run before paint: a plain useEffect updates headerOffset
+    // only after the new route's first frame is already on screen, so `main`'s paddingTop below
+    // briefly renders with the previous route's header height, then jumps to the correct value a
+    // frame later — the visible snap/resize when opening Feed or Ask.
     if (isMessageThread) {
       setHeaderOffset(0);
       return undefined;
