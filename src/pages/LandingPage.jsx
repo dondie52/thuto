@@ -11,13 +11,16 @@ import CTA from "../components/landing/CTA.jsx";
 import PartnersTeaser from "../components/landing/PartnersTeaser.jsx";
 import AboutSection from "../components/landing/AboutSection.jsx";
 import LandingFooter from "../components/landing/LandingFooter.jsx";
+import InstitutionLanding from "../components/landing/InstitutionLanding.jsx";
 import { usePageContent } from "../hooks/usePageContent.js";
+import { useLandingAudience } from "../hooks/useLandingAudience.js";
 import { PAGE_CONTENT_DEFAULTS } from "../lib/pageContentDefaults.js";
 
 export default function LandingPage() {
   useDocumentTitle("Thuto - Botswana Tertiary Companion");
   const { hash } = useLocation();
   const { content } = usePageContent("landing", PAGE_CONTENT_DEFAULTS.landing);
+  const { audience } = useLandingAudience();
 
   useEffect(() => {
     if (!hash) return;
@@ -25,6 +28,10 @@ export default function LandingPage() {
       document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" });
     });
   }, [hash]);
+
+  if (audience === "institution") {
+    return <InstitutionLanding />;
+  }
 
   return (
     <div className="flex flex-1 flex-col">
