@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import BrandMark from "../BrandMark.jsx";
+import AudienceSelect from "../AudienceSelect.jsx";
+import AudienceModal from "../AudienceModal.jsx";
 import { useScrollChrome } from "../../hooks/useScrollChrome.js";
+import { useLandingAudience } from "../../hooks/useLandingAudience.js";
 import { LandingAuthProvider, landingTo, useLandingAuth } from "./LandingAuthContext.jsx";
 
-function LandingHeader({ headerRef, mobileMenuOpen, setMobileMenuOpen }) {
+function LandingHeader({ headerRef, mobileMenuOpen, setMobileMenuOpen, audience, setAudience }) {
   const { isSignedIn } = useLandingAuth();
   const chromeVisible = useScrollChrome();
 
@@ -24,6 +27,7 @@ function LandingHeader({ headerRef, mobileMenuOpen, setMobileMenuOpen }) {
           </span>
         </div>
         <nav className="hidden items-center gap-1 sm:flex" aria-label="Marketing">
+          <AudienceSelect value={audience} onChange={setAudience} variant="desktop" />
           <Link
             to="#how-it-works"
             className="focus-ring landing-motion-press rounded-md px-3 py-2 text-sm font-medium text-stone-600 hover:bg-white/80 hover:text-brand-900"
@@ -82,7 +86,7 @@ function LandingHeader({ headerRef, mobileMenuOpen, setMobileMenuOpen }) {
   );
 }
 
-function MobileMenu({ isOpen, onClose }) {
+function MobileMenu({ isOpen, onClose, audience, setAudience }) {
   const { isSignedIn } = useLandingAuth();
 
   if (!isOpen) return null;
@@ -113,6 +117,9 @@ function MobileMenu({ isOpen, onClose }) {
         <div className="px-4 pt-8" aria-hidden="true">
           <span className="block h-16 w-px bg-stone-300" />
           <span className="mt-6 block h-1.5 w-28 rounded-full bg-stone-400" />
+        </div>
+        <div className="px-4">
+          <AudienceSelect value={audience} onChange={setAudience} variant="mobile" id="landing-audience-mobile" />
         </div>
         <nav className="flex flex-col items-center gap-8 px-4 pt-10 text-center" aria-label="Mobile navigation">
           <Link
@@ -162,6 +169,8 @@ export default function LandingLayout() {
   const headerRef = useRef(null);
   const [headerOffset, setHeaderOffset] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const { audience, isFirstVisit, setAudience } = useLandingAudience();
 
   useEffect(() => {
     const node = headerRef.current;
@@ -191,11 +200,23 @@ export default function LandingLayout() {
   return (
     <LandingAuthProvider>
       <div className="thuto-page-bg flex min-h-dvh flex-col text-slate-900">
-        <LandingHeader headerRef={headerRef} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
-        <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+        <LandingHeader
+          headerRef={headerRef}
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+          audience={audience}
+          setAudience={setAudience}
+        />
+        <MobileMenu
+          isOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+          audience={audience}
+          setAudience={setAudience}
+        />
         <main className="flex flex-1 flex-col" style={{ paddingTop: headerOffset }}>
           <Outlet />
         </main>
+        <AudienceModal isOpen={isFirstVisit && pathname === "/"} onSelect={setAudience} />
       </div>
     </LandingAuthProvider>
   );
